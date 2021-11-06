@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">TierListMaker</string>
+    <string name="app_name" translatable="false">Tier List Maker</string>
+    <string name="btn_add_new_list_desc">Add new list</string>
 </resources>

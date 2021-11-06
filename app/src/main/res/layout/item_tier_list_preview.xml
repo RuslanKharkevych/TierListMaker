@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:cardElevation="@dimen/card_elevation"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            android:textSize="@dimen/text_16"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Best Friends" />
+
+        <ImageView
+            android:id="@+id/img_first"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/margin_16"
+            android:contentDescription="@null"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/img_second"
+            app:layout_constraintTop_toBottomOf="@id/text_title"
+            tools:src="@tools:sample/avatars" />
+
+        <ImageView
+            android:id="@+id/img_second"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@null"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toEndOf="@id/img_first"
+            app:layout_constraintEnd_toStartOf="@id/img_third"
+            app:layout_constraintTop_toTopOf="@id/img_first"
+            tools:src="@tools:sample/avatars" />
+
+        <ImageView
+            android:id="@+id/img_third"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@null"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toEndOf="@id/img_second"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/img_second"
+            tools:src="@tools:sample/avatars" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
