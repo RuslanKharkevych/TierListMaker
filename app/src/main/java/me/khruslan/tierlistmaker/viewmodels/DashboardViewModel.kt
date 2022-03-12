@@ -2,9 +2,9 @@ package me.khruslan.tierlistmaker.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import me.khruslan.tierlistmaker.data.TierListPreview
+import me.khruslan.tierlistmaker.data.tierlist.TierListPreview
 
-class DashboardViewModel: ViewModel() {
+class DashboardViewModel : ViewModel() {
     val tierListPreviewsLiveData = liveData {
         emit(dummyTierListPreviews)
     }

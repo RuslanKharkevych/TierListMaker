@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_graph"
     app:startDestination="@id/fragment_dashboard">
 
     <fragment
         android:id="@+id/fragment_dashboard"
         android:name="me.khruslan.tierlistmaker.ui.screens.home.DashboardFragment"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard">
+
+        <action
+            android:id="@+id/action_fragment_dashboard_to_activity_tier_list"
+            app:destination="@id/activity_tier_list" />
+
+    </fragment>
+
+    <activity
+        android:id="@+id/activity_tier_list"
+        android:name="me.khruslan.tierlistmaker.ui.screens.tierlist.TierListActivity"
+        tools:layout="@layout/activity_tier_list">
+
+        <argument
+            android:name="title"
+            app:argType="string" />
+
+    </activity>
 
 </navigation>

@@ -3,10 +3,11 @@
     <!-- Margins -->
     <dimen name="margin_16">16dp</dimen>
 
+    <!-- Text -->
+    <dimen name="text_16">16sp</dimen>
+    <dimen name="text_24">24sp</dimen>
+
     <!-- CardView -->
     <dimen name="card_corner_radius">10dp</dimen>
     <dimen name="card_elevation">5dp</dimen>
-
-    <!-- Text -->
-    <dimen name="text_16">16sp</dimen>
 </resources>

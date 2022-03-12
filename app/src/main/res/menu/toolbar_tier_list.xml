@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/item_overflow"
+        android:icon="@drawable/ic_more_vert"
+        android:title="@string/menu_item_ic_zoom_out_title"
+        app:iconTint="?attr/colorOnPrimary"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction">
+
+        <menu>
+
+            <item
+                android:id="@+id/item_zoom_out"
+                android:icon="@drawable/ic_zoom_out"
+                android:title="@string/menu_item_ic_zoom_out_title"
+                app:iconTint="?attr/colorOnSurface"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/item_zoom_in"
+                android:icon="@drawable/ic_zoom_in"
+                android:title="@string/menu_item_zoom_in_title"
+                app:iconTint="?attr/colorOnSurface"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/item_add_image"
+                android:icon="@drawable/ic_add_photo_alternate"
+                android:title="@string/menu_item_add_new_image_title"
+                app:iconTint="?attr/colorOnSurface"
+                app:showAsAction="never" />
+
+        </menu>
+
+    </item>
+
+</menu>

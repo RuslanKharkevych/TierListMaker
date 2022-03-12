@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tier_list_graph"
+    app:startDestination="@id/fragment_tier_list">
+
+    <fragment
+        android:id="@+id/fragment_tier_list"
+        android:name="me.khruslan.tierlistmaker.ui.screens.tierlist.TierListFragment"
+        tools:layout="@layout/fragment_tier_list">
+
+        <argument
+            android:name="title"
+            app:argType="string" />
+
+    </fragment>
+
+</navigation>

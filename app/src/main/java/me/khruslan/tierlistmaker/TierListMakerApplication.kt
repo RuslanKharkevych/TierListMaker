@@ -2,11 +2,11 @@ package me.khruslan.tierlistmaker
 
 import android.app.Application
 import android.os.StrictMode
-import androidx.viewbinding.BuildConfig
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
-@Suppress("unused")
-class TierListMakerApplication: Application() {
+@HiltAndroidApp
+class TierListMakerApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) enableLogging()

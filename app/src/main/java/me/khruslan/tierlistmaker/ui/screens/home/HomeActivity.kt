@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import me.khruslan.tierlistmaker.databinding.ActivityHomeBinding
 
-class HomeActivity: AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +21,7 @@ class HomeActivity: AppCompatActivity() {
 
     private fun setupView() {
         binding.toolbar.setNavigationOnClickListener {
-            TODO("Handle menu button click")
+            // TODO: Handle menu button click
         }
     }
 }

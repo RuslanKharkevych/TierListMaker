@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import me.khruslan.tierlistmaker.databinding.FragmentDashboardBinding
 import me.khruslan.tierlistmaker.ui.adapters.TierListPreviewAdapter
 import me.khruslan.tierlistmaker.viewmodels.DashboardViewModel
 
-class DashboardFragment: Fragment() {
+class DashboardFragment : Fragment() {
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
     private val viewModel: DashboardViewModel by viewModels()
@@ -29,7 +30,11 @@ class DashboardFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnAddNewList.setOnClickListener {
-            // TODO: Handle add new list button click
+            findNavController().navigate(
+                DashboardFragmentDirections.actionFragmentDashboardToActivityTierList(
+                    title = "Dummy title"
+                )
+            )
         }
 
         viewModel.tierListPreviewsLiveData.observe(viewLifecycleOwner) {

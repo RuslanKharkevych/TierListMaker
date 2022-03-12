@@ -1,4 +1,4 @@
-package me.khruslan.tierlistmaker.data
+package me.khruslan.tierlistmaker.data.tierlist
 
 class TierListPreview(
     val title: String,

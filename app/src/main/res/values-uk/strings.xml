@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="btn_add_new_list_desc">Додати новий список</string>
+    <string name="menu_item_add_new_image_title">Додати нове зображення</string>
+    <string name="menu_item_zoom_in_title">Збільшити</string>
+    <string name="menu_item_ic_zoom_out_title">Зменшити</string>
 </resources>
