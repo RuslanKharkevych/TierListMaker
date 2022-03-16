@@ -16,6 +16,14 @@
             app:menu="@menu/toolbar_tier_list"
             app:navigationIcon="@drawable/ic_arrow_back" />
 
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:indicatorColor="?attr/colorSecondaryVariant"
+            app:trackColor="?attr/colorSurface" />
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView

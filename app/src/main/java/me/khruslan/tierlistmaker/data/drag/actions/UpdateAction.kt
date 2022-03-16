@@ -4,19 +4,20 @@ import me.khruslan.tierlistmaker.data.drag.DragData
 import me.khruslan.tierlistmaker.data.drag.ImageDragData
 import me.khruslan.tierlistmaker.data.drag.TierDragData
 import me.khruslan.tierlistmaker.data.drag.TrashBinDragData
+import me.khruslan.tierlistmaker.data.tierlist.Image
 
 sealed class UpdateAction : DragAction() {
     companion object Factory {
         fun create(shadow: ImageDragData, target: DragData) = when (target) {
             is ImageDragData -> {
-                val data = target.copy(imageUrl = shadow.imageUrl)
+                val data = target.copy(image = shadow.image)
                 if (target.isBacklogImage) UpdateInBacklog(data) else UpdateInTier(data)
             }
             is TierDragData -> if (target.isBacklog) {
-                UpdateLastInBacklog(shadow.imageUrl)
+                UpdateLastInBacklog(shadow.image)
             } else {
                 UpdateLastInTier(
-                    imageUrl = shadow.imageUrl,
+                    image = shadow.image,
                     tierPosition = target.tierPosition
                 )
             }
@@ -33,5 +34,5 @@ sealed class UpdateAction : DragAction() {
 
 class UpdateInBacklog(val data: ImageDragData) : UpdateAction()
 class UpdateInTier(val data: ImageDragData) : UpdateAction()
-class UpdateLastInBacklog(val imageUrl: String?) : UpdateAction()
-class UpdateLastInTier(val imageUrl: String?, val tierPosition: Int) : UpdateAction()
+class UpdateLastInBacklog(val image: Image) : UpdateAction()
+class UpdateLastInTier(val image: Image, val tierPosition: Int) : UpdateAction()

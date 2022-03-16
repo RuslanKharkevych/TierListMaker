@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import me.khruslan.tierlistmaker.data.drag.TierDragData
+import me.khruslan.tierlistmaker.data.tierlist.Image
 import me.khruslan.tierlistmaker.data.tierlist.Tier
 import me.khruslan.tierlistmaker.databinding.ItemTierBinding
 import me.khruslan.tierlistmaker.ui.adapters.reorderable.Reorderable
@@ -49,32 +50,32 @@ class TierAdapter(
     }
 
     fun removeImage(tierPosition: Int, itemPosition: Int) {
-        tiers[tierPosition].imageUrls.removeAt(itemPosition)
+        tiers[tierPosition].images.removeAt(itemPosition)
         notifyItemChanged(tierPosition)
     }
 
     fun removeLastImage(tierPosition: Int) = removeImage(
         tierPosition = tierPosition,
-        itemPosition = tiers[tierPosition].imageUrls.lastIndex
+        itemPosition = tiers[tierPosition].images.lastIndex
     )
 
-    fun updateImage(imageUrl: String?, tierPosition: Int, itemPosition: Int) {
-        tiers[tierPosition].imageUrls[itemPosition] = imageUrl
+    fun updateImage(image: Image, tierPosition: Int, itemPosition: Int) {
+        tiers[tierPosition].images[itemPosition] = image
         notifyItemChanged(tierPosition)
     }
 
-    fun updateLastImage(imageUrl: String?, tierPosition: Int) = updateImage(
-        imageUrl = imageUrl,
+    fun updateLastImage(image: Image, tierPosition: Int) = updateImage(
+        image = image,
         tierPosition = tierPosition,
-        itemPosition = tiers[tierPosition].imageUrls.lastIndex
+        itemPosition = tiers[tierPosition].images.lastIndex
     )
 
     fun insertImage(
-        url: String? = null,
+        image: Image,
         tierPosition: Int,
-        itemPosition: Int = tiers[tierPosition].imageUrls.size
+        itemPosition: Int = tiers[tierPosition].images.size
     ) {
-        tiers[tierPosition].imageUrls.add(itemPosition, url)
+        tiers[tierPosition].images.add(itemPosition, image)
         notifyItemChanged(tierPosition)
     }
 

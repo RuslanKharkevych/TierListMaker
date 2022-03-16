@@ -5,5 +5,5 @@ import androidx.annotation.ColorInt
 data class Tier(
     val title: String,
     @ColorInt val color: Int,
-    val imageUrls: MutableList<String?>
+    val images: MutableList<Image>
 )

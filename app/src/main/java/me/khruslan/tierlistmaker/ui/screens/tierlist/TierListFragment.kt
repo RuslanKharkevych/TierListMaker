@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -13,20 +14,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import me.khruslan.tierlistmaker.R
+import me.khruslan.tierlistmaker.data.LoadingProgress
 import me.khruslan.tierlistmaker.data.drag.DragData
 import me.khruslan.tierlistmaker.data.drag.ImageDragData
 import me.khruslan.tierlistmaker.data.drag.TierDragData
 import me.khruslan.tierlistmaker.data.drag.actions.*
+import me.khruslan.tierlistmaker.data.tierlist.Image
 import me.khruslan.tierlistmaker.data.tierlist.Tier
 import me.khruslan.tierlistmaker.data.tierlist.TierList
 import me.khruslan.tierlistmaker.databinding.FragmentTierListBinding
+import me.khruslan.tierlistmaker.repository.file.FileManager
 import me.khruslan.tierlistmaker.ui.adapters.TierAdapter
 import me.khruslan.tierlistmaker.ui.adapters.TierListImageAdapter
 import me.khruslan.tierlistmaker.ui.adapters.reorderable.ReorderableCallback
 import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
-import me.khruslan.tierlistmaker.utils.RandomImageUrl
 import me.khruslan.tierlistmaker.utils.drag.TierListDragListener
-import me.khruslan.tierlistmaker.utils.extensions.displayWidthPixels
 import me.khruslan.tierlistmaker.viewmodels.TierListViewModel
 import timber.log.Timber
 
@@ -51,6 +53,11 @@ class TierListFragment : Fragment() {
         override fun onDragEnded() = viewModel.endDrag()
     }
 
+    private val imagePickerLauncher =
+        registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { imageUris ->
+            viewModel.saveImages(imageUris)
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -64,7 +71,7 @@ class TierListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initObservers()
-        initToolbar()
+        initView()
     }
 
     override fun onDestroyView() {
@@ -74,20 +81,41 @@ class TierListFragment : Fragment() {
 
     private fun initObservers() {
         viewModel.tierListLiveData.observe(viewLifecycleOwner, tierListObserver)
-        viewModel.zoomLiveData.observe(viewLifecycleOwner, zoomObserver)
+        viewModel.imageSizeLiveData.observe(viewLifecycleOwner, imageSizeObserver)
         viewModel.dragActionLiveData.observe(viewLifecycleOwner, dragActionObserver)
+        viewModel.newImagesLiveData.observe(viewLifecycleOwner, newImagesObserver)
+        viewModel.loadingProgressLiveData.observe(viewLifecycleOwner, loadingProgressObserver)
     }
 
     private val tierListObserver = Observer<TierList> { tierList ->
-        val imageSize = calculateImageSize(tierList.zoomValue)
+        val imageSize = viewModel.imageSize
         initTiersAdapter(tiers = tierList.tiers, imageSize = imageSize)
-        initBacklogAdapter(imageUrls = tierList.backlogImageUrls, imageSize = imageSize)
+        initBacklogAdapter(images = tierList.backlogImages, imageSize = imageSize)
     }
 
-    private val zoomObserver = Observer<Int> { zoomValue ->
-        val imageSize = calculateImageSize(zoomValue)
+    private val imageSizeObserver = Observer<Int> { imageSize ->
         tiersAdapter.updateImageSize(imageSize)
         backlogAdapter.updateImageSize(imageSize)
+    }
+
+    private val newImagesObserver = Observer<List<Image>> { images ->
+        backlogAdapter.insertImages(images)
+        binding.listBacklogImages.scrollToPosition(0)
+    }
+
+    private val loadingProgressObserver = Observer<LoadingProgress?> { progress ->
+        if (progress == null) {
+            binding.toolbar.subtitle = ""
+            binding.progressLoading.hide()
+        } else {
+            binding.toolbar.subtitle = getString(
+                R.string.toolbar_subtitle_loading,
+                progress.currentItem,
+                progress.totalItems
+            )
+            binding.progressLoading.show()
+            binding.progressLoading.progress = progress.percent
+        }
     }
 
     private val dragActionObserver = Observer<DragAction> { action ->
@@ -97,6 +125,11 @@ class TierListFragment : Fragment() {
             is RemoveAction -> handleRemoveAction(action)
             is UpdateAction -> handleUpdateAction(action)
         }
+    }
+
+    private fun initView() {
+        initToolbar()
+        binding.progressLoading.setVisibilityAfterHide(View.GONE)
     }
 
     private fun initTiersAdapter(tiers: List<Tier>, imageSize: Int) {
@@ -114,9 +147,9 @@ class TierListFragment : Fragment() {
         }
     }
 
-    private fun initBacklogAdapter(imageUrls: List<String>, imageSize: Int) {
+    private fun initBacklogAdapter(images: List<Image>, imageSize: Int) {
         backlogAdapter = TierListImageAdapter(
-            imageUrls = imageUrls,
+            images = images,
             dragListener = dragListener,
             tierPosition = BACKLOG_TIER_POSITION,
             imageSize = imageSize
@@ -155,11 +188,7 @@ class TierListFragment : Fragment() {
                         true
                     }
                     R.id.item_add_image -> {
-                        backlogAdapter.insertImage(
-                            url = RandomImageUrl.generate(),
-                            position = 0
-                        )
-                        binding.listBacklogImages.scrollToPosition(0)
+                        imagePickerLauncher.launch(FileManager.MIME_TYPE_IMAGE)
                         true
                     }
                     else -> super.onOptionsItemSelected(item)
@@ -168,36 +197,37 @@ class TierListFragment : Fragment() {
         }
     }
 
-    private fun calculateImageSize(zoomValue: Int) = displayWidthPixels / zoomValue
-
     private fun handleHighlightAction(action: HighlightAction) = when (action) {
         is HighlightInBacklog -> backlogAdapter.insertImage(
+            image = viewModel.targetImage,
             position = action.itemPosition
         )
         is HighlightInTier -> tiersAdapter.insertImage(
+            image = viewModel.targetImage,
             tierPosition = action.tierPosition,
             itemPosition = action.itemPosition
         )
         is HighlightLastInTier -> tiersAdapter.insertImage(
+            image = viewModel.targetImage,
             tierPosition = action.tierPosition
         )
-        is HighlightLastInBacklog -> backlogAdapter.insertImage()
+        is HighlightLastInBacklog -> backlogAdapter.insertImage(viewModel.targetImage)
         is HighlightTrashBin -> TODO("Highlight trash bin")
     }
 
     private fun handleInsertAction(action: InsertAction) = when (action) {
         is InsertToBacklog -> backlogAdapter.insertImage(
-            url = action.data.imageUrl,
+            image = action.data.image,
             position = action.data.itemPosition
         )
         is InsertToTier -> tiersAdapter.insertImage(
-            url = action.data.imageUrl,
+            image = action.data.image,
             tierPosition = action.data.tierPosition,
             itemPosition = action.data.itemPosition
         )
-        is InsertToEndOfBacklog -> backlogAdapter.insertImage(action.imageUrl)
+        is InsertToEndOfBacklog -> backlogAdapter.insertImage(action.image)
         is InsertToEndOfTier -> backlogAdapter.insertImage(
-            url = action.imageUrl,
+            image = action.image,
             position = action.tierPosition
         )
         is InsertToTrashBin -> TODO("Remove image")
@@ -218,17 +248,17 @@ class TierListFragment : Fragment() {
 
     private fun handleUpdateAction(action: UpdateAction) = when (action) {
         is UpdateInBacklog -> backlogAdapter.updateImage(
-            imageUrl = action.data.imageUrl,
+            image = action.data.image,
             position = action.data.itemPosition
         )
         is UpdateInTier -> tiersAdapter.updateImage(
-            imageUrl = action.data.imageUrl,
+            image = action.data.image,
             tierPosition = action.data.tierPosition,
             itemPosition = action.data.itemPosition
         )
-        is UpdateLastInBacklog -> backlogAdapter.updateLastImage(action.imageUrl)
+        is UpdateLastInBacklog -> backlogAdapter.updateLastImage(action.image)
         is UpdateLastInTier -> tiersAdapter.updateLastImage(
-            imageUrl = action.imageUrl,
+            image = action.image,
             tierPosition = action.tierPosition
         )
     }

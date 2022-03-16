@@ -4,8 +4,10 @@ import android.view.View
 import android.widget.ImageView
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
-import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.drag.ImageDragData
+import me.khruslan.tierlistmaker.data.tierlist.Image
+import me.khruslan.tierlistmaker.data.tierlist.ResourceImage
+import me.khruslan.tierlistmaker.data.tierlist.StorageImage
 import me.khruslan.tierlistmaker.utils.extensions.loadTierListImage
 import me.khruslan.tierlistmaker.utils.extensions.startDragCompat
 import timber.log.Timber
@@ -20,17 +22,18 @@ class TierListImageHolder(
         itemView.setOnDragListener(dragListener)
     }
 
-    fun bind(imageUrl: String?, imageSize: Int, tag: ImageDragData) {
-        imageView.tag = tag
-        imageView.updateLayoutParams {
-            height = imageSize
-            width = imageSize
-        }
+    fun bind(image: Image, imageSize: Int, tag: ImageDragData) {
+        with(imageView) {
+            this.tag = tag
+            updateLayoutParams {
+                height = imageSize
+                width = imageSize
+            }
 
-        if (imageUrl != null) {
-            imageView.loadTierListImage(imageUrl)
-        } else {
-            imageView.setImageResource(R.drawable.ic_crop_free)
+            when (image) {
+                is StorageImage -> loadTierListImage(image.filePath)
+                is ResourceImage -> setImageResource(image.resId)
+            }
         }
     }
 

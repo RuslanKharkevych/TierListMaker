@@ -3,8 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="me.khruslan.tierlistmaker">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:name=".TierListMakerApplication"
         android:allowBackup="true"

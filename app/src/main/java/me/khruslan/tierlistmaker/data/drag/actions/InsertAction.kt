@@ -4,6 +4,7 @@ import me.khruslan.tierlistmaker.data.drag.DragData
 import me.khruslan.tierlistmaker.data.drag.ImageDragData
 import me.khruslan.tierlistmaker.data.drag.TierDragData
 import me.khruslan.tierlistmaker.data.drag.TrashBinDragData
+import me.khruslan.tierlistmaker.data.tierlist.Image
 
 sealed class InsertAction : DragAction() {
     companion object Factory {
@@ -14,12 +15,12 @@ sealed class InsertAction : DragAction() {
         }
 
         fun create(shadow: ImageDragData, target: DragData) = when (target) {
-            is ImageDragData -> create(target.copy(imageUrl = shadow.imageUrl))
+            is ImageDragData -> create(target.copy(image = shadow.image))
             is TierDragData -> if (target.isBacklog) {
-                InsertToEndOfBacklog(shadow.imageUrl)
+                InsertToEndOfBacklog(shadow.image)
             } else {
                 InsertToEndOfTier(
-                    imageUrl = shadow.imageUrl,
+                    image = shadow.image,
                     tierPosition = target.tierPosition
                 )
             }
@@ -30,6 +31,6 @@ sealed class InsertAction : DragAction() {
 
 class InsertToBacklog(val data: ImageDragData) : InsertAction()
 class InsertToTier(val data: ImageDragData) : InsertAction()
-class InsertToEndOfBacklog(val imageUrl: String?) : InsertAction()
-class InsertToEndOfTier(val imageUrl: String?, val tierPosition: Int) : InsertAction()
+class InsertToEndOfBacklog(val image: Image) : InsertAction()
+class InsertToEndOfTier(val image: Image, val tierPosition: Int) : InsertAction()
 object InsertToTrashBin : InsertAction()

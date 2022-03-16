@@ -31,7 +31,7 @@ class TierHolder(
         with(binding.listImages) {
             minimumHeight = imageSize
             adapter = TierListImageAdapter(
-                imageUrls = tier.imageUrls,
+                images = tier.images,
                 tierPosition = adapterPosition,
                 imageSize = imageSize,
                 dragListener = dragListener
