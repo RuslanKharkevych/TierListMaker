@@ -23,8 +23,8 @@ class TierHolder(
         binding.listImages.tag = tag
 
         with(binding.textTier) {
-            text = tier.title
-            background = ColorDrawable(tier.color)
+            text = tier.style.title
+            background = ColorDrawable(tier.style.color)
             updateLayoutParams { width = imageSize }
         }
 

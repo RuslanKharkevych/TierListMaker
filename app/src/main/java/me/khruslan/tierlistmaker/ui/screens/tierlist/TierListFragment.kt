@@ -15,13 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.LoadingProgress
-import me.khruslan.tierlistmaker.data.drag.DragData
-import me.khruslan.tierlistmaker.data.drag.ImageDragData
-import me.khruslan.tierlistmaker.data.drag.TierDragData
-import me.khruslan.tierlistmaker.data.drag.actions.*
-import me.khruslan.tierlistmaker.data.tierlist.Image
-import me.khruslan.tierlistmaker.data.tierlist.Tier
-import me.khruslan.tierlistmaker.data.tierlist.TierList
+import me.khruslan.tierlistmaker.data.drag.*
+import me.khruslan.tierlistmaker.data.tierlist.*
 import me.khruslan.tierlistmaker.databinding.FragmentTierListBinding
 import me.khruslan.tierlistmaker.repository.file.FileManager
 import me.khruslan.tierlistmaker.ui.adapters.TierAdapter
@@ -53,6 +48,13 @@ class TierListFragment : Fragment() {
         override fun onDragEnded() = viewModel.endDrag()
     }
 
+    private val tiersDataObserver = object : RecyclerView.AdapterDataObserver() {
+        override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+            super.onItemRangeInserted(positionStart, itemCount)
+            binding.listTiers.smoothScrollToPosition(positionStart)
+        }
+    }
+
     private val imagePickerLauncher =
         registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { imageUris ->
             viewModel.saveImages(imageUris)
@@ -76,14 +78,14 @@ class TierListFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+
+        tiersAdapter.unregisterAdapterDataObserver(tiersDataObserver)
         _binding = null
     }
 
     private fun initObservers() {
         viewModel.tierListLiveData.observe(viewLifecycleOwner, tierListObserver)
-        viewModel.imageSizeLiveData.observe(viewLifecycleOwner, imageSizeObserver)
-        viewModel.dragActionLiveData.observe(viewLifecycleOwner, dragActionObserver)
-        viewModel.newImagesLiveData.observe(viewLifecycleOwner, newImagesObserver)
+        viewModel.tierListEventLiveData.observe(viewLifecycleOwner, tierListEventObserver)
         viewModel.loadingProgressLiveData.observe(viewLifecycleOwner, loadingProgressObserver)
     }
 
@@ -91,16 +93,6 @@ class TierListFragment : Fragment() {
         val imageSize = viewModel.imageSize
         initTiersAdapter(tiers = tierList.tiers, imageSize = imageSize)
         initBacklogAdapter(images = tierList.backlogImages, imageSize = imageSize)
-    }
-
-    private val imageSizeObserver = Observer<Int> { imageSize ->
-        tiersAdapter.updateImageSize(imageSize)
-        backlogAdapter.updateImageSize(imageSize)
-    }
-
-    private val newImagesObserver = Observer<List<Image>> { images ->
-        backlogAdapter.insertImages(images)
-        binding.listBacklogImages.scrollToPosition(0)
     }
 
     private val loadingProgressObserver = Observer<LoadingProgress?> { progress ->
@@ -118,12 +110,22 @@ class TierListFragment : Fragment() {
         }
     }
 
-    private val dragActionObserver = Observer<DragAction> { action ->
-        when (action) {
-            is HighlightAction -> handleHighlightAction(action)
-            is InsertAction -> handleInsertAction(action)
-            is RemoveAction -> handleRemoveAction(action)
-            is UpdateAction -> handleUpdateAction(action)
+    private val tierListEventObserver = Observer<TierListEvent> { event ->
+        when (event) {
+            is BacklogDataChanged -> backlogAdapter.notifyDataSetChanged()
+            is BacklogImagesAdded -> {
+                backlogAdapter.notifyDataSetChanged()
+                binding.listBacklogImages.smoothScrollToPosition(0)
+            }
+            is BacklogItemChanged -> backlogAdapter.notifyItemChanged(event.itemPosition)
+            is BacklogItemInserted -> backlogAdapter.notifyItemInserted(event.itemPosition)
+            is TierListChanged -> tiersAdapter.notifyDataSetChanged()
+            is TierChanged -> tiersAdapter.notifyItemChanged(event.tierPosition)
+            is TierInserted -> tiersAdapter.notifyItemInserted(event.tierPosition)
+            is ImageSizeUpdated -> {
+                tiersAdapter.updateImageSize(event.imageSize)
+                backlogAdapter.updateImageSize(event.imageSize)
+            }
         }
     }
 
@@ -132,12 +134,13 @@ class TierListFragment : Fragment() {
         binding.progressLoading.setVisibilityAfterHide(View.GONE)
     }
 
-    private fun initTiersAdapter(tiers: List<Tier>, imageSize: Int) {
+    private fun initTiersAdapter(tiers: MutableList<Tier>, imageSize: Int) {
         tiersAdapter = TierAdapter(
             tiers = tiers,
             dragListener = dragListener,
             imageSize = imageSize
         )
+        tiersAdapter.registerAdapterDataObserver(tiersDataObserver)
 
         with(binding.listTiers) {
             itemAnimator = null
@@ -147,7 +150,7 @@ class TierListFragment : Fragment() {
         }
     }
 
-    private fun initBacklogAdapter(images: List<Image>, imageSize: Int) {
+    private fun initBacklogAdapter(images: MutableList<Image>, imageSize: Int) {
         backlogAdapter = TierListImageAdapter(
             images = images,
             dragListener = dragListener,
@@ -179,87 +182,15 @@ class TierListFragment : Fragment() {
 
             setOnMenuItemClickListener { item ->
                 when (item.itemId) {
-                    R.id.item_zoom_in -> {
-                        viewModel.zoomIn()
-                        true
-                    }
-                    R.id.item_zoom_out -> {
-                        viewModel.zoomOut()
-                        true
-                    }
-                    R.id.item_add_image -> {
-                        imagePickerLauncher.launch(FileManager.MIME_TYPE_IMAGE)
-                        true
-                    }
+                    R.id.item_zoom_in -> { viewModel.zoomIn(); true }
+                    R.id.item_zoom_out -> { viewModel.zoomOut(); true }
+                    R.id.item_add_image -> { launchImagePicker(); true }
+                    R.id.item_add_tier -> { viewModel.addNewTier(); true }
                     else -> super.onOptionsItemSelected(item)
                 }
             }
         }
     }
 
-    private fun handleHighlightAction(action: HighlightAction) = when (action) {
-        is HighlightInBacklog -> backlogAdapter.insertImage(
-            image = viewModel.targetImage,
-            position = action.itemPosition
-        )
-        is HighlightInTier -> tiersAdapter.insertImage(
-            image = viewModel.targetImage,
-            tierPosition = action.tierPosition,
-            itemPosition = action.itemPosition
-        )
-        is HighlightLastInTier -> tiersAdapter.insertImage(
-            image = viewModel.targetImage,
-            tierPosition = action.tierPosition
-        )
-        is HighlightLastInBacklog -> backlogAdapter.insertImage(viewModel.targetImage)
-        is HighlightTrashBin -> TODO("Highlight trash bin")
-    }
-
-    private fun handleInsertAction(action: InsertAction) = when (action) {
-        is InsertToBacklog -> backlogAdapter.insertImage(
-            image = action.data.image,
-            position = action.data.itemPosition
-        )
-        is InsertToTier -> tiersAdapter.insertImage(
-            image = action.data.image,
-            tierPosition = action.data.tierPosition,
-            itemPosition = action.data.itemPosition
-        )
-        is InsertToEndOfBacklog -> backlogAdapter.insertImage(action.image)
-        is InsertToEndOfTier -> backlogAdapter.insertImage(
-            image = action.image,
-            position = action.tierPosition
-        )
-        is InsertToTrashBin -> TODO("Remove image")
-    }
-
-    private fun handleRemoveAction(action: RemoveAction) = when (action) {
-        is RemoveFromBacklog -> backlogAdapter.removeImage(action.itemPosition)
-        is RemoveFromTier -> tiersAdapter.removeImage(
-            tierPosition = action.tierPosition,
-            itemPosition = action.itemPosition
-        )
-        is RemoveLastFromBacklog -> backlogAdapter.removeLastImage()
-        is RemoveLastFromTier -> tiersAdapter.removeLastImage(
-            tierPosition = action.tierPosition
-        )
-        is UnhighlightTrashBin -> TODO("Unhighlight trash bin")
-    }
-
-    private fun handleUpdateAction(action: UpdateAction) = when (action) {
-        is UpdateInBacklog -> backlogAdapter.updateImage(
-            image = action.data.image,
-            position = action.data.itemPosition
-        )
-        is UpdateInTier -> tiersAdapter.updateImage(
-            image = action.data.image,
-            tierPosition = action.data.tierPosition,
-            itemPosition = action.data.itemPosition
-        )
-        is UpdateLastInBacklog -> backlogAdapter.updateLastImage(action.image)
-        is UpdateLastInTier -> tiersAdapter.updateLastImage(
-            image = action.image,
-            tierPosition = action.tierPosition
-        )
-    }
+    private fun launchImagePicker() = imagePickerLauncher.launch(FileManager.MIME_TYPE_IMAGE)
 }

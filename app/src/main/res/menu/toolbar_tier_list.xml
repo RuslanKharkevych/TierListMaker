@@ -34,6 +34,13 @@
                 app:iconTint="?attr/colorOnSurface"
                 app:showAsAction="never" />
 
+            <item
+                android:id="@+id/item_add_tier"
+                android:icon="@drawable/ic_add_box"
+                android:title="@string/menu_item_add_new_tier_title"
+                app:iconTint="?attr/colorOnSurface"
+                app:showAsAction="never" />
+
         </menu>
 
     </item>

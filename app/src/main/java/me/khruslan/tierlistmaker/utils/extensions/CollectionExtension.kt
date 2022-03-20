@@ -5,3 +5,7 @@ fun <T> MutableList<T>.swap(a: Int, b: Int) {
     this[a] = this[b]
     this[b] = temp
 }
+
+fun <T> MutableList<T>.updateLast(value: T) {
+    this[lastIndex] = value
+}
