@@ -2,8 +2,10 @@ package me.khruslan.tierlistmaker.ui.screens.home
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
 import me.khruslan.tierlistmaker.databinding.ActivityHomeBinding
 
+@AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
 
@@ -20,8 +22,6 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupView() {
-        binding.toolbar.setNavigationOnClickListener {
-            // TODO: Handle menu button click
-        }
+        binding.toolbar.setNavigationOnClickListener {}
     }
 }

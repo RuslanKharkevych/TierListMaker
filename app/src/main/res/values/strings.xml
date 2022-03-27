@@ -3,6 +3,7 @@
 
     <!-- DashboardFragment -->
     <string name="btn_add_new_list_desc">Add new list</string>
+    <string name="tier_list_default_title">New list</string>
 
     <!-- TierListFragment -->
     <string name="menu_item_add_new_image_title">Add new image</string>

@@ -11,8 +11,8 @@
         tools:layout="@layout/fragment_tier_list">
 
         <argument
-            android:name="title"
-            app:argType="string" />
+            android:name="tierList"
+            app:argType="me.khruslan.tierlistmaker.data.tierlist.TierList" />
 
     </fragment>
 

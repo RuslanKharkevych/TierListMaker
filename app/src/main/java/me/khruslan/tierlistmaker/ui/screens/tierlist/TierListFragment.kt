@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,17 +16,20 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.LoadingProgress
-import me.khruslan.tierlistmaker.data.drag.*
+import me.khruslan.tierlistmaker.data.drag.DragData
+import me.khruslan.tierlistmaker.data.drag.ImageDragData
+import me.khruslan.tierlistmaker.data.drag.TierDragData
 import me.khruslan.tierlistmaker.data.tierlist.*
 import me.khruslan.tierlistmaker.databinding.FragmentTierListBinding
+import me.khruslan.tierlistmaker.navigation.contracts.TierListResultContract
 import me.khruslan.tierlistmaker.repository.file.FileManager
 import me.khruslan.tierlistmaker.ui.adapters.TierAdapter
 import me.khruslan.tierlistmaker.ui.adapters.TierListImageAdapter
 import me.khruslan.tierlistmaker.ui.adapters.reorderable.ReorderableCallback
 import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
 import me.khruslan.tierlistmaker.utils.drag.TierListDragListener
+import me.khruslan.tierlistmaker.utils.extensions.setResultDataAndFinish
 import me.khruslan.tierlistmaker.viewmodels.TierListViewModel
-import timber.log.Timber
 
 @AndroidEntryPoint
 class TierListFragment : Fragment() {
@@ -60,6 +64,11 @@ class TierListFragment : Fragment() {
             viewModel.saveImages(imageUris)
         }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        addOnBackPressedCallback()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -76,6 +85,14 @@ class TierListFragment : Fragment() {
         initView()
     }
 
+    override fun onPause() {
+        super.onPause()
+
+        if (!requireActivity().isFinishing) {
+            viewModel.enqueueSaveTierListWork()
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
 
@@ -84,15 +101,14 @@ class TierListFragment : Fragment() {
     }
 
     private fun initObservers() {
-        viewModel.tierListLiveData.observe(viewLifecycleOwner, tierListObserver)
         viewModel.tierListEventLiveData.observe(viewLifecycleOwner, tierListEventObserver)
         viewModel.loadingProgressLiveData.observe(viewLifecycleOwner, loadingProgressObserver)
     }
 
-    private val tierListObserver = Observer<TierList> { tierList ->
+    private fun initTierList() {
         val imageSize = viewModel.imageSize
-        initTiersAdapter(tiers = tierList.tiers, imageSize = imageSize)
-        initBacklogAdapter(images = tierList.backlogImages, imageSize = imageSize)
+        initTiersAdapter(tiers = args.tierList.tiers, imageSize = imageSize)
+        initBacklogAdapter(images = args.tierList.backlogImages, imageSize = imageSize)
     }
 
     private val loadingProgressObserver = Observer<LoadingProgress?> { progress ->
@@ -131,6 +147,7 @@ class TierListFragment : Fragment() {
 
     private fun initView() {
         initToolbar()
+        initTierList()
         binding.progressLoading.setVisibilityAfterHide(View.GONE)
     }
 
@@ -172,12 +189,10 @@ class TierListFragment : Fragment() {
 
     private fun initToolbar() {
         with(binding.toolbar) {
-            title = args.title
+            title = args.tierList.title
 
             setNavigationOnClickListener {
-                activity?.finish() ?: run {
-                    Timber.e("setNavigationOnClickListener: activity is null")
-                }
+                setTierListResultAndFinishActivity()
             }
 
             setOnMenuItemClickListener { item ->
@@ -193,4 +208,15 @@ class TierListFragment : Fragment() {
     }
 
     private fun launchImagePicker() = imagePickerLauncher.launch(FileManager.MIME_TYPE_IMAGE)
+
+    private fun addOnBackPressedCallback() {
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            setTierListResultAndFinishActivity()
+        }
+    }
+
+    private fun setTierListResultAndFinishActivity() {
+        val data = TierListResultContract.newData(viewModel.tierList)
+        requireActivity().setResultDataAndFinish(data)
+    }
 }

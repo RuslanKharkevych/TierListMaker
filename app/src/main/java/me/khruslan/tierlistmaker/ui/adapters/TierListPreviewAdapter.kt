@@ -7,15 +7,18 @@ import me.khruslan.tierlistmaker.data.tierlist.TierListPreview
 import me.khruslan.tierlistmaker.databinding.ItemTierListPreviewBinding
 import me.khruslan.tierlistmaker.ui.holders.TierListPreviewHolder
 
-class TierListPreviewAdapter(private val tierListPreviews: List<TierListPreview>) :
-    RecyclerView.Adapter<TierListPreviewHolder>() {
+class TierListPreviewAdapter(
+    private val tierListPreviews: List<TierListPreview>,
+    private val onClick: (position: Int) -> Unit
+) : RecyclerView.Adapter<TierListPreviewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = TierListPreviewHolder(
-        ItemTierListPreviewBinding.inflate(
+        binding = ItemTierListPreviewBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
-        )
+        ),
+        onClick = { position -> onClick(position) }
     )
 
     override fun onBindViewHolder(holder: TierListPreviewHolder, position: Int) {

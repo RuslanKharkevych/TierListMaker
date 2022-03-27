@@ -4,8 +4,8 @@ import android.os.Build
 import android.view.View
 import me.khruslan.tierlistmaker.data.drag.ImageDragData
 
-fun View.hide() {
-    visibility = View.GONE
+fun View.invisible() {
+    visibility = View.INVISIBLE
 }
 
 fun View.startDragCompat(data: ImageDragData): Boolean {

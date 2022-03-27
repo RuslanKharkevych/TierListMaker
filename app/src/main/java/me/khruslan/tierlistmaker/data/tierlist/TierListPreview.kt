@@ -1,6 +1,11 @@
 package me.khruslan.tierlistmaker.data.tierlist
 
-class TierListPreview(
+data class TierListPreview(
+    val id: String,
     val title: String,
-    val imageUrls: List<String>
-)
+    val images: List<Image>
+) {
+    companion object {
+        const val IMAGES_COUNT = 3
+    }
+}
