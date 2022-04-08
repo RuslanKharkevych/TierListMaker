@@ -6,9 +6,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import me.khruslan.tierlistmaker.repository.dispatchers.DispatcherProvidable
+import me.khruslan.tierlistmaker.repository.dispatchers.DispatcherProvider
 import me.khruslan.tierlistmaker.repository.file.FileManager
+import me.khruslan.tierlistmaker.repository.file.FileManagerImpl
 import me.khruslan.tierlistmaker.repository.file.ImageCompressor
+import me.khruslan.tierlistmaker.repository.file.ImageCompressorImpl
 import javax.inject.Singleton
 
 @Module
@@ -18,14 +20,14 @@ object FileManagerModule {
     @Singleton
     fun provideImageCompressor(
         @ApplicationContext context: Context,
-        dispatcherProvider: DispatcherProvidable
-    ) = ImageCompressor(context, dispatcherProvider)
+        dispatcherProvider: DispatcherProvider
+    ): ImageCompressor = ImageCompressorImpl(context, dispatcherProvider)
 
     @Provides
     @Singleton
     fun provideFileManager(
         @ApplicationContext context: Context,
         imageCompressor: ImageCompressor,
-        dispatcherProvider: DispatcherProvidable
-    ) = FileManager(context, imageCompressor, dispatcherProvider)
+        dispatcherProvider: DispatcherProvider
+    ): FileManager = FileManagerImpl(context, imageCompressor, dispatcherProvider)
 }

@@ -24,7 +24,7 @@ import me.khruslan.tierlistmaker.data.drag.TierDragData
 import me.khruslan.tierlistmaker.data.tierlist.*
 import me.khruslan.tierlistmaker.databinding.FragmentTierListBinding
 import me.khruslan.tierlistmaker.navigation.TierListResultContract
-import me.khruslan.tierlistmaker.repository.file.FileManager
+import me.khruslan.tierlistmaker.repository.file.FileManagerImpl
 import me.khruslan.tierlistmaker.ui.adapters.TierAdapter
 import me.khruslan.tierlistmaker.ui.adapters.TierListImageAdapter
 import me.khruslan.tierlistmaker.ui.adapters.reorderable.ReorderableCallback
@@ -266,7 +266,7 @@ class TierListFragment : Fragment() {
      * Launches [imagePickerLauncher] to get images from the device.
      */
     private fun launchImagePicker() {
-        imagePickerLauncher.launch(FileManager.MIME_TYPE_IMAGE)
+        imagePickerLauncher.launch(FileManagerImpl.MIME_TYPE_IMAGE)
     }
 
     /**

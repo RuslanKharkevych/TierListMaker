@@ -163,7 +163,7 @@ class TierListViewModel @Inject constructor(
     fun saveImages(imageUris: List<Uri>) {
         viewModelScope.launch {
             val images = imageUris.mapIndexed { index, uri ->
-                val file = fileManager.createFileFromUri(uri)
+                val file = fileManager.createImageFileFromUri(uri)
                 createImage(file).also {
                     _loadingProgressLiveData.postValue(
                         LoadingProgress(currentItem = index + 1, totalItems = imageUris.size)

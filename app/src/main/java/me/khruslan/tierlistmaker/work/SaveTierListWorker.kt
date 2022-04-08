@@ -10,7 +10,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import me.khruslan.tierlistmaker.data.tierlist.TierList
 import me.khruslan.tierlistmaker.repository.db.PaperRepository
-import me.khruslan.tierlistmaker.repository.dispatchers.DispatcherProvidable
+import me.khruslan.tierlistmaker.repository.dispatchers.DispatcherProvider
 
 /**
  * [CoroutineWorker] implementation that saves tier list in local storage.
@@ -27,7 +27,7 @@ import me.khruslan.tierlistmaker.repository.dispatchers.DispatcherProvidable
 class SaveTierListWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
-    private val dispatcherProvider: DispatcherProvidable,
+    private val dispatcherProvider: DispatcherProvider,
     private val argsProvider: SaveTierListArgsProvider,
     private val paperRepository: PaperRepository
 ) : CoroutineWorker(appContext, workerParams) {

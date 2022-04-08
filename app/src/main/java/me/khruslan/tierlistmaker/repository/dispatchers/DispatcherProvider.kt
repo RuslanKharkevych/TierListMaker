@@ -1,13 +1,30 @@
 package me.khruslan.tierlistmaker.repository.dispatchers
 
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
 /**
- * [DispatcherProvidable] implementation.
+ * Contract for providing [CoroutineDispatcher].
  */
-class DispatcherProvider : DispatcherProvidable {
-    override val default get() = Dispatchers.Default
-    override val io get() = Dispatchers.IO
-    override val main get() = Dispatchers.Main
-    override val unconfined get() = Dispatchers.Unconfined
+interface DispatcherProvider {
+
+    /**
+     * Wrapper for [Dispatchers.Default].
+     */
+    val default: CoroutineDispatcher
+
+    /**
+     * Wrapper for [Dispatchers.IO].
+     */
+    val io: CoroutineDispatcher
+
+    /**
+     * Wrapper for [Dispatchers.Main].
+     */
+    val main: CoroutineDispatcher
+
+    /**
+     * Wrapper for [Dispatchers.Unconfined]
+     */
+    val unconfined: CoroutineDispatcher
 }

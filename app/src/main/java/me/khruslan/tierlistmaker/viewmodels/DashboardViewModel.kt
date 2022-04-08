@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import me.khruslan.tierlistmaker.data.tierlist.Tier
 import me.khruslan.tierlistmaker.data.tierlist.TierList
 import me.khruslan.tierlistmaker.repository.db.PaperRepository
-import me.khruslan.tierlistmaker.repository.dispatchers.DispatcherProvidable
+import me.khruslan.tierlistmaker.repository.dispatchers.DispatcherProvider
 import me.khruslan.tierlistmaker.ui.screens.home.DashboardFragment
 import java.util.*
 import javax.inject.Inject
@@ -24,7 +24,7 @@ import javax.inject.Inject
 class DashboardViewModel @Inject constructor(
     application: Application,
     private val paperRepository: PaperRepository,
-    private val dispatcherProvider: DispatcherProvidable
+    private val dispatcherProvider: DispatcherProvider
 ) : AndroidViewModel(application) {
 
     /**
