@@ -11,6 +11,13 @@ import me.khruslan.tierlistmaker.ui.adapters.reorderable.Reorderable
 import me.khruslan.tierlistmaker.ui.holders.TierHolder
 import me.khruslan.tierlistmaker.utils.extensions.swap
 
+/**
+ * [RecyclerView.Adapter] implementation used for managing tiers in the tier list.
+ *
+ * @property tiers list of tiers.
+ * @property dragListener listener of tier list drag events.
+ * @property imageSize initial image size.
+ */
 class TierAdapter(
     private val tiers: MutableList<Tier>,
     private val dragListener: View.OnDragListener,
@@ -45,6 +52,11 @@ class TierAdapter(
         notifyItemRangeChanged(0, tiers.size, Unit)
     }
 
+    /**
+     * Updates the image size and notifies that data set was changed.
+     *
+     * @param imageSize new image size.
+     */
     fun updateImageSize(imageSize: Int) {
         this.imageSize = imageSize
         notifyDataSetChanged()

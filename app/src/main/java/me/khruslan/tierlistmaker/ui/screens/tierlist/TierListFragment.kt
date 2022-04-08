@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -21,7 +23,7 @@ import me.khruslan.tierlistmaker.data.drag.ImageDragData
 import me.khruslan.tierlistmaker.data.drag.TierDragData
 import me.khruslan.tierlistmaker.data.tierlist.*
 import me.khruslan.tierlistmaker.databinding.FragmentTierListBinding
-import me.khruslan.tierlistmaker.navigation.contracts.TierListResultContract
+import me.khruslan.tierlistmaker.navigation.TierListResultContract
 import me.khruslan.tierlistmaker.repository.file.FileManager
 import me.khruslan.tierlistmaker.ui.adapters.TierAdapter
 import me.khruslan.tierlistmaker.ui.adapters.TierListImageAdapter
@@ -31,15 +33,30 @@ import me.khruslan.tierlistmaker.utils.drag.TierListDragListener
 import me.khruslan.tierlistmaker.utils.extensions.setResultDataAndFinish
 import me.khruslan.tierlistmaker.viewmodels.TierListViewModel
 
+/**
+ * [Fragment] that represents a tier list.
+ * It is a start destination for the tier list navigation graph.
+*/
 @AndroidEntryPoint
 class TierListFragment : Fragment() {
     private var _binding: FragmentTierListBinding? = null
     private val binding get() = _binding!!
     private val args: TierListFragmentArgs by navArgs()
     private val viewModel: TierListViewModel by viewModels()
+
+    /**
+     * [RecyclerView.Adapter] for the tiers.
+     */
     private lateinit var tiersAdapter: TierAdapter
+
+    /**
+     * [RecyclerView.Adapter] for the backlog images.
+     */
     private lateinit var backlogAdapter: TierListImageAdapter
 
+    /**
+     * Listener of the tier list drag events.
+     */
     private val dragListener = object : TierListDragListener() {
         override fun onDragStarted(dragData: ImageDragData) = viewModel.startDrag(dragData)
 
@@ -52,6 +69,10 @@ class TierListFragment : Fragment() {
         override fun onDragEnded() = viewModel.endDrag()
     }
 
+    /**
+     * Observer of the item range inserted event for the [tiersAdapter].
+     * Performs to scroll to the inserted tier.
+     */
     private val tiersDataObserver = object : RecyclerView.AdapterDataObserver() {
         override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
             super.onItemRangeInserted(positionStart, itemCount)
@@ -59,6 +80,10 @@ class TierListFragment : Fragment() {
         }
     }
 
+    /**
+     * [ActivityResultLauncher] of the [ActivityResultContracts.GetMultipleContents].
+     * Allows user to pick one or more images.
+     */
     private val imagePickerLauncher =
         registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { imageUris ->
             viewModel.saveImages(imageUris)
@@ -100,17 +125,26 @@ class TierListFragment : Fragment() {
         _binding = null
     }
 
+    /**
+     * Initializes all [LiveData] observers.
+     */
     private fun initObservers() {
         viewModel.tierListEventLiveData.observe(viewLifecycleOwner, tierListEventObserver)
         viewModel.loadingProgressLiveData.observe(viewLifecycleOwner, loadingProgressObserver)
     }
 
+    /**
+     * Initializes [tiersAdapter] and [backlogAdapter].
+     */
     private fun initTierList() {
         val imageSize = viewModel.imageSize
         initTiersAdapter(tiers = args.tierList.tiers, imageSize = imageSize)
         initBacklogAdapter(images = args.tierList.backlogImages, imageSize = imageSize)
     }
 
+    /**
+     * [Observer] for the loading progress. Shows progress of adding new images
+     */
     private val loadingProgressObserver = Observer<LoadingProgress?> { progress ->
         if (progress == null) {
             binding.toolbar.subtitle = ""
@@ -126,6 +160,9 @@ class TierListFragment : Fragment() {
         }
     }
 
+    /**
+     * [Observer] of the tier list events. Notifies adapters about the changes in the tier list
+     */
     private val tierListEventObserver = Observer<TierListEvent> { event ->
         when (event) {
             is BacklogDataChanged -> backlogAdapter.notifyDataSetChanged()
@@ -145,12 +182,21 @@ class TierListFragment : Fragment() {
         }
     }
 
+    /**
+     * Initializes toolbar, adapters and loading indicator.
+     */
     private fun initView() {
         initToolbar()
         initTierList()
         binding.progressLoading.setVisibilityAfterHide(View.GONE)
     }
 
+    /**
+     * Initializes [tiersAdapter] and attaches it to the [RecyclerView].
+     *
+     * @param tiers list of the tiers.
+     * @param imageSize size of the image.
+     */
     private fun initTiersAdapter(tiers: MutableList<Tier>, imageSize: Int) {
         tiersAdapter = TierAdapter(
             tiers = tiers,
@@ -167,6 +213,12 @@ class TierListFragment : Fragment() {
         }
     }
 
+    /**
+     * Initializes [backlogAdapter] and attaches it to the [RecyclerView].
+     *
+     * @param images list of backlog images.
+     * @param imageSize size of the image.
+     */
     private fun initBacklogAdapter(images: MutableList<Image>, imageSize: Int) {
         backlogAdapter = TierListImageAdapter(
             images = images,
@@ -187,6 +239,9 @@ class TierListFragment : Fragment() {
         }
     }
 
+    /**
+     * Initializes toolbar title, navigation action and menu click listeners.
+     */
     private fun initToolbar() {
         with(binding.toolbar) {
             title = args.tierList.title
@@ -207,14 +262,25 @@ class TierListFragment : Fragment() {
         }
     }
 
-    private fun launchImagePicker() = imagePickerLauncher.launch(FileManager.MIME_TYPE_IMAGE)
+    /**
+     * Launches [imagePickerLauncher] to get images from the device.
+     */
+    private fun launchImagePicker() {
+        imagePickerLauncher.launch(FileManager.MIME_TYPE_IMAGE)
+    }
 
+    /**
+     * Overrides default back pressed listener. Sets activity result and finishes it.
+     */
     private fun addOnBackPressedCallback() {
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             setTierListResultAndFinishActivity()
         }
     }
 
+    /**
+     * Sets [TierList] as activity result and finishes it.
+     */
     private fun setTierListResultAndFinishActivity() {
         val data = TierListResultContract.newData(viewModel.tierList)
         requireActivity().setResultDataAndFinish(data)

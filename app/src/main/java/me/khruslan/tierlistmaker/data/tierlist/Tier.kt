@@ -6,6 +6,13 @@ import androidx.annotation.ColorInt
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
+/**
+ * Data that represents single tier in a tier list.
+ *
+ * @property id unique identifier of the tier.
+ * @property images list of tier images.
+ * @property style style of the tier.
+ */
 @Parcelize
 data class Tier(
     val id: String = UUID.randomUUID().toString(),
@@ -13,6 +20,12 @@ data class Tier(
     var style: TierStyle = TierStyle()
 ) : Parcelable
 
+/**
+ * Data that represents the style of the tier list.
+ *
+ * @property title title of the tier list.
+ * @property color color of the tier list.
+ */
 @Parcelize
 data class TierStyle(
     val title: String = "",

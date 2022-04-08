@@ -1,4 +1,4 @@
-package me.khruslan.tierlistmaker.navigation.contracts
+package me.khruslan.tierlistmaker.navigation
 
 import android.app.Activity
 import android.content.Context
@@ -8,12 +8,28 @@ import me.khruslan.tierlistmaker.data.tierlist.TierList
 import me.khruslan.tierlistmaker.ui.screens.tierlist.TierListActivity
 import timber.log.Timber
 
+/**
+ * [ActivityResultContract] implementation used for getting [TierList] result from an activity.
+ */
 class TierListResultContract : ActivityResultContract<TierList, TierList?>() {
+
+    /**
+     * Companion object used for creating data [Intent].
+     */
     companion object {
         private const val EXTRA_TIER_LIST = "me.khruslan.tierlistmaker.TIER_LIST"
 
-        fun newData(tierList: TierList) = Intent().apply {
-            putExtra(EXTRA_TIER_LIST, tierList)
+        /**
+         * Creates data [Intent]. This data should be passed to [Activity.setResult]
+         * function in the activity that was started with [TierListResultContract].
+         *
+         * @param tierList tier list passed as activity result.
+         * @return created data [Intent].
+         */
+        fun newData(tierList: TierList): Intent {
+            return Intent().apply {
+                putExtra(EXTRA_TIER_LIST, tierList)
+            }
         }
     }
 

@@ -2,6 +2,9 @@ package me.khruslan.tierlistmaker.repository.dispatchers
 
 import kotlinx.coroutines.Dispatchers
 
+/**
+ * [DispatcherProvidable] implementation.
+ */
 class DispatcherProvider : DispatcherProvidable {
     override val default get() = Dispatchers.Default
     override val io get() = Dispatchers.IO

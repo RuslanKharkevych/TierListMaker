@@ -1,6 +1,8 @@
 package me.khruslan.tierlistmaker.repository.tierlist.tier
 
 import android.graphics.Color
+import me.khruslan.tierlistmaker.data.tierlist.Tier
+import me.khruslan.tierlistmaker.data.tierlist.TierList
 
 private const val DEFAULT_SATURATION = 1f
 private const val DEFAULT_VALUE = 1f
@@ -13,10 +15,23 @@ private const val HUE_CYAN = 180f
 private const val HUE_BLUE = 240f
 private const val HUE_MAGENTA = 300f
 
+/**
+ * Provider of color for [Tier] in the [TierList].
+ */
 class TierColorProvider {
+
+    /**
+     * Pre-defined [Tier] colors.
+     */
     private val defaultHueValues =
         listOf(HUE_RED, HUE_GREEN, HUE_YELLOW, HUE_ORANGE, HUE_CYAN, HUE_BLUE, HUE_MAGENTA)
 
+    /**
+     * Generates the list of colors for the tiers. Ordered from first tier to last.
+     *
+     * @param size number of colors in the list.
+     * @return list of generated colors.
+     */
     fun getColors(size: Int): List<Int> {
         val hueValues = mutableListOf<Float>()
         for (index in 0 until size) {
@@ -28,6 +43,15 @@ class TierColorProvider {
         return hueValues.sorted().map { colorFromHue(it) }
     }
 
+    /**
+     * Calculates the hue value for the new color based on the list of hue values.
+     * The algorithm seeks for the biggest gap between hue values.
+     * If there are several equal gaps, the first one will be chosen.
+     * After that the value from the middle of the gap is picked.
+     *
+     * @param hueValues list of hue values of already generated colors.
+     * @return hue value of the new color.
+     */
     private fun calculateNewHue(hueValues: List<Float>): Float {
         var maxGap = 0f
         var hue = 0f
@@ -50,6 +74,13 @@ class TierColorProvider {
         return hue
     }
 
+    /**
+     * Creates color from HSV. Only hue value is provided to this function.
+     * For saturation and value [DEFAULT_SATURATION] and [DEFAULT_VALUE] values are used.
+     *
+     * @param hue hue of the HSV color.
+     * @return created color as [Int].
+     */
     private fun colorFromHue(hue: Float) =
         Color.HSVToColor(floatArrayOf(hue, DEFAULT_SATURATION, DEFAULT_VALUE))
 }

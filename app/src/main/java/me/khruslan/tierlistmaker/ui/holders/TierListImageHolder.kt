@@ -12,6 +12,12 @@ import me.khruslan.tierlistmaker.utils.extensions.loadTierListImage
 import me.khruslan.tierlistmaker.utils.extensions.startDragCompat
 import timber.log.Timber
 
+/**
+ * [RecyclerView.ViewHolder] implementation for the tier list image.
+ *
+ * @property imageView view of the image.
+ * @param dragListener listener of tier list drag events.
+ */
 class TierListImageHolder(
     private val imageView: ImageView,
     dragListener: View.OnDragListener
@@ -22,6 +28,13 @@ class TierListImageHolder(
         itemView.setOnDragListener(dragListener)
     }
 
+    /**
+     * Binds image data to the [itemView].
+     *
+     * @param image image model.
+     * @param imageSize size of the image.
+     * @param tag drag data of the image.
+     */
     fun bind(image: Image, imageSize: Int, tag: ImageDragData) {
         with(imageView) {
             this.tag = tag
@@ -55,6 +68,13 @@ class TierListImageHolder(
         return true
     }
 
+    /**
+     * Logs the result of the [View.startDragCompat] function invocation.
+     *
+     * @param view view on which the long click was performed.
+     * @param data tag of the view.
+     * @param result whether the drag was started successfully.
+     */
     private fun logStartDragResult(
         view: View,
         data: ImageDragData,

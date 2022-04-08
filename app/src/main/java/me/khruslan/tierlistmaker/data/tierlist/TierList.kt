@@ -3,6 +3,17 @@ package me.khruslan.tierlistmaker.data.tierlist
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
+private const val PREVIEW_IMAGES_COUNT = 3
+
+/**
+ * Data that represents the tier list.
+ *
+ * @property id unique identifier of the tier list.
+ * @property title title of the tier list.
+ * @property zoomValue max number of images (including tier view) displayed in a row.
+ * @property tiers list of tiers.
+ * @property backlogImages list of backlog images.
+ */
 @Parcelize
 data class TierList(
     val id: String,
@@ -11,11 +22,31 @@ data class TierList(
     var tiers: MutableList<Tier>,
     val backlogImages: MutableList<Image>
 ) : Parcelable {
-    val preview get() = TierListPreview(id, title, previewImages)
 
+    /**
+     * [Preview] of this [TierList].
+     */
+    val preview get() = Preview(id, title, previewImages)
+
+    /**
+     * List of preview images for this [TierList] with max size of [PREVIEW_IMAGES_COUNT]
+     */
     private val previewImages
         get() = tiers
             .flatMap { it.images }
             .plus(backlogImages)
-            .take(TierListPreview.IMAGES_COUNT)
+            .take(PREVIEW_IMAGES_COUNT)
+
+    /**
+     * Data that represents preview of the [TierList].
+     *
+     * @property id unique identifier of the tier list.
+     * @property title title of the tier list.
+     * @property images list of preview images.
+     */
+    data class Preview(
+        val id: String,
+        val title: String,
+        val images: List<Image>
+    )
 }
