@@ -42,7 +42,16 @@ class DashboardViewModel @Inject constructor(
      * and emits [tierListPreviews] to the observers.
      */
     val tierListPreviewsLiveData = liveData {
-        tierLists = paperRepository.getTierLists()
+        // TODO: Set loading state
+        tierLists = paperRepository.getTierLists()?.also { list ->
+            if (list.isEmpty()) {
+                // TODO: Set empty state if needed
+            }
+        } ?: run {
+            // TODO: Set error state
+            mutableListOf()
+        }
+
         tierListPreviews = tierLists.map { it.preview }.toMutableList()
         emit(tierListPreviews)
     }
@@ -116,7 +125,10 @@ class DashboardViewModel @Inject constructor(
      */
     private fun saveTierList(tierList: TierList) {
         viewModelScope.launch {
-            paperRepository.saveTierList(tierList)
+            val result = paperRepository.saveTierList(tierList)
+            if (!result) {
+                // TODO: Show error snackBar
+            }
         }
     }
 

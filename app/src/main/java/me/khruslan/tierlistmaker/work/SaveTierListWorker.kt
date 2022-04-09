@@ -33,9 +33,9 @@ class SaveTierListWorker @AssistedInject constructor(
 ) : CoroutineWorker(appContext, workerParams) {
     override suspend fun doWork(): Result {
         val tierList = argsProvider.tierList ?: return Result.failure()
-        withContext(dispatcherProvider.io) {
+        val result = withContext(dispatcherProvider.io) {
             paperRepository.saveTierList(tierList)
         }
-        return Result.success()
+        return if (result) Result.success() else Result.failure()
     }
 }
