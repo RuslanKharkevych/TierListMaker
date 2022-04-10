@@ -10,9 +10,11 @@
         <entry key="app/src/main/res/drawable-night/ic_image.xml" value="0.164" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.164" />
         <entry key="app/src/main/res/drawable/ic_add.xml" value="0.164" />
+        <entry key="app/src/main/res/drawable/ic_add_photo_alternate.xml" value="0.1865" />
         <entry key="app/src/main/res/drawable/ic_arrow_back.xml" value="0.153125" />
         <entry key="app/src/main/res/drawable/ic_broken_image.xml" value="0.164" />
         <entry key="app/src/main/res/drawable/ic_crop_free.xml" value="0.164" />
+        <entry key="app/src/main/res/drawable/ic_empty_box.xml" value="0.1865" />
         <entry key="app/src/main/res/drawable/ic_image.xml" value="0.164" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.164" />
         <entry key="app/src/main/res/drawable/ic_menu.xml" value="0.28020833333333334" />
@@ -23,8 +25,14 @@
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.2640625" />
         <entry key="app/src/main/res/layout/activity_tier_list.xml" value="0.2640625" />
         <entry key="app/src/main/res/layout/content_tier_list_item.xml" value="0.2640625" />
-        <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.2640625" />
+        <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_tier_list.xml" value="0.296398891966759" />
+        <entry key="app/src/main/res/layout/group_dashboard_empty.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/group_dashboard_error.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/group_dashboard_loading.xml" value="0.1994219653179191" />
+        <entry key="app/src/main/res/layout/group_empty_dashboard.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/group_empty_tier_list_previews.xml" value="0.32083333333333336" />
+        <entry key="app/src/main/res/layout/group_loading_tier_list_previews.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_tier.xml" value="0.2640625" />
         <entry key="app/src/main/res/layout/item_tier_list.xml" value="0.2640625" />
         <entry key="app/src/main/res/layout/item_tier_list_image.xml" value="0.2640625" />

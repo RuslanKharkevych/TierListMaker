@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Margins -->
+    <!-- Margin -->
+    <dimen name="margin_8">8dp</dimen>
     <dimen name="margin_16">16dp</dimen>
+    <dimen name="margin_32">32dp</dimen>
 
     <!-- Text -->
     <dimen name="text_16">16sp</dimen>
+    <dimen name="text_20">20sp</dimen>
     <dimen name="text_24">24sp</dimen>
 
-    <!-- CardView -->
+    <!-- Card -->
     <dimen name="card_corner_radius">10dp</dimen>
     <dimen name="card_elevation">5dp</dimen>
+
+    <!-- Image -->
+    <dimen name="img_error_size">56dp</dimen>
+
+    <!-- Bias -->
+    <item name="bias_info_content" format="float" type="dimen">0.4</item>
 </resources>

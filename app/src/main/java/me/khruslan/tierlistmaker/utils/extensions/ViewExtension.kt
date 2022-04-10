@@ -5,14 +5,6 @@ import android.view.View
 import me.khruslan.tierlistmaker.data.drag.ImageDragData
 
 /**
- * Sets visibility of the [View] to [View.INVISIBLE].
- * @receiver Any [View].
- */
-fun View.invisible() {
-    visibility = View.INVISIBLE
-}
-
-/**
  * A helper function to starts drag that supports all version.
  *
  * Starting from [Build.VERSION_CODES.N] the shadow will be fully opaque.

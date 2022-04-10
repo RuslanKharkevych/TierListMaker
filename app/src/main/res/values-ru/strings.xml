@@ -7,4 +7,9 @@
     <string name="toolbar_subtitle_loading">Загрузка (%1$d/%2$d)</string>
     <string name="menu_item_add_new_tier_title">Добавить новый ранг</string>
     <string name="tier_list_default_title">Новый список</string>
+    <string name="empty_previews_message">Сдесь пока ничего нет. Создайте свой первый список!</string>
+    <string name="load_previews_error_message">Ой! Что-то пошло не так…\nНе удалось загрузить вашу коллекцию</string>
+    <string name="btn_report_issue"><u>Сообщить об ошибке</u></string>
+    <string name="save_previews_error_message">Ой! Не удалось сохранить список :(</string>
+    <string name="btn_refresh">Обновить</string>
 </resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/img_empty_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_32"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_empty_box"
+        app:layout_constraintBottom_toTopOf="@id/text_empty_list_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="@dimen/bias_info_content"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:tint="?attr/colorSecondary" />
+
+    <TextView
+        android:id="@+id/text_empty_list_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_32"
+        android:text="@string/empty_previews_message"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_20"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img_empty_box" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

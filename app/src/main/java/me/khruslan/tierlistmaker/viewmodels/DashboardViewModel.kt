@@ -2,9 +2,11 @@ package me.khruslan.tierlistmaker.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.hadilq.liveevent.LiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
+import me.khruslan.tierlistmaker.data.state.ListState
 import me.khruslan.tierlistmaker.data.tierlist.Tier
 import me.khruslan.tierlistmaker.data.tierlist.TierList
 import me.khruslan.tierlistmaker.repository.db.PaperRepository
@@ -37,37 +39,41 @@ class DashboardViewModel @Inject constructor(
      */
     private lateinit var tierListPreviews: MutableList<TierList.Preview>
 
-    /**
-     * [LiveData] that loads [tierLists] from [paperRepository]
-     * and emits [tierListPreviews] to the observers.
-     */
-    val tierListPreviewsLiveData = liveData {
-        // TODO: Set loading state
-        tierLists = paperRepository.getTierLists()?.also { list ->
-            if (list.isEmpty()) {
-                // TODO: Set empty state if needed
-            }
-        } ?: run {
-            // TODO: Set error state
-            mutableListOf()
-        }
-
-        tierListPreviews = tierLists.map { it.preview }.toMutableList()
-        emit(tierListPreviews)
+    init {
+        loadTierListPreviews()
     }
 
-    private val _addPreviewLiveData by lazy { MutableLiveData<Int>() }
-    private val _updatePreviewsLiveData by lazy { MutableLiveData<Unit>() }
+    private val _addPreviewEvent by lazy { LiveEvent<Int>() }
+    private val _updatePreviewsEvent by lazy { LiveEvent<Int>() }
+    private val _listStateLiveData by lazy { MutableLiveData<ListState>() }
+    private val _saveErrorEvent by lazy { LiveEvent<Unit>() }
+    private val _tierListPreviewsLiveData = MutableLiveData<MutableList<TierList.Preview>>()
 
     /**
      * [LiveData] that notifies observers about the position of the newly added preview.
      */
-    val addPreviewLiveData: LiveData<Int> get() = _addPreviewLiveData
+    val addPreviewEvent: LiveData<Int> get() = _addPreviewEvent
 
     /**
-     * [LiveData] that notifies observers that previews were updated.
+     * [LiveData] that notifies observers about the position of the updated preview.
      */
-    val updatePreviewsLiveData: LiveData<Unit> get() = _updatePreviewsLiveData
+    val updatePreviewsEvent: LiveData<Int> get() = _updatePreviewsEvent
+
+    /**
+     * [LiveData] that notifies observer about the state of the list of previews.
+     */
+    val listStateLiveData: LiveData<ListState> get() = _listStateLiveData
+
+    /**
+     * [LiveData] that notifies observer that saving of the tier list to the local storage failed.
+     */
+    val saveErrorEvent: LiveData<Unit> get() = _saveErrorEvent
+
+    /**
+     * [LiveData] that notifies observers about the tier list previews.
+     */
+    val tierListPreviewsLiveData: LiveData<MutableList<TierList.Preview>>
+        get() = _tierListPreviewsLiveData
 
     /**
      * Creates an empty [TierList].
@@ -109,11 +115,12 @@ class DashboardViewModel @Inject constructor(
             if (index == -1) {
                 tierLists += tierList
                 tierListPreviews += tierList.preview
-                _addPreviewLiveData.postValue(tierListPreviews.lastIndex)
+                _listStateLiveData.postValue(ListState.Filled)
+                _addPreviewEvent.postValue(tierListPreviews.lastIndex)
             } else {
                 tierLists[index] = tierList
                 tierListPreviews[index] = tierList.preview
-                _updatePreviewsLiveData.postValue(Unit)
+                _updatePreviewsEvent.postValue(index)
             }
         }
     }
@@ -126,9 +133,7 @@ class DashboardViewModel @Inject constructor(
     private fun saveTierList(tierList: TierList) {
         viewModelScope.launch {
             val result = paperRepository.saveTierList(tierList)
-            if (!result) {
-                // TODO: Show error snackBar
-            }
+            if (!result) _saveErrorEvent.value = Unit
         }
     }
 
@@ -140,5 +145,42 @@ class DashboardViewModel @Inject constructor(
      */
     fun getTierListByPosition(position: Int): TierList {
         return tierLists[position]
+    }
+
+    /**
+     * Loads tier lists from [paperRepository] and returns the result.
+     *
+     * Updates [listStateLiveData] after loading is complete.
+     *
+     * @return loaded tier lists or empty list in case of error.
+     */
+    private suspend fun loadTierLists(): MutableList<TierList> {
+        return paperRepository.getTierLists()?.also { list ->
+            _listStateLiveData.value = if (list.isEmpty()) ListState.Empty else ListState.Filled
+        } ?: run {
+            _listStateLiveData.value = ListState.Failed
+            mutableListOf()
+        }
+    }
+
+    /**
+     * Loads [tierLists] from [paperRepository], maps [tierListPreviews] and updates
+     * [tierListPreviewsLiveData].
+     */
+    private fun loadTierListPreviews() {
+        viewModelScope.launch {
+            tierLists = loadTierLists()
+            tierListPreviews = tierLists.map { it.preview }.toMutableList()
+            _tierListPreviewsLiveData.value = tierListPreviews
+        }
+    }
+
+    /**
+     * Re-loads tier list previews (see [loadTierListPreviews]) and updates [listStateLiveData]
+     * accordingly.
+     */
+    fun refreshPreviews() {
+        _listStateLiveData.value = ListState.Loading
+        loadTierListPreviews()
     }
 }

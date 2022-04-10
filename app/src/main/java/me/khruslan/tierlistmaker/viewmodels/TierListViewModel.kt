@@ -5,10 +5,11 @@ import android.net.Uri
 import androidx.lifecycle.*
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
+import com.hadilq.liveevent.LiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import me.khruslan.tierlistmaker.R
-import me.khruslan.tierlistmaker.data.LoadingProgress
+import me.khruslan.tierlistmaker.data.state.LoadingProgress
 import me.khruslan.tierlistmaker.data.drag.DragData
 import me.khruslan.tierlistmaker.data.drag.ImageDragData
 import me.khruslan.tierlistmaker.data.drag.effects.*
@@ -54,13 +55,13 @@ class TierListViewModel @Inject constructor(
      */
     val tierList: TierList = savedStateHandle.require(KEY_TIER_LIST)
 
-    private val _tierListEventLiveData by lazy { MutableLiveData<TierListEvent>() }
+    private val _tierListEvent by lazy { LiveEvent<TierListEvent>() }
     private val _loadingProgressLiveData by lazy { MutableLiveData<LoadingProgress?>() }
 
     /**
      * [LiveData] that notifies observers about the tier list events.
      */
-    val tierListEventLiveData: LiveData<TierListEvent> get() = _tierListEventLiveData
+    val tierListEvent: LiveData<TierListEvent> get() = _tierListEvent
 
     /**
      * [LiveData] that notifies observers about the progress of loading image files.
@@ -91,7 +92,7 @@ class TierListViewModel @Inject constructor(
      */
     fun zoomIn() {
         tierList.zoomValue--
-        _tierListEventLiveData.value = ImageSizeUpdated(imageSize)
+        _tierListEvent.value = ImageSizeUpdated(imageSize)
     }
 
     /**
@@ -99,7 +100,7 @@ class TierListViewModel @Inject constructor(
      */
     fun zoomOut() {
         tierList.zoomValue++
-        _tierListEventLiveData.value = ImageSizeUpdated(imageSize)
+        _tierListEvent.value = ImageSizeUpdated(imageSize)
     }
 
     /**
@@ -172,7 +173,7 @@ class TierListViewModel @Inject constructor(
             }
 
             tierList.backlogImages.addAll(0, images)
-            _tierListEventLiveData.value = BacklogImagesAdded
+            _tierListEvent.value = BacklogImagesAdded
             _loadingProgressLiveData.postValue(null)
         }
     }
@@ -198,7 +199,7 @@ class TierListViewModel @Inject constructor(
      */
     fun addNewTier() {
         tierList.tiers += Tier()
-        _tierListEventLiveData.value = TierInserted(tierList.tiers.size)
+        _tierListEvent.value = TierInserted(tierList.tiers.size)
         updateTierStyles()
     }
 
@@ -211,7 +212,7 @@ class TierListViewModel @Inject constructor(
             tierList.tiers.forEachIndexed { index, tier ->
                 tier.style = styles[index]
             }
-            _tierListEventLiveData.postValue(TierListChanged)
+            _tierListEvent.postValue(TierListChanged)
         }
     }
 
@@ -221,7 +222,7 @@ class TierListViewModel @Inject constructor(
      * @param effect drag effect to process.
      */
     private fun processDragEffect(effect: DragEffect) {
-        _tierListEventLiveData.value = tierListProcessor.processDragEffect(effect)
+        _tierListEvent.value = tierListProcessor.processDragEffect(effect)
     }
 
     /**

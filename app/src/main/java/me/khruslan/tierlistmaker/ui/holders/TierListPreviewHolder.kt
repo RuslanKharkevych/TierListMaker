@@ -2,12 +2,12 @@ package me.khruslan.tierlistmaker.ui.holders
 
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.tierlist.Image
 import me.khruslan.tierlistmaker.data.tierlist.ResourceImage
 import me.khruslan.tierlistmaker.data.tierlist.StorageImage
 import me.khruslan.tierlistmaker.data.tierlist.TierList
 import me.khruslan.tierlistmaker.databinding.ItemTierListPreviewBinding
-import me.khruslan.tierlistmaker.utils.extensions.invisible
 import me.khruslan.tierlistmaker.utils.extensions.loadTierListImage
 
 /**
@@ -49,7 +49,7 @@ class TierListPreviewHolder(
      */
     private fun ImageView.bindImage(image: Image?) {
         when(image) {
-            null -> invisible()
+            null -> setImageResource(R.drawable.ic_image)
             is StorageImage -> loadTierListImage(image.filePath)
             is ResourceImage -> setImageResource(image.resId)
         }

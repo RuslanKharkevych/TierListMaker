@@ -1,4 +1,4 @@
-package me.khruslan.tierlistmaker.data
+package me.khruslan.tierlistmaker.data.state
 
 /**
  * UI state for the determinate progress of loading items.

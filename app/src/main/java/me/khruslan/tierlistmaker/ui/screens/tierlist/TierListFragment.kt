@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import me.khruslan.tierlistmaker.R
-import me.khruslan.tierlistmaker.data.LoadingProgress
+import me.khruslan.tierlistmaker.data.state.LoadingProgress
 import me.khruslan.tierlistmaker.data.drag.DragData
 import me.khruslan.tierlistmaker.data.drag.ImageDragData
 import me.khruslan.tierlistmaker.data.drag.TierDragData
@@ -113,6 +113,7 @@ class TierListFragment : Fragment() {
     override fun onPause() {
         super.onPause()
 
+        // Save tier list when app goes to background
         if (!requireActivity().isFinishing) {
             viewModel.enqueueSaveTierListWork()
         }
@@ -129,7 +130,7 @@ class TierListFragment : Fragment() {
      * Initializes all [LiveData] observers.
      */
     private fun initObservers() {
-        viewModel.tierListEventLiveData.observe(viewLifecycleOwner, tierListEventObserver)
+        viewModel.tierListEvent.observe(viewLifecycleOwner, tierListEventObserver)
         viewModel.loadingProgressLiveData.observe(viewLifecycleOwner, loadingProgressObserver)
     }
 

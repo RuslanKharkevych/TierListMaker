@@ -4,6 +4,11 @@
     <!-- DashboardFragment -->
     <string name="btn_add_new_list_desc">Add new list</string>
     <string name="tier_list_default_title">New list</string>
+    <string name="empty_previews_message">There\'s nothing yet. Create your first tier list!</string>
+    <string name="load_previews_error_message">Oops! Something went wrong…\nUnable to load your collection</string>
+    <string name="btn_report_issue"><u>Report the issue</u></string>
+    <string name="save_previews_error_message">Oops! Unable to save tier list :(</string>
+    <string name="btn_refresh">Refresh</string>
 
     <!-- TierListFragment -->
     <string name="menu_item_add_new_image_title">Add new image</string>
