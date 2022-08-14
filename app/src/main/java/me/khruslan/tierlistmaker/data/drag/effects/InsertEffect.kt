@@ -4,7 +4,7 @@ import me.khruslan.tierlistmaker.data.drag.DragData
 import me.khruslan.tierlistmaker.data.drag.ImageDragData
 import me.khruslan.tierlistmaker.data.drag.TierDragData
 import me.khruslan.tierlistmaker.data.drag.TrashBinDragData
-import me.khruslan.tierlistmaker.data.tierlist.Image
+import me.khruslan.tierlistmaker.data.tierlist.image.Image
 
 /**
  * [DragEffect] implementation for insert effects.

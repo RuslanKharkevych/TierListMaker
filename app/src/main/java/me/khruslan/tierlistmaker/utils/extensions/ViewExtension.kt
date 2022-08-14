@@ -5,7 +5,7 @@ import android.view.View
 import me.khruslan.tierlistmaker.data.drag.ImageDragData
 
 /**
- * A helper function to starts drag that supports all version.
+ * A helper function to start drag that supports all version.
  *
  * Starting from [Build.VERSION_CODES.N] the shadow will be fully opaque.
  *

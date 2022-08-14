@@ -1,0 +1,21 @@
+[
+  {
+    "type": "HighlightInTier",
+    "itemPosition": 0,
+    "tierPosition": 4
+  },
+  {
+    "type": "HighlightTrashBin"
+  },
+  {
+    "type": "HighlightLastInBacklog"
+  },
+  {
+    "type": "HighlightInBacklog",
+    "itemPosition": 0
+  },
+  {
+    "type": "HighlightLastInTier",
+    "tierPosition": 0
+  }
+]

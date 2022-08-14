@@ -1,0 +1,20 @@
+[
+  {
+    "type": "TierChanged",
+    "tierPosition": 4
+  },
+  {
+    "type": "TierChanged",
+    "tierPosition": 1
+  },
+  {
+    "type": "BacklogDataChanged"
+  },
+  {
+    "type": "BacklogDataChanged"
+  },
+  {
+    "type": "TrashBinHighlightUpdated",
+    "highlighted": false
+  }
+]

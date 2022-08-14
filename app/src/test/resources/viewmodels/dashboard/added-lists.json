@@ -1,0 +1,390 @@
+[
+  {
+    "id": "bc99b383-5158-4fc2-864f-bb3cc0f6e9ed",
+    "title": "Scariest movies",
+    "zoomValue": 9,
+    "tiers": [
+      {
+        "id": "35857ada-7416-4c76-ae56-a6d5dccb2f72",
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "9cca5a30-2f38-4578-8850-d10f34ece7cd",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/3916089672037.jpeg"
+          },
+          {
+            "type": "StorageImage",
+            "id": "d5cb9747-c11e-410f-9c35-52a7fbc05a3c",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/5642315929653.jpeg"
+          }
+        ],
+        "style": {
+          "title": "S",
+          "color": 16711680
+        }
+      },
+      {
+        "id": "d2f814b8-51fa-4ac2-9948-e94d52dde57b",
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "a8ff778c-fdf5-4cc6-a22d-dd0132b8dbcc",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/5521294304761.jpeg"
+          }
+        ],
+        "style": {
+          "title": "A",
+          "color": 16744448
+        }
+      },
+      {
+        "id": "c546e890-b1af-49f4-b081-3e47e30f5d58",
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "1c91d564-3beb-469a-b02f-469e7d8a3cc2",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/9675047831490.jpeg"
+          },
+          {
+            "type": "StorageImage",
+            "id": "1d4cd96a-6794-44ff-9317-9c46daf4e7f8",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/6409550377371.jpeg"
+          }
+        ],
+        "style": {
+          "title": "B",
+          "color": 16776960
+        }
+      },
+      {
+        "id": "71ed5848-adfa-4d75-a13b-7f4da5e50cab",
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "cd86d4fa-f584-45c1-903e-700d31fec3b9",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/6928662360702.jpeg"
+          },
+          {
+            "type": "StorageImage",
+            "id": "9b2caf88-b264-4f56-b40c-88eeb5282da1",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/8879279616452.jpeg"
+          },
+          {
+            "type": "StorageImage",
+            "id": "26ed0808-0aca-4250-8cbf-204ac21de3de",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/5413159900906.jpeg"
+          }
+        ],
+        "style": {
+          "title": "C",
+          "color": 65280
+        }
+      },
+      {
+        "id": "e5091fd5-bee2-4291-953e-4db0ea3a9533",
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "0a815529-239d-4104-ab25-25b588a95dee",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/2211280011947.jpeg"
+          }
+        ],
+        "style": {
+          "title": "D",
+          "color": 65535
+        }
+      },
+      {
+        "id": "7b323912-4f8a-409b-b3be-d1b6fc707b20",
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "1fc15676-1a91-4c49-9181-0c6fd1a2ada5",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/1373291893875.jpeg"
+          }
+        ],
+        "style": {
+          "title": "E",
+          "color": 255
+        }
+      },
+      {
+        "id": "3ba557a4-b366-4cb8-ace8-8c11d22abe8d",
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "18611951-2d50-4fb1-a125-394af124d98c",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/0244146999495.jpeg"
+          },
+          {
+            "type": "StorageImage",
+            "id": "53d16274-aa13-407e-959c-4cac577cbe3c",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/7349995458672.jpeg"
+          },
+          {
+            "type": "StorageImage",
+            "id": "c1df5ef4-a3e4-4ee2-9361-2b2b448c0cda",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/3996002523473.jpeg"
+          }
+        ],
+        "style": {
+          "title": "F",
+          "color": 16711935
+        }
+      }
+    ],
+    "backlogImages": [
+      {
+        "type": "StorageImage",
+        "id": "f272a5fe-1dc5-4f89-a6c0-ac6dc4dacbb9",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/0360969645806.jpeg"
+      },
+      {
+        "type": "StorageImage",
+        "id": "1471ea48-1ce2-44a2-bcc0-5c1535ff1ac3",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/8115586069681.jpeg"
+      },
+      {
+        "type": "StorageImage",
+        "id": "feb0050c-8eb1-4495-b27a-42528cd97d6f",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/4957041857995.jpeg"
+      },
+      {
+        "type": "StorageImage",
+        "id": "2a3a2054-f1a0-4a4c-b176-09d5d863de09",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/7467745409907.jpeg"
+      }
+    ]
+  },
+  {
+    "id": "c9c9bf3c-c347-4940-b103-6c0262fb1889",
+    "title": "Best goalkeepers in football",
+    "zoomValue": 3,
+    "tiers": [],
+    "backlogImages": []
+  },
+  {
+    "id": "42f2403e-3c03-47c1-8fc9-56547f0bf321",
+    "title": "Favorite musical instruments",
+    "zoomValue": 4,
+    "tiers": [
+      {
+        "id": "7d877d35-72da-446d-8f16-531378af5ac5",
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "3ac46ce9-6c26-41fc-ac97-60b4b8252f25",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/7304249715263.jpeg"
+          }
+        ],
+        "style": {
+          "title": "S",
+          "color": 16711680
+        }
+      },
+      {
+        "id": "ab9f083e-08ef-462f-9dd3-d71f9ad39273",
+        "style": {
+          "title": "A",
+          "color": 16744448
+        },
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "9f23ab24-5eea-4ece-8bb4-88ea39504323",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/5682646585417.jpeg"
+          },
+          {
+            "type": "StorageImage",
+            "id": "68756e02-dce6-405d-83ef-431a8a1fbc8e",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/6896525065216.jpeg"
+          },
+          {
+            "type": "StorageImage",
+            "id": "58142afa-57b9-4403-9940-0b4672fd0102",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/1179649841870.jpeg"
+          }
+        ]
+      },
+      {
+        "id": "8c691b51-fb41-43b0-97f4-147129fee10b",
+        "style": {
+          "title": "B",
+          "color": 16776960
+        },
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "834b6778-9a25-429f-8234-dcf91f59addc",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/5332275614196.jpeg"
+          },
+          {
+            "type": "StorageImage",
+            "id": "40b1b67c-df5a-468f-a128-5dd7f0fc8128",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/3397300271883.jpeg"
+          },
+          {
+            "type": "StorageImage",
+            "id": "76ca5115-80b7-4cbf-a0ea-855eee2f2019",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/5510399703411.jpeg"
+          }
+        ]
+      },
+      {
+        "id": "265414e3-1c85-442c-b18a-73bc1704a7de",
+        "style": {
+          "title": "C",
+          "color": 65280
+        },
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "db01aad3-8344-4f17-b67d-c66020911d08",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/9634708525697.jpeg"
+          },
+          {
+            "type": "StorageImage",
+            "id": "33f9997f-be5b-4c79-b1ef-a7858b1aae61",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/2862953136924.jpeg"
+          }
+        ]
+      },
+      {
+        "id": "53e7f4e9-e0e5-49fd-a78f-2393cdd321f4",
+        "style": {
+          "title": "D",
+          "color": 65535
+        },
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "e84e761a-7239-40b4-b00c-9646ca59dbf9",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/8147367983543.jpeg"
+          }
+        ]
+      }
+    ],
+    "backlogImages": [
+      {
+        "type": "StorageImage",
+        "id": "6143fac3-4942-419a-a0f0-af8fa991b4a9",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/5155836129476.jpeg"
+      }
+    ]
+  },
+  {
+    "id": "ac7497aa-6876-42b2-898c-49da467e133e",
+    "title": "Best cities for living",
+    "zoomValue": 7,
+    "tiers": [
+      {
+        "id": "b3d72050-f454-402e-982c-4060be7d0ef0",
+        "images": [],
+        "style": {
+          "title": "S",
+          "color": 16711680
+        }
+      },
+      {
+        "id": "d94c5ca2-cfed-4a2a-8d8e-b525f01a72de",
+        "style": {
+          "title": "A",
+          "color": 16744448
+        },
+        "images": []
+      }
+    ],
+    "backlogImages": [
+      {
+        "type": "StorageImage",
+        "id": "b675abe2-479c-4d25-928e-f0f5caf92a3b",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/9640879372140.jpeg"
+      },
+      {
+        "type": "StorageImage",
+        "id": "8f85d26f-42a6-4a0e-8013-c6c596b5613a",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/5902362049333.jpeg"
+      },
+      {
+        "type": "StorageImage",
+        "id": "8f85d26f-42a6-4a0e-8013-c6c596b5613a",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/2266717445024.jpeg"
+      },
+      {
+        "type": "StorageImage",
+        "id": "8f85d26f-42a6-4a0e-8013-c6c596b5613a",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/7013492298879.jpeg"
+      }
+    ]
+  },
+  {
+    "id": "4d1aac0e-6fb8-4b0c-b20a-567f771b19d3",
+    "title": "Vegetables",
+    "zoomValue": 5,
+    "tiers": [
+      {
+        "id": "3749b95e-5247-4951-8107-90f9635eec08",
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "56e5b038-239c-4a16-b1a4-e481d84883fd",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/9501083543910.jpeg"
+          },
+          {
+            "type": "StorageImage",
+            "id": "6d405635-231d-4cbf-9ada-4f0dd002a12f",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/0349159671783.jpeg"
+          }
+        ],
+        "style": {
+          "title": "S",
+          "color": 16711680
+        }
+      },
+      {
+        "id": "7d73de7e-43ff-4f9f-9329-920e1a7a82ee",
+        "style": {
+          "title": "A",
+          "color": 16744448
+        },
+        "images": []
+      },
+      {
+        "id": "c6af6dff-41e7-464b-abb8-20a0a2600e5f",
+        "style": {
+          "title": "B",
+          "color": 16776960
+        },
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "08e31218-7d38-4de0-818c-d11a0d9d7a45",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/6508190676068.jpeg"
+          },
+          {
+            "type": "StorageImage",
+            "id": "a53fc68f-dc0a-42f3-99f9-0d99ab8fc29e",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/1809942691829.jpeg"
+          },
+          {
+            "type": "StorageImage",
+            "id": "b09afe08-abcb-4ce8-83cc-0b4f8879a96e",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/3905670425421.jpeg"
+          }
+        ]
+      }
+    ],
+    "backlogImages": [
+      {
+        "type": "StorageImage",
+        "id": "0cb3bab2-138f-4ff2-802e-e0fdfe74f5d7",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/3215373120181.jpeg"
+      },
+      {
+        "type": "StorageImage",
+        "id": "c3a3e018-8651-46ca-9eb5-2fe4f5fd22f5",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/3325147150718.jpeg"
+      }
+    ]
+  }
+]

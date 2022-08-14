@@ -1,7 +1,9 @@
 package me.khruslan.tierlistmaker.viewmodels
 
-import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.hadilq.liveevent.LiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -20,14 +22,12 @@ import javax.inject.Inject
  *
  * @property paperRepository local storage repository.
  * @property dispatcherProvider provider of [CoroutineDispatcher] for running suspend functions.
- * @param application [Application] instance.
  */
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
-    application: Application,
     private val paperRepository: PaperRepository,
     private val dispatcherProvider: DispatcherProvider
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
     /**
      * List of [TierList] objects that are used for passing to the next screen.
@@ -44,7 +44,7 @@ class DashboardViewModel @Inject constructor(
     }
 
     private val _addPreviewEvent by lazy { LiveEvent<Int>() }
-    private val _updatePreviewsEvent by lazy { LiveEvent<Int>() }
+    private val _updatePreviewEvent by lazy { LiveEvent<Int>() }
     private val _listStateLiveData by lazy { MutableLiveData<ListState>() }
     private val _saveErrorEvent by lazy { LiveEvent<Unit>() }
     private val _tierListPreviewsLiveData = MutableLiveData<MutableList<TierList.Preview>>()
@@ -57,7 +57,7 @@ class DashboardViewModel @Inject constructor(
     /**
      * [LiveData] that notifies observers about the position of the updated preview.
      */
-    val updatePreviewsEvent: LiveData<Int> get() = _updatePreviewsEvent
+    val updatePreviewEvent: LiveData<Int> get() = _updatePreviewEvent
 
     /**
      * [LiveData] that notifies observer about the state of the list of previews.
@@ -120,7 +120,7 @@ class DashboardViewModel @Inject constructor(
             } else {
                 tierLists[index] = tierList
                 tierListPreviews[index] = tierList.preview
-                _updatePreviewsEvent.postValue(index)
+                _updatePreviewEvent.postValue(index)
             }
         }
     }

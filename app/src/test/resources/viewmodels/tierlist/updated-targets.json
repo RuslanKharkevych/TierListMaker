@@ -1,0 +1,42 @@
+[
+  {
+    "type": "ImageDragData",
+    "image": {
+      "type": "StorageImage",
+      "id": "47df0c54-8560-4e45-ad1d-9d6cb23b247e",
+      "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/4650233423879.jpeg"
+    },
+    "itemPosition": 1,
+    "tierPosition": 4
+  },
+  {
+    "type": "TierDragData",
+    "tierPosition": 1
+  },
+  {
+    "type": "ImageDragData",
+    "image": {
+      "type": "StorageImage",
+      "id": "59b5e3bc-a89b-48fc-b96e-d43ccdc92223",
+      "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/0517968161857.jpeg"
+    },
+    "itemPosition": 3,
+    "tierPosition": -1,
+    "isBacklogImage": true
+  },
+  {
+    "type": "TierDragData",
+    "tierPosition": -1,
+    "isBacklog": true
+  },
+  {
+    "type": "ImageDragData",
+    "image": {
+      "type": "StorageImage",
+      "id": "d309ccf0-4f87-45b5-8763-ec6efdf232e3",
+      "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/5116006585471.jpeg"
+    },
+    "itemPosition": 0,
+    "tierPosition": 1
+  }
+]

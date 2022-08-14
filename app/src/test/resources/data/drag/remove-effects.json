@@ -1,0 +1,21 @@
+[
+  {
+    "type": "RemoveFromTier",
+    "itemPosition": 1,
+    "tierPosition": 4
+  },
+  {
+    "type": "RemoveLastFromTier",
+    "tierPosition": 1
+  },
+  {
+    "type": "RemoveFromBacklog",
+    "itemPosition": 2
+  },
+  {
+    "type": "RemoveLastFromBacklog"
+  },
+  {
+    "type": "UnhighlightTrashBin"
+  }
+]

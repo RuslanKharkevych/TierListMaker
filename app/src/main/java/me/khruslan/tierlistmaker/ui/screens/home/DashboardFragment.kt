@@ -100,7 +100,7 @@ class DashboardFragment : Fragment() {
     private fun initObservers() {
         viewModel.tierListPreviewsLiveData.observe(viewLifecycleOwner, tierListPreviewsObserver)
         viewModel.addPreviewEvent.observe(viewLifecycleOwner, addPreviewObserver)
-        viewModel.updatePreviewsEvent.observe(viewLifecycleOwner, updatePreviewsObserver)
+        viewModel.updatePreviewEvent.observe(viewLifecycleOwner, updatePreviewsObserver)
         viewModel.listStateLiveData.observe(viewLifecycleOwner, listStateObserver)
         viewModel.saveErrorEvent.observe(viewLifecycleOwner, saveErrorObserver)
     }

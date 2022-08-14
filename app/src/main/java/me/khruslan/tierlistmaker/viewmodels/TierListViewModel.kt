@@ -9,11 +9,14 @@ import com.hadilq.liveevent.LiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import me.khruslan.tierlistmaker.R
-import me.khruslan.tierlistmaker.data.state.LoadingProgress
 import me.khruslan.tierlistmaker.data.drag.DragData
 import me.khruslan.tierlistmaker.data.drag.ImageDragData
 import me.khruslan.tierlistmaker.data.drag.effects.*
+import me.khruslan.tierlistmaker.data.state.LoadingProgress
 import me.khruslan.tierlistmaker.data.tierlist.*
+import me.khruslan.tierlistmaker.data.tierlist.image.Image
+import me.khruslan.tierlistmaker.data.tierlist.image.ResourceImage
+import me.khruslan.tierlistmaker.data.tierlist.image.StorageImage
 import me.khruslan.tierlistmaker.repository.file.FileManager
 import me.khruslan.tierlistmaker.repository.tierlist.TierListProcessor
 import me.khruslan.tierlistmaker.repository.tierlist.tier.TierStyleProvider
@@ -156,7 +159,7 @@ class TierListViewModel @Inject constructor(
     }
 
     /**
-     * Saves images to the local storage; adds them to the [TierList.backlogImages]
+     * Saves images to the local storage, adds them to the [TierList.backlogImages]
      * and notifies UI about the updates.
      *
      * @param imageUris list of [Uri] of the images that should be saved.
@@ -199,7 +202,7 @@ class TierListViewModel @Inject constructor(
      */
     fun addNewTier() {
         tierList.tiers += Tier()
-        _tierListEvent.value = TierInserted(tierList.tiers.size)
+        _tierListEvent.value = TierInserted(tierList.tiers.lastIndex)
         updateTierStyles()
     }
 
@@ -232,10 +235,5 @@ class TierListViewModel @Inject constructor(
         val workRequest = OneTimeWorkRequest.from(SaveTierListWorker::class.java)
         saveTierListArgsProvider.tierList = tierList
         WorkManager.getInstance(getApplication()).enqueue(workRequest)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        savedStateHandle[KEY_TIER_LIST] = tierList
     }
 }

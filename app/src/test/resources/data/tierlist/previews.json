@@ -1,0 +1,92 @@
+[
+  {
+    "id": "62cacbfa-b8fb-11ec-8422-0242ac120002",
+    "title": "Favorite dishes",
+    "images": [
+      {
+        "type": "StorageImage",
+        "id": "67cae7d3-1d75-495f-8410-34d390cff96a",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/1649976463524.jpeg"
+      },
+      {
+        "type": "StorageImage",
+        "id": "eaff63e8-4229-4461-b252-d788404c1a90",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/1928863159510.jpeg"
+      },
+      {
+        "type": "StorageImage",
+        "id": "ad7402f7-2b6a-45d4-bf58-d61f5e49073b",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/0101703530722.jpeg"
+      }
+    ]
+  },
+  {
+    "id": "03757069-2033-4cb3-b409-cb2b470e851a",
+    "title": "The best movies",
+    "images": [
+      {
+        "type": "StorageImage",
+        "id": "8e28a458-2883-4277-b7ac-cce4c1ff5d11",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/9514986641278.jpeg"
+      },
+      {
+        "type": "StorageImage",
+        "id": "399f47da-eb78-4512-8b76-44ffdc41724b",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/7248516507332.jpeg"
+      }
+    ]
+  },
+  {
+    "id": "c3aabba3-fa9c-4b8a-892f-5c8d8407a936",
+    "title": "Detective novels",
+    "images": [
+      {
+        "type": "StorageImage",
+        "id": "c042daa2-348f-48ac-8b2d-5f04f9eeda14",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/0079150423601.jpeg"
+      },
+      {
+        "type": "StorageImage",
+        "id": "6018a017-3c66-464d-b337-ebd4644080a2",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/5448908727172.jpeg"
+      },
+      {
+        "type": "StorageImage",
+        "id": "d309ccf0-4f87-45b5-8763-ec6efdf232e3",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/4179349691494.jpeg"
+      }
+    ]
+  },
+  {
+    "id": "3fbbf8cd-7cc5-48b1-b0f3-a5fbe4d74444",
+    "title": "Fastest sport cars",
+    "images": [
+      {
+        "type": "StorageImage",
+        "id": "0bf136b1-750c-40fb-9bc0-7a88fb63be82",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/7859234484977.jpeg"
+      },
+      {
+        "type": "StorageImage",
+        "id": "994d334d-8320-4da2-8a6f-2c39caba5559",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/3575526202683.jpeg"
+      },
+      {
+        "type": "StorageImage",
+        "id": "36177a66-bbd1-4593-9cfa-652dc7bb9a95",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/6990388288310.jpeg"
+      }
+    ]
+  },
+  {
+    "id": "b42d6153-bd49-4a58-b1ba-e8ee6e405d8c",
+    "title": "Fast food restaurants",
+    "images": [
+      {
+        "type": "StorageImage",
+        "id": "d309ccf0-4f87-45b5-8763-ec6efdf232e3",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/5116006585471.jpeg"
+      }
+    ]
+  }
+]

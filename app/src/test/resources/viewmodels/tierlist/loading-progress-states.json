@@ -1,0 +1,122 @@
+[
+  [
+    {
+      "currentItem": 1,
+      "totalItems": 5,
+      "progress": 20
+    },
+    {
+      "currentItem": 2,
+      "totalItems": 5,
+      "progress": 40
+    },
+    {
+      "currentItem": 3,
+      "totalItems": 5,
+      "progress": 60
+    },
+    {
+      "currentItem": 4,
+      "totalItems": 5,
+      "progress": 80
+    },
+    {
+      "currentItem": 5,
+      "totalItems": 5,
+      "progress": 100
+    },
+    null
+  ],
+  [
+    {
+      "currentItem": 1,
+      "totalItems": 1,
+      "progress": 100
+    },
+    null
+  ],
+  [
+    {
+      "currentItem": 1,
+      "totalItems": 10,
+      "progress": 10
+    },
+    {
+      "currentItem": 2,
+      "totalItems": 10,
+      "progress": 20
+    },
+    {
+      "currentItem": 3,
+      "totalItems": 10,
+      "progress": 30
+    },
+    {
+      "currentItem": 4,
+      "totalItems": 10,
+      "progress": 40
+    },
+    {
+      "currentItem": 5,
+      "totalItems": 10,
+      "progress": 50
+    },
+    {
+      "currentItem": 6,
+      "totalItems": 10,
+      "progress": 60
+    },
+    {
+      "currentItem": 7,
+      "totalItems": 10,
+      "progress": 70
+    },
+    {
+      "currentItem": 8,
+      "totalItems": 10,
+      "progress": 80
+    },
+    {
+      "currentItem": 9,
+      "totalItems": 10,
+      "progress": 90
+    },
+    {
+      "currentItem": 10,
+      "totalItems": 10,
+      "progress": 100
+    },
+    null
+  ],
+  [
+    {
+      "currentItem": 1,
+      "totalItems": 3,
+      "progress": 33
+    },
+    {
+      "currentItem": 2,
+      "totalItems": 3,
+      "progress": 66
+    },
+    {
+      "currentItem": 3,
+      "totalItems": 3,
+      "progress": 100
+    },
+    null
+  ],
+  [
+    {
+      "currentItem": 1,
+      "totalItems": 2,
+      "progress": 50
+    },
+    {
+      "currentItem": 2,
+      "totalItems": 2,
+      "progress": 100
+    },
+    null
+  ]
+]

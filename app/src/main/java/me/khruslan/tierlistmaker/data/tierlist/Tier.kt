@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Parcelable
 import androidx.annotation.ColorInt
 import kotlinx.parcelize.Parcelize
+import me.khruslan.tierlistmaker.data.tierlist.image.Image
 import java.util.*
 
 /**
@@ -29,5 +30,5 @@ data class Tier(
 @Parcelize
 data class TierStyle(
     val title: String = "",
-    @ColorInt val color: Int = Color.TRANSPARENT,
+    @ColorInt val color: Int = Color.TRANSPARENT
 ) : Parcelable

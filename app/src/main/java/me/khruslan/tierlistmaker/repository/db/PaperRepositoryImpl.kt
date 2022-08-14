@@ -78,7 +78,7 @@ class PaperRepositoryImpl(private val dispatcherProvider: DispatcherProvider) : 
         } else {
             onError(result.exceptionOrNull(), attempt)
 
-            if (attempt <= MAX_TRANSACTION_ATTEMPTS) {
+            if (attempt < MAX_TRANSACTION_ATTEMPTS) {
                 executeTransaction(transaction, onError, attempt + 1)
             } else {
                 null

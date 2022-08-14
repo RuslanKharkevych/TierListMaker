@@ -23,19 +23,12 @@ class FileManagerImpl(
     private val dispatcherProvider: DispatcherProvider
 ) : FileManager {
 
-    /**
-     * [FileManagerImpl] companion object. Used for storing constants.
-     */
-    companion object {
-        const val MIME_TYPE_IMAGE = "image/*"
-    }
-
     override suspend fun createImageFileFromUri(uri: Uri): File? {
         val directory = getPicturesDirectory()
         return if (directory != null) {
             imageCompressor.compress(uri, directory.path)
         } else {
-            Timber.e("Unable to create file form $uri: directory is null")
+            Timber.e("Unable to create file from $uri: directory is null")
             null
         }
     }

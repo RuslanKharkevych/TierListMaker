@@ -9,6 +9,13 @@ import java.io.File
 interface FileManager {
 
     /**
+     * [FileManager] companion object. Used for storing constants.
+     */
+    companion object {
+        const val MIME_TYPE_IMAGE = "image/*"
+    }
+
+    /**
      * Saves [File] from [Uri] into the external pictures directory.
      *
      * @param uri [Uri] of the image file.

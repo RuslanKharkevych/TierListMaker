@@ -3,6 +3,7 @@ package me.khruslan.tierlistmaker.repository.tierlist
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.drag.effects.*
 import me.khruslan.tierlistmaker.data.tierlist.*
+import me.khruslan.tierlistmaker.data.tierlist.image.ResourceImage
 import me.khruslan.tierlistmaker.utils.extensions.updateLast
 
 /**
@@ -59,7 +60,7 @@ class TierListProcessorImpl : TierListProcessor {
                 backlogImages += targetImage
                 BacklogItemInserted(backlogImages.lastIndex)
             }
-            is HighlightTrashBin -> TODO("Highlight trash bin")
+            is HighlightTrashBin -> TrashBinHighlightUpdated(true)
         }
     }
 
@@ -87,7 +88,7 @@ class TierListProcessorImpl : TierListProcessor {
                 tiers[effect.tierPosition].images += effect.image
                 TierChanged(effect.tierPosition)
             }
-            is InsertToTrashBin -> TODO("Remove image")
+            is InsertToTrashBin -> ImageRemoved
         }
     }
 
@@ -115,7 +116,7 @@ class TierListProcessorImpl : TierListProcessor {
                 tiers[effect.tierPosition].images.removeLast()
                 TierChanged(effect.tierPosition)
             }
-            is UnhighlightTrashBin -> TODO("Unhighlight trash bin")
+            is UnhighlightTrashBin -> TrashBinHighlightUpdated(false)
         }
     }
 

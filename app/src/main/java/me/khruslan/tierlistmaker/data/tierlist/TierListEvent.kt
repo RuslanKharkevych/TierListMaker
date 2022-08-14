@@ -57,3 +57,15 @@ data class TierInserted(val tierPosition: Int) : TierListEvent()
  * @property imageSize size of the tier list image.
  */
 data class ImageSizeUpdated(val imageSize: Int) : TierListEvent()
+
+/**
+ * [TierListEvent] implementation that indicates that the highlight of the trash bin was updated.
+ *
+ * @property highlighted whether the trash bin becomes highlighted.
+ */
+data class TrashBinHighlightUpdated(val highlighted: Boolean) : TierListEvent()
+
+/**
+ * [TierListEvent] implementation that indicates that image was removed.
+ */
+object ImageRemoved : TierListEvent()

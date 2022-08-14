@@ -26,7 +26,7 @@ class TierStyleProviderImpl(
             List(size) { index ->
                 TierStyle(
                     color = colors[index],
-                    title = nameProvider.getNameByIndex(index),
+                    title = nameProvider.getNameByIndex(index)
                 )
             }
         }

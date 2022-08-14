@@ -1,0 +1,35 @@
+[
+  {
+    "type": "ImageDragData",
+    "image": {
+      "type": "StorageImage",
+      "id": "401470da-6034-4e48-a53b-37e23834c897",
+      "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/1549127750330.jpeg"
+    },
+    "itemPosition": 0,
+    "tierPosition": 4
+  },
+  {
+    "type": "TrashBinDragData"
+  },
+  {
+    "type": "TierDragData",
+    "tierPosition": -1,
+    "isBacklog": true
+  },
+  {
+    "type": "ImageDragData",
+    "image": {
+      "type": "StorageImage",
+      "id": "36177a66-bbd1-4593-9cfa-652dc7bb9a95",
+      "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/6990388288310.jpeg"
+    },
+    "itemPosition": 0,
+    "tierPosition": -1,
+    "isBacklogImage": true
+  },
+  {
+    "type": "TierDragData",
+    "tierPosition": 0
+  }
+]

@@ -17,14 +17,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import me.khruslan.tierlistmaker.R
-import me.khruslan.tierlistmaker.data.state.LoadingProgress
 import me.khruslan.tierlistmaker.data.drag.DragData
 import me.khruslan.tierlistmaker.data.drag.ImageDragData
 import me.khruslan.tierlistmaker.data.drag.TierDragData
+import me.khruslan.tierlistmaker.data.state.LoadingProgress
 import me.khruslan.tierlistmaker.data.tierlist.*
+import me.khruslan.tierlistmaker.data.tierlist.image.Image
 import me.khruslan.tierlistmaker.databinding.FragmentTierListBinding
 import me.khruslan.tierlistmaker.navigation.TierListResultContract
-import me.khruslan.tierlistmaker.repository.file.FileManagerImpl
+import me.khruslan.tierlistmaker.repository.file.FileManager
 import me.khruslan.tierlistmaker.ui.adapters.TierAdapter
 import me.khruslan.tierlistmaker.ui.adapters.TierListImageAdapter
 import me.khruslan.tierlistmaker.ui.adapters.reorderable.ReorderableCallback
@@ -180,6 +181,8 @@ class TierListFragment : Fragment() {
                 tiersAdapter.updateImageSize(event.imageSize)
                 backlogAdapter.updateImageSize(event.imageSize)
             }
+            is TrashBinHighlightUpdated -> TODO("Update trash bin UI")
+            is ImageRemoved -> TODO("Update the UI")
         }
     }
 
@@ -257,6 +260,7 @@ class TierListFragment : Fragment() {
                     R.id.item_zoom_out -> { viewModel.zoomOut(); true }
                     R.id.item_add_image -> { launchImagePicker(); true }
                     R.id.item_add_tier -> { viewModel.addNewTier(); true }
+                    // TODO: Migrate to the new API
                     else -> super.onOptionsItemSelected(item)
                 }
             }
@@ -267,7 +271,7 @@ class TierListFragment : Fragment() {
      * Launches [imagePickerLauncher] to get images from the device.
      */
     private fun launchImagePicker() {
-        imagePickerLauncher.launch(FileManagerImpl.MIME_TYPE_IMAGE)
+        imagePickerLauncher.launch(FileManager.MIME_TYPE_IMAGE)
     }
 
     /**

@@ -1,0 +1,321 @@
+[
+  {
+    "id": "62cacbfa-b8fb-11ec-8422-0242ac120002",
+    "title": "Favorite dishes",
+    "zoomValue": 5,
+    "tiers": [
+      {
+        "id": "8e1dc196-023d-45ad-a942-657f2151a5d7",
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "67cae7d3-1d75-495f-8410-34d390cff96a",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/1649976463524.jpeg"
+          },
+          {
+            "type": "StorageImage",
+            "id": "eaff63e8-4229-4461-b252-d788404c1a90",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/1928863159510.jpeg"
+          }
+        ],
+        "style": {
+          "title": "S",
+          "color": 16711680
+        }
+      },
+      {
+        "id": "6009676b-c1bf-4694-a567-4bd014a7d137",
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "de638d0d-7dee-4f9b-83d6-795bc6ab60f0",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/9226934535226.png"
+          }
+        ],
+        "style": {
+          "title": "A",
+          "color": 16744448
+        }
+      },
+      {
+        "id": "27bb34ea-4630-4c01-9b17-3d4c2a1f5901",
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "ad7402f7-2b6a-45d4-bf58-d61f5e49073b",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/0101703530722.jpeg"
+          }
+        ],
+        "style": {
+          "title": "B",
+          "color": 16776960
+        }
+      },
+      {
+        "id": "5ae98ace-d0d6-459c-87ed-818dea22ae48",
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "f63d2fb9-eecd-4e2d-866b-33ea5ec77d95",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/3097255119309.jpeg"
+          }
+        ],
+        "style": {
+          "title": "C",
+          "color": 65280
+        }
+      },
+      {
+        "id": "10212772-6083-4ada-b2fc-5d7a45023983",
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "94a6c0b2-ea71-401b-a3be-4738bf7d7329",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/9160620157076.jpeg"
+          },
+          {
+            "type": "StorageImage",
+            "id": "88b6f662-a468-4c53-81a1-11b61483ab73",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/1070913821897.jpeg"
+          },
+          {
+            "type": "StorageImage",
+            "id": "f8bed1d3-cca7-4ea0-9569-7048e0576c7f",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/9076065869046.jpeg"
+          }
+        ],
+        "style": {
+          "title": "D",
+          "color": 65535
+        }
+      },
+      {
+        "id": "48cc570f-51af-4967-82ef-b37e73685ca6",
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "401470da-6034-4e48-a53b-37e23834c897",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/1549127750330.jpeg"
+          },
+          {
+            "type": "StorageImage",
+            "id": "47df0c54-8560-4e45-ad1d-9d6cb23b247e",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/4650233423879.jpeg"
+          }
+        ],
+        "style": {
+          "title": "E",
+          "color": 255
+        }
+      }
+    ],
+    "backlogImages": []
+  },
+  {
+    "id": "03757069-2033-4cb3-b409-cb2b470e851a",
+    "title": "The best movies",
+    "zoomValue": 4,
+    "tiers": [
+      {
+        "id": "56fbc581-4d02-40a3-b388-92ea2765b860",
+        "images": [],
+        "style": {
+          "title": "S",
+          "color": 16711680
+        }
+      },
+      {
+        "id": "e3cf7658-3bd3-44ea-9d76-bf0ccfd545e0",
+        "images": [],
+        "style": {
+          "title": "A",
+          "color": 16776960
+        }
+      },
+      {
+        "id": "d8cfaffa-67c7-42b5-bc6a-23ab1d53416e",
+        "images": [],
+        "style": {
+          "title": "B",
+          "color": 65280
+        }
+      }
+    ],
+    "backlogImages": [
+      {
+        "type": "StorageImage",
+        "id": "8e28a458-2883-4277-b7ac-cce4c1ff5d11",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/9514986641278.jpeg"
+      },
+      {
+        "type": "StorageImage",
+        "id": "399f47da-eb78-4512-8b76-44ffdc41724b",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/7248516507332.jpeg"
+      },
+      {
+        "type": "StorageImage",
+        "id": "41570829-489a-41af-94ad-92590e7cf76a",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/6480459286588.jpeg"
+      },
+      {
+        "type": "StorageImage",
+        "id": "6ae3d615-c2f5-45ec-b745-7aeea08b238b",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/9261827833760.jpeg"
+      }
+    ]
+  },
+  {
+    "id": "c3aabba3-fa9c-4b8a-892f-5c8d8407a936",
+    "title": "Detective novels",
+    "zoomValue": 3,
+    "tiers": [
+      {
+        "id": "f55a3e6e-7801-4607-9c22-f34821b8d68d",
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "6018a017-3c66-464d-b337-ebd4644080a2",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/5448908727172.jpeg"
+          }
+        ],
+        "style": {
+          "title": "S",
+          "color": 16711680
+        }
+      },
+      {
+        "id": "f1f645a0-15d3-4353-bf1a-6a99a282be70",
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "c042daa2-348f-48ac-8b2d-5f04f9eeda14",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/0079150423601.jpeg"
+          }
+        ],
+        "style": {
+          "title": "A",
+          "color": 16744448
+        }
+      },
+      {
+        "id": "b5b20c7e-c55b-4371-9cb9-ab8d4dab6229",
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "d309ccf0-4f87-45b5-8763-ec6efdf232e3",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/4179349691494.jpeg"
+          }
+        ],
+        "style": {
+          "title": "B",
+          "color": 16776960
+        }
+      },
+      {
+        "id": "536ea783-a08e-4e17-b635-372d18708786",
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "59b5e3bc-a89b-48fc-b96e-d43ccdc92223",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/0517968161857.jpeg"
+          }
+        ],
+        "style": {
+          "title": "C",
+          "color": 65280
+        }
+      }
+    ],
+    "backlogImages": []
+  },
+  {
+    "id": "3fbbf8cd-7cc5-48b1-b0f3-a5fbe4d74444",
+    "title": "The fastest sport cars",
+    "zoomValue": 6,
+    "tiers": [
+      {
+        "id": "63463dcf-32db-4dad-9451-8ce2da4a5bd4",
+        "images": [],
+        "style": {
+          "title": "S",
+          "color": 16711680
+        }
+      },
+      {
+        "id": "d08d4d99-7ce1-4efb-b10f-4cbb0348289c",
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "0bf136b1-750c-40fb-9bc0-7a88fb63be82",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/7859234484977.jpeg"
+          }
+        ],
+        "style": {
+          "title": "A",
+          "color": 16744448
+        }
+      },
+      {
+        "id": "1c7eef72-2f69-442c-a58d-562c855d6f01",
+        "images": [],
+        "style": {
+          "title": "B",
+          "color": 16776960
+        }
+      },
+      {
+        "id": "88572119-f065-4fd8-8c76-8ca4432afb14",
+        "images": [
+          {
+            "type": "StorageImage",
+            "id": "994d334d-8320-4da2-8a6f-2c39caba5559",
+            "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/3575526202683.jpeg"
+          }
+        ],
+        "style": {
+          "title": "C",
+          "color": 65280
+        }
+      },
+      {
+        "id": "b47d208b-e8d7-489f-8601-f3d751d00ec2",
+        "images": [],
+        "style": {
+          "title": "D",
+          "color": 65535
+        }
+      }
+    ],
+    "backlogImages": [
+      {
+        "type": "StorageImage",
+        "id": "36177a66-bbd1-4593-9cfa-652dc7bb9a95",
+        "filePath": "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/6990388288310.jpeg"
+      }
+    ]
+  },
+  {
+    "id": "b42d6153-bd49-4a58-b1ba-e8ee6e405d8c",
+    "title": "Fast food restaurants",
+    "zoomValue": 7,
+    "tiers": [
+      {
+        "id": "6c5d0f84-212a-44ef-b25c-4034a5ccd838",
+        "images": [],
+        "style": {
+          "title": "S",
+          "color": 16711680
+        }
+      },
+      {
+        "id": "6d7d0504-2d6a-4813-a517-46a05efc737d",
+        "images": [],
+        "style": {
+          "title": "A",
+          "color": 65280
+        }
+      }
+    ],
+    "backlogImages": []
+  }
+]

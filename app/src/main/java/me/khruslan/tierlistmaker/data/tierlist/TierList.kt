@@ -2,6 +2,7 @@ package me.khruslan.tierlistmaker.data.tierlist
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import me.khruslan.tierlistmaker.data.tierlist.image.Image
 
 private const val PREVIEW_IMAGES_COUNT = 3
 
