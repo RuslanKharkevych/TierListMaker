@@ -13,7 +13,7 @@ interface ImageCompressor {
      *
      * @param uri [Uri] of the image to compress.
      * @param targetDir target directory path.
-     * @return Compressed [File] or **null** in case of error.
+     * @return Compressed [File]
      */
-    suspend fun compress(uri: Uri, targetDir: String): File?
+    suspend fun compress(uri: Uri, targetDir: String): File
 }

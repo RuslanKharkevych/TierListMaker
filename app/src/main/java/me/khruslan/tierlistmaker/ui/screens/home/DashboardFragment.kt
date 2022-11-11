@@ -20,6 +20,7 @@ import me.khruslan.tierlistmaker.data.state.ListState
 import me.khruslan.tierlistmaker.data.tierlist.TierList
 import me.khruslan.tierlistmaker.databinding.FragmentDashboardBinding
 import me.khruslan.tierlistmaker.navigation.TierListResultContract
+import me.khruslan.tierlistmaker.navigation.TierListResultException
 import me.khruslan.tierlistmaker.ui.adapters.TierListPreviewAdapter
 import me.khruslan.tierlistmaker.ui.screens.tierlist.TierListActivity
 import me.khruslan.tierlistmaker.viewmodels.DashboardViewModel
@@ -45,10 +46,10 @@ class DashboardFragment : Fragment() {
      * Used to launch [TierListActivity] and obtain the created or updated [TierList] as a result.
      */
     private val tierListLauncher = registerForActivityResult(TierListResultContract()) { result ->
-        if (result != null) {
+        try {
             viewModel.handleTierListResult(result)
-        } else {
-            Timber.e("tierListLauncher: result is null")
+        } catch (e: TierListResultException) {
+            Timber.e(e, "Unable to get tier list result")
         }
     }
 

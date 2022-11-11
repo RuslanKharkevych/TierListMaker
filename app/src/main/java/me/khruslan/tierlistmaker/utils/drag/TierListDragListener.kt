@@ -8,13 +8,6 @@ import me.khruslan.tierlistmaker.data.drag.ImageDragData
 import timber.log.Timber
 
 /**
- * [Exception] implementation for the errors that could happen inside the [TierListDragListener].
- *
- * @param message error message of the exception.
- */
-class TierListDragException(message: String) : Exception(message)
-
-/**
  * A wrapper on the [View.OnDragListener] specific to the tier list.
  * Exposes drag events with the necessary [DragData].
  */
@@ -279,4 +272,11 @@ abstract class TierListDragListener : View.OnDragListener {
             DragEvent.ACTION_DRAG_ENDED -> "ACTION_DRAG_ENDED"
             else -> "UNKNOWN"
         }
+
+    /**
+     * [Exception] implementation for the errors that could happen inside the [TierListDragListener].
+     *
+     * @param message error message of the exception.
+     */
+    private class TierListDragException(message: String) : Exception(message)
 }

@@ -7,6 +7,7 @@ import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
 import io.paperdb.Paper
+import me.khruslan.tierlistmaker.utils.log.ReleaseTree
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -33,7 +34,8 @@ class TierListMakerApplication : Application(), Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
 
-        if (BuildConfig.DEBUG) enableLogging()
+        configureStrictModePenaltyLogging()
+        plantTimberTree()
         Paper.init(this)
     }
 
@@ -44,21 +46,20 @@ class TierListMakerApplication : Application(), Configuration.Provider {
             .build()
 
     /**
-     * Enables logging:
-     * - Enables penalty logging of all [StrictMode] violations;
-     * - Plants [Timber.DebugTree].
+     * Plants [Timber.DebugTree] for logging on debug build and reporting crashes on release builds.
      */
-    private fun enableLogging() {
-        enableStrictModePenaltyLogging()
-        Timber.plant(Timber.DebugTree())
+    private fun plantTimberTree() {
+        Timber.plant(if (BuildConfig.DEBUG) Timber.DebugTree() else ReleaseTree(this))
     }
 
     /**
-     * Enables penalty logging of all [StrictMode] violations.
+     * Enables penalty logging of all [StrictMode] violations in debug builds.
      */
-    private fun enableStrictModePenaltyLogging() {
-        enableThreadPolicyPenaltyLogging()
-        enableVmPolicyPenaltyLogging()
+    private fun configureStrictModePenaltyLogging() {
+        if (BuildConfig.DEBUG) {
+            enableThreadPolicyPenaltyLogging()
+            enableVmPolicyPenaltyLogging()
+        }
     }
 
     /**

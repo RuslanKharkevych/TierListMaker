@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import me.khruslan.tierlistmaker.data.state.ListState
 import me.khruslan.tierlistmaker.data.tierlist.Tier
 import me.khruslan.tierlistmaker.data.tierlist.TierList
+import me.khruslan.tierlistmaker.navigation.TierListResultException
 import me.khruslan.tierlistmaker.repository.db.PaperRepository
 import me.khruslan.tierlistmaker.repository.dispatchers.DispatcherProvider
 import me.khruslan.tierlistmaker.ui.screens.home.DashboardFragment
@@ -98,7 +99,11 @@ class DashboardViewModel @Inject constructor(
      *
      * @param tierList new or updated tier list.
      */
-    fun handleTierListResult(tierList: TierList) {
+    fun handleTierListResult(tierList: TierList?) {
+        if (tierList == null) {
+            throw TierListResultException("tierListLauncher: result is null")
+        }
+
         addOrUpdateTierList(tierList)
         saveTierList(tierList)
     }

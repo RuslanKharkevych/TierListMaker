@@ -51,41 +51,51 @@ class TierListImageHolder(
     }
 
     override fun onLongClick(view: View?): Boolean {
-        if (view == null) {
-            Timber.e("onLongClick: view is null")
-            return false
+        return try {
+            startDrag(view)
+            true
+        } catch (e: Exception) {
+            Timber.e(e, "Unable to start drag")
+            false
         }
-
-        val data = view.tag
-        if (data !is ImageDragData) {
-            Timber.e("onLongClick: view has incompatible tag ($data)")
-            return false
-        }
-
-        val result = view.startDragCompat(data)
-        logStartDragResult(view, data, result)
-
-        return true
     }
 
     /**
-     * Logs the result of the [View.startDragCompat] function invocation.
+     * Attempts to start drag.
      *
-     * @param view view on which the long click was performed.
-     * @param data tag of the view.
-     * @param result whether the drag was started successfully.
+     * @param view view that should be dragged.
      */
-    private fun logStartDragResult(
-        view: View,
-        data: ImageDragData,
-        result: Boolean
-    ) {
-        val desc = "view = $view, data = $data"
+    private fun startDrag(view: View?) {
+        val data = view?.tag
 
-        if (result) {
-            Timber.i("onTouch: successfully started drag ($desc)")
-        } else {
-            Timber.e("onTouch: unable to start drag ($desc)")
+        when {
+            data is ImageDragData -> startDrag(view, data)
+            view == null -> throw TierListImageException("onLongClick: view is null")
+            else -> throw TierListImageException("onLongClick: view has incompatible tag ($data)")
         }
     }
+
+    /**
+     * Starts drag.
+     *
+     * @param view view that should be dragged.
+     * @param data payload of the dragged item.
+     */
+    private fun startDrag(view: View, data: ImageDragData) {
+        val result = view.startDragCompat(data)
+        val resultDesc = "data = $data"
+
+        if (result) {
+            Timber.i("onTouch: successfully started drag ($resultDesc)")
+        } else {
+            throw TierListImageException("onTouch: unable to start drag ($resultDesc)")
+        }
+    }
+
+    /**
+     * Exception that can happen when tier list image can't be dragged successfully.
+     *
+     * @param message exception message.
+     */
+    private class TierListImageException(message: String) : Exception(message)
 }

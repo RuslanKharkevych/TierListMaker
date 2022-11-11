@@ -8,7 +8,6 @@ import me.khruslan.tierlistmaker.utils.extensions.displayWidthPixels
 import me.shouheng.compress.Compress
 import me.shouheng.compress.concrete
 import me.shouheng.compress.strategy.config.ScaleMode
-import timber.log.Timber
 import java.io.File
 
 private const val IMAGE_QUALITY_PERCENT = 90
@@ -32,7 +31,7 @@ class ImageCompressorImpl(
         context.displayWidthPixels * DISPLAY_WIDTH_FRACTION
     }
 
-    override suspend fun compress(uri: Uri, targetDir: String): File? {
+    override suspend fun compress(uri: Uri, targetDir: String): File {
         return try {
             Compress.with(context, uri)
                 .setQuality(IMAGE_QUALITY_PERCENT)
@@ -45,8 +44,17 @@ class ImageCompressorImpl(
                 }
                 .get(dispatcherProvider.io)
         } catch (e: Exception) {
-            Timber.e(e, "Failed to compress $uri into $targetDir")
-            null
+            throw ImageCompressorException(uri, targetDir, e)
         }
     }
+
+    /**
+     * Exception that should be used for errors that happen during compressing of an image.
+     *
+     * @param uri [Uri] of an image to compress.
+     * @param targetDir target directory of the output file.
+     * @param cause cause of an error.
+     */
+    private class ImageCompressorException(uri: Uri, targetDir: String, cause: Throwable) :
+        Exception("Failed to compress $uri into $targetDir", cause)
 }

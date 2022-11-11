@@ -24,11 +24,11 @@ class FileManagerImpl(
 ) : FileManager {
 
     override suspend fun createImageFileFromUri(uri: Uri): File? {
-        val directory = getPicturesDirectory()
-        return if (directory != null) {
+        return try {
+            val directory = getPicturesDirectory()
             imageCompressor.compress(uri, directory.path)
-        } else {
-            Timber.e("Unable to create file from $uri: directory is null")
+        } catch (e: Exception) {
+            Timber.e(e, "I/O error")
             null
         }
     }
@@ -38,14 +38,24 @@ class FileManagerImpl(
      *
      * @return external picture directory or null in case of error.
      */
-    private suspend fun getPicturesDirectory(): File? {
+    private suspend fun getPicturesDirectory(): File {
         return withContext(dispatcherProvider.io) {
-            try {
+            val result = runCatching {
                 context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-            } catch (e: Exception) {
-                Timber.e(e, "Unable to access pictures directory")
-                null
             }
+            result.getOrNull() ?: throw FileManagerException(
+                "Unable to access pictures directory",
+                result.exceptionOrNull()
+            )
         }
     }
+
+    /**
+     * [Exception] implementation for the errors that could happen inside the [FileManagerImpl].
+     *
+     * @param message description of the error.
+     * @param cause cause of the error.
+     */
+    private class FileManagerException(message: String, cause: Throwable?) :
+        Exception(message, cause)
 }

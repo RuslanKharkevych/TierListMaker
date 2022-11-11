@@ -12,4 +12,5 @@
     <string name="btn_report_issue"><u>Сообщить об ошибке</u></string>
     <string name="save_previews_error_message">Ой! Не удалось сохранить список :(</string>
     <string name="btn_refresh">Обновить</string>
+    <string name="app_language">ru</string>
 </resources>

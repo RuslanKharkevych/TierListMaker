@@ -15,11 +15,28 @@ class SaveTierListArgsProvider {
      */
     var tierList: TierList? = null
         get() {
-            if (field == null) Timber.e("get tierList: field is null")
+            if (field == null) logError("get tierList: field is null")
             return field.also { field = null }
         }
         set(value) {
-            if (field != null) Timber.e("set tierList: field = $field, value = $value")
+            if (field != null) logError("set tierList: field = $field, value = $value")
             field = value
         }
+
+    /**
+     * Logs errors that occur in [SaveTierListArgsProvider].
+     *
+     * @param message description of an error.
+     */
+    private fun logError(message: String) {
+        val exception = SaveTierListArgsException(message)
+        Timber.e(exception, "Unexpected args state")
+    }
+
+    /**
+     * Exception for errors that could happen inside [SaveTierListArgsProvider].
+     *
+     * @param message description of the error.
+     */
+    private class SaveTierListArgsException(message: String) : Exception(message)
 }

@@ -6,6 +6,7 @@ import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContract
 import me.khruslan.tierlistmaker.data.tierlist.TierList
 import me.khruslan.tierlistmaker.ui.screens.tierlist.TierListActivity
+import me.khruslan.tierlistmaker.utils.extensions.getParcelableExtraCompat
 import timber.log.Timber
 
 /**
@@ -37,21 +38,35 @@ class TierListResultContract : ActivityResultContract<TierList, TierList?>() {
         TierListActivity.newIntent(context, input)
 
     override fun parseResult(resultCode: Int, intent: Intent?): TierList? {
+        return try {
+            parseTierList(resultCode, intent)
+        } catch (e: TierListResultException) {
+            Timber.e(e, "Failed to parse result")
+            null
+        }
+    }
+
+    /**
+     * Returns [TierList] obtained as an extra from the [Intent]. Throws [TierListResultException]
+     * in case result code is not successful or intent doesn't contain such extra.
+     *
+     * @param resultCode result code returned by the child activity.
+     * @param intent an [Intent] that can contain [TierList] extra.
+     * @return parsed [TierList].
+     */
+    private fun parseTierList(resultCode: Int, intent: Intent?): TierList {
         when {
-            resultCode != Activity.RESULT_OK -> {
-                Timber.e("parseResult: resultCode is $resultCode")
-            }
-            intent == null -> Timber.e("parseResult: intent is null")
+            resultCode != Activity.RESULT_OK ->
+                throw TierListResultException("resultCode is $resultCode")
+            intent == null -> throw TierListResultException("intent is null")
             else -> {
-                val result = intent.getParcelableExtra(EXTRA_TIER_LIST) as? TierList
+                val result: TierList? = intent.getParcelableExtraCompat(EXTRA_TIER_LIST)
                 if (result != null) {
                     return result
                 } else {
-                    Timber.e("parseResult: $EXTRA_TIER_LIST is null")
+                    throw TierListResultException("$EXTRA_TIER_LIST is null")
                 }
             }
         }
-
-        return null
     }
 }

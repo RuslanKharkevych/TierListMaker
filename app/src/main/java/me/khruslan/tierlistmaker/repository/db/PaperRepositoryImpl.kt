@@ -1,7 +1,9 @@
 package me.khruslan.tierlistmaker.repository.db
 
 import io.paperdb.Paper
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import me.khruslan.tierlistmaker.data.tierlist.TierList
 import me.khruslan.tierlistmaker.repository.dispatchers.DispatcherProvider
 import timber.log.Timber
@@ -25,7 +27,11 @@ class PaperRepositoryImpl(private val dispatcherProvider: DispatcherProvider) : 
                     Paper.book().read(KEY_TIER_LISTS, mutableListOf())
                 },
                 onError = { error, attempt ->
-                    Timber.e(error, "Failed to getTierLists, attempt = $attempt")
+                    logError(
+                        transactionTag = "getTierLists",
+                        attempt = attempt,
+                        cause = error
+                    )
                 }
             )
         }
@@ -47,7 +53,11 @@ class PaperRepositoryImpl(private val dispatcherProvider: DispatcherProvider) : 
                     Paper.book().write(KEY_TIER_LISTS, tierLists)
                 },
                 onError = { error, attempt ->
-                    Timber.e(error, "Failed to saveTierList($tierList), attempt = $attempt")
+                    logError(
+                        transactionTag = "saveTierList($tierList)",
+                        attempt = attempt,
+                        cause = error
+                    )
                 }
             )
 
@@ -85,4 +95,26 @@ class PaperRepositoryImpl(private val dispatcherProvider: DispatcherProvider) : 
             }
         }
     }
+
+    /**
+     * Logs transaction error.
+     *
+     * @param transactionTag tag of the transaction.
+     * @param attempt transaction attempt.
+     * @param cause cause of the transaction failure.
+     */
+    private fun logError(transactionTag: String, attempt: Int, cause: Throwable?) {
+        val exception = PaperException(transactionTag, attempt, cause)
+        Timber.e(exception, "Unable to execute transaction")
+    }
+
+    /**
+     * Exception that can happen during [Paper] transactions.
+     *
+     * @param transactionTag tag of the transaction.
+     * @param attempt transaction attempt.
+     * @param cause cause of the transaction failure.
+     */
+    private class PaperException(transactionTag: String, attempt: Int, cause: Throwable?) :
+        Exception("Transaction failed (tag = $transactionTag, attempt = $attempt)", cause)
 }
