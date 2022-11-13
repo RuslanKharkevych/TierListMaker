@@ -7,6 +7,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id 'com.google.firebase.firebase-perf'
 }
 
 android {
@@ -26,11 +27,13 @@ android {
         debug {
             versionNameSuffix '-DEBUG'
             resValue("bool", "firebase_analytics_collection_deactivated", "true")
+            resValue("bool", "firebase_performance_logcat_enabled", "true")
         }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             resValue("bool", "firebase_analytics_collection_deactivated", "false")
+            resValue("bool", "firebase_performance_logcat_enabled", "false")
         }
     }
 
@@ -63,6 +66,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:30.3.2')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.google.firebase:firebase-perf-ktx'
 
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
