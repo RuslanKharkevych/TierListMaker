@@ -4,24 +4,21 @@ import android.content.ClipData
 import io.mockk.*
 import me.khruslan.tierlistmaker.data.drag.ImageDragData
 import me.khruslan.tierlistmaker.data.drag.ImageDragData.Companion.LABEL
-import me.khruslan.tierlistmaker.dataproviders.data.DragDataProvider
+import me.khruslan.tierlistmaker.data.tierlist.image.StorageImage
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertSame
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
-import kotlin.test.assertEquals
-import kotlin.test.assertSame
 
-@RunWith(Parameterized::class)
 class DragDataTest {
 
-    companion object {
-        @JvmStatic
-        @Parameterized.Parameters
-        fun data() = DragDataProvider.dragImages
-    }
-
-    @Parameterized.Parameter
-    lateinit var imageDragData: ImageDragData
+    private val imageDragData = ImageDragData(
+        image = StorageImage(
+            id = "88b6f662-a468-4c53-81a1-11b61483ab73",
+            filePath = "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/1070913821897.jpeg"
+        ),
+        itemPosition = 1,
+        tierPosition = 3
+    )
 
     @Test
     fun `Maps image drag data to clip data`() {

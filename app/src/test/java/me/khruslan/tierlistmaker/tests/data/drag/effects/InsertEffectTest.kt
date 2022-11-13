@@ -1,65 +1,88 @@
 package me.khruslan.tierlistmaker.tests.data.drag.effects
 
-import me.khruslan.tierlistmaker.data.drag.DragData
 import me.khruslan.tierlistmaker.data.drag.ImageDragData
-import me.khruslan.tierlistmaker.data.drag.effects.InsertEffect
-import me.khruslan.tierlistmaker.dataproviders.data.DragDataProvider.InsertImageEffects
-import me.khruslan.tierlistmaker.dataproviders.data.DragDataProvider.InsertTargetEffects
-import me.khruslan.tierlistmaker.utils.assertSealedEquals
+import me.khruslan.tierlistmaker.data.drag.TierDragData
+import me.khruslan.tierlistmaker.data.drag.TrashBinDragData
+import me.khruslan.tierlistmaker.data.drag.effects.*
+import me.khruslan.tierlistmaker.data.tierlist.image.StorageImage
+import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
+import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
-import org.junit.runners.Suite
 
-@RunWith(Suite::class)
-@Suite.SuiteClasses(
-    InsertEffectTest.ParameterizedInsertImageEffectsTest::class,
-    InsertEffectTest.ParameterizedInsertTargetEffectsTest::class
-)
 class InsertEffectTest {
 
-    @RunWith(Parameterized::class)
-    class ParameterizedInsertImageEffectsTest {
+    private val shadow = ImageDragData(
+        image = StorageImage(
+            id = "36177a66-bbd1-4593-9cfa-652dc7bb9a95",
+            filePath = "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/6990388288310.jpeg"
+        ),
+        itemPosition = 0,
+        tierPosition = 1
+    )
 
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters
-            fun data() = InsertImageEffects.data
-        }
+    @Test
+    fun `When target is tier image creates InsertToTier effect`() {
+        val target = ImageDragData(
+            image = StorageImage(
+                id = "401470da-6034-4e48-a53b-37e23834c897",
+                filePath = "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/1549127750330.jpeg"
+            ),
+            itemPosition = 0,
+            tierPosition = 4
+        )
+        val expectedEffect = InsertToTier(
+            data = ImageDragData(
+                image = shadow.image,
+                itemPosition = 0,
+                tierPosition = 4
+            )
+        )
 
-        @Parameterized.Parameter(InsertImageEffects.shadowParam)
-        lateinit var shadow: ImageDragData
-
-        @Parameterized.Parameter(InsertImageEffects.effectParam)
-        lateinit var effect: InsertEffect
-
-        @Test
-        fun `Creates insert effect based on image drag data`() {
-            assertSealedEquals(effect, InsertEffect.create(shadow))
-        }
+        assertEquals(expectedEffect, InsertEffect.create(shadow, target))
     }
 
-    @RunWith(Parameterized::class)
-    class ParameterizedInsertTargetEffectsTest {
+    @Test
+    fun `When target is backlog image creates InsertToBacklog effect`() {
+        val target = ImageDragData(
+            image = StorageImage(
+                id = "401470da-6034-4e48-a53b-37e23834c897",
+                filePath = "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/1549127750330.jpeg"
+            ),
+            itemPosition = 0,
+            tierPosition = BACKLOG_TIER_POSITION
+        )
+        val expectedEffect = InsertToBacklog(
+            data = ImageDragData(
+                image = shadow.image,
+                itemPosition = 0,
+                tierPosition = BACKLOG_TIER_POSITION
+            )
+        )
 
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters
-            fun data() = InsertTargetEffects.data
-        }
+        assertEquals(expectedEffect, InsertEffect.create(shadow, target))
+    }
 
-        @Parameterized.Parameter(InsertTargetEffects.shadowParam)
-        lateinit var shadow: ImageDragData
+    @Test
+    fun `When target is tier creates InsertToEndOfTier effect`() {
+        val target = TierDragData(tierPosition = 0)
+        val expectedEffect = InsertToEndOfTier(tierPosition = 0, image = shadow.image)
 
-        @Parameterized.Parameter(InsertTargetEffects.targetParam)
-        lateinit var target: DragData
+        assertEquals(expectedEffect, InsertEffect.create(shadow, target))
+    }
 
-        @Parameterized.Parameter(InsertTargetEffects.effectParam)
-        lateinit var effect: InsertEffect
+    @Test
+    fun `When target is backlog creates InsertToEndOfBacklog effect`() {
+        val target = TierDragData(tierPosition = BACKLOG_TIER_POSITION)
+        val expectedEffect = InsertToEndOfBacklog(image = shadow.image)
 
-        @Test
-        fun `Creates insert effect based on image data and target`() {
-            assertSealedEquals(effect, InsertEffect.create(shadow, target))
-        }
+        assertEquals(expectedEffect, InsertEffect.create(shadow, target))
+    }
+
+    @Test
+    fun `When target is trash bin creates InsertToTrashBin effect`() {
+        val target = TrashBinDragData
+        val expectedEffect = InsertToTrashBin
+
+        assertEquals(expectedEffect, InsertEffect.create(shadow, target))
     }
 }

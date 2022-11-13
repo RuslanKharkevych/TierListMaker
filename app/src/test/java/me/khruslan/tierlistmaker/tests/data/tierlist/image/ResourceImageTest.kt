@@ -5,203 +5,130 @@ import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verifyOrder
-import me.khruslan.tierlistmaker.data.tierlist.image.Image
 import me.khruslan.tierlistmaker.data.tierlist.image.ResourceImage
 import me.khruslan.tierlistmaker.data.tierlist.image.StorageImage
-import me.khruslan.tierlistmaker.dataproviders.data.TierListDataProvider
-import org.junit.Assert.assertArrayEquals
-import org.junit.Assert.assertThrows
+import org.junit.Assert.*
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
-import org.junit.runners.Suite
-import java.io.File
-import kotlin.test.assertEquals
 
-@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
-@RunWith(Suite::class)
-@Suite.SuiteClasses(
-    ResourceImageTest.StandardTest::class,
-    ResourceImageTest.ParameterizedResourceImageTest::class,
-    ResourceImageTest.ParameterizedFilePathsTest::class,
-    ResourceImageTest.ParameterizedArraySizesTest::class,
-    ResourceImageTest.ParameterizedHashCodesTest::class,
-    ResourceImageTest.ParameterizedStringsTest::class,
-    ResourceImageTest.ParameterizedEqualityResultsTest::class
-)
 class ResourceImageTest {
 
-    class StandardTest {
+    private val resourceImage = ResourceImage(
+        id = "67cae7d3-1d75-495f-8410-34d390cff96a",
+        resId = android.R.drawable.ic_menu_gallery
+    )
 
-        @Test
-        fun `ResourceImage class has correct qualified name`() {
-            val expectedQualifiedName = "me.khruslan.tierlistmaker.data.tierlist.image.ResourceImage"
-            val actualQualifiedName = ResourceImage::class.qualifiedName
+    @Test
+    fun `ResourceImage class has correct qualified name`() {
+        val expectedQualifiedName = "me.khruslan.tierlistmaker.data.tierlist.image.ResourceImage"
+        val actualQualifiedName = ResourceImage::class.qualifiedName
 
-            assertEquals(expectedQualifiedName, actualQualifiedName)
+        assertEquals(expectedQualifiedName, actualQualifiedName)
+    }
+
+    @Test
+    fun `Writes ResourceImage to Parcel`() {
+        val parcel: Parcel = mockk()
+        justRun { parcel.writeString(resourceImage.id) }
+        justRun { parcel.writeInt(resourceImage.resId) }
+
+        resourceImage.writeToParcel(parcel, 0)
+
+        verifyOrder {
+            parcel.writeString(resourceImage.id)
+            parcel.writeInt(resourceImage.resId)
         }
     }
 
-    @RunWith(Parameterized::class)
-    class ParameterizedResourceImageTest {
+    @Test
+    fun `describeContents returns 0`() {
+        assertEquals(0, resourceImage.describeContents())
+    }
 
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters
-            fun data() = TierListDataProvider.resourceImages
-        }
+    @Test
+    fun `Creates ResourceImage from Parcel`() {
+        val parcel: Parcel = mockk()
+        every { parcel.readString() } returns resourceImage.id
+        every { parcel.readInt() } returns resourceImage.resId
 
-        @Parameterized.Parameter
-        lateinit var resourceImage: ResourceImage
-
-        @Test
-        fun `Writes ResourceImage to Parcel`() {
-            val parcel: Parcel = mockk()
-            justRun { parcel.writeString(resourceImage.id) }
-            justRun { parcel.writeInt(resourceImage.resId) }
-
-            resourceImage.writeToParcel(parcel, 0)
-
-            verifyOrder {
-                parcel.writeString(resourceImage.id)
-                parcel.writeInt(resourceImage.resId)
-            }
-        }
-
-        @Test
-        fun `describeContents always returns 0`() {
-            assertEquals(0, resourceImage.describeContents())
-        }
-
-        @Test
-        fun `Creates ResourceImage from Parcel`() {
-            val parcel: Parcel = mockk()
-            every { parcel.readString() } returns resourceImage.id
-            every { parcel.readInt() } returns resourceImage.resId
-
-            assertEquals(resourceImage, ResourceImage.createFromParcel(parcel))
-            verifyOrder {
-                parcel.readString()
-                parcel.readInt()
-            }
-        }
-
-        @Test
-        fun `When readString returns null should throw IllegalStateException`() {
-            val parcel: Parcel = mockk()
-            every { parcel.readString() } returns null
-
-            assertThrows(IllegalStateException::class.java) {
-                ResourceImage.createFromParcel(parcel)
-            }
+        assertEquals(resourceImage, ResourceImage.createFromParcel(parcel))
+        verifyOrder {
+            parcel.readString()
+            parcel.readInt()
         }
     }
 
-    @RunWith(Parameterized::class)
-    class ParameterizedFilePathsTest {
+    @Test
+    fun `When readString returns null should throw IllegalStateException`() {
+        val parcel: Parcel = mockk()
+        every { parcel.readString() } returns null
 
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters
-            fun data() = TierListDataProvider.filePaths
-        }
-
-        @Parameterized.Parameter
-        lateinit var filePath: String
-
-        @Test
-        fun `Creates StorageImage from file`() {
-            val file: File = mockk()
-            every { file.path } returns filePath
-
-            assertEquals(filePath, StorageImage(file).filePath)
+        assertThrows(IllegalStateException::class.java) {
+            ResourceImage.createFromParcel(parcel)
         }
     }
 
-    @RunWith(Parameterized::class)
-    class ParameterizedArraySizesTest {
+    @Test
+    fun `Creates new array of nulls with given size`() {
+        val arraySize = 5
+        val expectedArray = arrayOfNulls<ResourceImage>(arraySize)
+        val actualArray = ResourceImage.newArray(arraySize)
 
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters
-            fun data() = TierListDataProvider.arraySizes
-        }
-
-        @Parameterized.Parameter
-        lateinit var arraySize: Integer
-
-        @Test
-        fun `Creates new array of nulls with given size`() {
-            val expectedArray = arrayOfNulls<ResourceImage>(arraySize.toInt())
-            val actualArray = ResourceImage.newArray(arraySize.toInt())
-
-            assertArrayEquals(expectedArray, actualArray)
-        }
+        assertArrayEquals(expectedArray, actualArray)
     }
 
-    @RunWith(Parameterized::class)
-    class ParameterizedHashCodesTest {
+    @Test
+    fun `Calculates hash code for ResourceImage`() {
+        val expectedHashCode = -785202258
+        val actualHashCode = resourceImage.hashCode()
 
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters
-            fun data() = TierListDataProvider.ResourceImageHashCodes.data
-        }
-
-        @Parameterized.Parameter(TierListDataProvider.ResourceImageHashCodes.imageParam)
-        lateinit var image: ResourceImage
-
-        @Parameterized.Parameter(TierListDataProvider.ResourceImageHashCodes.hashCodeParam)
-        lateinit var hashCode: Integer
-
-        @Test
-        fun `Calculates hash code for ResourceImage`() {
-            assertEquals(hashCode.toInt(), image.hashCode())
-        }
+        assertEquals(expectedHashCode, actualHashCode)
     }
 
-    @RunWith(Parameterized::class)
-    class ParameterizedStringsTest {
+    @Test
+    fun `Converts ResourceImage to String`() {
+        val expectedString =  "ResourceImage(id=67cae7d3-1d75-495f-8410-34d390cff96a, resId=${android.R.drawable.ic_menu_gallery})"
+        val actualString = resourceImage.toString()
 
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters
-            fun data() = TierListDataProvider.ResourceImageStrings.data
-        }
-
-        @Parameterized.Parameter(TierListDataProvider.ResourceImageStrings.imageParam)
-        lateinit var image: ResourceImage
-
-        @Parameterized.Parameter(TierListDataProvider.ResourceImageStrings.stringParam)
-        lateinit var string: String
-
-        @Test
-        fun `Converts ResourceImage to String`() {
-            assertEquals(string, image.toString())
-        }
+        assertEquals(expectedString, actualString)
     }
 
-    @RunWith(Parameterized::class)
-    class ParameterizedEqualityResultsTest {
+    @Test
+    fun `When object to compare has different type equals returns false`() {
+        val objectToCompare = StorageImage(
+            id = "de638d0d-7dee-4f9b-83d6-795bc6ab60f0",
+            filePath = "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/9226934535226.png"
+        )
 
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters
-            fun data() = TierListDataProvider.ResourceImageEqualityResults.data
-        }
+        assertNotEquals(resourceImage, objectToCompare)
+    }
 
-        @Parameterized.Parameter(TierListDataProvider.ResourceImageEqualityResults.imageParam)
-        lateinit var image: ResourceImage
+    @Test
+    fun `When object to compare has different id equals returns false`() {
+        val objectToCompare = ResourceImage(
+            id = "de638d0d-7dee-4f9b-83d6-795bc6ab60f0",
+            resId = android.R.drawable.ic_menu_gallery
+        )
 
-        @Parameterized.Parameter(TierListDataProvider.ResourceImageEqualityResults.otherParam)
-        lateinit var other: Image
+        assertNotEquals(resourceImage, objectToCompare)
+    }
 
-        @Parameterized.Parameter(TierListDataProvider.ResourceImageEqualityResults.equalityResult)
-        lateinit var equalityResult: java.lang.Boolean
+    @Test
+    fun `When object to compare has different resId equals returns false`() {
+        val objectToCompare = ResourceImage(
+            id = "67cae7d3-1d75-495f-8410-34d390cff96a",
+            resId = android.R.drawable.ic_menu_camera
+        )
 
-        @Test
-        fun `Compares ResourceImage with other object for equality`() {
-            assertEquals(equalityResult as Boolean, image == other)
-        }
+        assertNotEquals(resourceImage, objectToCompare)
+    }
+
+    @Test
+    fun `When object to compare has same id and resId equals returns true`() {
+        val objectToCompare = ResourceImage(
+            id = "67cae7d3-1d75-495f-8410-34d390cff96a",
+            resId = android.R.drawable.ic_menu_gallery
+        )
+
+        assertEquals(resourceImage, objectToCompare)
     }
 }

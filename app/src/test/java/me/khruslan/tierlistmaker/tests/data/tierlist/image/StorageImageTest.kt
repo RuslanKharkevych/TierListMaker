@@ -2,185 +2,136 @@ package me.khruslan.tierlistmaker.tests.data.tierlist.image
 
 import android.os.Parcel
 import io.mockk.*
-import me.khruslan.tierlistmaker.data.tierlist.image.Image
+import me.khruslan.tierlistmaker.data.tierlist.image.ResourceImage
 import me.khruslan.tierlistmaker.data.tierlist.image.StorageImage
-import me.khruslan.tierlistmaker.dataproviders.data.TierListDataProvider
-import org.junit.Assert.assertArrayEquals
-import org.junit.Assert.assertThrows
+import org.junit.Assert.*
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
-import org.junit.runners.Suite
-import kotlin.test.assertEquals
 
-@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
-@RunWith(Suite::class)
-@Suite.SuiteClasses(
-    StorageImageTest.StandardTest::class,
-    StorageImageTest.ParameterizedStorageImageTest::class,
-    StorageImageTest.ParameterizedArraySizesTest::class,
-    StorageImageTest.ParameterizedHashCodesTest::class,
-    StorageImageTest.ParameterizedStringsTest::class,
-    StorageImageTest.ParameterizedEqualityResultsTest::class
-)
 class StorageImageTest {
 
-    class StandardTest {
+    private val storageImage = StorageImage(
+        id = "67cae7d3-1d75-495f-8410-34d390cff96a",
+        filePath = "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/1649976463524.jpeg"
+    )
 
-        @Test
-        fun `StorageImage class has correct qualified name`() {
-            val expectedQualifiedName = "me.khruslan.tierlistmaker.data.tierlist.image.StorageImage"
-            val actualQualifiedName = StorageImage::class.qualifiedName
+    @Test
+    fun `StorageImage class has correct qualified name`() {
+        val expectedQualifiedName = "me.khruslan.tierlistmaker.data.tierlist.image.StorageImage"
+        val actualQualifiedName = StorageImage::class.qualifiedName
 
-            assertEquals(expectedQualifiedName, actualQualifiedName)
+        assertEquals(expectedQualifiedName, actualQualifiedName)
+    }
+
+    @Test
+    fun `Writes StorageImage to Parcel`() {
+        val parcel: Parcel = mockk()
+        justRun { parcel.writeString(storageImage.id) }
+        justRun { parcel.writeString(storageImage.filePath) }
+
+        storageImage.writeToParcel(parcel, 0)
+
+        verifyOrder {
+            parcel.writeString(storageImage.id)
+            parcel.writeString(storageImage.filePath)
         }
     }
 
-    @RunWith(Parameterized::class)
-    class ParameterizedStorageImageTest {
+    @Test
+    fun `describeContents always returns 0`() {
+        assertEquals(0, storageImage.describeContents())
+    }
 
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters
-            fun data() = TierListDataProvider.storageImages
-        }
+    @Test
+    fun `Creates StorageImage from Parcel`() {
+        val parcel: Parcel = mockk()
+        every { parcel.readString() }.returnsMany(storageImage.id, storageImage.filePath)
 
-        @Parameterized.Parameter
-        lateinit var storageImage: StorageImage
+        assertEquals(storageImage, StorageImage.createFromParcel(parcel))
+        verify(exactly = 2) { parcel.readString() }
+    }
 
-        @Test
-        fun `Writes StorageImage to Parcel`() {
-            val parcel: Parcel = mockk()
-            justRun { parcel.writeString(storageImage.id) }
-            justRun { parcel.writeString(storageImage.filePath) }
+    @Test
+    fun `When first readString call returns null should throw IllegalStateException`() {
+        val parcel: Parcel = mockk()
+        every { parcel.readString() } returns null
 
-            storageImage.writeToParcel(parcel, 0)
-
-            verifyOrder {
-                parcel.writeString(storageImage.id)
-                parcel.writeString(storageImage.filePath)
-            }
-        }
-
-        @Test
-        fun `describeContents always returns 0`() {
-            assertEquals(0, storageImage.describeContents())
-        }
-
-        @Test
-        fun `Creates StorageImage from Parcel`() {
-            val parcel: Parcel = mockk()
-            every { parcel.readString() }.returnsMany(storageImage.id, storageImage.filePath)
-
-            assertEquals(storageImage, StorageImage.createFromParcel(parcel))
-            verify(exactly = 2) { parcel.readString() }
-        }
-
-        @Test
-        fun `When first readString call returns null should throw IllegalStateException`() {
-            val parcel: Parcel = mockk()
-            every { parcel.readString() } returns null
-
-            assertThrows(IllegalStateException::class.java) {
-                StorageImage.createFromParcel(parcel)
-            }
-        }
-
-        @Test
-        fun `When second readString call returns null should throw IllegalStateException`() {
-            val parcel: Parcel = mockk()
-            every { parcel.readString() }.returnsMany(storageImage.id, null)
-
-            assertThrows(IllegalStateException::class.java) {
-                StorageImage.createFromParcel(parcel)
-            }
+        assertThrows(IllegalStateException::class.java) {
+            StorageImage.createFromParcel(parcel)
         }
     }
 
-    @RunWith(Parameterized::class)
-    class ParameterizedArraySizesTest {
+    @Test
+    fun `When second readString call returns null should throw IllegalStateException`() {
+        val parcel: Parcel = mockk()
+        every { parcel.readString() }.returnsMany(storageImage.id, null)
 
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters
-            fun data() = TierListDataProvider.arraySizes
-        }
-
-        @Parameterized.Parameter
-        lateinit var arraySize: Integer
-
-        @Test
-        fun `Creates new array of nulls with given size`() {
-            val expectedArray = arrayOfNulls<StorageImage>(arraySize.toInt())
-            val actualArray = StorageImage.newArray(arraySize.toInt())
-
-            assertArrayEquals(expectedArray, actualArray)
+        assertThrows(IllegalStateException::class.java) {
+            StorageImage.createFromParcel(parcel)
         }
     }
 
-    @RunWith(Parameterized::class)
-    class ParameterizedHashCodesTest {
+    @Test
+    fun `Creates new array of nulls with given size`() {
+        val arraySize = 3
+        val expectedArray = arrayOfNulls<StorageImage>(arraySize)
+        val actualArray = StorageImage.newArray(arraySize)
 
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters
-            fun data() = TierListDataProvider.StorageImageHashCodes.data
-        }
-
-        @Parameterized.Parameter(TierListDataProvider.StorageImageHashCodes.imageParam)
-        lateinit var image: StorageImage
-
-        @Parameterized.Parameter(TierListDataProvider.StorageImageHashCodes.hashCodeParam)
-        lateinit var hashCode: Integer
-
-        @Test
-        fun `Calculates hash code for ResourceImage`() {
-            assertEquals(hashCode.toInt(), image.hashCode())
-        }
+        assertArrayEquals(expectedArray, actualArray)
     }
 
-    @RunWith(Parameterized::class)
-    class ParameterizedStringsTest {
+    @Test
+    fun `Calculates hash code for StorageImage`() {
+        val expectedHashCode = -128680437
+        val actualHashCode = storageImage.hashCode()
 
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters
-            fun data() = TierListDataProvider.StorageImageStrings.data
-        }
-
-        @Parameterized.Parameter(TierListDataProvider.StorageImageStrings.imageParam)
-        lateinit var image: StorageImage
-
-        @Parameterized.Parameter(TierListDataProvider.StorageImageStrings.stringParam)
-        lateinit var string: String
-
-        @Test
-        fun `Converts ResourceImage to String`() {
-            assertEquals(string, image.toString())
-        }
+        assertEquals(expectedHashCode, actualHashCode)
     }
 
-    @RunWith(Parameterized::class)
-    class ParameterizedEqualityResultsTest {
+    @Test
+    fun `Converts StorageImage to String`() {
+        val expectedString =  "StorageImage(id=67cae7d3-1d75-495f-8410-34d390cff96a, filePath=/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/1649976463524.jpeg)"
+        val actualString = storageImage.toString()
 
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters
-            fun data() = TierListDataProvider.StorageImageEqualityResults.data
-        }
+        assertEquals(expectedString, actualString)
+    }
 
-        @Parameterized.Parameter(TierListDataProvider.StorageImageEqualityResults.imageParam)
-        lateinit var image: StorageImage
+    @Test
+    fun `When object to compare has different type equals returns false`() {
+        val objectToCompare = ResourceImage(
+            id = "eaff63e8-4229-4461-b252-d788404c1a90",
+            resId = android.R.drawable.ic_menu_gallery
+        )
 
-        @Parameterized.Parameter(TierListDataProvider.StorageImageEqualityResults.otherParam)
-        lateinit var other: Image
+        assertNotEquals(storageImage, objectToCompare)
+    }
 
-        @Parameterized.Parameter(TierListDataProvider.StorageImageEqualityResults.equalityResult)
-        lateinit var equalityResult: java.lang.Boolean
+    @Test
+    fun `When object to compare has different id equals returns false`() {
+        val objectToCompare = StorageImage(
+            id = "eaff63e8-4229-4461-b252-d788404c1a90",
+            filePath = "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/1649976463524.jpeg"
+        )
 
-        @Test
-        fun `Compares ResourceImage with other object for equality`() {
-            assertEquals(equalityResult as Boolean, image == other)
-        }
+        assertNotEquals(storageImage, objectToCompare)
+    }
+
+    @Test
+    fun `When object to compare has different resId equals returns false`() {
+        val objectToCompare = StorageImage(
+            id = "67cae7d3-1d75-495f-8410-34d390cff96a",
+            filePath = "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/1928863159510.jpeg"
+        )
+
+        assertNotEquals(storageImage, objectToCompare)
+    }
+
+    @Test
+    fun `When object to compare has same id and resId equals returns true`() {
+        val objectToCompare = StorageImage(
+            id = "67cae7d3-1d75-495f-8410-34d390cff96a",
+            filePath = "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/1649976463524.jpeg"
+        )
+
+        assertEquals(storageImage, objectToCompare)
     }
 }

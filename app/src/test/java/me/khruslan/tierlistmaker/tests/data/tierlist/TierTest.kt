@@ -2,8 +2,8 @@ package me.khruslan.tierlistmaker.tests.data.tierlist
 
 import me.khruslan.tierlistmaker.data.tierlist.Tier
 import me.khruslan.tierlistmaker.data.tierlist.TierStyle
+import org.junit.Assert.assertEquals
 import org.junit.Test
-import kotlin.test.assertEquals
 
 class TierTest {
 

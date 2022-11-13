@@ -7,13 +7,13 @@ import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import me.khruslan.tierlistmaker.data.state.ListState
+import me.khruslan.tierlistmaker.data.tierlist.Tier
 import me.khruslan.tierlistmaker.data.tierlist.TierList
 import me.khruslan.tierlistmaker.data.tierlist.TierStyle
-import me.khruslan.tierlistmaker.dataproviders.viewmodels.DashboardViewModelDataProvider
-import me.khruslan.tierlistmaker.dataproviders.viewmodels.DashboardViewModelDataProvider.UpdatedLists
-import me.khruslan.tierlistmaker.dataproviders.viewmodels.DashboardViewModelDataProvider.ValidPositions
+import me.khruslan.tierlistmaker.data.tierlist.image.StorageImage
 import me.khruslan.tierlistmaker.fakes.FakeDispatcherProvider
 import me.khruslan.tierlistmaker.fakes.FakePaperRepository
+import me.khruslan.tierlistmaker.navigation.TierListResultException
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
 import me.khruslan.tierlistmaker.utils.assertAll
 import me.khruslan.tierlistmaker.utils.assertEmpty
@@ -21,304 +21,279 @@ import me.khruslan.tierlistmaker.utils.assertNotEmpty
 import me.khruslan.tierlistmaker.utils.awaitValue
 import me.khruslan.tierlistmaker.viewmodels.DashboardViewModel
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
-import org.junit.runners.Suite
-import kotlin.test.assertFailsWith
 
-@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
 @ExperimentalCoroutinesApi
-@RunWith(Suite::class)
-@Suite.SuiteClasses(
-    DashboardViewModelTest.StandardTest::class,
-    DashboardViewModelTest.ParameterizedTierListNameTest::class,
-    DashboardViewModelTest.ParametrizedValidTierListPositionTest::class,
-    DashboardViewModelTest.ParameterizedInvalidTierListPositionTest::class,
-    DashboardViewModelTest.ParameterizedAddedTierListTest::class,
-    DashboardViewModelTest.ParameterizedUpdatedTierListTest::class
-)
 class DashboardViewModelTest {
 
-    open class CoreTest {
+    @get:Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-        @get:Rule
-        val instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule
+    val coroutineTestRule = CoroutineTestRule()
 
-        @get:Rule
-        val coroutineTestRule = CoroutineTestRule()
+    private lateinit var fakePaperRepository: FakePaperRepository
+    private lateinit var viewModel: DashboardViewModel
 
-        protected lateinit var fakePaperRepository: FakePaperRepository
-        protected lateinit var viewModel: DashboardViewModel
+    @Before
+    fun initFakePaperRepository() {
+        fakePaperRepository = FakePaperRepository()
+    }
 
-        @Before
-        fun initFakePaperRepository() {
-            fakePaperRepository = FakePaperRepository()
-        }
+    private fun TestScope.initViewModel() {
+        viewModel = DashboardViewModel(
+            paperRepository = fakePaperRepository,
+            dispatcherProvider = FakeDispatcherProvider()
+        )
 
-        protected fun TestScope.initViewModel() {
-            viewModel = DashboardViewModel(
-                paperRepository = fakePaperRepository,
-                dispatcherProvider = FakeDispatcherProvider()
+        advanceUntilIdle()
+    }
+
+    private val tierLists
+        get() = mutableListOf(
+            TierList(
+                id = "62cacbfa-b8fb-11ec-8422-0242ac120002",
+                title = "Favorite dishes",
+                zoomValue = 4,
+                tiers = mutableListOf(
+                    Tier(
+                        id = "b4b864b8-16dd-47ca-85ae-ee4f96ed44d4",
+                        images = mutableListOf(
+                            StorageImage(
+                                id = "67cae7d3-1d75-495f-8410-34d390cff96a",
+                                filePath = "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/1649976463524.jpeg"
+                            )
+                        )
+                    ),
+                    Tier(
+                        id = "ab2a1957-0743-4812-b20c-5816002155a1",
+                        images = mutableListOf(
+                            StorageImage(
+                                id = "eaff63e8-4229-4461-b252-d788404c1a90",
+                                filePath = "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/1928863159510.jpeg"
+                            )
+                        )
+                    )
+                ),
+                backlogImages = mutableListOf(
+                    StorageImage(
+                        id = "401470da-6034-4e48-a53b-37e23834c897",
+                        filePath = "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/9076065869046.jpeg"
+                    ),
+                    StorageImage(
+                        id = "de638d0d-7dee-4f9b-83d6-795bc6ab60f0",
+                        filePath = "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/9226934535226.png"
+                    )
+                )
             )
+        )
 
-            advanceUntilIdle()
-        }
-    }
+    private val addedTierList
+        get() = TierList(
+            id = "b42d6153-bd49-4a58-b1ba-e8ee6e405d8c",
+            title = "Programming languages",
+            backlogImages = mutableListOf(),
+            tiers = mutableListOf(),
+            zoomValue = 7
+        )
 
-    class StandardTest : CoreTest() {
-
-        @Test
-        fun `Loads empty list of previews on init`() = runTest {
-            fakePaperRepository.fakeTierLists = mutableListOf()
-            initViewModel()
-
-            viewModel.tierListPreviewsLiveData.awaitValue(mutableListOf())
-            viewModel.listStateLiveData.awaitValue(ListState.Empty)
-        }
-
-        @Test
-        fun `Fails to load previews on init`() = runTest {
-            fakePaperRepository.fakeTierLists = null
-            initViewModel()
-
-            viewModel.tierListPreviewsLiveData.awaitValue(mutableListOf())
-            viewModel.listStateLiveData.awaitValue(ListState.Failed)
-        }
-
-        @Test
-        fun `Loads empty list of previews on refresh`() = runTest {
-            initViewModel()
-            fakePaperRepository.fakeTierLists = mutableListOf()
-            viewModel.refreshPreviews()
-
-            viewModel.listStateLiveData.awaitValue(ListState.Loading)
-            advanceUntilIdle()
-            viewModel.tierListPreviewsLiveData.awaitValue(mutableListOf())
-            viewModel.listStateLiveData.awaitValue(ListState.Empty)
-        }
-
-        @Test
-        fun `Fails to refresh previews`() = runTest {
-            initViewModel()
-            fakePaperRepository.fakeTierLists = null
-            viewModel.refreshPreviews()
-
-            viewModel.listStateLiveData.awaitValue(ListState.Loading)
-            advanceUntilIdle()
-            viewModel.tierListPreviewsLiveData.awaitValue(mutableListOf())
-            viewModel.listStateLiveData.awaitValue(ListState.Failed)
-        }
-
-        @Test
-        fun `Loads tier list previews on init`() = runTest {
-            fakePaperRepository.fakeTierLists = DashboardViewModelDataProvider.lists.toMutableList()
-            initViewModel()
-
-            viewModel.tierListPreviewsLiveData.awaitValue(
-                DashboardViewModelDataProvider.previews.toMutableList()
+    private val updatedTierList
+        get() = TierList(
+            id = "62cacbfa-b8fb-11ec-8422-0242ac120002",
+            title = "Favorite dishes",
+            zoomValue = 4,
+            tiers = mutableListOf(
+                Tier(
+                    id = "b4b864b8-16dd-47ca-85ae-ee4f96ed44d4",
+                    images = mutableListOf(
+                        StorageImage(
+                            id = "67cae7d3-1d75-495f-8410-34d390cff96a",
+                            filePath = "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/1649976463524.jpeg"
+                        )
+                    )
+                )
+            ),
+            backlogImages = mutableListOf(
+                StorageImage(
+                    id = "401470da-6034-4e48-a53b-37e23834c897",
+                    filePath = "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/9076065869046.jpeg"
+                ),
+                StorageImage(
+                    id = "de638d0d-7dee-4f9b-83d6-795bc6ab60f0",
+                    filePath = "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/9226934535226.png"
+                ),
+                StorageImage(
+                    id = "eaff63e8-4229-4461-b252-d788404c1a90",
+                    filePath = "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/1928863159510.jpeg"
+                )
             )
-            viewModel.listStateLiveData.awaitValue(ListState.Filled)
-        }
+        )
 
-        @Test
-        fun `Refreshes previews`() = runTest {
-            initViewModel()
-            fakePaperRepository.fakeTierLists = DashboardViewModelDataProvider.lists.toMutableList()
-            viewModel.refreshPreviews()
+    @Test
+    fun `Loads empty list of previews on init`() = runTest {
+        fakePaperRepository.fakeTierLists = mutableListOf()
+        initViewModel()
 
-            viewModel.listStateLiveData.awaitValue(ListState.Loading)
-            advanceUntilIdle()
-            viewModel.tierListPreviewsLiveData.awaitValue(
-                DashboardViewModelDataProvider.previews.toMutableList()
-            )
-            viewModel.listStateLiveData.awaitValue(ListState.Filled)
+        viewModel.tierListPreviewsLiveData.awaitValue(mutableListOf())
+        viewModel.listStateLiveData.awaitValue(ListState.Empty)
+    }
+
+    @Test
+    fun `Fails to load previews on init`() = runTest {
+        fakePaperRepository.fakeTierLists = null
+        initViewModel()
+
+        viewModel.tierListPreviewsLiveData.awaitValue(mutableListOf())
+        viewModel.listStateLiveData.awaitValue(ListState.Failed)
+    }
+
+    @Test
+    fun `Loads empty list of previews on refresh`() = runTest {
+        initViewModel()
+        fakePaperRepository.fakeTierLists = mutableListOf()
+        viewModel.refreshPreviews()
+
+        viewModel.listStateLiveData.awaitValue(ListState.Loading)
+        advanceUntilIdle()
+        viewModel.tierListPreviewsLiveData.awaitValue(mutableListOf())
+        viewModel.listStateLiveData.awaitValue(ListState.Empty)
+    }
+
+    @Test
+    fun `Fails to refresh previews`() = runTest {
+        initViewModel()
+        fakePaperRepository.fakeTierLists = null
+        viewModel.refreshPreviews()
+
+        viewModel.listStateLiveData.awaitValue(ListState.Loading)
+        advanceUntilIdle()
+        viewModel.tierListPreviewsLiveData.awaitValue(mutableListOf())
+        viewModel.listStateLiveData.awaitValue(ListState.Failed)
+    }
+
+    @Test
+    fun `Loads tier list previews on init`() = runTest {
+        val expectedPreviews = tierLists.map { it.preview }.toMutableList()
+        fakePaperRepository.fakeTierLists = tierLists
+        initViewModel()
+
+        viewModel.tierListPreviewsLiveData.awaitValue(expectedPreviews)
+        viewModel.listStateLiveData.awaitValue(ListState.Filled)
+    }
+
+    @Test
+    fun `Refreshes previews`() = runTest {
+        val expectedPreviews = tierLists.map { it.preview }.toMutableList()
+        initViewModel()
+        fakePaperRepository.fakeTierLists = tierLists
+        viewModel.refreshPreviews()
+
+        viewModel.listStateLiveData.awaitValue(ListState.Loading)
+        advanceUntilIdle()
+        viewModel.tierListPreviewsLiveData.awaitValue(expectedPreviews)
+        viewModel.listStateLiveData.awaitValue(ListState.Filled)
+    }
+
+    @Test
+    fun `Creates new tier list`() = runTest {
+        initViewModel()
+        val tierListName = "Best shooting guards of all time"
+        val tierList = viewModel.createNewTierList(tierListName)
+
+        assertNotEmpty(tierList.id)
+        assertEquals(tierListName, tierList.title)
+        assertEquals(5, tierList.zoomValue)
+        assertEquals(5, tierList.tiers.size)
+        assertAll(tierList.tiers) { it.id.isNotEmpty() }
+        assertAll(tierList.tiers) { it.images.isEmpty() }
+        assertAll(tierList.tiers) { it.style == TierStyle() }
+        assertEmpty(tierList.backlogImages)
+    }
+
+    @Test
+    fun `Returns tier list by position`() = runTest {
+        fakePaperRepository.fakeTierLists = tierLists
+        initViewModel()
+        val position = 0
+        val expectedTierList = tierLists[position]
+        val actualTierList = viewModel.getTierListByPosition(position)
+
+        assertEquals(expectedTierList, actualTierList)
+    }
+
+    @Test
+    fun `Throws error when getting list by incorrect position`() = runTest {
+        fakePaperRepository.fakeTierLists = tierLists
+        initViewModel()
+
+        assertThrows(IndexOutOfBoundsException::class.java) {
+            viewModel.getTierListByPosition(tierLists.size)
         }
     }
 
-    @RunWith(Parameterized::class)
-    class ParameterizedTierListNameTest : CoreTest() {
+    @Test
+    fun `Notifies UI when new tier list is added`() = runTest {
+        fakePaperRepository.fakeTierLists = tierLists
+        initViewModel()
 
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters
-            fun data() = DashboardViewModelDataProvider.tierListNames
-        }
+        val addPreviewObserver = viewModel.addPreviewEvent.test()
+        viewModel.handleTierListResult(addedTierList)
+        advanceUntilIdle()
 
-        @Parameterized.Parameter
-        lateinit var tierListName: String
+        viewModel.listStateLiveData.awaitValue(ListState.Filled)
+        addPreviewObserver.awaitValue(tierLists.size)
+    }
 
-        @Test
-        fun `Creates new tier list`() = runTest {
-            initViewModel()
-            val tierList = viewModel.createNewTierList(tierListName)
+    @Test
+    fun `Throws TierListResultException if tier list result is null`() = runTest {
+        fakePaperRepository.fakeTierLists = tierLists
+        initViewModel()
 
-            assertNotEmpty(tierList.id)
-            assertEquals(tierListName, tierList.title)
-            assertEquals(5, tierList.zoomValue)
-            assertEquals(5, tierList.tiers.size)
-            assertAll(tierList.tiers) { it.id.isNotEmpty() }
-            assertAll(tierList.tiers) { it.images.isEmpty() }
-            assertAll(tierList.tiers) { it.style == TierStyle() }
-            assertEmpty(tierList.backlogImages)
+        assertThrows(TierListResultException::class.java) {
+            viewModel.handleTierListResult(null)
         }
     }
 
-    @RunWith(Parameterized::class)
-    class ParametrizedValidTierListPositionTest : CoreTest() {
+    @Test
+    fun `Successfully saves new update to the database`() = runTest {
+        fakePaperRepository.fakeTierLists = tierLists
+        initViewModel()
 
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters
-            fun data() = ValidPositions.data
-        }
+        val saveErrorObserver = viewModel.saveErrorEvent.test()
+        viewModel.handleTierListResult(addedTierList)
+        advanceUntilIdle()
 
-        @Parameterized.Parameter(ValidPositions.positionParam)
-        lateinit var inputPosition: Integer
-
-        @Parameterized.Parameter(ValidPositions.tierListParam)
-        lateinit var expectedTierList: TierList
-
-        @Test
-        fun `Returns tier list by position`() = runTest {
-            fakePaperRepository.fakeTierLists = DashboardViewModelDataProvider.lists.toMutableList()
-            initViewModel()
-            val actualTierList = viewModel.getTierListByPosition(inputPosition.toInt())
-
-            assertEquals(expectedTierList, actualTierList)
-        }
+        assertEquals(addedTierList, fakePaperRepository.savedTierList)
+        saveErrorObserver.assertNoValue()
     }
 
-    @RunWith(Parameterized::class)
-    class ParameterizedInvalidTierListPositionTest : CoreTest() {
+    @Test
+    fun `Shows error when unable to save new tier list to the database`() = runTest {
+        fakePaperRepository.fakeTierLists = tierLists
+        fakePaperRepository.shouldSaveSuccessfully = false
+        initViewModel()
 
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters
-            fun data() = DashboardViewModelDataProvider.invalidPositions
-        }
+        val saveErrorObserver = viewModel.saveErrorEvent.test()
+        viewModel.handleTierListResult(addedTierList)
+        advanceUntilIdle()
 
-        @Parameterized.Parameter
-        lateinit var position: Integer
-
-        @Test
-        fun `Throws error when getting list by incorrect position`() = runTest {
-            fakePaperRepository.fakeTierLists = DashboardViewModelDataProvider.lists.toMutableList()
-            initViewModel()
-
-            assertFailsWith<IndexOutOfBoundsException> {
-                viewModel.getTierListByPosition(position.toInt())
-            }
-        }
+        assertEquals(addedTierList, fakePaperRepository.savedTierList)
+        saveErrorObserver.awaitValue(Unit)
     }
 
-    @RunWith(Parameterized::class)
-    class ParameterizedAddedTierListTest : CoreTest() {
+    @Test
+    fun `Notifies UI when tier list is updated`() = runTest {
+        fakePaperRepository.fakeTierLists = tierLists
+        initViewModel()
 
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters
-            fun data() = DashboardViewModelDataProvider.addedLists
-        }
+        val updatePreviewObserver = viewModel.updatePreviewEvent.test()
+        val updatedTierListPosition = tierLists.indexOfFirst { it.id == updatedTierList.id }
+        viewModel.handleTierListResult(updatedTierList)
+        advanceUntilIdle()
 
-        @Parameterized.Parameter
-        lateinit var addedTierList: TierList
-
-        @Test
-        fun `Notifies UI when new tier list is added`() = runTest {
-            fakePaperRepository.fakeTierLists = DashboardViewModelDataProvider.lists.toMutableList()
-            initViewModel()
-
-            val addPreviewObserver = viewModel.addPreviewEvent.test()
-            viewModel.handleTierListResult(addedTierList)
-            advanceUntilIdle()
-
-            viewModel.listStateLiveData.awaitValue(ListState.Filled)
-            addPreviewObserver.awaitValue(DashboardViewModelDataProvider.lists.size)
-        }
-
-        @Test
-        fun `Successfully saves new update to the database`() = runTest {
-            fakePaperRepository.fakeTierLists = DashboardViewModelDataProvider.lists.toMutableList()
-            initViewModel()
-
-            val saveErrorObserver = viewModel.saveErrorEvent.test()
-            viewModel.handleTierListResult(addedTierList)
-            advanceUntilIdle()
-
-            assertEquals(addedTierList, fakePaperRepository.savedTierList)
-            saveErrorObserver.assertNoValue()
-        }
-
-        @Test
-        fun `Shows error when unable to save new tier list to the database`() = runTest {
-            fakePaperRepository.fakeTierLists = DashboardViewModelDataProvider.lists.toMutableList()
-            fakePaperRepository.shouldSaveSuccessfully = false
-            initViewModel()
-
-            val saveErrorObserver = viewModel.saveErrorEvent.test()
-            viewModel.handleTierListResult(addedTierList)
-            advanceUntilIdle()
-
-            assertEquals(addedTierList, fakePaperRepository.savedTierList)
-            saveErrorObserver.awaitValue(Unit)
-        }
-    }
-
-    @RunWith(Parameterized::class)
-    class ParameterizedUpdatedTierListTest : CoreTest() {
-
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters
-            fun data() = UpdatedLists.data
-        }
-
-        @Parameterized.Parameter(UpdatedLists.positionParam)
-        lateinit var position: Integer
-
-        @Parameterized.Parameter(UpdatedLists.updatedListParam)
-        lateinit var updatedTierList: TierList
-
-        @Test
-        fun `Notifies UI when tier list is updated`() = runTest {
-            fakePaperRepository.fakeTierLists = DashboardViewModelDataProvider.lists.toMutableList()
-            initViewModel()
-
-            val updatePreviewObserver = viewModel.updatePreviewEvent.test()
-            viewModel.handleTierListResult(updatedTierList)
-            advanceUntilIdle()
-
-            updatePreviewObserver.awaitValue(position.toInt())
-        }
-
-        @Test
-        fun `Successfully saves new update to the database`() = runTest {
-            fakePaperRepository.fakeTierLists = DashboardViewModelDataProvider.lists.toMutableList()
-            initViewModel()
-
-            val saveErrorObserver = viewModel.saveErrorEvent.test()
-            viewModel.handleTierListResult(updatedTierList)
-            advanceUntilIdle()
-
-            assertEquals(updatedTierList, fakePaperRepository.savedTierList)
-            saveErrorObserver.assertNoValue()
-        }
-
-        @Test
-        fun `Shows error when unable to save new tier list to the database`() = runTest {
-            fakePaperRepository.fakeTierLists = DashboardViewModelDataProvider.lists.toMutableList()
-            fakePaperRepository.shouldSaveSuccessfully = false
-            initViewModel()
-
-            val saveErrorObserver = viewModel.saveErrorEvent.test()
-            viewModel.handleTierListResult(updatedTierList)
-            advanceUntilIdle()
-
-            assertEquals(updatedTierList, fakePaperRepository.savedTierList)
-            saveErrorObserver.awaitValue(Unit)
-        }
+        updatePreviewObserver.awaitValue(updatedTierListPosition)
     }
 }
