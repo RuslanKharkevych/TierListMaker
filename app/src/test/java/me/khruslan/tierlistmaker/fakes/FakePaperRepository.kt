@@ -1,7 +1,7 @@
 package me.khruslan.tierlistmaker.fakes
 
-import me.khruslan.tierlistmaker.data.tierlist.TierList
-import me.khruslan.tierlistmaker.repository.db.PaperRepository
+import me.khruslan.tierlistmaker.data.models.tierlist.TierList
+import me.khruslan.tierlistmaker.data.repositories.db.PaperRepository
 
 class FakePaperRepository : PaperRepository {
     var fakeTierLists: MutableList<TierList>? = null

@@ -7,9 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import dagger.hilt.android.AndroidEntryPoint
 import me.khruslan.tierlistmaker.R
-import me.khruslan.tierlistmaker.data.tierlist.TierList
+import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.databinding.ActivityTierListBinding
 import me.khruslan.tierlistmaker.utils.extensions.findNavHostFragmentById
+import me.khruslan.tierlistmaker.utils.extensions.getParcelableExtraCompat
 
 /**
  * [AppCompatActivity] that represents tier list task. Can be launched from the home task.
@@ -43,7 +44,7 @@ class TierListActivity : AppCompatActivity() {
      */
     private val navGraphBundle: Bundle
         get() {
-            val tierList = intent.getParcelableExtra<TierList>(EXTRA_TIER_LIST)
+            val tierList = intent.getParcelableExtraCompat<TierList>(EXTRA_TIER_LIST)
             return bundleOf(KEY_TIER_LIST to tierList)
         }
 

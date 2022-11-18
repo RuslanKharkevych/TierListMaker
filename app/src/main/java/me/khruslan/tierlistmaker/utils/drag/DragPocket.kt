@@ -1,7 +1,7 @@
 package me.khruslan.tierlistmaker.utils.drag
 
-import me.khruslan.tierlistmaker.data.drag.DragData
-import me.khruslan.tierlistmaker.data.drag.ImageDragData
+import me.khruslan.tierlistmaker.data.models.drag.DragData
+import me.khruslan.tierlistmaker.data.models.drag.ImageDragData
 import timber.log.Timber
 
 /**

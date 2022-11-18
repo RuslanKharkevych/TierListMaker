@@ -1,7 +1,7 @@
 package me.khruslan.tierlistmaker.fakes
 
-import me.khruslan.tierlistmaker.data.tierlist.TierStyle
-import me.khruslan.tierlistmaker.repository.tierlist.tier.TierStyleProvider
+import me.khruslan.tierlistmaker.data.models.tierlist.TierStyle
+import me.khruslan.tierlistmaker.data.repositories.tierlist.tier.TierStyleProvider
 
 class FakeTierStyleProvider : TierStyleProvider {
     var fakeStyles = emptyList<TierStyle>()

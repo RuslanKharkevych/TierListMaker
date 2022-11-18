@@ -16,14 +16,14 @@ import androidx.transition.TransitionManager
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import me.khruslan.tierlistmaker.R
-import me.khruslan.tierlistmaker.data.state.ListState
-import me.khruslan.tierlistmaker.data.tierlist.TierList
+import me.khruslan.tierlistmaker.ui.models.ListState
+import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.databinding.FragmentDashboardBinding
-import me.khruslan.tierlistmaker.navigation.TierListResultContract
-import me.khruslan.tierlistmaker.navigation.TierListResultException
+import me.khruslan.tierlistmaker.ui.navigation.TierListResultContract
+import me.khruslan.tierlistmaker.ui.navigation.TierListResultException
 import me.khruslan.tierlistmaker.ui.adapters.TierListPreviewAdapter
 import me.khruslan.tierlistmaker.ui.screens.tierlist.TierListActivity
-import me.khruslan.tierlistmaker.viewmodels.DashboardViewModel
+import me.khruslan.tierlistmaker.ui.viewmodels.DashboardViewModel
 import timber.log.Timber
 
 /**

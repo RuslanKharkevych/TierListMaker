@@ -3,10 +3,10 @@ package me.khruslan.tierlistmaker.ui.holders
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import me.khruslan.tierlistmaker.R
-import me.khruslan.tierlistmaker.data.tierlist.image.Image
-import me.khruslan.tierlistmaker.data.tierlist.image.ResourceImage
-import me.khruslan.tierlistmaker.data.tierlist.image.StorageImage
-import me.khruslan.tierlistmaker.data.tierlist.TierList
+import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
+import me.khruslan.tierlistmaker.data.models.tierlist.image.ResourceImage
+import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
+import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.databinding.ItemTierListPreviewBinding
 import me.khruslan.tierlistmaker.utils.extensions.loadTierListImage
 

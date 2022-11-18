@@ -4,10 +4,10 @@ import android.view.View
 import android.widget.ImageView
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
-import me.khruslan.tierlistmaker.data.drag.ImageDragData
-import me.khruslan.tierlistmaker.data.tierlist.image.Image
-import me.khruslan.tierlistmaker.data.tierlist.image.ResourceImage
-import me.khruslan.tierlistmaker.data.tierlist.image.StorageImage
+import me.khruslan.tierlistmaker.data.models.drag.ImageDragData
+import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
+import me.khruslan.tierlistmaker.data.models.tierlist.image.ResourceImage
+import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
 import me.khruslan.tierlistmaker.utils.extensions.loadTierListImage
 import me.khruslan.tierlistmaker.utils.extensions.startDragCompat
 import timber.log.Timber

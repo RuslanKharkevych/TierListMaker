@@ -1,9 +1,9 @@
 package me.khruslan.tierlistmaker.fakes
 
-import me.khruslan.tierlistmaker.data.drag.effects.DragEffect
-import me.khruslan.tierlistmaker.data.tierlist.TierList
-import me.khruslan.tierlistmaker.data.tierlist.TierListEvent
-import me.khruslan.tierlistmaker.repository.tierlist.TierListProcessor
+import me.khruslan.tierlistmaker.data.models.drag.effects.DragEffect
+import me.khruslan.tierlistmaker.data.models.tierlist.TierList
+import me.khruslan.tierlistmaker.data.models.tierlist.TierListEvent
+import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListProcessor
 
 class FakeTierListProcessor : TierListProcessor {
     var initializedTierList: TierList? = null

@@ -3,7 +3,7 @@ package me.khruslan.tierlistmaker.fakes
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import me.khruslan.tierlistmaker.repository.dispatchers.DispatcherProvider
+import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProvider
 
 @ExperimentalCoroutinesApi
 class FakeDispatcherProvider : DispatcherProvider {

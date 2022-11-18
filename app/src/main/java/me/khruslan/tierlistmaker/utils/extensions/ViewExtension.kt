@@ -2,7 +2,7 @@ package me.khruslan.tierlistmaker.utils.extensions
 
 import android.os.Build
 import android.view.View
-import me.khruslan.tierlistmaker.data.drag.ImageDragData
+import me.khruslan.tierlistmaker.data.models.drag.ImageDragData
 
 /**
  * A helper function to start drag that supports all version.

@@ -4,8 +4,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import me.khruslan.tierlistmaker.data.drag.ImageDragData
-import me.khruslan.tierlistmaker.data.tierlist.image.Image
+import me.khruslan.tierlistmaker.data.models.drag.ImageDragData
+import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
 import me.khruslan.tierlistmaker.ui.holders.TierListImageHolder
 import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
 

@@ -4,8 +4,8 @@ import android.graphics.drawable.ColorDrawable
 import android.view.View
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
-import me.khruslan.tierlistmaker.data.drag.TierDragData
-import me.khruslan.tierlistmaker.data.tierlist.Tier
+import me.khruslan.tierlistmaker.data.models.drag.TierDragData
+import me.khruslan.tierlistmaker.data.models.tierlist.Tier
 import me.khruslan.tierlistmaker.databinding.ItemTierBinding
 import me.khruslan.tierlistmaker.ui.adapters.TierListImageAdapter
 import me.khruslan.tierlistmaker.utils.view.FlexLayoutManager

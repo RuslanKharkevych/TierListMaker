@@ -12,7 +12,7 @@
 
         <argument
             android:name="tierList"
-            app:argType="me.khruslan.tierlistmaker.data.tierlist.TierList" />
+            app:argType="me.khruslan.tierlistmaker.data.models.tierlist.TierList" />
 
     </fragment>
 

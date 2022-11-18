@@ -3,7 +3,7 @@ package me.khruslan.tierlistmaker.ui.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import me.khruslan.tierlistmaker.data.tierlist.TierList
+import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.databinding.ItemTierListPreviewBinding
 import me.khruslan.tierlistmaker.ui.holders.TierListPreviewHolder
 

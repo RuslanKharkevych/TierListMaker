@@ -17,22 +17,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import me.khruslan.tierlistmaker.R
-import me.khruslan.tierlistmaker.data.drag.DragData
-import me.khruslan.tierlistmaker.data.drag.ImageDragData
-import me.khruslan.tierlistmaker.data.drag.TierDragData
-import me.khruslan.tierlistmaker.data.state.LoadingProgress
-import me.khruslan.tierlistmaker.data.tierlist.*
-import me.khruslan.tierlistmaker.data.tierlist.image.Image
+import me.khruslan.tierlistmaker.data.models.drag.DragData
+import me.khruslan.tierlistmaker.data.models.drag.ImageDragData
+import me.khruslan.tierlistmaker.data.models.drag.TierDragData
+import me.khruslan.tierlistmaker.data.models.tierlist.*
+import me.khruslan.tierlistmaker.ui.models.LoadingProgress
+import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
 import me.khruslan.tierlistmaker.databinding.FragmentTierListBinding
-import me.khruslan.tierlistmaker.navigation.TierListResultContract
-import me.khruslan.tierlistmaker.repository.file.FileManager
+import me.khruslan.tierlistmaker.ui.navigation.TierListResultContract
+import me.khruslan.tierlistmaker.data.repositories.file.FileManager
 import me.khruslan.tierlistmaker.ui.adapters.TierAdapter
 import me.khruslan.tierlistmaker.ui.adapters.TierListImageAdapter
 import me.khruslan.tierlistmaker.ui.adapters.reorderable.ReorderableCallback
 import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
 import me.khruslan.tierlistmaker.utils.drag.TierListDragListener
 import me.khruslan.tierlistmaker.utils.extensions.setResultDataAndFinish
-import me.khruslan.tierlistmaker.viewmodels.TierListViewModel
+import me.khruslan.tierlistmaker.ui.viewmodels.TierListViewModel
 
 /**
  * [Fragment] that represents a tier list.
