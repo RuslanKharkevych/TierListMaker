@@ -3,8 +3,8 @@ package me.khruslan.tierlistmaker.repository.tierlist.tier
 import android.graphics.Color
 import me.khruslan.tierlistmaker.data.tierlist.Tier
 
-private const val DEFAULT_SATURATION = 1f
-private const val DEFAULT_VALUE = 1f
+private const val DEFAULT_SATURATION = 0.8f
+private const val DEFAULT_VALUE = 1f // Brightness
 
 private const val HUE_RED = 0f
 private const val HUE_ORANGE = 30f
