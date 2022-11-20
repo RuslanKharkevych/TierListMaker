@@ -6,7 +6,9 @@ import me.khruslan.tierlistmaker.data.repositories.db.PaperRepository
 class FakePaperRepository : PaperRepository {
     var fakeTierLists: MutableList<TierList>? = null
     var shouldSaveSuccessfully = true
+
     var savedTierList: TierList? = null
+        private set
 
     override suspend fun getTierLists() = fakeTierLists
 

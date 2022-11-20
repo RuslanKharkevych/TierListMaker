@@ -45,8 +45,7 @@ class TierListViewModelTest {
 
     companion object {
         private const val KEY_TIER_LIST = "tierList"
-        private const val CONTEXT_EXTENSION_PACKAGE =
-            "me.khruslan.tierlistmaker.utils.extensions.ContextExtensionKt"
+        private const val CONTEXT_EXTENSION_PACKAGE = "me.khruslan.tierlistmaker.utils.extensions.ContextExtensionKt"
     }
 
     @get:Rule
@@ -352,7 +351,8 @@ class TierListViewModelTest {
         val tierListEvent = TierChanged(tierPosition = 1)
         val dragEffect = InsertToTier(data = dragTarget.copy(image = dragShadow.image))
 
-        dragPocket.cachedTarget = dragTarget
+        dragPocket.target = dragTarget
+        dragPocket.target = null
         fakeTierListProcessor.fakeEvents.addLast(tierListEvent)
         viewModel.dropImage(dragShadow)
 

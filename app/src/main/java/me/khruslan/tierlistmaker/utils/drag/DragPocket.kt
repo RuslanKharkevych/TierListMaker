@@ -44,6 +44,7 @@ class DragPocket {
             if (field == null) logError("get cachedTarget: cachedTarget is null")
             return field.also { field = null }
         }
+        private set
 
     /**
      * Logs unexpected pocket states.

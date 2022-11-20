@@ -6,7 +6,10 @@ import me.khruslan.tierlistmaker.data.models.tierlist.TierListEvent
 import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListProcessor
 
 class FakeTierListProcessor : TierListProcessor {
+
     var initializedTierList: TierList? = null
+        private set
+
     val fakeEvents = ArrayDeque<TierListEvent>()
     val processedDragEffects = ArrayDeque<DragEffect>()
 

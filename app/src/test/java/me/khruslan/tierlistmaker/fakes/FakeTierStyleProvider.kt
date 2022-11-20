@@ -5,7 +5,9 @@ import me.khruslan.tierlistmaker.data.repositories.tierlist.tier.TierStyleProvid
 
 class FakeTierStyleProvider : TierStyleProvider {
     var fakeStyles = emptyList<TierStyle>()
+
     var processedSize: Int? = null
+        private set
 
     override suspend fun getTierStyles(size: Int): List<TierStyle> {
         processedSize = size
