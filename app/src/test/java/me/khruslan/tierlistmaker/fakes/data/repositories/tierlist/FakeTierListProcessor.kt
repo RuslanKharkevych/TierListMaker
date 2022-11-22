@@ -1,4 +1,4 @@
-package me.khruslan.tierlistmaker.fakes
+package me.khruslan.tierlistmaker.fakes.data.repositories.tierlist
 
 import me.khruslan.tierlistmaker.data.models.drag.effects.DragEffect
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
@@ -10,15 +10,11 @@ class FakeTierListProcessor : TierListProcessor {
     var initializedTierList: TierList? = null
         private set
 
-    val fakeEvents = ArrayDeque<TierListEvent>()
-    val processedDragEffects = ArrayDeque<DragEffect>()
+    val events = mutableMapOf<DragEffect, TierListEvent>()
 
     override fun setTierList(tierList: TierList) {
         initializedTierList = tierList
     }
 
-    override fun processDragEffect(effect: DragEffect): TierListEvent {
-        processedDragEffects.addLast(effect)
-        return fakeEvents.removeFirst()
-    }
+    override fun processDragEffect(effect: DragEffect) = checkNotNull(events[effect])
 }

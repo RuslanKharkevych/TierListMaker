@@ -4,9 +4,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import me.khruslan.tierlistmaker.data.models.tierlist.TierStyle
 import me.khruslan.tierlistmaker.data.repositories.tierlist.tier.TierStyleProviderImpl
-import me.khruslan.tierlistmaker.fakes.FakeDispatcherProvider
-import me.khruslan.tierlistmaker.fakes.FakeTierColorProvider
-import me.khruslan.tierlistmaker.fakes.FakeTierNameProvider
+import me.khruslan.tierlistmaker.fakes.data.repositories.dispatchers.FakeDispatcherProvider
+import me.khruslan.tierlistmaker.fakes.data.repositories.tierlist.tier.FakeTierColorProvider
+import me.khruslan.tierlistmaker.fakes.data.repositories.tierlist.tier.FakeTierNameProvider
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -28,8 +28,8 @@ class TierStyleProviderTest {
             dispatchersProvider = FakeDispatcherProvider()
         )
 
-        colorProvider.fakeColors = listOf(-52429, -26317, -205, -13369549, -13369345)
-        nameProvider.fakeNames = mapOf(0 to "S", 1 to "A", 2 to "B", 3 to "C", 4 to "D")
+        colorProvider.colors = listOf(-52429, -26317, -205, -13369549, -13369345)
+        nameProvider.names = listOf("S", "A", "B", "C", "D")
 
         val expectedStyles = listOf(
             TierStyle(title = "S", color = -52429),

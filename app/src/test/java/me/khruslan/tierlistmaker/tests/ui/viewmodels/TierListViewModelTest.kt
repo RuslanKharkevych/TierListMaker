@@ -19,21 +19,20 @@ import me.khruslan.tierlistmaker.data.models.drag.TierDragData
 import me.khruslan.tierlistmaker.data.models.drag.TrashBinDragData
 import me.khruslan.tierlistmaker.data.models.drag.effects.*
 import me.khruslan.tierlistmaker.data.models.tierlist.*
-import me.khruslan.tierlistmaker.ui.models.LoadingProgress
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
-import me.khruslan.tierlistmaker.fakes.FakeFileManager
-import me.khruslan.tierlistmaker.fakes.FakeTierListProcessor
-import me.khruslan.tierlistmaker.fakes.FakeTierStyleProvider
+import me.khruslan.tierlistmaker.data.work.SaveTierListArgsProvider
+import me.khruslan.tierlistmaker.data.work.SaveTierListWorker
+import me.khruslan.tierlistmaker.fakes.data.repositories.file.FakeFileManager
+import me.khruslan.tierlistmaker.fakes.data.repositories.tierlist.FakeTierListProcessor
+import me.khruslan.tierlistmaker.fakes.data.repositories.tierlist.tier.FakeTierStyleProvider
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
+import me.khruslan.tierlistmaker.ui.models.LoadingProgress
+import me.khruslan.tierlistmaker.ui.viewmodels.TierListViewModel
 import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
-import me.khruslan.tierlistmaker.utils.addAll
 import me.khruslan.tierlistmaker.utils.awaitValue
 import me.khruslan.tierlistmaker.utils.awaitValues
 import me.khruslan.tierlistmaker.utils.drag.DragPocket
 import me.khruslan.tierlistmaker.utils.extensions.displayWidthPixels
-import me.khruslan.tierlistmaker.ui.viewmodels.TierListViewModel
-import me.khruslan.tierlistmaker.data.work.SaveTierListArgsProvider
-import me.khruslan.tierlistmaker.data.work.SaveTierListWorker
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -93,15 +92,6 @@ class TierListViewModelTest {
     private fun initViewModelWithTierList() {
         savedStateHandle[KEY_TIER_LIST] = tierList
         initViewModel()
-    }
-
-    private fun verifyProcessedDragEffects(vararg effects: DragEffect) {
-        val processedEffects = fakeTierListProcessor.processedDragEffects
-        assertEquals(effects.size, processedEffects.size)
-
-        effects.forEachIndexed { index, effect ->
-            assertEquals(effect, processedEffects[index])
-        }
     }
 
     private val tierList = TierList(
@@ -247,11 +237,10 @@ class TierListViewModelTest {
             tierPosition = BACKLOG_TIER_POSITION
         )
         val dragEffect = RemoveFromBacklog(itemPosition = 1)
-        fakeTierListProcessor.fakeEvents.addLast(tierListEvent)
+        fakeTierListProcessor.events[dragEffect] = tierListEvent
         viewModel.startDrag(imageDragData)
 
         assertEquals(imageDragData, dragPocket.shadow)
-        verifyProcessedDragEffects(dragEffect)
         tierListEventObserver.awaitValue(tierListEvent)
     }
 
@@ -266,11 +255,10 @@ class TierListViewModelTest {
             tierPosition = 0
         )
         val dragEffect = HighlightInTier(tierPosition = 0, itemPosition = 0)
-        fakeTierListProcessor.fakeEvents.addLast(tierListEvent)
+        fakeTierListProcessor.events[dragEffect] = tierListEvent
         viewModel.updateDragTarget(dragTarget)
 
         assertEquals(dragTarget, dragPocket.target)
-        verifyProcessedDragEffects(dragEffect)
         tierListEventObserver.awaitValue(tierListEvent)
     }
 
@@ -282,12 +270,10 @@ class TierListViewModelTest {
         val dragEffect = RemoveFromTier(tierPosition = 1, itemPosition = 1)
 
         dragPocket.target = dragTarget
-        fakeTierListProcessor.fakeEvents.addLast(tierListEvent)
+        fakeTierListProcessor.events[dragEffect] = tierListEvent
         viewModel.updateDragTarget(null)
 
         assertNull(dragPocket.target)
-        verifyProcessedDragEffects(dragEffect)
-        assertEquals(1, fakeTierListProcessor.processedDragEffects.size)
         tierListEventObserver.awaitValue(tierListEvent)
     }
 
@@ -302,11 +288,11 @@ class TierListViewModelTest {
         val highlightTargetEffect = HighlightLastInTier(tierPosition = 0)
 
         dragPocket.target = dragTarget
-        fakeTierListProcessor.fakeEvents.addAll(removeTargetEvent, highlightTargetEvent)
+        fakeTierListProcessor.events[removeTargetEffect] = removeTargetEvent
+        fakeTierListProcessor.events[highlightTargetEffect] = highlightTargetEvent
         viewModel.updateDragTarget(newDragTarget)
 
         assertEquals(newDragTarget, dragPocket.target)
-        verifyProcessedDragEffects(removeTargetEffect, highlightTargetEffect)
         tierListEventObserver.awaitValues(removeTargetEvent, highlightTargetEvent)
     }
 
@@ -336,11 +322,10 @@ class TierListViewModelTest {
         val dragEffect = UpdateInTier(data = dragTarget.copy(image = dragShadow.image))
 
         dragPocket.target = dragTarget
-        fakeTierListProcessor.fakeEvents.addLast(tierListEvent)
+        fakeTierListProcessor.events[dragEffect] = tierListEvent
         viewModel.dropImage(dragShadow)
 
         assertNull(dragPocket.target)
-        verifyProcessedDragEffects(dragEffect)
         tierListEventObserver.awaitValue(tierListEvent)
     }
 
@@ -353,11 +338,10 @@ class TierListViewModelTest {
 
         dragPocket.target = dragTarget
         dragPocket.target = null
-        fakeTierListProcessor.fakeEvents.addLast(tierListEvent)
+        fakeTierListProcessor.events[dragEffect] = tierListEvent
         viewModel.dropImage(dragShadow)
 
         assertNull(dragPocket.cachedTarget)
-        verifyProcessedDragEffects(dragEffect)
         tierListEventObserver.awaitValue(tierListEvent)
     }
 
@@ -369,11 +353,10 @@ class TierListViewModelTest {
         val dragEffect = InsertToBacklog(data = dragShadow)
 
         dragPocket.shadow = dragShadow
-        fakeTierListProcessor.fakeEvents.addLast(tierListEvent)
+        fakeTierListProcessor.events[dragEffect] = tierListEvent
         viewModel.endDrag()
 
         assertNull(dragPocket.shadow)
-        verifyProcessedDragEffects(dragEffect)
         tierListEventObserver.awaitValue(tierListEvent)
     }
 
@@ -384,7 +367,7 @@ class TierListViewModelTest {
             null,
             "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/3575526202683.jpeg"
         )
-        val imageUris = List(filePaths.size) { Uri.EMPTY }
+        val imageUris = List(filePaths.size) { mockk<Uri>() }
         val files = filePaths.map { path ->
             mockk<File>()
                 .takeIf { path != null }
@@ -404,8 +387,8 @@ class TierListViewModelTest {
             "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/3575526202683.jpeg"
         )
 
-        fakeTierStyleProvider.fakeStyles = tierList.tiers.map { it.style }
-        fakeFileManager.fakeFiles.addAll(files)
+        fakeTierStyleProvider.styles = tierList.tiers.map { it.style }
+        fakeFileManager.files = imageUris.zip(files).toMap()
         initViewModelWithTierList()
         advanceUntilIdle()
         val tierListEventObserver = viewModel.tierListEvent.test()
@@ -419,12 +402,11 @@ class TierListViewModelTest {
         assertEquals(expectedSavedImagePayloads, actualSavedImagePayloads)
         tierListEventObserver.awaitValue(BacklogImagesAdded)
         loadingProgressObserver.awaitValues(*expectedLoadingProgressStates)
-        assertEquals(imageUris, fakeFileManager.processedUris)
     }
 
     @Test
     fun `Adds new tier and updates tier styles`() = runTest {
-        fakeTierStyleProvider.fakeStyles = tierList.tiers.map { it.style }
+        fakeTierStyleProvider.styles = tierList.tiers.map { it.style }
         initViewModelWithTierList()
         advanceUntilIdle()
 
@@ -444,7 +426,7 @@ class TierListViewModelTest {
             )
         )
         val expectedEvents = listOf(TierInserted(tierPosition = 2), TierListChanged)
-        fakeTierStyleProvider.fakeStyles = newTierStyles.toList()
+        fakeTierStyleProvider.styles = newTierStyles.toList()
         viewModel.addNewTier()
         advanceUntilIdle()
 
@@ -453,7 +435,6 @@ class TierListViewModelTest {
         expectedEvents.forEachIndexed { index, expectedEvent ->
             assertEquals(expectedEvent, actualEvents[index])
         }
-        assertEquals(newTierStyles.size, fakeTierStyleProvider.processedSize)
         assertEquals(newTierStyles.toList(), tierList.tiers.map { it.style })
     }
 }

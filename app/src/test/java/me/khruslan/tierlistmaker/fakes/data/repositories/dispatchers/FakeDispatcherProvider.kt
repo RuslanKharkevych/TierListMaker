@@ -1,4 +1,4 @@
-package me.khruslan.tierlistmaker.fakes
+package me.khruslan.tierlistmaker.fakes.data.repositories.dispatchers
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher

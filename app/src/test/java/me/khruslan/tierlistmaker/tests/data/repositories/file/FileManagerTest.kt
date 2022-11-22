@@ -11,8 +11,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import me.khruslan.tierlistmaker.data.repositories.file.FileManager
 import me.khruslan.tierlistmaker.data.repositories.file.FileManagerImpl
-import me.khruslan.tierlistmaker.fakes.FakeDispatcherProvider
-import me.khruslan.tierlistmaker.fakes.FakeImageCompressor
+import me.khruslan.tierlistmaker.fakes.data.repositories.dispatchers.FakeDispatcherProvider
+import me.khruslan.tierlistmaker.fakes.data.repositories.file.FakeImageCompressor
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -66,11 +66,9 @@ class FileManagerTest {
         val exception = IOException("Failed to compress file")
         every { mockContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES) } returns directory
         every { directory.path } returns path
-        fakeImageCompressor.compressedFileResult = Result.failure(exception)
+        fakeImageCompressor.fileResults[mockUri to path] = Result.failure(exception)
 
         assertNull(fileManager.createImageFileFromUri(mockUri))
-        assertEquals(mockUri, fakeImageCompressor.processedUri)
-        assertEquals(path, fakeImageCompressor.processedTargetDir)
     }
 
     @Test
@@ -80,10 +78,8 @@ class FileManagerTest {
         val expectedFile: File = mockk()
         every { mockContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES) } returns directory
         every { directory.path } returns path
-        fakeImageCompressor.compressedFileResult = Result.success(expectedFile)
+        fakeImageCompressor.fileResults[mockUri to path] = Result.success(expectedFile)
 
         assertEquals(expectedFile, fileManager.createImageFileFromUri(mockUri))
-        assertEquals(mockUri, fakeImageCompressor.processedUri)
-        assertEquals(path, fakeImageCompressor.processedTargetDir)
     }
 }

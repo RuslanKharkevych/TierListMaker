@@ -9,7 +9,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import me.khruslan.tierlistmaker.data.repositories.file.ImageCompressor
 import me.khruslan.tierlistmaker.data.repositories.file.ImageCompressorImpl
-import me.khruslan.tierlistmaker.fakes.FakeDispatcherProvider
+import me.khruslan.tierlistmaker.fakes.data.repositories.dispatchers.FakeDispatcherProvider
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
 import me.khruslan.tierlistmaker.utils.extensions.displayWidthPixels
 import me.shouheng.compress.Compress

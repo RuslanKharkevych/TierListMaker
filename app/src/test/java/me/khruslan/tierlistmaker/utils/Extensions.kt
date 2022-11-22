@@ -14,7 +14,3 @@ fun <T> TestObserver<T>.awaitValue(value: T): TestObserver<T> =
 
 fun <T> TestObserver<T>.awaitValues(vararg values: T): TestObserver<T> =
     awaitValue(TIMEOUT_SECONDS, TimeUnit.SECONDS).assertValueHistory(*values)
-
-fun <E> ArrayDeque<E>.addAll(vararg elements: E) {
-    elements.forEach { addLast(it) }
-}

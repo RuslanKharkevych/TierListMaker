@@ -12,7 +12,7 @@ import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
 import me.khruslan.tierlistmaker.data.repositories.db.PaperRepository
 import me.khruslan.tierlistmaker.data.repositories.db.PaperRepositoryImpl
-import me.khruslan.tierlistmaker.fakes.FakeDispatcherProvider
+import me.khruslan.tierlistmaker.fakes.data.repositories.dispatchers.FakeDispatcherProvider
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
 import org.junit.*
 import org.junit.Assert.*
