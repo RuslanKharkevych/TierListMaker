@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="btn_add_new_list_desc">Добавить новый список</string>
-    <string name="menu_item_add_new_image_title">Добавить новое изображение</string>
-    <string name="menu_item_zoom_in_title">Увеличить</string>
-    <string name="menu_item_ic_zoom_out_title">Уменьшить</string>
+    <string name="btn_add_new_image_desc">Добавить новое изображение</string>
+    <string name="btn_zoom_in_desc">Увеличить</string>
+    <string name="btn_zoom_out_desc">Уменьшить</string>
     <string name="toolbar_subtitle_loading">Загрузка (%1$d/%2$d)</string>
-    <string name="menu_item_add_new_tier_title">Добавить новый ранг</string>
+    <string name="btn_add_new_tier_desc">Добавить новый ранг</string>
     <string name="tier_list_default_title">Новый список</string>
     <string name="empty_previews_message">Сдесь пока ничего нет. Создайте свой первый список!</string>
     <string name="load_previews_error_message">Ой! Что-то пошло не так…\nНе удалось загрузить вашу коллекцию</string>
@@ -13,4 +13,6 @@
     <string name="save_previews_error_message">Ой! Не удалось сохранить список :(</string>
     <string name="btn_refresh">Обновить</string>
     <string name="app_language">ru</string>
+    <string name="menu_item_rename_title">Переименовать</string>
+    <string name="btn_info_desc">Информация</string>
 </resources>

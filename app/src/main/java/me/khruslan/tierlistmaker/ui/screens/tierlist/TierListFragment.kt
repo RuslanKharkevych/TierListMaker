@@ -37,7 +37,7 @@ import me.khruslan.tierlistmaker.ui.viewmodels.TierListViewModel
 /**
  * [Fragment] that represents a tier list.
  * It is a start destination for the tier list navigation graph.
-*/
+ */
 @AndroidEntryPoint
 class TierListFragment : Fragment() {
     private var _binding: FragmentTierListBinding? = null
@@ -187,10 +187,11 @@ class TierListFragment : Fragment() {
     }
 
     /**
-     * Initializes toolbar, adapters and loading indicator.
+     * Initializes toolbar, bottom bar, adapters and loading indicator.
      */
     private fun initView() {
         initToolbar()
+        initBottomBar()
         initTierList()
         binding.progressLoading.setVisibilityAfterHide(View.GONE)
     }
@@ -255,15 +256,27 @@ class TierListFragment : Fragment() {
             }
 
             setOnMenuItemClickListener { item ->
-                when (item.itemId) {
-                    R.id.item_zoom_in -> { viewModel.zoomIn(); true }
-                    R.id.item_zoom_out -> { viewModel.zoomOut(); true }
-                    R.id.item_add_image -> { launchImagePicker(); true }
-                    R.id.item_add_tier -> { viewModel.addNewTier(); true }
+                if (item.itemId == R.id.item_rename) {
+                    // TODO: Rename tier list
+                    true
+                } else {
                     // TODO: Migrate to the new API
-                    else -> super.onOptionsItemSelected(item)
+                    super.onOptionsItemSelected(item)
                 }
             }
+        }
+    }
+
+    /**
+     * Initializes click listeners of the bottom bar image buttons.
+     */
+    private fun initBottomBar() {
+        with(binding.groupBottomBar) {
+            btnZoomIn.setOnClickListener { viewModel.zoomIn() }
+            btnZoomOut.setOnClickListener { viewModel.zoomOut() }
+            btnAddNewTier.setOnClickListener { viewModel.addNewTier() }
+            btnAddNewImage.setOnClickListener { launchImagePicker() }
+            btnInfo.setOnClickListener { /* TODO: Show info */ }
         }
     }
 

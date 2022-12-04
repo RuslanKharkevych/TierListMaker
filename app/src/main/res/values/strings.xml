@@ -12,9 +12,11 @@
     <string name="btn_refresh">Refresh</string>
 
     <!-- TierListFragment -->
-    <string name="menu_item_add_new_image_title">Add new image</string>
-    <string name="menu_item_zoom_in_title">Zoom in</string>
-    <string name="menu_item_ic_zoom_out_title">Zoom out</string>
-    <string name="menu_item_add_new_tier_title">Add new tier</string>
+    <string name="menu_item_rename_title">Rename</string>
     <string name="toolbar_subtitle_loading">Loading (%1$d/%2$d)</string>
+    <string name="btn_add_new_image_desc">Add new image</string>
+    <string name="btn_zoom_in_desc">Zoom in</string>
+    <string name="btn_zoom_out_desc">Zoom out</string>
+    <string name="btn_add_new_tier_desc">Add new tier</string>
+    <string name="btn_info_desc">Info</string>
 </resources>
