@@ -8,6 +8,7 @@
     <fragment
         android:id="@+id/fragment_dashboard"
         android:name="me.khruslan.tierlistmaker.ui.screens.home.DashboardFragment"
+        android:label="@string/app_name"
         tools:layout="@layout/fragment_dashboard" />
 
 </navigation>

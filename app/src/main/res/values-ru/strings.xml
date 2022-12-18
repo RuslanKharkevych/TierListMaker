@@ -15,4 +15,9 @@
     <string name="app_language">ru</string>
     <string name="menu_item_rename_title">Переименовать</string>
     <string name="btn_info_desc">Информация</string>
+    <string name="menu_item_my_collection_title">Моя коллекция</string>
+    <string name="menu_item_settings_title">Настройки</string>
+    <string name="menu_item_support_title">Справка / отзыв</string>
+    <string name="menu_item_about_title">О программе</string>
+    <string name="btn_change_theme_desc">Изменить тему</string>
 </resources>
