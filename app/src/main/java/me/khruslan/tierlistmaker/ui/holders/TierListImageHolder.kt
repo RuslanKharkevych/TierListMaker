@@ -1,5 +1,7 @@
 package me.khruslan.tierlistmaker.ui.holders
 
+import android.annotation.SuppressLint
+import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
 import androidx.core.view.updateLayoutParams
@@ -21,10 +23,10 @@ import timber.log.Timber
 class TierListImageHolder(
     private val imageView: ImageView,
     dragListener: View.OnDragListener
-) : RecyclerView.ViewHolder(imageView), View.OnLongClickListener {
+) : RecyclerView.ViewHolder(imageView), View.OnTouchListener {
 
     init {
-        itemView.setOnLongClickListener(this)
+        itemView.setOnTouchListener(this)
         itemView.setOnDragListener(dragListener)
     }
 
@@ -50,7 +52,8 @@ class TierListImageHolder(
         }
     }
 
-    override fun onLongClick(view: View?): Boolean {
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouch(view: View?, event: MotionEvent?): Boolean {
         return try {
             startDrag(view)
             true
