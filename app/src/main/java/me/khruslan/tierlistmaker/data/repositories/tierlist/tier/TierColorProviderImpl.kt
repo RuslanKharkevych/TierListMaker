@@ -4,21 +4,26 @@ import android.graphics.Color
 import me.khruslan.tierlistmaker.data.models.tierlist.Tier
 import javax.inject.Inject
 
-private const val DEFAULT_SATURATION = 0.8f
-private const val DEFAULT_VALUE = 1f // Brightness
-
-private const val HUE_RED = 0f
-private const val HUE_ORANGE = 30f
-private const val HUE_YELLOW = 60f
-private const val HUE_GREEN = 120f
-private const val HUE_CYAN = 180f
-private const val HUE_BLUE = 240f
-private const val HUE_MAGENTA = 300f
-
 /**
  * [TierColorProvider] implementation.
  */
 class TierColorProviderImpl @Inject constructor(): TierColorProvider {
+
+    /**
+     * Companion object of [TierColorProviderImpl] used for storing default colors.
+     */
+    companion object {
+        private const val DEFAULT_SATURATION = 0.8f
+        private const val DEFAULT_VALUE = 1f // Brightness
+
+        private const val HUE_RED = 0f
+        private const val HUE_ORANGE = 30f
+        private const val HUE_YELLOW = 60f
+        private const val HUE_GREEN = 120f
+        private const val HUE_CYAN = 180f
+        private const val HUE_BLUE = 240f
+        private const val HUE_MAGENTA = 300f
+    }
 
     /**
      * Pre-defined [Tier] colors.

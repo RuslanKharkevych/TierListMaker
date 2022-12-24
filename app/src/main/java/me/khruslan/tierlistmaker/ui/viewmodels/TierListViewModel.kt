@@ -29,8 +29,6 @@ import me.khruslan.tierlistmaker.data.work.SaveTierListWorker
 import java.io.File
 import javax.inject.Inject
 
-private const val KEY_TIER_LIST = "tierList"
-
 /**
  * [ViewModel] for [TierListFragment].
  *
@@ -52,6 +50,13 @@ class TierListViewModel @Inject constructor(
     private val tierStyleProvider: TierStyleProvider,
     private val saveTierListArgsProvider: SaveTierListArgsProvider
 ) : AndroidViewModel(application) {
+
+    /**
+     * Companion object of [TierListViewModel] used for storing [SavedStateHandle] keys.
+     */
+    companion object {
+        private const val KEY_TIER_LIST = "tierList"
+    }
 
     /**
      * Initial [TierList] instance obtained from navigation arguments.

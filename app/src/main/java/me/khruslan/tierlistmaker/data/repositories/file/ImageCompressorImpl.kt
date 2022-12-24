@@ -12,9 +12,6 @@ import me.shouheng.compress.strategy.config.ScaleMode
 import java.io.File
 import javax.inject.Inject
 
-private const val IMAGE_QUALITY_PERCENT = 90
-private const val DISPLAY_WIDTH_FRACTION = 0.33f
-
 /**
  * [ImageCompressor] implementation.
  *
@@ -25,6 +22,14 @@ class ImageCompressorImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val dispatcherProvider: DispatcherProvider
 ) : ImageCompressor {
+
+    /**
+     * Companion object of [ImageCompressorImpl] used for storing constants.
+     */
+    companion object {
+        private const val IMAGE_QUALITY_PERCENT = 90
+        private const val DISPLAY_WIDTH_FRACTION = 0.33f
+    }
 
     /**
      * Max size of the compressed image calculated based on [DISPLAY_WIDTH_FRACTION]

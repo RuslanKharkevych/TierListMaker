@@ -9,9 +9,6 @@ import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProvide
 import timber.log.Timber
 import javax.inject.Inject
 
-private const val MAX_TRANSACTION_ATTEMPTS = 3
-private const val KEY_TIER_LISTS = "tier-lists"
-
 /**
  * [PaperRepository] implementation. Implemented with [Paper] database.
  *
@@ -22,6 +19,14 @@ private const val KEY_TIER_LISTS = "tier-lists"
 class PaperRepositoryImpl @Inject constructor(
     private val dispatcherProvider: DispatcherProvider
 ) : PaperRepository {
+
+    /**
+     * Companion object of [PaperRepositoryImpl] used for storing keys and other constants.
+     */
+    companion object {
+        private const val MAX_TRANSACTION_ATTEMPTS = 3
+        private const val KEY_TIER_LISTS = "tier-lists"
+    }
 
     override suspend fun getTierLists(): MutableList<TierList>? {
         return withContext(dispatcherProvider.io) {

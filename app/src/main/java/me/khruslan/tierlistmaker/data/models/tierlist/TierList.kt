@@ -4,8 +4,6 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
 
-private const val PREVIEW_IMAGES_COUNT = 3
-
 /**
  * Data that represents the tier list.
  *
@@ -23,6 +21,13 @@ data class TierList(
     var tiers: MutableList<Tier>,
     val backlogImages: MutableList<Image>
 ) : Parcelable {
+
+    /**
+     * Companion object of [TierList] used for storing constants.
+     */
+    companion object {
+        private const val PREVIEW_IMAGES_COUNT = 3
+    }
 
     /**
      * [Preview] of this [TierList].
