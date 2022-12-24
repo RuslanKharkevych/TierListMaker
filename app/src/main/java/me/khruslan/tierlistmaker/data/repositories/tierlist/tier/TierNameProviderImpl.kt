@@ -1,5 +1,7 @@
 package me.khruslan.tierlistmaker.data.repositories.tierlist.tier
 
+import javax.inject.Inject
+
 private const val S_TIER_CHAR = 'S'
 private const val FIRST_TIER_CHAR = 'A'
 private const val LAST_TIER_CHAR = 'Z'
@@ -7,7 +9,7 @@ private const val LAST_TIER_CHAR = 'Z'
 /**
  * [TierNameProvider] implementation.
  */
-class TierNameProviderImpl : TierNameProvider {
+class TierNameProviderImpl @Inject constructor(): TierNameProvider {
 
     override fun getNameByIndex(tierIndex: Int): String {
         return when {

@@ -25,6 +25,8 @@ import me.khruslan.tierlistmaker.data.work.SaveTierListWorker
 import me.khruslan.tierlistmaker.fakes.data.repositories.file.FakeFileManager
 import me.khruslan.tierlistmaker.fakes.data.repositories.tierlist.FakeTierListProcessor
 import me.khruslan.tierlistmaker.fakes.data.repositories.tierlist.tier.FakeTierStyleProvider
+import me.khruslan.tierlistmaker.fakes.data.work.FakeSaveTierListArgsProvider
+import me.khruslan.tierlistmaker.fakes.utils.drag.FakeDragPocket
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
 import me.khruslan.tierlistmaker.ui.models.LoadingProgress
 import me.khruslan.tierlistmaker.ui.viewmodels.TierListViewModel
@@ -70,11 +72,11 @@ class TierListViewModelTest {
         MockKAnnotations.init(this)
 
         savedStateHandle = SavedStateHandle()
-        dragPocket = DragPocket()
+        dragPocket = FakeDragPocket()
         fakeFileManager = FakeFileManager()
         fakeTierListProcessor = FakeTierListProcessor()
         fakeTierStyleProvider = FakeTierStyleProvider()
-        saveTierListArgsProvider = SaveTierListArgsProvider()
+        saveTierListArgsProvider = FakeSaveTierListArgsProvider()
     }
 
     private fun initViewModel() {

@@ -7,6 +7,7 @@ import kotlinx.coroutines.withContext
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProvider
 import timber.log.Timber
+import javax.inject.Inject
 
 private const val MAX_TRANSACTION_ATTEMPTS = 3
 private const val KEY_TIER_LISTS = "tier-lists"
@@ -18,7 +19,9 @@ private const val KEY_TIER_LISTS = "tier-lists"
  *
  * @property dispatcherProvider provider of [CoroutineDispatcher] for running suspend functions.
  */
-class PaperRepositoryImpl(private val dispatcherProvider: DispatcherProvider) : PaperRepository {
+class PaperRepositoryImpl @Inject constructor(
+    private val dispatcherProvider: DispatcherProvider
+) : PaperRepository {
 
     override suspend fun getTierLists(): MutableList<TierList>? {
         return withContext(dispatcherProvider.io) {

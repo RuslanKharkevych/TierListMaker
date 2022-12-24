@@ -3,12 +3,14 @@ package me.khruslan.tierlistmaker.data.repositories.file
 import android.content.Context
 import android.net.Uri
 import android.os.Environment
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProvider
 import timber.log.Timber
 import java.io.File
+import javax.inject.Inject
 
 /**
  * [FileManager] implementation. All functions are running in [Dispatchers.IO] context.
@@ -17,8 +19,8 @@ import java.io.File
  * @property imageCompressor compressor of image files.
  * @property dispatcherProvider provider of [CoroutineDispatcher] for running suspend functions.
  */
-class FileManagerImpl(
-    private val context: Context,
+class FileManagerImpl @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val imageCompressor: ImageCompressor,
     private val dispatcherProvider: DispatcherProvider
 ) : FileManager {

@@ -5,6 +5,7 @@ import me.khruslan.tierlistmaker.data.models.drag.ImageDragData
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
 import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
 import me.khruslan.tierlistmaker.utils.drag.DragPocket
+import me.khruslan.tierlistmaker.utils.drag.DragPocketImpl
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
@@ -39,7 +40,7 @@ class DragPocketTest {
 
     @Before
     fun init() {
-        dragPocket = DragPocket()
+        dragPocket = DragPocketImpl()
         mockkObject(Timber.Forest)
     }
 

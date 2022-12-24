@@ -1,41 +1,43 @@
 package me.khruslan.tierlistmaker.data.di
 
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
-import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProvider
 import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListProcessor
 import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListProcessorImpl
 import me.khruslan.tierlistmaker.data.repositories.tierlist.tier.*
 import me.khruslan.tierlistmaker.utils.drag.DragPocket
+import me.khruslan.tierlistmaker.utils.drag.DragPocketImpl
 
 @Module
 @InstallIn(ViewModelComponent::class)
-object TierListModule {
-    @Provides
-    @ViewModelScoped
-    fun provideDragPocket() = DragPocket()
+abstract class TierListModule {
 
-    @Provides
+    @Binds
     @ViewModelScoped
-    fun provideTierListProcessor(): TierListProcessor = TierListProcessorImpl()
+    abstract fun bindDragPocket(dragPocketImpl: DragPocketImpl): DragPocket
 
-    @Provides
+    @Binds
     @ViewModelScoped
-    fun provideTierColorProvider(): TierColorProvider = TierColorProviderImpl()
+    abstract fun bindTierListProcessor(
+        tierListProcessorImpl: TierListProcessorImpl
+    ): TierListProcessor
 
-    @Provides
+    @Binds
     @ViewModelScoped
-    fun provideTierNameProvider(): TierNameProvider = TierNameProviderImpl()
+    abstract fun bindTierColorProvider(
+        tierColorProviderImpl: TierColorProviderImpl
+    ): TierColorProvider
 
-    @Provides
+    @Binds
     @ViewModelScoped
-    fun provideTierStyleProvider(
-        tierNameProvider: TierNameProvider,
-        tierColorProvider: TierColorProvider,
-        dispatcherProvider: DispatcherProvider
-    ): TierStyleProvider =
-        TierStyleProviderImpl(tierColorProvider, tierNameProvider, dispatcherProvider)
+    abstract fun bindTierNameProvider(tierNameProviderImpl: TierNameProviderImpl): TierNameProvider
+
+    @Binds
+    @ViewModelScoped
+    abstract fun bindTierStyleProvider(
+        tierStyleProviderImpl: TierStyleProviderImpl
+    ): TierStyleProvider
 }

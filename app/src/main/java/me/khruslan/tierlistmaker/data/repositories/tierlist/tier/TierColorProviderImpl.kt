@@ -2,6 +2,7 @@ package me.khruslan.tierlistmaker.data.repositories.tierlist.tier
 
 import android.graphics.Color
 import me.khruslan.tierlistmaker.data.models.tierlist.Tier
+import javax.inject.Inject
 
 private const val DEFAULT_SATURATION = 0.8f
 private const val DEFAULT_VALUE = 1f // Brightness
@@ -17,7 +18,7 @@ private const val HUE_MAGENTA = 300f
 /**
  * [TierColorProvider] implementation.
  */
-class TierColorProviderImpl : TierColorProvider {
+class TierColorProviderImpl @Inject constructor(): TierColorProvider {
 
     /**
      * Pre-defined [Tier] colors.

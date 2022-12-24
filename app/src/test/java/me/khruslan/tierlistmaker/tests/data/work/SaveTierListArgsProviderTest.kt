@@ -8,6 +8,7 @@ import me.khruslan.tierlistmaker.data.models.tierlist.Tier
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
 import me.khruslan.tierlistmaker.data.work.SaveTierListArgsProvider
+import me.khruslan.tierlistmaker.data.work.SaveTierListArgsProviderImpl
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -79,7 +80,7 @@ class SaveTierListArgsProviderTest {
 
     @Before
     fun init() {
-        saveTierListArgsProvider = SaveTierListArgsProvider()
+        saveTierListArgsProvider = SaveTierListArgsProviderImpl()
         mockkObject(Timber)
     }
 

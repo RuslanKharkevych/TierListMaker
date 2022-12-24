@@ -3,14 +3,18 @@ package me.khruslan.tierlistmaker.data.repositories.db
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import dagger.hilt.android.qualifiers.ApplicationContext
 import me.khruslan.tierlistmaker.R
+import javax.inject.Inject
 
 /**
  * Implementation of [PreferencesHelper].
  *
  * @property context application context.
  */
-class PreferencesHelperImpl(private val context: Context) : PreferencesHelper {
+class PreferencesHelperImpl @Inject constructor(
+    @ApplicationContext private val context: Context
+) : PreferencesHelper {
 
     /**
      * Companion object of [PreferencesHelperImpl] that stores preferences file name and keys.

@@ -1,16 +1,20 @@
 package me.khruslan.tierlistmaker.data.di
 
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import me.khruslan.tierlistmaker.data.work.SaveTierListArgsProvider
+import me.khruslan.tierlistmaker.data.work.SaveTierListArgsProviderImpl
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object WorkManagerModule {
-    @Provides
+abstract class WorkManagerModule {
+
+    @Binds
     @Singleton
-    fun provideSaveTierListArgsProvider() = SaveTierListArgsProvider()
+    abstract fun bindSaveTierListArgsProvider(
+        saveTierListArgsProviderImpl: SaveTierListArgsProviderImpl
+    ): SaveTierListArgsProvider
 }

@@ -5,11 +5,12 @@ import me.khruslan.tierlistmaker.data.models.drag.effects.*
 import me.khruslan.tierlistmaker.data.models.tierlist.*
 import me.khruslan.tierlistmaker.data.models.tierlist.image.ResourceImage
 import me.khruslan.tierlistmaker.utils.extensions.updateLast
+import javax.inject.Inject
 
 /**
  * [TierListProcessor] implementation.
  */
-class TierListProcessorImpl : TierListProcessor {
+class TierListProcessorImpl @Inject constructor(): TierListProcessor {
 
     /**
      * Tier list on which the processor operates.

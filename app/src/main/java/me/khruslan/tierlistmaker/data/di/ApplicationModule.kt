@@ -1,10 +1,9 @@
 package me.khruslan.tierlistmaker.data.di
 
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import me.khruslan.tierlistmaker.data.repositories.db.PreferencesHelper
 import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProvider
 import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProviderImpl
 import me.khruslan.tierlistmaker.utils.log.AnalyticsService
@@ -15,20 +14,19 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ApplicationModule {
+abstract class ApplicationModule {
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideDispatcherProvider(): DispatcherProvider = DispatcherProviderImpl()
+    abstract fun bindDispatcherProvider(
+        dispatcherProviderImpl: DispatcherProviderImpl
+    ): DispatcherProvider
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideAnalyticsService(): AnalyticsService = AnalyticsServiceImpl()
+    abstract fun bindAnalyticsService(analyticsServiceImpl: AnalyticsServiceImpl): AnalyticsService
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideThemeManager(
-        preferencesHelper: PreferencesHelper,
-        dispatcherProvider: DispatcherProvider
-    ): ThemeManager = ThemeManagerImpl(preferencesHelper, dispatcherProvider)
+    abstract fun provideThemeManager(themeManagerImpl: ThemeManagerImpl): ThemeManager
 }

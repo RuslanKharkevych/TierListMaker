@@ -6,6 +6,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import me.khruslan.tierlistmaker.data.repositories.db.PreferencesHelper
 import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProvider
+import javax.inject.Inject
 
 /**
  * Implementation of [ThemeManager].
@@ -13,7 +14,7 @@ import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProvide
  * @property preferencesHelper helper class for accessing [SharedPreferences].
  * @property dispatcherProvider provider of [CoroutineDispatcher].
  */
-class ThemeManagerImpl(
+class ThemeManagerImpl @Inject constructor(
     private val preferencesHelper: PreferencesHelper,
     private val dispatcherProvider: DispatcherProvider
 ) : ThemeManager {

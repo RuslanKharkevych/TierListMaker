@@ -6,6 +6,7 @@ import kotlinx.coroutines.withContext
 import me.khruslan.tierlistmaker.data.models.tierlist.Tier
 import me.khruslan.tierlistmaker.data.models.tierlist.TierStyle
 import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProvider
+import javax.inject.Inject
 
 /**
  * [TierStyleProvider] implementation. All functions are running in [Dispatchers.Default] context.
@@ -14,7 +15,7 @@ import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProvide
  * @property nameProvider provider of name for [Tier].
  * @property dispatchersProvider provider of [CoroutineDispatcher] for running suspend functions.
  */
-class TierStyleProviderImpl(
+class TierStyleProviderImpl @Inject constructor(
     private val colorProvider: TierColorProvider,
     private val nameProvider: TierNameProvider,
     private val dispatchersProvider: DispatcherProvider

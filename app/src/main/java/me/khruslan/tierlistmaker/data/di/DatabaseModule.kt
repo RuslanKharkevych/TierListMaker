@@ -1,31 +1,26 @@
 package me.khruslan.tierlistmaker.data.di
 
-import android.content.Context
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import me.khruslan.tierlistmaker.data.repositories.db.PaperRepository
 import me.khruslan.tierlistmaker.data.repositories.db.PaperRepositoryImpl
 import me.khruslan.tierlistmaker.data.repositories.db.PreferencesHelper
 import me.khruslan.tierlistmaker.data.repositories.db.PreferencesHelperImpl
-import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProvider
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DatabaseModule {
+abstract class DatabaseModule {
 
-    @Provides
+    @Binds
     @Singleton
-    fun providePaperRepository(dispatcherProvider: DispatcherProvider): PaperRepository {
-        return PaperRepositoryImpl(dispatcherProvider)
-    }
+    abstract fun bindPaperRepository(paperRepositoryImpl: PaperRepositoryImpl): PaperRepository
 
-    @Provides
+    @Binds
     @Singleton
-    fun providePreferencesHelper(@ApplicationContext context: Context): PreferencesHelper {
-        return PreferencesHelperImpl(context)
-    }
+    abstract fun bindPreferencesHelper(
+        preferencesHelperImpl: PreferencesHelperImpl
+    ): PreferencesHelper
 }
