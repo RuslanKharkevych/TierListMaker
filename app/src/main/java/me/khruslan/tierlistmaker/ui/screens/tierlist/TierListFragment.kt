@@ -255,14 +255,9 @@ class TierListFragment : Fragment() {
                 setTierListResultAndFinishActivity()
             }
 
-            setOnMenuItemClickListener { item ->
-                if (item.itemId == R.id.item_rename) {
-                    // TODO: Rename tier list
-                    true
-                } else {
-                    // TODO: Migrate to the new API
-                    super.onOptionsItemSelected(item)
-                }
+            setOnMenuItemClickListener {
+                // TODO: Init rename tier list icon listener
+                false
             }
         }
     }
