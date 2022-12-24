@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/colorSurface">
 
-    <ImageButton
+    <me.khruslan.tierlistmaker.utils.view.TooltipImageButton
         android:id="@+id/btn_add_new_tier"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -16,9 +17,10 @@
         app:layout_constraintEnd_toStartOf="@id/btn_add_new_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="?attr/colorOnSurface" />
+        app:tint="?attr/colorOnSurface"
+        tools:tint="@color/grey800_dark" />
 
-    <ImageButton
+    <me.khruslan.tierlistmaker.utils.view.TooltipImageButton
         android:id="@+id/btn_add_new_image"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -29,9 +31,10 @@
         app:layout_constraintEnd_toStartOf="@id/btn_zoom_out"
         app:layout_constraintStart_toEndOf="@id/btn_add_new_tier"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="?attr/colorOnSurface" />
+        app:tint="?attr/colorOnSurface"
+        tools:tint="@color/grey800_dark" />
 
-    <ImageButton
+    <me.khruslan.tierlistmaker.utils.view.TooltipImageButton
         android:id="@+id/btn_zoom_out"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -42,9 +45,10 @@
         app:layout_constraintEnd_toStartOf="@id/btn_zoom_in"
         app:layout_constraintStart_toEndOf="@id/btn_add_new_image"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="?attr/colorOnSurface" />
+        app:tint="?attr/colorOnSurface"
+        tools:tint="@color/grey800_dark" />
 
-    <ImageButton
+    <me.khruslan.tierlistmaker.utils.view.TooltipImageButton
         android:id="@+id/btn_zoom_in"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -52,22 +56,38 @@
         android:contentDescription="@string/btn_zoom_in_desc"
         android:paddingVertical="@dimen/margin_8"
         android:src="@drawable/ic_zoom_in"
-        app:layout_constraintEnd_toStartOf="@id/btn_info"
+        app:layout_constraintEnd_toStartOf="@id/btn_view"
         app:layout_constraintStart_toEndOf="@id/btn_zoom_out"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="?attr/colorOnSurface" />
+        app:tint="?attr/colorOnSurface"
+        tools:tint="@color/grey800_dark" />
 
-    <ImageButton
-        android:id="@+id/btn_info"
+    <me.khruslan.tierlistmaker.utils.view.TooltipImageButton
+        android:id="@+id/btn_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/btn_info_desc"
+        android:contentDescription="@string/btn_view_desc"
         android:paddingVertical="@dimen/margin_8"
-        android:src="@drawable/ic_info"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_open_in_new"
+        app:layout_constraintEnd_toEndOf="@id/btn_share"
         app:layout_constraintStart_toEndOf="@id/btn_zoom_in"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="?attr/colorOnSurface" />
+        app:tint="?attr/colorOnSurface"
+        tools:tint="@color/grey800_dark" />
+
+    <me.khruslan.tierlistmaker.utils.view.TooltipImageButton
+        android:id="@+id/btn_share"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/btn_share_desc"
+        android:paddingVertical="@dimen/margin_8"
+        android:src="@drawable/ic_share"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btn_view"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?attr/colorOnSurface"
+        tools:tint="@color/grey800_dark" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

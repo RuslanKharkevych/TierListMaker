@@ -23,5 +23,6 @@
     <string name="btn_zoom_in_desc">Zoom in</string>
     <string name="btn_zoom_out_desc">Zoom out</string>
     <string name="btn_add_new_tier_desc">Add new tier</string>
-    <string name="btn_info_desc">Info</string>
+    <string name="btn_view_desc">View</string>
+    <string name="btn_share_desc">Share</string>
 </resources>

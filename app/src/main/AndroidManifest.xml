@@ -28,6 +28,7 @@
 
         <activity
             android:name=".ui.screens.tierlist.TierListActivity"
+            android:theme="@style/Theme.TierListMaker"
             android:exported="false" />
 
         <provider

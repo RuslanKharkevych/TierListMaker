@@ -271,7 +271,8 @@ class TierListFragment : Fragment() {
             btnZoomOut.setOnClickListener { viewModel.zoomOut() }
             btnAddNewTier.setOnClickListener { viewModel.addNewTier() }
             btnAddNewImage.setOnClickListener { launchImagePicker() }
-            btnInfo.setOnClickListener { /* TODO: Show info */ }
+            btnView.setOnClickListener { /* TODO: View tier list image */ }
+            btnShare.setOnClickListener { /* TODO: Share tier list image */ }
         }
     }
 
