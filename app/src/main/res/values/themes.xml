@@ -19,6 +19,11 @@
         <item name="navigationViewStyle">@style/Style.NavigationView</item>
     </style>
 
+    <style name="Theme.Launch" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/purple200</item>
+        <item name="postSplashScreenTheme">@style/Theme.TierListMaker</item>
+    </style>
+
     <style name="Style.SnackbarButton" parent="@style/Widget.MaterialComponents.Button.TextButton.Snackbar">
         <item name="android:textColor">?attr/colorSecondary</item>
     </style>

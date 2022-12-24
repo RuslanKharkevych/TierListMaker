@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.widget.ImageButton
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.GravityCompat
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -12,6 +14,8 @@ import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.databinding.ActivityHomeBinding
 import me.khruslan.tierlistmaker.ui.viewmodels.HomeViewModel
 import me.khruslan.tierlistmaker.utils.extensions.findNavHostFragmentById
+import me.khruslan.tierlistmaker.utils.extensions.addOnEndAction
+import me.khruslan.tierlistmaker.utils.view.AnimatorUtils
 
 /**
  * [AppCompatActivity] that represents home task. Is a launch activity.
@@ -23,18 +27,22 @@ class HomeActivity : AppCompatActivity() {
     private val viewModel: HomeViewModel by viewModels()
 
     /**
-     * Companion object of [HomeActivity] that stores keys for saving and restoring view state.
+     * Companion object of [HomeActivity] that stores keys for saving and restoring view state and
+     * other constants.
      */
     companion object {
         private const val KEY_DRAWER_OPENED = "isDrawerOpened"
+        private const val SPLASH_SCREEN_EXIT_ANIM_DURATION = 200L
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
 
         setContentView()
         setupNavigation()
         setupThemeSwitcher()
+        splashScreen.setupExitAnimation()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -76,6 +84,19 @@ class HomeActivity : AppCompatActivity() {
         val btnTheme: ImageButton = navHeaderView.findViewById(R.id.btn_theme)
         btnTheme.setOnClickListener {
             viewModel.toggleTheme()
+        }
+    }
+
+    /**
+     * Initializes and starts circular conceal animation on splash screen exit.
+     */
+    private fun SplashScreen.setupExitAnimation() {
+        setOnExitAnimationListener { splashScreenViewProvider ->
+            AnimatorUtils
+                .createCircularConceal(splashScreenViewProvider.view)
+                .setDuration(SPLASH_SCREEN_EXIT_ANIM_DURATION)
+                .addOnEndAction { splashScreenViewProvider.remove() }
+                .start()
         }
     }
 }
