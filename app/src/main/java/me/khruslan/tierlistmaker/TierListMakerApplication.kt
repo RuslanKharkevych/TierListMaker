@@ -8,6 +8,7 @@ import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
 import io.paperdb.Paper
 import me.khruslan.tierlistmaker.utils.log.ReleaseTree
+import me.khruslan.tierlistmaker.utils.theme.ThemeManager
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -24,9 +25,15 @@ class TierListMakerApplication : Application(), Configuration.Provider {
     lateinit var workerFactory: HiltWorkerFactory
 
     /**
+     * Manager used to set default theme.
+     */
+    @Inject
+    lateinit var themeManager: ThemeManager
+
+    /**
      * Returns minimum logging lever of work manager:
      * - [Log.VERBOSE] for debug builds;
-     * - [Log.ERROR] for release builds;
+     * - [Log.ERROR] for release builds.
      */
     private val workManagerLogLevel
         get() = if (BuildConfig.DEBUG) Log.VERBOSE else Log.ERROR
@@ -37,6 +44,7 @@ class TierListMakerApplication : Application(), Configuration.Provider {
         configureStrictModePenaltyLogging()
         plantTimberTree()
         Paper.init(this)
+        themeManager.setDefaultTheme()
     }
 
     override fun getWorkManagerConfiguration() =
