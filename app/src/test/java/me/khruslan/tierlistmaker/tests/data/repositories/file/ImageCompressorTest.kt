@@ -11,7 +11,7 @@ import me.khruslan.tierlistmaker.data.repositories.file.ImageCompressor
 import me.khruslan.tierlistmaker.data.repositories.file.ImageCompressorImpl
 import me.khruslan.tierlistmaker.fakes.data.repositories.dispatchers.FakeDispatcherProvider
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
-import me.khruslan.tierlistmaker.utils.extensions.displayWidthPixels
+import me.khruslan.tierlistmaker.utils.displayWidthPixels
 import me.shouheng.compress.Compress
 import me.shouheng.compress.ConcreteBuilder
 import me.shouheng.compress.strategy.compress.Compressor
@@ -31,7 +31,7 @@ class ImageCompressorTest {
     companion object {
         private const val IMAGE_QUALITY_PERCENT = 90
         private const val DISPLAY_WIDTH_FRACTION = 0.33f
-        private const val CONTEXT_EXTENSION_PACKAGE = "me.khruslan.tierlistmaker.utils.extensions.ContextExtensionKt"
+        private const val EXTENSIONS_PACKAGE = "me.khruslan.tierlistmaker.utils.ExtensionsKt"
     }
 
     @get:Rule
@@ -58,7 +58,7 @@ class ImageCompressorTest {
     fun init() {
         MockKAnnotations.init(this)
         mockkObject(Compress.Companion)
-        mockkStatic(CONTEXT_EXTENSION_PACKAGE)
+        mockkStatic(EXTENSIONS_PACKAGE)
         mockkConstructor(ConcreteBuilder::class)
         initMocks()
 
@@ -72,7 +72,7 @@ class ImageCompressorTest {
     fun release() {
         verifyMocks()
         unmockkObject(Compress.Companion)
-        unmockkStatic(CONTEXT_EXTENSION_PACKAGE)
+        unmockkStatic(EXTENSIONS_PACKAGE)
         unmockkConstructor(ConcreteBuilder::class)
     }
 

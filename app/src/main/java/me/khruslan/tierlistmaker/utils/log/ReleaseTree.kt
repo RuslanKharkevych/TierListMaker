@@ -7,7 +7,7 @@ import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.crashlytics.ktx.setCustomKeys
 import com.google.firebase.ktx.Firebase
 import me.khruslan.tierlistmaker.R
-import me.khruslan.tierlistmaker.utils.extensions.getDeviceLanguage
+import me.khruslan.tierlistmaker.utils.deviceLanguage
 import timber.log.Timber
 
 /**
@@ -40,7 +40,7 @@ class ReleaseTree(context: Context) : Timber.Tree() {
     private fun setCustomKeys(context: Context) {
         Firebase.crashlytics.setCustomKeys {
             key(CrashlyticsKeys.APP_LANGUAGE, context.getString(R.string.app_language))
-            key(CrashlyticsKeys.DEVICE_LANGUAGE, Resources.getSystem().getDeviceLanguage())
+            key(CrashlyticsKeys.DEVICE_LANGUAGE, Resources.getSystem().deviceLanguage)
             key(CrashlyticsKeys.DISPLAY_DENSITY, Resources.getSystem().displayMetrics.density)
         }
     }

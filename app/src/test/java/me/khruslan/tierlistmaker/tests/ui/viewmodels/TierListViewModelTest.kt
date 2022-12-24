@@ -34,7 +34,7 @@ import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
 import me.khruslan.tierlistmaker.utils.awaitValue
 import me.khruslan.tierlistmaker.utils.awaitValues
 import me.khruslan.tierlistmaker.utils.drag.DragPocket
-import me.khruslan.tierlistmaker.utils.extensions.displayWidthPixels
+import me.khruslan.tierlistmaker.utils.displayWidthPixels
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -46,7 +46,7 @@ class TierListViewModelTest {
 
     companion object {
         private const val KEY_TIER_LIST = "tierList"
-        private const val CONTEXT_EXTENSION_PACKAGE = "me.khruslan.tierlistmaker.utils.extensions.ContextExtensionKt"
+        private const val EXTENSIONS_PACKAGE = "me.khruslan.tierlistmaker.utils.ExtensionsKt"
     }
 
     @get:Rule
@@ -206,12 +206,12 @@ class TierListViewModelTest {
         val tierListEventObserver = viewModel.tierListEvent.test()
         val displayWidth = 720
         val expectedImageSize = 240
-        mockkStatic(CONTEXT_EXTENSION_PACKAGE)
+        mockkStatic(EXTENSIONS_PACKAGE)
         every { mockApplication.displayWidthPixels } returns displayWidth
         viewModel.zoomIn()
 
         tierListEventObserver.awaitValue(ImageSizeUpdated(expectedImageSize))
-        unmockkStatic(CONTEXT_EXTENSION_PACKAGE)
+        unmockkStatic(EXTENSIONS_PACKAGE)
     }
 
     @Test
@@ -220,12 +220,12 @@ class TierListViewModelTest {
         val tierListEventObserver = viewModel.tierListEvent.test()
         val displayWidth = 720
         val expectedImageSize = 144
-        mockkStatic(CONTEXT_EXTENSION_PACKAGE)
+        mockkStatic(EXTENSIONS_PACKAGE)
         every { mockApplication.displayWidthPixels } returns displayWidth
         viewModel.zoomOut()
 
         tierListEventObserver.awaitValue(ImageSizeUpdated(expectedImageSize))
-        unmockkStatic(CONTEXT_EXTENSION_PACKAGE)
+        unmockkStatic(EXTENSIONS_PACKAGE)
     }
 
     @Test

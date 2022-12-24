@@ -3,7 +3,7 @@ package me.khruslan.tierlistmaker.data.models.drag
 import android.content.ClipData
 import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
 import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
-import me.khruslan.tierlistmaker.utils.extensions.toInt
+import me.khruslan.tierlistmaker.utils.toInt
 
 /**
  * Base class that contains the data of a drag event.

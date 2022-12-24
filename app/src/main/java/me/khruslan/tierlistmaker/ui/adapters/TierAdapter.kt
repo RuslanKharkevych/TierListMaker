@@ -9,7 +9,7 @@ import me.khruslan.tierlistmaker.data.models.tierlist.Tier
 import me.khruslan.tierlistmaker.databinding.ItemTierBinding
 import me.khruslan.tierlistmaker.ui.adapters.reorderable.Reorderable
 import me.khruslan.tierlistmaker.ui.holders.TierHolder
-import me.khruslan.tierlistmaker.utils.extensions.swap
+import me.khruslan.tierlistmaker.utils.swap
 
 /**
  * [RecyclerView.Adapter] implementation used for managing tiers in the tier list.

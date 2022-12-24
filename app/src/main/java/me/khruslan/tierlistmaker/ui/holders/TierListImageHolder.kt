@@ -10,8 +10,8 @@ import me.khruslan.tierlistmaker.data.models.drag.ImageDragData
 import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
 import me.khruslan.tierlistmaker.data.models.tierlist.image.ResourceImage
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
-import me.khruslan.tierlistmaker.utils.extensions.loadTierListImage
-import me.khruslan.tierlistmaker.utils.extensions.startDragCompat
+import me.khruslan.tierlistmaker.utils.loadTierListImage
+import me.khruslan.tierlistmaker.utils.startDragCompat
 import timber.log.Timber
 
 /**

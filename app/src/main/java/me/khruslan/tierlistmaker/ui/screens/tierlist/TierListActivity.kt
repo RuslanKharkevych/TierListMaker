@@ -9,8 +9,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.databinding.ActivityTierListBinding
-import me.khruslan.tierlistmaker.utils.extensions.findNavHostFragmentById
-import me.khruslan.tierlistmaker.utils.extensions.getParcelableExtraCompat
+import me.khruslan.tierlistmaker.utils.findNavHostFragmentById
+import me.khruslan.tierlistmaker.utils.getParcelableExtraCompat
 
 /**
  * [AppCompatActivity] that represents tier list task. Can be launched from the home task.

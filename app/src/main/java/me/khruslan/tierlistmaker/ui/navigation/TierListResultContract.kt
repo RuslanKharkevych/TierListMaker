@@ -6,7 +6,7 @@ import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContract
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.ui.screens.tierlist.TierListActivity
-import me.khruslan.tierlistmaker.utils.extensions.getParcelableExtraCompat
+import me.khruslan.tierlistmaker.utils.getParcelableExtraCompat
 import timber.log.Timber
 
 /**

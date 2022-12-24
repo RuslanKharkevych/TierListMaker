@@ -31,7 +31,7 @@ import me.khruslan.tierlistmaker.ui.adapters.TierListImageAdapter
 import me.khruslan.tierlistmaker.ui.adapters.reorderable.ReorderableCallback
 import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
 import me.khruslan.tierlistmaker.utils.drag.TierListDragListener
-import me.khruslan.tierlistmaker.utils.extensions.setResultDataAndFinish
+import me.khruslan.tierlistmaker.utils.setResultDataAndFinish
 import me.khruslan.tierlistmaker.ui.viewmodels.TierListViewModel
 
 /**

@@ -13,8 +13,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.databinding.ActivityHomeBinding
 import me.khruslan.tierlistmaker.ui.viewmodels.HomeViewModel
-import me.khruslan.tierlistmaker.utils.extensions.findNavHostFragmentById
-import me.khruslan.tierlistmaker.utils.extensions.addOnEndAction
+import me.khruslan.tierlistmaker.utils.findNavHostFragmentById
+import me.khruslan.tierlistmaker.utils.addOnEndAction
 import me.khruslan.tierlistmaker.utils.view.AnimatorUtils
 
 /**

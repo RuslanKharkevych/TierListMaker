@@ -22,8 +22,8 @@ import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListProcessor
 import me.khruslan.tierlistmaker.data.repositories.tierlist.tier.TierStyleProvider
 import me.khruslan.tierlistmaker.ui.screens.tierlist.TierListFragment
 import me.khruslan.tierlistmaker.utils.drag.DragPocket
-import me.khruslan.tierlistmaker.utils.extensions.displayWidthPixels
-import me.khruslan.tierlistmaker.utils.extensions.require
+import me.khruslan.tierlistmaker.utils.displayWidthPixels
+import me.khruslan.tierlistmaker.utils.require
 import me.khruslan.tierlistmaker.data.work.SaveTierListArgsProvider
 import me.khruslan.tierlistmaker.data.work.SaveTierListWorker
 import java.io.File

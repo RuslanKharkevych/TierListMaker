@@ -5,7 +5,7 @@ import android.net.Uri
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProvider
-import me.khruslan.tierlistmaker.utils.extensions.displayWidthPixels
+import me.khruslan.tierlistmaker.utils.displayWidthPixels
 import me.shouheng.compress.Compress
 import me.shouheng.compress.concrete
 import me.shouheng.compress.strategy.config.ScaleMode

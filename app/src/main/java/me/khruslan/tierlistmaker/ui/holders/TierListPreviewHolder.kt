@@ -8,7 +8,7 @@ import me.khruslan.tierlistmaker.data.models.tierlist.image.ResourceImage
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.databinding.ItemTierListPreviewBinding
-import me.khruslan.tierlistmaker.utils.extensions.loadTierListImage
+import me.khruslan.tierlistmaker.utils.loadTierListImage
 
 /**
  * [RecyclerView.ViewHolder] implementation for the tier list preview.

@@ -2,7 +2,7 @@ package me.khruslan.tierlistmaker.data.models.tierlist.image
 
 import android.os.Parcel
 import android.os.Parcelable
-import me.khruslan.tierlistmaker.utils.extensions.requireString
+import me.khruslan.tierlistmaker.utils.requireString
 import java.io.File
 import java.util.*
 

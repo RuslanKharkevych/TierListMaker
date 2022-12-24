@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
-import me.khruslan.tierlistmaker.utils.extensions.requireString
+import me.khruslan.tierlistmaker.utils.requireString
 import java.util.*
 
 /**
