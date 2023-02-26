@@ -1,5 +1,8 @@
 package me.khruslan.tierlistmaker.ui.screens.tierlist
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +10,7 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
@@ -15,24 +19,26 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.TransitionManager
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.models.drag.DragData
 import me.khruslan.tierlistmaker.data.models.drag.ImageDragData
 import me.khruslan.tierlistmaker.data.models.drag.TierDragData
 import me.khruslan.tierlistmaker.data.models.tierlist.*
-import me.khruslan.tierlistmaker.ui.models.LoadingProgress
 import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
-import me.khruslan.tierlistmaker.databinding.FragmentTierListBinding
-import me.khruslan.tierlistmaker.ui.navigation.TierListResultContract
 import me.khruslan.tierlistmaker.data.repositories.file.FileManager
+import me.khruslan.tierlistmaker.databinding.FragmentTierListBinding
 import me.khruslan.tierlistmaker.ui.adapters.TierAdapter
 import me.khruslan.tierlistmaker.ui.adapters.TierListImageAdapter
 import me.khruslan.tierlistmaker.ui.adapters.reorderable.ReorderableCallback
+import me.khruslan.tierlistmaker.ui.models.LoadingProgress
+import me.khruslan.tierlistmaker.ui.navigation.TierListResultContract
+import me.khruslan.tierlistmaker.ui.viewmodels.TierListViewModel
 import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
 import me.khruslan.tierlistmaker.utils.drag.TierListDragListener
 import me.khruslan.tierlistmaker.utils.setResultDataAndFinish
-import me.khruslan.tierlistmaker.ui.viewmodels.TierListViewModel
 
 /**
  * [Fragment] that represents a tier list.
@@ -145,25 +151,19 @@ class TierListFragment : Fragment() {
     }
 
     /**
-     * [Observer] for the loading progress. Shows progress of adding new images
+     * [Observer] for the loading progress. Shows determinate progress of adding new images or
+     * indeterminate progress of creating a tier list image file.
      */
     private val loadingProgressObserver = Observer<LoadingProgress?> { progress ->
-        if (progress == null) {
-            binding.toolbar.subtitle = ""
-            binding.progressLoading.hide()
-        } else {
-            binding.toolbar.subtitle = getString(
-                R.string.toolbar_subtitle_loading,
-                progress.currentItem,
-                progress.totalItems
-            )
-            binding.progressLoading.show()
-            binding.progressLoading.progress = progress.percent
+        when (progress) {
+            is LoadingProgress.Determinate -> showDeterminateLoadingProgress(progress)
+            LoadingProgress.Indeterminate -> showIndeterminateLoadingProgress()
+            null -> hideLoadingProgress()
         }
     }
 
     /**
-     * [Observer] of the tier list events. Notifies adapters about the changes in the tier list
+     * [Observer] of the tier list events. Notifies adapters about the changes in the tier list.
      */
     private val tierListEventObserver = Observer<TierListEvent> { event ->
         when (event) {
@@ -183,6 +183,8 @@ class TierListFragment : Fragment() {
             }
             is TrashBinHighlightUpdated -> TODO("Update trash bin UI")
             is ImageRemoved -> TODO("Update the UI")
+            is TierListReadyToShare -> shareTierList(event.uri)
+            is TierListExportError -> presentTierListErrorSnackbar(event.errorMessageResId)
         }
     }
 
@@ -193,7 +195,6 @@ class TierListFragment : Fragment() {
         initToolbar()
         initBottomBar()
         initTierList()
-        binding.progressLoading.setVisibilityAfterHide(View.GONE)
     }
 
     /**
@@ -272,15 +273,20 @@ class TierListFragment : Fragment() {
             btnAddNewTier.setOnClickListener { viewModel.addNewTier() }
             btnAddNewImage.setOnClickListener { launchImagePicker() }
             btnView.setOnClickListener { /* TODO: View tier list image */ }
-            btnShare.setOnClickListener { /* TODO: Share tier list image */ }
+            btnShare.setOnClickListener { viewModel.shareTierList() }
         }
     }
 
     /**
-     * Launches [imagePickerLauncher] to get images from the device.
+     * Launches [imagePickerLauncher] to get images from the device. Presents snackbar with error
+     * message in case no suitable activities are found.
      */
     private fun launchImagePicker() {
-        imagePickerLauncher.launch(FileManager.MIME_TYPE_IMAGE)
+        try {
+            imagePickerLauncher.launch(FileManager.MIME_TYPE_IMAGE)
+        } catch (e: ActivityNotFoundException) {
+            presentTierListErrorSnackbar(R.string.snackbar_msg_no_image_picker_apps_found)
+        }
     }
 
     /**
@@ -298,5 +304,73 @@ class TierListFragment : Fragment() {
     private fun setTierListResultAndFinishActivity() {
         val data = TierListResultContract.newData(viewModel.tierList)
         requireActivity().setResultDataAndFinish(data)
+    }
+
+    /**
+     * Shows / updates a determinate loading progress as a subtitle with a linear progress indicator
+     * on the top bar.
+     *
+     * @param progress current loading progress.
+     */
+    private fun showDeterminateLoadingProgress(progress: LoadingProgress.Determinate) {
+        binding.toolbar.subtitle = getString(
+            R.string.toolbar_subtitle_determinate_loading,
+            progress.currentItem,
+            progress.totalItems
+        )
+        binding.progressLoading.isIndeterminate = false
+        binding.progressLoading.show()
+        binding.progressLoading.progress = progress.percent
+    }
+
+    /**
+     * Shows an indeterminate loading progress as a subtitle with a linear progress indicator on the
+     * top bar.
+     */
+    private fun showIndeterminateLoadingProgress() {
+        binding.toolbar.subtitle = getString(R.string.toolbar_subtitle_indeterminate_loading)
+        binding.progressLoading.isIndeterminate = true
+        binding.progressLoading.show()
+    }
+
+    /**
+     * Hides determinate / indeterminate loading progress on the top bar.
+     */
+    private fun hideLoadingProgress() {
+        binding.toolbar.subtitle = ""
+        binding.progressLoading.visibility = View.GONE
+        TransitionManager.beginDelayedTransition(binding.root)
+    }
+
+    /**
+     * Launches intent to share tier list. Presents snackbar with error message in case no suitable
+     * activities are found.
+     *
+     * @param uri URI holding a tier list image file.
+     */
+    private fun shareTierList(uri: Uri) {
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = FileManager.MIME_TYPE_IMAGE_JPEG
+            putExtra(Intent.EXTRA_STREAM, uri)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            presentTierListErrorSnackbar(R.string.snackbar_msg_no_share_apps_found)
+        }
+    }
+
+    /**
+     * Presents [Snackbar] to inform user that an error has occurred.
+     *
+     * @param errorMessageResId string resource of the error message to show.
+     */
+    private fun presentTierListErrorSnackbar(@StringRes errorMessageResId: Int) {
+        Snackbar
+            .make(binding.root, errorMessageResId, Snackbar.LENGTH_LONG)
+            .setAnchorView(R.id.group_bottom_bar)
+            .show()
     }
 }

@@ -18,6 +18,7 @@ import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
 import me.khruslan.tierlistmaker.data.models.tierlist.image.ResourceImage
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
 import me.khruslan.tierlistmaker.data.repositories.file.FileManager
+import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListBitmapGenerator
 import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListProcessor
 import me.khruslan.tierlistmaker.data.repositories.tierlist.tier.TierStyleProvider
 import me.khruslan.tierlistmaker.ui.screens.tierlist.TierListFragment
@@ -48,7 +49,8 @@ class TierListViewModel @Inject constructor(
     private val fileManager: FileManager,
     private val tierListProcessor: TierListProcessor,
     private val tierStyleProvider: TierStyleProvider,
-    private val saveTierListArgsProvider: SaveTierListArgsProvider
+    private val saveTierListArgsProvider: SaveTierListArgsProvider,
+    private val tierListBitmapGenerator: TierListBitmapGenerator
 ) : AndroidViewModel(application) {
 
     /**
@@ -72,7 +74,8 @@ class TierListViewModel @Inject constructor(
     val tierListEvent: LiveData<TierListEvent> get() = _tierListEvent
 
     /**
-     * [LiveData] that notifies observers about the progress of loading image files.
+     * [LiveData] that notifies observers about the progress of loading image files or creating
+     * an image file of the tier list.
      *
      * If the value is **null**, then no loading is happening at the moment.
      */
@@ -175,7 +178,10 @@ class TierListViewModel @Inject constructor(
                 val file = fileManager.createImageFileFromUri(uri)
                 createImage(file).also {
                     _loadingProgressLiveData.postValue(
-                        LoadingProgress(currentItem = index + 1, totalItems = imageUris.size)
+                        LoadingProgress.Determinate(
+                            currentItem = index + 1,
+                            totalItems = imageUris.size
+                        )
                     )
                 }
             }
@@ -240,5 +246,35 @@ class TierListViewModel @Inject constructor(
         val workRequest = OneTimeWorkRequest.from(SaveTierListWorker::class.java)
         saveTierListArgsProvider.tierList = tierList
         WorkManager.getInstance(getApplication()).enqueue(workRequest)
+    }
+
+    /**
+     * Attempts to save [tierList] to file. On success - notifies observers that tier list is ready
+     * to be shared. On error - notifies observers about it.
+     */
+    fun shareTierList() {
+        viewModelScope.launch {
+            val uri = saveTierListToFile()
+            _tierListEvent.value = if (uri != null) {
+                TierListReadyToShare(uri)
+            } else {
+                TierListExportError(R.string.snackbar_msg_share_file_error)
+            }
+        }
+    }
+
+    /**
+     * Generates bitmap from [tierList] and saves it to a file. Notifies observers about loading
+     * state.
+     *
+     * @return Content [Uri] of the created file or **null** in case of error.
+     */
+    private suspend fun saveTierListToFile(): Uri? {
+        _loadingProgressLiveData.value = LoadingProgress.Indeterminate
+        val bitmap = tierListBitmapGenerator.generate(tierList)
+        val fileName = "${tierList.title}${FileManager.FILENAME_EXTENSION_JPEG}"
+        val uri = fileManager.provideContentUriFromBitmap(bitmap, fileName)
+        _loadingProgressLiveData.value = null
+        return uri
     }
 }

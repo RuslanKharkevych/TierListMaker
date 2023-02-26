@@ -4,7 +4,7 @@
     <string name="btn_add_new_image_desc">Додати нове зображення</string>
     <string name="btn_zoom_in_desc">Збільшити</string>
     <string name="btn_zoom_out_desc">Зменшити</string>
-    <string name="toolbar_subtitle_loading">Завантаження (%1$d/%2$d)</string>
+    <string name="toolbar_subtitle_determinate_loading">Завантаження (%1$d/%2$d)</string>
     <string name="btn_add_new_tier_desc">Додати новий ранг</string>
     <string name="tier_list_default_title">Новий список</string>
     <string name="empty_previews_message">Тут поки що нічого немає. Створіть свій перший список!</string>
@@ -21,4 +21,8 @@
     <string name="btn_change_theme_desc">Змінити тему</string>
     <string name="btn_view_desc">Переглянути</string>
     <string name="btn_share_desc">Поділитися</string>
+    <string name="toolbar_subtitle_indeterminate_loading">Завантаження…</string>
+    <string name="snackbar_msg_share_file_error">Не вдалося поділитися списком. Помилка при створенні файлу</string>
+    <string name="snackbar_msg_no_share_apps_found">Не вдалося поділитися списком. Не знайдено підходящих застосунків</string>
+    <string name="snackbar_msg_no_image_picker_apps_found">Не вдалося обрати зображення. Не знайдено підходящих застосунків</string>
 </resources>

@@ -1,6 +1,7 @@
 package me.khruslan.tierlistmaker.tests.ui.viewmodels
 
 import android.app.Application
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -20,9 +21,10 @@ import me.khruslan.tierlistmaker.data.models.drag.TrashBinDragData
 import me.khruslan.tierlistmaker.data.models.drag.effects.*
 import me.khruslan.tierlistmaker.data.models.tierlist.*
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
-import me.khruslan.tierlistmaker.data.work.SaveTierListArgsProvider
+import me.khruslan.tierlistmaker.data.repositories.file.FileManager
 import me.khruslan.tierlistmaker.data.work.SaveTierListWorker
 import me.khruslan.tierlistmaker.fakes.data.repositories.file.FakeFileManager
+import me.khruslan.tierlistmaker.fakes.data.repositories.tierlist.FakeTierListBitmapGenerator
 import me.khruslan.tierlistmaker.fakes.data.repositories.tierlist.FakeTierListProcessor
 import me.khruslan.tierlistmaker.fakes.data.repositories.tierlist.tier.FakeTierStyleProvider
 import me.khruslan.tierlistmaker.fakes.data.work.FakeSaveTierListArgsProvider
@@ -33,7 +35,6 @@ import me.khruslan.tierlistmaker.ui.viewmodels.TierListViewModel
 import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
 import me.khruslan.tierlistmaker.utils.awaitValue
 import me.khruslan.tierlistmaker.utils.awaitValues
-import me.khruslan.tierlistmaker.utils.drag.DragPocket
 import me.khruslan.tierlistmaker.utils.displayWidthPixels
 import org.junit.Assert.*
 import org.junit.Before
@@ -59,11 +60,12 @@ class TierListViewModelTest {
     private lateinit var mockApplication: Application
 
     private lateinit var savedStateHandle: SavedStateHandle
-    private lateinit var dragPocket: DragPocket
+    private lateinit var fakeDragPocket: FakeDragPocket
     private lateinit var fakeFileManager: FakeFileManager
     private lateinit var fakeTierListProcessor: FakeTierListProcessor
     private lateinit var fakeTierStyleProvider: FakeTierStyleProvider
-    private lateinit var saveTierListArgsProvider: SaveTierListArgsProvider
+    private lateinit var fakeSaveTierListArgsProvider: FakeSaveTierListArgsProvider
+    private lateinit var fakeTierListBitmapGenerator: FakeTierListBitmapGenerator
 
     private lateinit var viewModel: TierListViewModel
 
@@ -72,22 +74,24 @@ class TierListViewModelTest {
         MockKAnnotations.init(this)
 
         savedStateHandle = SavedStateHandle()
-        dragPocket = FakeDragPocket()
+        fakeDragPocket = FakeDragPocket()
         fakeFileManager = FakeFileManager()
         fakeTierListProcessor = FakeTierListProcessor()
         fakeTierStyleProvider = FakeTierStyleProvider()
-        saveTierListArgsProvider = FakeSaveTierListArgsProvider()
+        fakeSaveTierListArgsProvider = FakeSaveTierListArgsProvider()
+        fakeTierListBitmapGenerator = FakeTierListBitmapGenerator()
     }
 
     private fun initViewModel() {
         viewModel = TierListViewModel(
             application = mockApplication,
             savedStateHandle = savedStateHandle,
-            dragPocket = dragPocket,
+            dragPocket = fakeDragPocket,
             fileManager = fakeFileManager,
             tierListProcessor = fakeTierListProcessor,
             tierStyleProvider = fakeTierStyleProvider,
-            saveTierListArgsProvider = saveTierListArgsProvider
+            saveTierListArgsProvider = fakeSaveTierListArgsProvider,
+            tierListBitmapGenerator = fakeTierListBitmapGenerator
         )
     }
 
@@ -185,7 +189,8 @@ class TierListViewModelTest {
 
     @Test
     fun `Enqueues work to save tier list`() {
-        mockkStatic(OneTimeWorkRequest::class, WorkManager::class)
+        mockkObject(OneTimeWorkRequest)
+        mockkStatic(WorkManager::class)
         val mockWorkRequest: OneTimeWorkRequest = mockk()
         val mockWorkManager: WorkManager = mockk()
         every { OneTimeWorkRequest.from(SaveTierListWorker::class.java) } returns mockWorkRequest
@@ -195,9 +200,10 @@ class TierListViewModelTest {
         initViewModelWithTierList()
         viewModel.enqueueSaveTierListWork()
 
-        assertEquals(tierList, saveTierListArgsProvider.tierList)
+        assertEquals(tierList, fakeSaveTierListArgsProvider.tierList)
         verify { mockWorkManager.enqueue(mockWorkRequest) }
-        unmockkStatic(OneTimeWorkRequest::class, WorkManager::class)
+        unmockkObject(OneTimeWorkRequest)
+        unmockkStatic(WorkManager::class)
     }
 
     @Test
@@ -242,7 +248,7 @@ class TierListViewModelTest {
         fakeTierListProcessor.events[dragEffect] = tierListEvent
         viewModel.startDrag(imageDragData)
 
-        assertEquals(imageDragData, dragPocket.shadow)
+        assertEquals(imageDragData, fakeDragPocket.shadow)
         tierListEventObserver.awaitValue(tierListEvent)
     }
 
@@ -260,7 +266,7 @@ class TierListViewModelTest {
         fakeTierListProcessor.events[dragEffect] = tierListEvent
         viewModel.updateDragTarget(dragTarget)
 
-        assertEquals(dragTarget, dragPocket.target)
+        assertEquals(dragTarget, fakeDragPocket.target)
         tierListEventObserver.awaitValue(tierListEvent)
     }
 
@@ -271,11 +277,11 @@ class TierListViewModelTest {
         val tierListEvent = TierChanged(tierPosition = 1)
         val dragEffect = RemoveFromTier(tierPosition = 1, itemPosition = 1)
 
-        dragPocket.target = dragTarget
+        fakeDragPocket.target = dragTarget
         fakeTierListProcessor.events[dragEffect] = tierListEvent
         viewModel.updateDragTarget(null)
 
-        assertNull(dragPocket.target)
+        assertNull(fakeDragPocket.target)
         tierListEventObserver.awaitValue(tierListEvent)
     }
 
@@ -289,12 +295,12 @@ class TierListViewModelTest {
         val removeTargetEffect = RemoveFromTier(tierPosition = 1, itemPosition = 1)
         val highlightTargetEffect = HighlightLastInTier(tierPosition = 0)
 
-        dragPocket.target = dragTarget
+        fakeDragPocket.target = dragTarget
         fakeTierListProcessor.events[removeTargetEffect] = removeTargetEvent
         fakeTierListProcessor.events[highlightTargetEffect] = highlightTargetEvent
         viewModel.updateDragTarget(newDragTarget)
 
-        assertEquals(newDragTarget, dragPocket.target)
+        assertEquals(newDragTarget, fakeDragPocket.target)
         tierListEventObserver.awaitValues(removeTargetEvent, highlightTargetEvent)
     }
 
@@ -309,7 +315,7 @@ class TierListViewModelTest {
     @Test
     fun `Throws exception when attempting to update trash bin target`() {
         initViewModelWithTierList()
-        dragPocket.target = TrashBinDragData
+        fakeDragPocket.target = TrashBinDragData
 
         assertThrows(IllegalArgumentException::class.java) {
             viewModel.dropImage(dragShadow)
@@ -323,11 +329,11 @@ class TierListViewModelTest {
         val tierListEvent = TierChanged(tierPosition = 1)
         val dragEffect = UpdateInTier(data = dragTarget.copy(image = dragShadow.image))
 
-        dragPocket.target = dragTarget
+        fakeDragPocket.target = dragTarget
         fakeTierListProcessor.events[dragEffect] = tierListEvent
         viewModel.dropImage(dragShadow)
 
-        assertNull(dragPocket.target)
+        assertNull(fakeDragPocket.target)
         tierListEventObserver.awaitValue(tierListEvent)
     }
 
@@ -338,12 +344,12 @@ class TierListViewModelTest {
         val tierListEvent = TierChanged(tierPosition = 1)
         val dragEffect = InsertToTier(data = dragTarget.copy(image = dragShadow.image))
 
-        dragPocket.target = dragTarget
-        dragPocket.target = null
+        fakeDragPocket.target = dragTarget
+        fakeDragPocket.target = null
         fakeTierListProcessor.events[dragEffect] = tierListEvent
         viewModel.dropImage(dragShadow)
 
-        assertNull(dragPocket.cachedTarget)
+        assertNull(fakeDragPocket.cachedTarget)
         tierListEventObserver.awaitValue(tierListEvent)
     }
 
@@ -354,11 +360,11 @@ class TierListViewModelTest {
         val tierListEvent = BacklogItemInserted(itemPosition = 2)
         val dragEffect = InsertToBacklog(data = dragShadow)
 
-        dragPocket.shadow = dragShadow
+        fakeDragPocket.shadow = dragShadow
         fakeTierListProcessor.events[dragEffect] = tierListEvent
         viewModel.endDrag()
 
-        assertNull(dragPocket.shadow)
+        assertNull(fakeDragPocket.shadow)
         tierListEventObserver.awaitValue(tierListEvent)
     }
 
@@ -378,9 +384,9 @@ class TierListViewModelTest {
                 }
         }
         val expectedLoadingProgressStates = arrayOf(
-            LoadingProgress(currentItem = 1, totalItems = 3),
-            LoadingProgress(currentItem = 2, totalItems = 3),
-            LoadingProgress(currentItem = 3, totalItems = 3),
+            LoadingProgress.Determinate(currentItem = 1, totalItems = 3),
+            LoadingProgress.Determinate(currentItem = 2, totalItems = 3),
+            LoadingProgress.Determinate(currentItem = 3, totalItems = 3),
             null
         )
         val expectedSavedImagePayloads = listOf(
@@ -438,5 +444,46 @@ class TierListViewModelTest {
             assertEquals(expectedEvent, actualEvents[index])
         }
         assertEquals(newTierStyles.toList(), tierList.tiers.map { it.style })
+    }
+
+    @Test
+    fun `On share tier list error produces export error event`() = runTest {
+        fakeTierStyleProvider.styles = tierList.tiers.map { it.style }
+        initViewModelWithTierList()
+        advanceUntilIdle()
+
+        val bitmap: Bitmap = mockk()
+        val tierListEventObserver = viewModel.tierListEvent.test()
+        val loadingProgressObserver = viewModel.loadingProgressLiveData.test()
+        val tierListEvent = TierListExportError(R.string.snackbar_msg_share_file_error)
+        val loadingProgressEvents = arrayOf(LoadingProgress.Indeterminate, null)
+        fakeTierListBitmapGenerator.bitmaps = mapOf(tierList to bitmap)
+        viewModel.shareTierList()
+        advanceUntilIdle()
+
+        tierListEventObserver.awaitValue(tierListEvent)
+        loadingProgressObserver.awaitValues(*loadingProgressEvents)
+    }
+
+    @Test
+    fun `On share tier list success produces ready to share event`() = runTest {
+        fakeTierStyleProvider.styles = tierList.tiers.map { it.style }
+        initViewModelWithTierList()
+        advanceUntilIdle()
+
+        val bitmap: Bitmap = mockk()
+        val uri: Uri = mockk()
+        val fileName = "${tierList.title}${FileManager.FILENAME_EXTENSION_JPEG}"
+        val tierListEventObserver = viewModel.tierListEvent.test()
+        val loadingProgressObserver = viewModel.loadingProgressLiveData.test()
+        val tierListEvent = TierListReadyToShare(uri)
+        val loadingProgressEvents = arrayOf(LoadingProgress.Indeterminate, null)
+        fakeTierListBitmapGenerator.bitmaps = mapOf(tierList to bitmap)
+        fakeFileManager.contentUris = mapOf(bitmap to fileName to uri)
+        viewModel.shareTierList()
+        advanceUntilIdle()
+
+        tierListEventObserver.awaitValue(tierListEvent)
+        loadingProgressObserver.awaitValues(*loadingProgressEvents)
     }
 }

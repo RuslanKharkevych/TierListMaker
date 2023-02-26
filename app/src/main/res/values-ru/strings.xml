@@ -4,7 +4,7 @@
     <string name="btn_add_new_image_desc">Добавить новое изображение</string>
     <string name="btn_zoom_in_desc">Увеличить</string>
     <string name="btn_zoom_out_desc">Уменьшить</string>
-    <string name="toolbar_subtitle_loading">Загрузка (%1$d/%2$d)</string>
+    <string name="toolbar_subtitle_determinate_loading">Загрузка (%1$d/%2$d)</string>
     <string name="btn_add_new_tier_desc">Добавить новый ранг</string>
     <string name="tier_list_default_title">Новый список</string>
     <string name="empty_previews_message">Сдесь пока ничего нет. Создайте свой первый список!</string>
@@ -21,4 +21,8 @@
     <string name="btn_change_theme_desc">Изменить тему</string>
     <string name="btn_share_desc">Поделиться</string>
     <string name="btn_view_desc">Посмотреть</string>
+    <string name="toolbar_subtitle_indeterminate_loading">Загрузка…</string>
+    <string name="snackbar_msg_share_file_error">Не удалось поделиться списком. Ошибка при создании файла</string>
+    <string name="snackbar_msg_no_share_apps_found">Не удалось поделиться списком. Не найдено подходящих приложений</string>
+    <string name="snackbar_msg_no_image_picker_apps_found">Не удалось выбрать изображения. Не найдено подходящих приложений</string>
 </resources>

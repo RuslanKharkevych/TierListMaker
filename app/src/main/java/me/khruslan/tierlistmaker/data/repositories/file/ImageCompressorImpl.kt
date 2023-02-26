@@ -5,6 +5,7 @@ import android.net.Uri
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProvider
+import me.khruslan.tierlistmaker.utils.TIER_IMAGE_WIDTH_FRACTION
 import me.khruslan.tierlistmaker.utils.displayWidthPixels
 import me.shouheng.compress.Compress
 import me.shouheng.compress.concrete
@@ -28,14 +29,13 @@ class ImageCompressorImpl @Inject constructor(
      */
     companion object {
         private const val IMAGE_QUALITY_PERCENT = 90
-        private const val DISPLAY_WIDTH_FRACTION = 0.33f
     }
 
     /**
-     * Max size of the compressed image calculated based on [DISPLAY_WIDTH_FRACTION]
+     * Max size of the compressed image calculated based on [TIER_IMAGE_WIDTH_FRACTION].
      */
     private val imageSize by lazy {
-        context.displayWidthPixels * DISPLAY_WIDTH_FRACTION
+        context.displayWidthPixels * TIER_IMAGE_WIDTH_FRACTION
     }
 
     override suspend fun compress(uri: Uri, targetDir: String): File {

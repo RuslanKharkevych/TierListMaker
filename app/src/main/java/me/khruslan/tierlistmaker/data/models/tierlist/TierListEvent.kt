@@ -1,5 +1,7 @@
 package me.khruslan.tierlistmaker.data.models.tierlist
 
+import android.net.Uri
+import androidx.annotation.StringRes
 import me.khruslan.tierlistmaker.data.models.drag.effects.DragEffect
 
 /**
@@ -69,3 +71,18 @@ data class TrashBinHighlightUpdated(val highlighted: Boolean) : TierListEvent()
  * [TierListEvent] implementation that indicates that image was removed.
  */
 object ImageRemoved : TierListEvent()
+
+/**
+ * [TierListEvent] implementation that indicates that tier list is ready to be shared.
+ *
+ * @property uri URI reference that points to the file.
+ */
+data class TierListReadyToShare(val uri: Uri) : TierListEvent()
+
+/**
+ * [TierListEvent] implementation that indicates that an error occurred during tier list image file
+ * export.
+ *
+ * @property errorMessageResId string resource of the user-friendly error message.
+ */
+data class TierListExportError(@StringRes val errorMessageResId: Int) : TierListEvent()
