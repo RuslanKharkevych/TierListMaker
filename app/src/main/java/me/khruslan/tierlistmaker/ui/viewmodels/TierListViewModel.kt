@@ -7,6 +7,7 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.hadilq.liveevent.LiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.models.drag.DragData
@@ -65,6 +66,11 @@ class TierListViewModel @Inject constructor(
      */
     val tierList: TierList = savedStateHandle.require(KEY_TIER_LIST)
 
+    /**
+     * [Job] that updates styles of all tiers in a [tierList].
+     */
+    private var updateTierListStylesJob: Job? = null
+
     private val _tierListEvent by lazy { LiveEvent<TierListEvent>() }
     private val _loadingProgressLiveData by lazy { MutableLiveData<LoadingProgress?>() }
 
@@ -95,7 +101,7 @@ class TierListViewModel @Inject constructor(
 
     init {
         tierListProcessor.setTierList(tierList)
-        updateTierStyles()
+        launchUpdateTierStylesJob()
     }
 
     /**
@@ -207,21 +213,25 @@ class TierListViewModel @Inject constructor(
     }
 
     /**
-     * Adds empty [Tier] and notifies the UI that it was inserted.
+     * Adds empty [Tier] and notifies the UI that it was inserted. Cancels current
+     * [updateTierListStylesJob] and starts a new one.
      *
      * Also updates style of all tiers.
      */
     fun addNewTier() {
+        updateTierListStylesJob?.cancel()
         tierList.tiers += Tier()
         _tierListEvent.value = TierInserted(tierList.tiers.lastIndex)
-        updateTierStyles()
+        updateTierListStylesJob = launchUpdateTierStylesJob()
     }
 
     /**
-     * Updates style of all tiers and notifies UI about the updates.
+     * Creates and starts [Job] that updates styles of all tiers and notifies UI about the updates.
+     *
+     * @return created job.
      */
-    private fun updateTierStyles() {
-        viewModelScope.launch {
+    private fun launchUpdateTierStylesJob(): Job {
+        return viewModelScope.launch {
             val styles = tierStyleProvider.getTierStyles(tierList.tiers.size)
             tierList.tiers.forEachIndexed { index, tier ->
                 tier.style = styles[index]
