@@ -29,4 +29,6 @@
     <string name="snackbar_msg_no_image_picker_apps_found">Unable to pick images. No suitable applications found</string>
     <string name="snackbar_msg_share_file_error">Unable to share tier list. Failed to create image file</string>
     <string name="snackbar_msg_no_share_apps_found">Unable to share tier list. No suitable applications found</string>
+    <string name="snackbar_msg_view_file_error">Unable to view tier list. Failed to create image file</string>
+    <string name="snackbar_msg_no_view_apps_found">Unable to view tier list. No suitable applications found</string>
 </resources>

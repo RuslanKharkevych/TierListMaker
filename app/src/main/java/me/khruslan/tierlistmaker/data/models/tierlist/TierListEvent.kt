@@ -73,11 +73,18 @@ data class TrashBinHighlightUpdated(val highlighted: Boolean) : TierListEvent()
 object ImageRemoved : TierListEvent()
 
 /**
- * [TierListEvent] implementation that indicates that tier list is ready to be shared.
+ * [TierListEvent] implementation that indicates that tier list image file is ready to be shared.
  *
  * @property uri URI reference that points to the file.
  */
 data class TierListReadyToShare(val uri: Uri) : TierListEvent()
+
+/**
+ * [TierListEvent] implementation that indicates that tier list image file is ready to be viewed.
+ *
+ * @property uri URI reference that points to the file.
+ */
+data class TierListReadyToView(val uri: Uri) : TierListEvent()
 
 /**
  * [TierListEvent] implementation that indicates that an error occurred during tier list image file

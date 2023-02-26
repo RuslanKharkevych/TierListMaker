@@ -184,6 +184,7 @@ class TierListFragment : Fragment() {
             is TrashBinHighlightUpdated -> TODO("Update trash bin UI")
             is ImageRemoved -> TODO("Update the UI")
             is TierListReadyToShare -> shareTierList(event.uri)
+            is TierListReadyToView -> viewTierList(event.uri)
             is TierListExportError -> presentTierListErrorSnackbar(event.errorMessageResId)
         }
     }
@@ -272,7 +273,7 @@ class TierListFragment : Fragment() {
             btnZoomOut.setOnClickListener { viewModel.zoomOut() }
             btnAddNewTier.setOnClickListener { viewModel.addNewTier() }
             btnAddNewImage.setOnClickListener { launchImagePicker() }
-            btnView.setOnClickListener { /* TODO: View tier list image */ }
+            btnView.setOnClickListener { viewModel.viewTierList() }
             btnShare.setOnClickListener { viewModel.shareTierList() }
         }
     }
@@ -359,6 +360,25 @@ class TierListFragment : Fragment() {
             startActivity(intent)
         } catch (e: ActivityNotFoundException) {
             presentTierListErrorSnackbar(R.string.snackbar_msg_no_share_apps_found)
+        }
+    }
+
+    /**
+     * Launches intent to view tier list. Presents snackbar with error message in case no suitable
+     * activities are found.
+     *
+     * @param uri URI holding a tier list image file.
+     */
+    private fun viewTierList(uri: Uri) {
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(uri, FileManager.MIME_TYPE_IMAGE_JPEG)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            presentTierListErrorSnackbar(R.string.snackbar_msg_no_view_apps_found)
         }
     }
 

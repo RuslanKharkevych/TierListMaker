@@ -264,6 +264,21 @@ class TierListViewModel @Inject constructor(
     }
 
     /**
+     * Attempts to save [tierList] to file. On success - notifies observers that tier list is ready
+     * to be viewed. On error - notifies observers about it.
+     */
+    fun viewTierList() {
+        viewModelScope.launch {
+            val uri = saveTierListToFile()
+            _tierListEvent.value = if (uri != null) {
+                TierListReadyToView(uri)
+            } else {
+                TierListExportError(R.string.snackbar_msg_view_file_error)
+            }
+        }
+    }
+
+    /**
      * Generates bitmap from [tierList] and saves it to a file. Notifies observers about loading
      * state.
      *

@@ -486,4 +486,45 @@ class TierListViewModelTest {
         tierListEventObserver.awaitValue(tierListEvent)
         loadingProgressObserver.awaitValues(*loadingProgressEvents)
     }
+
+    @Test
+    fun `On view tier list error produces export error event`() = runTest {
+        fakeTierStyleProvider.styles = tierList.tiers.map { it.style }
+        initViewModelWithTierList()
+        advanceUntilIdle()
+
+        val bitmap: Bitmap = mockk()
+        val tierListEventObserver = viewModel.tierListEvent.test()
+        val loadingProgressObserver = viewModel.loadingProgressLiveData.test()
+        val tierListEvent = TierListExportError(R.string.snackbar_msg_view_file_error)
+        val loadingProgressEvents = arrayOf(LoadingProgress.Indeterminate, null)
+        fakeTierListBitmapGenerator.bitmaps = mapOf(tierList to bitmap)
+        viewModel.viewTierList()
+        advanceUntilIdle()
+
+        tierListEventObserver.awaitValue(tierListEvent)
+        loadingProgressObserver.awaitValues(*loadingProgressEvents)
+    }
+
+    @Test
+    fun `On view tier list success produces ready to share event`() = runTest {
+        fakeTierStyleProvider.styles = tierList.tiers.map { it.style }
+        initViewModelWithTierList()
+        advanceUntilIdle()
+
+        val bitmap: Bitmap = mockk()
+        val uri: Uri = mockk()
+        val fileName = "${tierList.title}${FileManager.FILENAME_EXTENSION_JPEG}"
+        val tierListEventObserver = viewModel.tierListEvent.test()
+        val loadingProgressObserver = viewModel.loadingProgressLiveData.test()
+        val tierListEvent = TierListReadyToView(uri)
+        val loadingProgressEvents = arrayOf(LoadingProgress.Indeterminate, null)
+        fakeTierListBitmapGenerator.bitmaps = mapOf(tierList to bitmap)
+        fakeFileManager.contentUris = mapOf(bitmap to fileName to uri)
+        viewModel.viewTierList()
+        advanceUntilIdle()
+
+        tierListEventObserver.awaitValue(tierListEvent)
+        loadingProgressObserver.awaitValues(*loadingProgressEvents)
+    }
 }

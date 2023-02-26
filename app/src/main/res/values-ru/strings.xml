@@ -25,4 +25,6 @@
     <string name="snackbar_msg_share_file_error">Не удалось поделиться списком. Ошибка при создании файла</string>
     <string name="snackbar_msg_no_share_apps_found">Не удалось поделиться списком. Не найдено подходящих приложений</string>
     <string name="snackbar_msg_no_image_picker_apps_found">Не удалось выбрать изображения. Не найдено подходящих приложений</string>
+    <string name="snackbar_msg_view_file_error">Не удалось отрыть список. Ошибка при создании файла</string>
+    <string name="snackbar_msg_no_view_apps_found">Не удалось отрыть список. Не найдено подходящих приложений</string>
 </resources>
