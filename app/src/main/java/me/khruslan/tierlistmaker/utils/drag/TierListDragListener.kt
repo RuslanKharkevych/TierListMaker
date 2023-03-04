@@ -14,9 +14,14 @@ import timber.log.Timber
 abstract class TierListDragListener : View.OnDragListener {
 
     /**
-     * Whether the drag is active at the moment.
+     * Whether the drag is active at the moment. Changing the value of this field automatically
+     * triggers [onIsDraggingChanged] callback.
      */
     private var isDragging = false
+        set(value) {
+            field = value
+            onIsDraggingChanged(value)
+        }
 
     /**
      * Called when the drag is started.
@@ -45,6 +50,14 @@ abstract class TierListDragListener : View.OnDragListener {
      * Called when the drag ends without dropping.
      */
     abstract fun onDragEnded()
+
+    /**
+     * Called when dragging starts / ends.
+     *
+     * @param isDragging whether the drag is active at the moment (see
+     * [TierListDragListener.isDragging]).
+     */
+    abstract fun onIsDraggingChanged(isDragging: Boolean)
 
     override fun onDrag(view: View?, event: DragEvent?): Boolean {
         try {

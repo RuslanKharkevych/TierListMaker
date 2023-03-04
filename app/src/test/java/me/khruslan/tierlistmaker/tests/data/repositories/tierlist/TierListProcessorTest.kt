@@ -227,8 +227,8 @@ class TierListProcessorTest {
     }
 
     @Test
-    fun `When effect is InsertToTrashBin removes image`() {
-        val effect = InsertToTrashBin
+    fun `When effect is ThrowToTrashBin removes image`() {
+        val effect = ThrowToTrashBin
         val expectedEvent = ImageRemoved
         val actualEvent = tierListProcessor.processDragEffect(effect)
 

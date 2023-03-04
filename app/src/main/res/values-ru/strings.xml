@@ -13,7 +13,7 @@
     <string name="save_previews_error_message">Ой! Не удалось сохранить список :(</string>
     <string name="btn_refresh">Обновить</string>
     <string name="app_language">ru</string>
-    <string name="menu_item_rename_title">Переименовать</string>
+    <string name="menu_item_rename_tier_list_title">Переименовать список</string>
     <string name="menu_item_my_collection_title">Моя коллекция</string>
     <string name="menu_item_settings_title">Настройки</string>
     <string name="menu_item_support_title">Справка / отзыв</string>
@@ -27,4 +27,8 @@
     <string name="snackbar_msg_no_image_picker_apps_found">Не удалось выбрать изображения. Не найдено подходящих приложений</string>
     <string name="snackbar_msg_view_file_error">Не удалось отрыть список. Ошибка при создании файла</string>
     <string name="snackbar_msg_no_view_apps_found">Не удалось отрыть список. Не найдено подходящих приложений</string>
+    <string name="snackbar_msg_image_removed">Изображение удалено</string>
+    <string name="snackbar_action_restore">Восстановить</string>
+    <string name="menu_item_remove_image_title">Удалить изображение</string>
+    <string name="toolbar_subtitle_release_to_remove_image">Отпустите, чтобы удалить изображение</string>
 </resources>

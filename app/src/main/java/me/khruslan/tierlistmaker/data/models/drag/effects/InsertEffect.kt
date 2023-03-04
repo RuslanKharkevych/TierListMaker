@@ -14,7 +14,6 @@ import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
  * @see InsertToTier
  * @see InsertToEndOfBacklog
  * @see InsertToEndOfTier
- * @see InsertToTrashBin
  */
 sealed class InsertEffect : DragEffect() {
 
@@ -44,6 +43,7 @@ sealed class InsertEffect : DragEffect() {
          *
          * @param shadow image data to insert.
          * @param target data of the target.
+         * @throws [IllegalArgumentException] if target is [TrashBinDragData].
          * @return created [InsertEffect].
          */
         fun create(shadow: ImageDragData, target: DragData): InsertEffect {
@@ -57,7 +57,13 @@ sealed class InsertEffect : DragEffect() {
                         tierPosition = target.tierPosition
                     )
                 }
-                is TrashBinDragData -> InsertToTrashBin
+                is TrashBinDragData -> throw IllegalArgumentException(
+                    String.format(
+                        "Cannot create %s for target of type %s",
+                        InsertEffect::class.qualifiedName,
+                        TrashBinDragData::class.qualifiedName
+                    )
+                )
             }
         }
     }
@@ -91,8 +97,3 @@ data class InsertToEndOfBacklog(val image: Image) : InsertEffect()
  * @property tierPosition position of the tier.
  */
 data class InsertToEndOfTier(val image: Image, val tierPosition: Int) : InsertEffect()
-
-/**
- * [InsertEffect] implementation that throws an image into the trash bin.
- */
-object InsertToTrashBin : InsertEffect()

@@ -17,9 +17,11 @@
     <string name="btn_change_theme_desc">Change theme</string>
 
     <!-- TierListFragment -->
-    <string name="menu_item_rename_title">Rename</string>
+    <string name="menu_item_rename_tier_list_title">Rename tier list</string>
+    <string name="menu_item_remove_image_title">Remove image</string>
     <string name="toolbar_subtitle_determinate_loading">Loading (%1$d/%2$d)</string>
     <string name="toolbar_subtitle_indeterminate_loading">Loading…</string>
+    <string name="toolbar_subtitle_release_to_remove_image">Release to remove image</string>
     <string name="btn_add_new_image_desc">Add new image</string>
     <string name="btn_zoom_in_desc">Zoom in</string>
     <string name="btn_zoom_out_desc">Zoom out</string>
@@ -31,4 +33,6 @@
     <string name="snackbar_msg_no_share_apps_found">Unable to share tier list. No suitable applications found</string>
     <string name="snackbar_msg_view_file_error">Unable to view tier list. Failed to create image file</string>
     <string name="snackbar_msg_no_view_apps_found">Unable to view tier list. No suitable applications found</string>
+    <string name="snackbar_msg_image_removed">Image removed</string>
+    <string name="snackbar_action_restore">Restore</string>
 </resources>

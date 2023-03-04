@@ -89,7 +89,6 @@ class TierListProcessorImpl @Inject constructor(): TierListProcessor {
                 tiers[effect.tierPosition].images += effect.image
                 TierChanged(effect.tierPosition)
             }
-            is InsertToTrashBin -> ImageRemoved
         }
     }
 
@@ -145,6 +144,7 @@ class TierListProcessorImpl @Inject constructor(): TierListProcessor {
                 tiers[effect.tierPosition].images.updateLast(effect.image)
                 TierChanged(effect.tierPosition)
             }
+            is ThrowToTrashBin -> ImageRemoved
         }
     }
 }

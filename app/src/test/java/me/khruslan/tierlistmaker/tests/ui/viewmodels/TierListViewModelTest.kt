@@ -17,7 +17,6 @@ import kotlinx.coroutines.test.runTest
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.models.drag.ImageDragData
 import me.khruslan.tierlistmaker.data.models.drag.TierDragData
-import me.khruslan.tierlistmaker.data.models.drag.TrashBinDragData
 import me.khruslan.tierlistmaker.data.models.drag.effects.*
 import me.khruslan.tierlistmaker.data.models.tierlist.*
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
@@ -182,7 +181,7 @@ class TierListViewModelTest {
     @Test
     fun `Doesn't produce any events on drag end if shadow is null`() {
         initViewModelWithTierList()
-        viewModel.endDrag()
+        viewModel.restoreReleasedImage()
 
         viewModel.tierListEvent.test().assertNoValue()
     }
@@ -313,16 +312,6 @@ class TierListViewModelTest {
     }
 
     @Test
-    fun `Throws exception when attempting to update trash bin target`() {
-        initViewModelWithTierList()
-        fakeDragPocket.target = TrashBinDragData
-
-        assertThrows(IllegalArgumentException::class.java) {
-            viewModel.dropImage(dragShadow)
-        }
-    }
-
-    @Test
     fun `Drops image in target`() {
         initViewModelWithTierList()
         val tierListEventObserver = viewModel.tierListEvent.test()
@@ -354,7 +343,7 @@ class TierListViewModelTest {
     }
 
     @Test
-    fun `Restores image once drag has ended`() {
+    fun `Restores released image`() {
         initViewModelWithTierList()
         val tierListEventObserver = viewModel.tierListEvent.test()
         val tierListEvent = BacklogItemInserted(itemPosition = 2)
@@ -362,7 +351,7 @@ class TierListViewModelTest {
 
         fakeDragPocket.shadow = dragShadow
         fakeTierListProcessor.events[dragEffect] = tierListEvent
-        viewModel.endDrag()
+        viewModel.restoreReleasedImage()
 
         assertNull(fakeDragPocket.shadow)
         tierListEventObserver.awaitValue(tierListEvent)

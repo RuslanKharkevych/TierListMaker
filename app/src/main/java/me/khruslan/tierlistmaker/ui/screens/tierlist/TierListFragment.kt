@@ -5,11 +5,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -26,6 +28,7 @@ import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.models.drag.DragData
 import me.khruslan.tierlistmaker.data.models.drag.ImageDragData
 import me.khruslan.tierlistmaker.data.models.drag.TierDragData
+import me.khruslan.tierlistmaker.data.models.drag.TrashBinDragData
 import me.khruslan.tierlistmaker.data.models.tierlist.*
 import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
 import me.khruslan.tierlistmaker.data.repositories.file.FileManager
@@ -65,15 +68,26 @@ class TierListFragment : Fragment() {
      * Listener of the tier list drag events.
      */
     private val dragListener = object : TierListDragListener() {
-        override fun onDragStarted(dragData: ImageDragData) = viewModel.startDrag(dragData)
+        override fun onDragStarted(dragData: ImageDragData) {
+            viewModel.startDrag(dragData)
+        }
 
         override fun onDragTargetChanged(targetData: DragData?) {
             viewModel.updateDragTarget(targetData)
         }
 
-        override fun onDrop(dragData: ImageDragData) = viewModel.dropImage(dragData)
+        override fun onDrop(dragData: ImageDragData) {
+            viewModel.dropImage(dragData)
+        }
 
-        override fun onDragEnded() = viewModel.endDrag()
+        override fun onDragEnded() {
+            viewModel.restoreReleasedImage()
+        }
+
+        override fun onIsDraggingChanged(isDragging: Boolean) {
+            findToolbarMenuItem(R.id.item_rename_tier_list).isVisible = !isDragging
+            findToolbarMenuItem(R.id.item_remove_image).isVisible = isDragging
+        }
     }
 
     /**
@@ -181,8 +195,11 @@ class TierListFragment : Fragment() {
                 tiersAdapter.updateImageSize(event.imageSize)
                 backlogAdapter.updateImageSize(event.imageSize)
             }
-            is TrashBinHighlightUpdated -> TODO("Update trash bin UI")
-            is ImageRemoved -> TODO("Update the UI")
+            is TrashBinHighlightUpdated -> setRemoveImageHintVisible(event.highlighted)
+            is ImageRemoved -> {
+                setRemoveImageHintVisible(false)
+                presentImageRemovedSnackbar()
+            }
             is TierListReadyToShare -> shareTierList(event.uri)
             is TierListReadyToView -> viewTierList(event.uri)
             is TierListExportError -> presentTierListErrorSnackbar(event.errorMessageResId)
@@ -247,11 +264,14 @@ class TierListFragment : Fragment() {
     }
 
     /**
-     * Initializes toolbar title, navigation action and menu click listeners.
+     * Initializes toolbar title, navigation action and menu click listeners. Drag listener and tag
+     * are added to be able to receive drag events (related to the trash bin action).
      */
     private fun initToolbar() {
         with(binding.toolbar) {
             title = args.tierList.title
+            tag = TrashBinDragData
+            setOnDragListener(dragListener)
 
             setNavigationOnClickListener {
                 setTierListResultAndFinishActivity()
@@ -392,5 +412,43 @@ class TierListFragment : Fragment() {
             .make(binding.root, errorMessageResId, Snackbar.LENGTH_LONG)
             .setAnchorView(R.id.group_bottom_bar)
             .show()
+    }
+
+    /**
+     * Presents [Snackbar] to inform user that image was removed with an action button that allows
+     * to restore removed image.
+     */
+    private fun presentImageRemovedSnackbar() {
+        Snackbar
+            .make(binding.root, R.string.snackbar_msg_image_removed, Snackbar.LENGTH_LONG)
+            .setAnchorView(R.id.group_bottom_bar)
+            .setAction(R.string.snackbar_action_restore) {
+                viewModel.restoreReleasedImage()
+            }
+            .show()
+    }
+
+    /**
+     * Shows or hides hint (as a toolbar subtitle) about how to remove image. Should be visible
+     * when user drags an image on top of toolbar.
+     *
+     * @param visible whether remove image hint has to be shown.
+     */
+    private fun setRemoveImageHintVisible(visible: Boolean) {
+        binding.toolbar.subtitle = if (visible) {
+            getString(R.string.toolbar_subtitle_release_to_remove_image)
+        } else {
+            null
+        }
+    }
+
+    /**
+     * Returns the toolbar menu item with a particular identifier.
+     *
+     * @param itemId identifier of the item to find.
+     * @return The menu item object.
+     */
+    private fun findToolbarMenuItem(@IdRes itemId: Int): MenuItem {
+        return binding.toolbar.menu.findItem(itemId)
     }
 }

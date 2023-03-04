@@ -66,17 +66,6 @@ class DragPocketTest {
     }
 
     @Test
-    fun `Logs error if shadow is already set`() {
-        val firstShadow = dummyData[0]
-        val secondShadow = dummyData[1]
-        dragPocket.shadow = firstShadow
-        dragPocket.shadow = secondShadow
-
-        assertEquals(secondShadow, dragPocket.shadow)
-        verifyErrorWasLogged()
-    }
-
-    @Test
     fun `Sets and pops target`() {
         val target = dummyData[0]
         dragPocket.target = target

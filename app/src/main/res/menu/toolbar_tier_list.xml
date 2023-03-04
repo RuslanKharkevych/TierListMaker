@@ -3,9 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/item_rename"
+        android:id="@+id/item_rename_tier_list"
         android:icon="@drawable/ic_edit"
-        android:title="@string/menu_item_rename_title"
+        android:title="@string/menu_item_rename_tier_list_title"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/item_remove_image"
+        android:icon="@drawable/ic_delete"
+        android:title="@string/menu_item_remove_image_title"
+        android:visible="false"
         app:showAsAction="ifRoom" />
 
 </menu>

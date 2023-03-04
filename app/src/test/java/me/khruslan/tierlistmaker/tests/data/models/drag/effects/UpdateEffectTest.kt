@@ -7,7 +7,6 @@ import me.khruslan.tierlistmaker.data.models.drag.effects.*
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
 import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertThrows
 import org.junit.Test
 
 class UpdateEffectTest {
@@ -80,9 +79,10 @@ class UpdateEffectTest {
     }
 
     @Test
-    fun `When target is trash bin throws IllegalArgumentException`() {
-        assertThrows(IllegalArgumentException::class.java) {
-            UpdateEffect.create(shadow, TrashBinDragData)
-        }
+    fun `When target is trash bin creates TrowToTrashBin effect`() {
+        val target = TrashBinDragData
+        val expectedEffect = ThrowToTrashBin
+
+        assertEquals(expectedEffect, UpdateEffect.create(shadow, target))
     }
 }

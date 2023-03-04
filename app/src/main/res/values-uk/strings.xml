@@ -13,7 +13,7 @@
     <string name="save_previews_error_message">Ой! Не вдалося зберегти список :(</string>
     <string name="btn_refresh">Оновити</string>
     <string name="app_language">uk</string>
-    <string name="menu_item_rename_title">Перейменувати</string>
+    <string name="menu_item_rename_tier_list_title">Перейменувати список</string>
     <string name="menu_item_my_collection_title">Моя колекція</string>
     <string name="menu_item_settings_title">Налаштування</string>
     <string name="menu_item_support_title">Довідка та відгуки</string>
@@ -27,4 +27,8 @@
     <string name="snackbar_msg_no_image_picker_apps_found">Не вдалося обрати зображення. Не знайдено підходящих застосунків</string>
     <string name="snackbar_msg_view_file_error">Не вдалося відкрити список. Помилка при створенні файлу</string>
     <string name="snackbar_msg_no_view_apps_found">Не вдалося відкрити список. Не знайдено підходящих застосунків</string>
+    <string name="snackbar_msg_image_removed">Зображення видалено</string>
+    <string name="snackbar_action_restore">Відновити</string>
+    <string name="menu_item_remove_image_title">Видалити зображення</string>
+    <string name="toolbar_subtitle_release_to_remove_image">Відпустіть, щоб видалити зображення</string>
 </resources>

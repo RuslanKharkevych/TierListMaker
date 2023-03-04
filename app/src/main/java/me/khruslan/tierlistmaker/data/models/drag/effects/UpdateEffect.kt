@@ -14,6 +14,7 @@ import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
  * @see UpdateInTier
  * @see UpdateLastInBacklog
  * @see UpdateLastInTier
+ * @see ThrowToTrashBin
  */
 sealed class UpdateEffect : DragEffect() {
 
@@ -28,7 +29,6 @@ sealed class UpdateEffect : DragEffect() {
          * @param shadow data of the updated image.
          * @param target data of the target to update.
          * @return created [UpdateEffect].
-         * @throws [IllegalArgumentException] if target is [TrashBinDragData]
          */
         fun create(shadow: ImageDragData, target: DragData): UpdateEffect {
             return when (target) {
@@ -44,13 +44,7 @@ sealed class UpdateEffect : DragEffect() {
                         tierPosition = target.tierPosition
                     )
                 }
-                is TrashBinDragData -> throw IllegalArgumentException(
-                    String.format(
-                        "Cannot create %s for target of type %s",
-                        UpdateEffect::class.qualifiedName,
-                        TrashBinDragData::class.qualifiedName
-                    )
-                )
+                is TrashBinDragData -> ThrowToTrashBin
             }
         }
     }
@@ -84,3 +78,8 @@ data class UpdateLastInBacklog(val image: Image) : UpdateEffect()
  * @property tierPosition position of the tier.
  */
 data class UpdateLastInTier(val image: Image, val tierPosition: Int) : UpdateEffect()
+
+/**
+ * [UpdateEffect] implementation that throws an image into the trash bin.
+ */
+object ThrowToTrashBin : UpdateEffect()

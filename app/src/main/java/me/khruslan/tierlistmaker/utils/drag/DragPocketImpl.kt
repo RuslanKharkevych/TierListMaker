@@ -15,10 +15,6 @@ class DragPocketImpl @Inject constructor() : DragPocket {
             if (field == null) logError("get shadow: shadow is null")
             return field.also { field = null }
         }
-        set(value) {
-            if (field != null) logError("set shadow: $field is not null")
-            field = value
-        }
 
     override var target: DragData? = null
         get() = field.also { field = null }

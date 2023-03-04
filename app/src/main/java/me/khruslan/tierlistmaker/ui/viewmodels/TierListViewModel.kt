@@ -14,7 +14,6 @@ import me.khruslan.tierlistmaker.data.models.drag.DragData
 import me.khruslan.tierlistmaker.data.models.drag.ImageDragData
 import me.khruslan.tierlistmaker.data.models.drag.effects.*
 import me.khruslan.tierlistmaker.data.models.tierlist.*
-import me.khruslan.tierlistmaker.ui.models.LoadingProgress
 import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
 import me.khruslan.tierlistmaker.data.models.tierlist.image.ResourceImage
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
@@ -22,12 +21,13 @@ import me.khruslan.tierlistmaker.data.repositories.file.FileManager
 import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListBitmapGenerator
 import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListProcessor
 import me.khruslan.tierlistmaker.data.repositories.tierlist.tier.TierStyleProvider
-import me.khruslan.tierlistmaker.ui.screens.tierlist.TierListFragment
-import me.khruslan.tierlistmaker.utils.drag.DragPocket
-import me.khruslan.tierlistmaker.utils.displayWidthPixels
-import me.khruslan.tierlistmaker.utils.require
 import me.khruslan.tierlistmaker.data.work.SaveTierListArgsProvider
 import me.khruslan.tierlistmaker.data.work.SaveTierListWorker
+import me.khruslan.tierlistmaker.ui.models.LoadingProgress
+import me.khruslan.tierlistmaker.ui.screens.tierlist.TierListFragment
+import me.khruslan.tierlistmaker.utils.displayWidthPixels
+import me.khruslan.tierlistmaker.utils.drag.DragPocket
+import me.khruslan.tierlistmaker.utils.require
 import java.io.File
 import javax.inject.Inject
 
@@ -164,10 +164,10 @@ class TierListViewModel @Inject constructor(
     }
 
     /**
-     * Ends drag without dropping. Pops [DragPocket.shadow]
-     * and notified the UI that it should be restored.
+     * Restores released image. It can be called to either end the drag without dropping, or put
+     * back image. Pops [DragPocket.shadow] and notified the UI that it should be restored.
      */
-    fun endDrag() {
+    fun restoreReleasedImage() {
         val shadow = dragPocket.shadow ?: return
         processDragEffect(InsertEffect.create(shadow))
     }
