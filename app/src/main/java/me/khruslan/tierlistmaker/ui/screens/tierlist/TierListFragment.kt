@@ -225,7 +225,10 @@ class TierListFragment : Fragment() {
         tiersAdapter = TierAdapter(
             tiers = tiers,
             dragListener = dragListener,
-            imageSize = imageSize
+            imageSize = imageSize,
+            onTierRemoved = { tier ->
+                viewModel.insertImagesToBacklog(tier.images)
+            }
         )
         tiersAdapter.registerAdapterDataObserver(tiersDataObserver)
 

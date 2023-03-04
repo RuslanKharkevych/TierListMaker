@@ -192,8 +192,7 @@ class TierListViewModel @Inject constructor(
                 }
             }
 
-            tierList.backlogImages.addAll(0, images)
-            _tierListEvent.value = BacklogImagesAdded
+            insertImagesToBacklog(images)
             _loadingProgressLiveData.postValue(null)
         }
     }
@@ -301,5 +300,15 @@ class TierListViewModel @Inject constructor(
         val uri = fileManager.provideContentUriFromBitmap(bitmap, fileName)
         _loadingProgressLiveData.value = null
         return uri
+    }
+
+    /**
+     * Inserts images at the start of the backlog and notifies UI about the updates.
+     *
+     * @param images images to insert.
+     */
+    fun insertImagesToBacklog(images: List<Image>) {
+        tierList.backlogImages.addAll(0, images)
+        _tierListEvent.value = BacklogImagesAdded
     }
 }

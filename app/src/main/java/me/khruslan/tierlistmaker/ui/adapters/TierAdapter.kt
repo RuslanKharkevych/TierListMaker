@@ -21,7 +21,8 @@ import me.khruslan.tierlistmaker.utils.swap
 class TierAdapter(
     private val tiers: MutableList<Tier>,
     private val dragListener: View.OnDragListener,
-    private var imageSize: Int
+    private var imageSize: Int,
+    private val onTierRemoved: (tier: Tier) -> Unit
 ) : RecyclerView.Adapter<TierHolder>(), Reorderable {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -42,14 +43,17 @@ class TierAdapter(
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
         tiers.swap(fromPosition, toPosition)
+        swapTierStyles(fromPosition, toPosition)
         notifyItemMoved(fromPosition, toPosition)
         notifyItemRangeChanged(0, tiers.size, Unit)
     }
 
     override fun onItemSwiped(position: Int) {
-        tiers.removeAt(position)
+        val tier = tiers[position]
+        tiers.remove(tier)
         notifyItemRemoved(position)
         notifyItemRangeChanged(0, tiers.size, Unit)
+        onTierRemoved(tier)
     }
 
     /**
@@ -60,5 +64,17 @@ class TierAdapter(
     fun updateImageSize(imageSize: Int) {
         this.imageSize = imageSize
         notifyDataSetChanged()
+    }
+
+    /**
+     * Swaps styles of tiers without altering other contents.
+     *
+     * @param firstTierIndex index of first tier.
+     * @param secondTierIndex index of second tier.
+     */
+    private fun swapTierStyles(firstTierIndex: Int, secondTierIndex: Int) {
+        val temp = tiers[firstTierIndex].style
+        tiers[firstTierIndex].style = tiers[secondTierIndex].style
+        tiers[secondTierIndex].style = temp
     }
 }
