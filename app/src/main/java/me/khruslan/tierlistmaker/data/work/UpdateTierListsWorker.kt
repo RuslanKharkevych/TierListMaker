@@ -6,30 +6,28 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.data.repositories.db.PaperRepository
 
 /**
- * [CoroutineWorker] implementation that saves tier list in local storage.
- * In order to pass the [TierList] to the worker set [SaveTierListArgsProvider.tierList]
- * before enqueuing the work.
+ * [CoroutineWorker] implementation that updates tier lists in local storage. In order to pass
+ * tier lists to the worker set [UpdateTierListsArgsProvider.tierLists] before enqueuing the work.
  *
- * @property argsProvider provider of arguments for this worker (used to pass [TierList]).
- * @property paperRepository repository that persists tier lists (used to save [TierList]).
+ * @property argsProvider provider of arguments for this worker (used to pass tier lists).
+ * @property paperRepository repository that persists tier lists (used to update tier lists).
  * @param appContext application context.
  * @param workerParams worker parameters.
  */
 @HiltWorker
-class SaveTierListWorker @AssistedInject constructor(
+class UpdateTierListsWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
-    private val argsProvider: SaveTierListArgsProvider,
+    private val argsProvider: UpdateTierListsArgsProvider,
     private val paperRepository: PaperRepository
 ) : CoroutineWorker(appContext, workerParams) {
 
     override suspend fun doWork(): Result {
-        val tierList = argsProvider.tierList ?: return Result.failure()
-        val result = paperRepository.saveTierList(tierList)
+        val tierLists = argsProvider.tierLists ?: return Result.failure()
+        val result = paperRepository.updateTierLists(tierLists)
         return if (result) Result.success() else Result.failure()
     }
 }

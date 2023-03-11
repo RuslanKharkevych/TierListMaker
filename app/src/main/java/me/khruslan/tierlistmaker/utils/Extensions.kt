@@ -15,10 +15,14 @@ import androidx.core.animation.doOnEnd
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.fragment.NavHostFragment
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.models.drag.ImageDragData
+import me.khruslan.tierlistmaker.ui.adapters.reorderable.Reorderable
+import me.khruslan.tierlistmaker.ui.adapters.reorderable.ReorderableCallback
 import kotlin.text.toInt as convertToInt
 
 /**
@@ -191,4 +195,16 @@ fun View.startDragCompat(data: ImageDragData): Boolean {
         @Suppress("DEPRECATION")
         startDrag(data.toClipData(), shadowBuilder, data, 0)
     }
+}
+
+/**
+ * Attaches [ItemTouchHelper] with [ReorderableCallback] to the [RecyclerView]. This function
+ * requires that [RecyclerView] has set [RecyclerView.Adapter] that implements [Reorderable]
+ * interface. Enables both changing the order of items and swipe-to-dismiss functionality.
+ *
+ * @receiver recycler view for which reordering will be enabled.
+ */
+fun RecyclerView.enableReordering() {
+    val callback = ReorderableCallback(adapter as Reorderable)
+    ItemTouchHelper(callback).attachToRecyclerView(this)
 }

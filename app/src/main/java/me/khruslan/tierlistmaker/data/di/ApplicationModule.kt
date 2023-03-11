@@ -28,5 +28,5 @@ abstract class ApplicationModule {
 
     @Binds
     @Singleton
-    abstract fun provideThemeManager(themeManagerImpl: ThemeManagerImpl): ThemeManager
+    abstract fun bindThemeManager(themeManagerImpl: ThemeManagerImpl): ThemeManager
 }

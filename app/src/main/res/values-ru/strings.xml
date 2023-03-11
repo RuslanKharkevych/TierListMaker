@@ -10,9 +10,13 @@
     <string name="empty_previews_message">Сдесь пока ничего нет. Создайте свой первый список!</string>
     <string name="load_previews_error_message">Ой! Что-то пошло не так…\nНе удалось загрузить вашу коллекцию</string>
     <string name="btn_report_issue"><u>Сообщить об ошибке</u></string>
-    <string name="save_previews_error_message">Ой! Не удалось сохранить список :(</string>
+    <string name="save_tier_list_error_message">Ой! Не удалось сохранить список :(</string>
+    <string name="remove_tier_list_error_message">Ой! Не удалось удалить список :(</string>
     <string name="btn_refresh">Обновить</string>
     <string name="app_language">ru</string>
+    <string name="btn_yes">Да</string>
+    <string name="btn_no">Нет</string>
+    <string name="remove_tier_list_confirmation_title">Вы уверены, что хотите удалить список уровней \"%s\"?</string>
     <string name="menu_item_rename_tier_list_title">Переименовать список</string>
     <string name="menu_item_my_collection_title">Моя коллекция</string>
     <string name="menu_item_settings_title">Настройки</string>

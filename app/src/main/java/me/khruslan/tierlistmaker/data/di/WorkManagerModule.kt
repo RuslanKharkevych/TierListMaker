@@ -6,6 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import me.khruslan.tierlistmaker.data.work.SaveTierListArgsProvider
 import me.khruslan.tierlistmaker.data.work.SaveTierListArgsProviderImpl
+import me.khruslan.tierlistmaker.data.work.UpdateTierListsArgsProviderImpl
+import me.khruslan.tierlistmaker.data.work.UpdateTierListsArgsProvider
 import javax.inject.Singleton
 
 @Module
@@ -17,4 +19,10 @@ abstract class WorkManagerModule {
     abstract fun bindSaveTierListArgsProvider(
         saveTierListArgsProviderImpl: SaveTierListArgsProviderImpl
     ): SaveTierListArgsProvider
+
+    @Binds
+    @Singleton
+    abstract fun bindUpdateTierListsArgsProvider(
+        updateTierListsArgsProvider: UpdateTierListsArgsProviderImpl
+    ): UpdateTierListsArgsProvider
 }

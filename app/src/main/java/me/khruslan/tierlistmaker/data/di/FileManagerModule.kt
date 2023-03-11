@@ -20,5 +20,5 @@ abstract class FileManagerModule {
 
     @Binds
     @Singleton
-    abstract fun provideFileManager(fileManagerImpl: FileManagerImpl): FileManager
+    abstract fun bindFileManager(fileManagerImpl: FileManagerImpl): FileManager
 }

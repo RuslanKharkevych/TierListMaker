@@ -18,7 +18,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
@@ -35,12 +34,12 @@ import me.khruslan.tierlistmaker.data.repositories.file.FileManager
 import me.khruslan.tierlistmaker.databinding.FragmentTierListBinding
 import me.khruslan.tierlistmaker.ui.adapters.TierAdapter
 import me.khruslan.tierlistmaker.ui.adapters.TierListImageAdapter
-import me.khruslan.tierlistmaker.ui.adapters.reorderable.ReorderableCallback
 import me.khruslan.tierlistmaker.ui.models.LoadingProgress
 import me.khruslan.tierlistmaker.ui.navigation.TierListResultContract
 import me.khruslan.tierlistmaker.ui.viewmodels.TierListViewModel
 import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
 import me.khruslan.tierlistmaker.utils.drag.TierListDragListener
+import me.khruslan.tierlistmaker.utils.enableReordering
 import me.khruslan.tierlistmaker.utils.setResultDataAndFinish
 
 /**
@@ -236,7 +235,7 @@ class TierListFragment : Fragment() {
             itemAnimator = null
             adapter = tiersAdapter
             layoutManager = LinearLayoutManager(activity)
-            ItemTouchHelper(ReorderableCallback(tiersAdapter)).attachToRecyclerView(this)
+            enableReordering()
         }
     }
 

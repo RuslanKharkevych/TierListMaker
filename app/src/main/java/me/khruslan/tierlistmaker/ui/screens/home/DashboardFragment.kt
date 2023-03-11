@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -24,6 +26,7 @@ import me.khruslan.tierlistmaker.ui.navigation.TierListResultException
 import me.khruslan.tierlistmaker.ui.adapters.TierListPreviewAdapter
 import me.khruslan.tierlistmaker.ui.screens.tierlist.TierListActivity
 import me.khruslan.tierlistmaker.ui.viewmodels.DashboardViewModel
+import me.khruslan.tierlistmaker.utils.enableReordering
 import timber.log.Timber
 
 /**
@@ -70,6 +73,11 @@ class DashboardFragment : Fragment() {
         initObservers()
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.enqueueUpdateTierListsWork()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -103,7 +111,7 @@ class DashboardFragment : Fragment() {
         viewModel.addPreviewEvent.observe(viewLifecycleOwner, addPreviewObserver)
         viewModel.updatePreviewEvent.observe(viewLifecycleOwner, updatePreviewsObserver)
         viewModel.listStateLiveData.observe(viewLifecycleOwner, listStateObserver)
-        viewModel.saveErrorEvent.observe(viewLifecycleOwner, saveErrorObserver)
+        viewModel.errorEvent.observe(viewLifecycleOwner, errorObserver)
     }
 
     /**
@@ -115,12 +123,19 @@ class DashboardFragment : Fragment() {
             tierListPreviews = previews,
             onClick = { position ->
                 tierListLauncher.launch(viewModel.getTierListByPosition(position))
+            },
+            onTierListMoved = { from, to ->
+                viewModel.swapTierLists(from, to)
+            },
+            onTierListSwiped = { index ->
+                showRemoveTierListConfirmationAlert(index)
             }
         )
 
         with(binding.listTierLists) {
             adapter = previewsAdapter
             layoutManager = LinearLayoutManager(activity)
+            enableReordering()
         }
     }
 
@@ -155,17 +170,53 @@ class DashboardFragment : Fragment() {
     }
 
     /**
-     * Observer for the saving preview failure event.
-     * Shows [Snackbar] with error message and "Refresh" action.
+     * Observer for error events. Presents error snackbar.
+     * @see presentErrorSnackbar
      */
-    private val saveErrorObserver = Observer<Unit> {
+    private val errorObserver = Observer<Int> { errorMessageResId ->
+        presentErrorSnackbar(errorMessageResId)
+    }
+
+    /**
+     * Shows [Snackbar] with error message and "Refresh" action.
+     *
+     * @param textResId error message resource identifier.
+     */
+    private fun presentErrorSnackbar(@StringRes textResId: Int) {
         Snackbar
-            .make(binding.root, R.string.save_previews_error_message, Snackbar.LENGTH_INDEFINITE)
+            .make(binding.root, textResId, Snackbar.LENGTH_INDEFINITE)
             .setAnchorView(binding.btnAddNewList)
             .setAction(R.string.btn_refresh) {
                 viewModel.refreshPreviews()
                 TransitionManager.beginDelayedTransition(binding.root)
             }
+            .show()
+    }
+
+    /**
+     * Shows confirmation alert for removing tier list when preview is swiped. On positive button
+     * click removes tier list and the corresponding preview. On negative button click or when
+     * alert is canceled restores swiped preview.
+     *
+     * @param tierListIndex position of the tier list to remove.
+     */
+    private fun showRemoveTierListConfirmationAlert(tierListIndex: Int) {
+        val tierListTitle = viewModel.getTierListByPosition(tierListIndex).title
+        val alertTitle = getString(R.string.remove_tier_list_confirmation_title, tierListTitle)
+
+        AlertDialog.Builder(requireActivity())
+            .setTitle(alertTitle)
+            .setPositiveButton(R.string.btn_yes) { _, _ ->
+                previewsAdapter.removePreview(tierListIndex)
+                viewModel.removeTierList(tierListIndex)
+            }
+            .setNegativeButton(R.string.btn_no) { _, _ ->
+                previewsAdapter.notifyItemChanged(tierListIndex)
+            }
+            .setOnCancelListener {
+                previewsAdapter.notifyItemChanged(tierListIndex)
+            }
+            .create()
             .show()
     }
 }

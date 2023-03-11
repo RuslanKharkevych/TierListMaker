@@ -134,6 +134,9 @@ class PaperRepositoryTest {
     private val updatedTierLists
         get() = mutableListOf(updatedTierList, tierLists[1])
 
+    private val tierListToRemove
+        get() = tierLists[0]
+
     @Before
     fun init() {
         MockKAnnotations.init(this)
@@ -229,5 +232,44 @@ class PaperRepositoryTest {
         every { book.write(KEY_TIER_LISTS, updatedTierLists) } throws exception
 
         assertFalse(paperRepository.saveTierList(updatedTierList))
+    }
+
+    @Test
+    fun `Doesn't remove tier list if unable to get them`() = runTest {
+        val exception = PaperDbException("Couldn't read file")
+        every { book.read(KEY_TIER_LISTS, mutableListOf<TierList>()) } throws exception
+
+        assertFalse(paperRepository.removeTierListById(tierListToRemove.id))
+    }
+
+    @Test
+    fun `Doesn't remove tier list if unable to find it`() = runTest {
+        every { book.read(KEY_TIER_LISTS, mutableListOf<TierList>()) } returns tierLists
+        assertFalse(paperRepository.removeTierListById("invalid_id"))
+    }
+
+    @Test
+    fun `Removes tier list by id`() = runTest {
+        every { book.read(KEY_TIER_LISTS, mutableListOf<TierList>()) } returns tierLists
+        every { book.write(KEY_TIER_LISTS, tierLists - tierListToRemove) } returns book
+
+        assertTrue(paperRepository.removeTierListById(tierListToRemove.id))
+    }
+
+    @Test
+    fun `Fails to update tier lists`() = runTest {
+        val exception = PaperDbException("Couldn't save file")
+        every { book.read(KEY_TIER_LISTS, mutableListOf<TierList>()) } returns tierLists
+        every { book.write(KEY_TIER_LISTS, updatedTierLists) } throws exception
+
+        assertFalse(paperRepository.updateTierLists(updatedTierLists))
+    }
+
+    @Test
+    fun `Updates tier lists`() = runTest {
+        every { book.read(KEY_TIER_LISTS, mutableListOf<TierList>()) } returns tierLists
+        every { book.write(KEY_TIER_LISTS, updatedTierLists) } returns book
+
+        assertTrue(paperRepository.updateTierLists(updatedTierLists))
     }
 }

@@ -38,6 +38,18 @@ class TooltipImageButton : AppCompatImageButton {
     ) : super(context, attrs, defStyleAttrs)
 
     init {
+        invalidateTooltipText()
+    }
+
+    override fun setContentDescription(contentDescription: CharSequence?) {
+        super.setContentDescription(contentDescription)
+        invalidateTooltipText()
+    }
+
+    /**
+     * Syncs tooltip text with content description.
+     **/
+    private fun invalidateTooltipText() {
         TooltipCompat.setTooltipText(this, contentDescription)
     }
 }

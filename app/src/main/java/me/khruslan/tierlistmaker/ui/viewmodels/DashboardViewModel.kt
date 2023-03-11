@@ -1,20 +1,28 @@
 package me.khruslan.tierlistmaker.ui.viewmodels
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.hadilq.liveevent.LiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
-import me.khruslan.tierlistmaker.ui.models.ListState
+import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.models.tierlist.Tier
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
-import me.khruslan.tierlistmaker.ui.navigation.TierListResultException
 import me.khruslan.tierlistmaker.data.repositories.db.PaperRepository
 import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProvider
+import me.khruslan.tierlistmaker.data.work.UpdateTierListsArgsProvider
+import me.khruslan.tierlistmaker.data.work.UpdateTierListsWorker
+import me.khruslan.tierlistmaker.ui.models.ListState
+import me.khruslan.tierlistmaker.ui.navigation.TierListResultException
 import me.khruslan.tierlistmaker.ui.screens.home.DashboardFragment
+import me.khruslan.tierlistmaker.utils.swap
 import java.util.*
 import javax.inject.Inject
 
@@ -23,12 +31,15 @@ import javax.inject.Inject
  *
  * @property paperRepository local storage repository.
  * @property dispatcherProvider provider of [CoroutineDispatcher] for running suspend functions.
+ * @property updateTierListsArgsProvider provider of [UpdateTierListsWorker] arguments.
  */
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
+    application: Application,
     private val paperRepository: PaperRepository,
-    private val dispatcherProvider: DispatcherProvider
-) : ViewModel() {
+    private val dispatcherProvider: DispatcherProvider,
+    private val updateTierListsArgsProvider: UpdateTierListsArgsProvider
+) : AndroidViewModel(application) {
 
     /**
      * List of [TierList] objects that are used for passing to the next screen.
@@ -47,7 +58,7 @@ class DashboardViewModel @Inject constructor(
     private val _addPreviewEvent by lazy { LiveEvent<Int>() }
     private val _updatePreviewEvent by lazy { LiveEvent<Int>() }
     private val _listStateLiveData by lazy { MutableLiveData<ListState>() }
-    private val _saveErrorEvent by lazy { LiveEvent<Unit>() }
+    private val _errorEvent by lazy { LiveEvent<Int>() }
     private val _tierListPreviewsLiveData = MutableLiveData<MutableList<TierList.Preview>>()
 
     /**
@@ -66,9 +77,10 @@ class DashboardViewModel @Inject constructor(
     val listStateLiveData: LiveData<ListState> get() = _listStateLiveData
 
     /**
-     * [LiveData] that notifies observer that saving of the tier list to the local storage failed.
+     * [LiveData] that notifies observer about errors. The value of the live data is a string
+     * resource of the error message.
      */
-    val saveErrorEvent: LiveData<Unit> get() = _saveErrorEvent
+    val errorEvent: LiveData<Int> get() = _errorEvent
 
     /**
      * [LiveData] that notifies observers about the tier list previews.
@@ -131,14 +143,15 @@ class DashboardViewModel @Inject constructor(
     }
 
     /**
-     * Saves added or updated [TierList] in the local storage.
+     * Saves added or updated [TierList] in the local storage. Triggers [errorEvent] in case of
+     * error.
      *
      * @param tierList new or updated tier list.
      */
     private fun saveTierList(tierList: TierList) {
         viewModelScope.launch {
             val result = paperRepository.saveTierList(tierList)
-            if (!result) _saveErrorEvent.value = Unit
+            if (!result) _errorEvent.value = R.string.save_tier_list_error_message
         }
     }
 
@@ -187,5 +200,40 @@ class DashboardViewModel @Inject constructor(
     fun refreshPreviews() {
         _listStateLiveData.value = ListState.Loading
         loadTierListPreviews()
+    }
+
+    /**
+     * Swaps order of two tier lists.
+     *
+     * @param firstIndex position of the first tier list.
+     * @param secondIndex position of the second tier list.
+     */
+    fun swapTierLists(firstIndex: Int, secondIndex: Int) {
+        tierLists.swap(firstIndex, secondIndex)
+    }
+
+    /**
+     * Removes tier list from the local storage. Triggers [errorEvent] in case of failure.
+     *
+     * @param index position of the tier list to remove.
+     */
+    fun removeTierList(index: Int) {
+        viewModelScope.launch {
+            val tierList = tierLists[index]
+            tierLists.remove(tierList)
+            if (tierLists.isEmpty()) _listStateLiveData.value = ListState.Empty
+
+            val result = paperRepository.removeTierListById(tierList.id)
+            if (!result) _errorEvent.value = R.string.remove_tier_list_error_message
+        }
+    }
+
+    /**
+     * Enqueues one-time work request that updates tier lists in the local storage.
+     */
+    fun enqueueUpdateTierListsWork() {
+        val workRequest = OneTimeWorkRequest.from(UpdateTierListsWorker::class.java)
+        updateTierListsArgsProvider.tierLists = tierLists
+        WorkManager.getInstance(getApplication()).enqueue(workRequest)
     }
 }

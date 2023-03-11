@@ -5,7 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.databinding.ItemTierListPreviewBinding
+import me.khruslan.tierlistmaker.ui.adapters.reorderable.Reorderable
 import me.khruslan.tierlistmaker.ui.holders.TierListPreviewHolder
+import me.khruslan.tierlistmaker.utils.swap
 
 /**
  * [RecyclerView.Adapter] implementation used for managing tier list previews.
@@ -14,9 +16,11 @@ import me.khruslan.tierlistmaker.ui.holders.TierListPreviewHolder
  * @property onClick item click listener.
  */
 class TierListPreviewAdapter(
-    private val tierListPreviews: List<TierList.Preview>,
-    private val onClick: (position: Int) -> Unit
-) : RecyclerView.Adapter<TierListPreviewHolder>() {
+    private val tierListPreviews: MutableList<TierList.Preview>,
+    private val onClick: (position: Int) -> Unit,
+    private val onTierListMoved: (from: Int, to: Int) -> Unit,
+    private val onTierListSwiped: (index: Int) -> Unit
+) : RecyclerView.Adapter<TierListPreviewHolder>(), Reorderable {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = TierListPreviewHolder(
         binding = ItemTierListPreviewBinding.inflate(
@@ -24,7 +28,7 @@ class TierListPreviewAdapter(
             parent,
             false
         ),
-        onClick = { position -> onClick(position) }
+        onClick = onClick
     )
 
     override fun onBindViewHolder(holder: TierListPreviewHolder, position: Int) {
@@ -32,4 +36,25 @@ class TierListPreviewAdapter(
     }
 
     override fun getItemCount() = tierListPreviews.size
+
+    override fun onItemMove(fromPosition: Int, toPosition: Int) {
+        tierListPreviews.swap(fromPosition, toPosition)
+        notifyItemMoved(fromPosition, toPosition)
+        notifyItemRangeChanged(0, tierListPreviews.size, Unit)
+        onTierListMoved(fromPosition, toPosition)
+    }
+
+    override fun onItemSwiped(position: Int) {
+        onTierListSwiped(position)
+    }
+
+    /**
+     * Removes preview by position and updates the data set accordingly.
+     *
+     * @param index position of the preview to remove.
+     */
+    fun removePreview(index: Int) {
+        tierListPreviews.removeAt(index)
+        notifyItemRemoved(index)
+    }
 }

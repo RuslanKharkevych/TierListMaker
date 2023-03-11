@@ -21,4 +21,21 @@ interface PaperRepository {
      * @return Whether [TierList] was saved successfully.
      */
     suspend fun saveTierList(tierList: TierList): Boolean
+
+    /**
+     * Removes [TierList] from the database by identifier.
+     *
+     * @param id identifier of the tier list to remove.
+     * @return **true** if [TierList] was removed, **false** if [TierList] with given identifier
+     * doesn't exist or transaction has failed.
+     */
+    suspend fun removeTierListById(id: String): Boolean
+
+    /**
+     * Replaces all tier lists with the new ones.
+     *
+     * @param tierLists updated tier lists.
+     * @return Whether transaction was successful.
+     */
+    suspend fun updateTierLists(tierLists: List<TierList>): Boolean
 }

@@ -56,21 +56,54 @@ class PaperRepositoryImpl @Inject constructor(
                 tierLists[index] = tierList
             }
 
-            val result = executeTransaction(
-                transaction = {
-                    Paper.book().write(KEY_TIER_LISTS, tierLists)
-                },
-                onError = { error, attempt ->
-                    logError(
-                        transactionTag = "saveTierList($tierList)",
-                        attempt = attempt,
-                        cause = error
-                    )
-                }
-            )
-
-            return@withContext result != null
+            updateTierLists(tierLists, transactionTag = "saveTierList($tierList)")
         }
+    }
+
+    override suspend fun removeTierListById(id: String): Boolean {
+        return withContext(dispatcherProvider.io) {
+            val tierLists = getTierLists() ?: return@withContext false
+            val tierList = tierLists.find { it.id == id }
+
+            if (tierList != null) {
+                tierLists.remove(tierList)
+                updateTierLists(tierLists, transactionTag = "removeTierListById($id)")
+            } else {
+                logError("Unable to remove tier list by id: $id. Not found in $tierLists")
+                false
+            }
+        }
+    }
+
+    override suspend fun updateTierLists(tierLists: List<TierList>): Boolean {
+        return withContext(dispatcherProvider.io) {
+            updateTierLists(tierLists, transactionTag = "updateTierLists($tierLists)")
+        }
+    }
+
+    /**
+     * Updates all tier lists with the new ones with retry policy (see [executeTransaction]).
+     *
+     * @param tierLists updated tier lists.
+     * @param transactionTag tag used for error logging.
+     * @return **true** if transaction was successful, **false** if transaction failed
+     * [MAX_TRANSACTION_ATTEMPTS] times.
+     */
+    private fun updateTierLists(tierLists: List<TierList>, transactionTag: String): Boolean {
+        val result = executeTransaction(
+            transaction = {
+                Paper.book().write(KEY_TIER_LISTS, tierLists)
+            },
+            onError = { error, attempt ->
+                logError(
+                    transactionTag = transactionTag,
+                    attempt = attempt,
+                    cause = error
+                )
+            }
+        )
+
+        return result != null
     }
 
     /**
@@ -105,6 +138,16 @@ class PaperRepositoryImpl @Inject constructor(
     }
 
     /**
+     * Logs generic error.
+     *
+     * @param message error message.
+     */
+    private fun logError(message: String) {
+        val exception = PaperException(message)
+        Timber.e(exception,"Database error")
+    }
+
+    /**
      * Logs transaction error.
      *
      * @param transactionTag tag of the transaction.
@@ -117,12 +160,23 @@ class PaperRepositoryImpl @Inject constructor(
     }
 
     /**
-     * Exception that can happen during [Paper] transactions.
-     *
-     * @param transactionTag tag of the transaction.
-     * @param attempt transaction attempt.
-     * @param cause cause of the transaction failure.
+     * Exception that can be thrown in case of errors inside the [PaperRepositoryImpl].
      */
-    private class PaperException(transactionTag: String, attempt: Int, cause: Throwable?) :
-        Exception("Transaction failed (tag = $transactionTag, attempt = $attempt)", cause)
+    private class PaperException : Exception {
+
+        /**
+         * @param message error message.
+         * @constructor Creates generic [PaperException].
+         */
+        constructor(message: String) : super(message)
+
+        /**
+         * @param transactionTag tag of the transaction.
+         * @param attempt transaction attempt.
+         * @param cause cause of the transaction failure.
+         * @constructor Creates [PaperException] caused by transaction failure.
+         */
+        constructor(transactionTag: String, attempt: Int, cause: Throwable?) :
+                super("Transaction failed (tag = $transactionTag, attempt = $attempt)", cause)
+    }
 }

@@ -8,13 +8,17 @@
     <string name="empty_previews_message">There\'s nothing yet. Create your first tier list!</string>
     <string name="load_previews_error_message">Oops! Something went wrong…\nUnable to load your collection</string>
     <string name="btn_report_issue"><u>Report the issue</u></string>
-    <string name="save_previews_error_message">Oops! Unable to save tier list :(</string>
+    <string name="save_tier_list_error_message">Oops! Unable to save tier list :(</string>
+    <string name="remove_tier_list_error_message">Oops! Unable to remove tier list :(</string>
     <string name="btn_refresh">Refresh</string>
     <string name="menu_item_my_collection_title">My Collection</string>
     <string name="menu_item_settings_title">Settings</string>
     <string name="menu_item_support_title">Support and feedback</string>
     <string name="menu_item_about_title">About</string>
     <string name="btn_change_theme_desc">Change theme</string>
+    <string name="btn_yes">Yes</string>
+    <string name="btn_no">No</string>
+    <string name="remove_tier_list_confirmation_title">Are you sure you want to remove tier list \"%s\"?</string>
 
     <!-- TierListFragment -->
     <string name="menu_item_rename_tier_list_title">Rename tier list</string>
