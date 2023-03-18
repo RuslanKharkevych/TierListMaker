@@ -1,4 +1,5 @@
 <resources>
+
     <style name="Theme.TierListMaker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/purple400</item>
         <item name="colorPrimaryVariant">@color/purple400_dark</item>
@@ -12,11 +13,12 @@
         <item name="colorControlNormal">?attr/colorOnPrimary</item>
         <item name="android:windowBackground">@color/grey50</item>
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.Primary</item>
         <item name="android:textColor">@color/grey800_dark</item>
         <item name="android:fontFamily">@font/open_sans_regular</item>
+        <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.Primary</item>
         <item name="snackbarButtonStyle">@style/Style.SnackbarButton</item>
         <item name="navigationViewStyle">@style/Style.NavigationView</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.AlertDialog</item>
     </style>
 
     <style name="Theme.Launch" parent="Theme.SplashScreen">
@@ -24,12 +26,15 @@
         <item name="postSplashScreenTheme">@style/Theme.TierListMaker</item>
     </style>
 
-    <style name="Style.SnackbarButton" parent="@style/Widget.MaterialComponents.Button.TextButton.Snackbar">
-        <item name="android:textColor">?attr/colorSecondary</item>
+    <style name="ThemeOverlay.AlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="android:backgroundDimAmount">@dimen/dialog_bg_dim_amount</item>
+        <item name="alertDialogStyle">@style/Style.AlertDialog</item>
+        <item name="colorPrimary">@color/purple400</item> <!-- button color -->
     </style>
 
-    <style name="Style.NavigationView" parent="@style/Widget.Design.NavigationView">
-        <item name="itemIconTint">@color/nav_item_color</item>
-        <item name="itemTextColor">@color/nav_item_color</item>
+    <style name="ThemeOverlay.AlertDialog.EnterTierList" parent="ThemeOverlay.AlertDialog">
+        <item name="colorPrimary">@color/grey800_dark</item>  <!-- button color -->
+        <item name="colorSecondary">@color/purple400</item> <!-- text field indicator color -->
     </style>
+
 </resources>

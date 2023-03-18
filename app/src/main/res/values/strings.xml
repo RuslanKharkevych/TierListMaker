@@ -4,7 +4,6 @@
 
     <!-- DashboardFragment -->
     <string name="btn_add_new_list_desc">Add new list</string>
-    <string name="tier_list_default_title">New list</string>
     <string name="empty_previews_message">There\'s nothing yet. Create your first tier list!</string>
     <string name="load_previews_error_message">Oops! Something went wrong…\nUnable to load your collection</string>
     <string name="btn_report_issue"><u>Report the issue</u></string>
@@ -39,4 +38,11 @@
     <string name="snackbar_msg_no_view_apps_found">Unable to view tier list. No suitable applications found</string>
     <string name="snackbar_msg_image_removed">Image removed</string>
     <string name="snackbar_action_restore">Restore</string>
+
+    <!-- EnterTierListTitleDialog -->
+    <string name="dialog_title_name_tier_list">Enter tier list name:</string>
+    <string name="dialog_title_rename_tier_list">Enter new tier list name:</string>
+    <string name="hint_tier_list_name">Tier List Name</string>
+    <string name="btn_confirm">Confirm</string>
+    <string name="btn_cancel">Cancel</string>
 </resources>

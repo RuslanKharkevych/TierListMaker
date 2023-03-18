@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import me.khruslan.tierlistmaker.R
@@ -24,6 +24,7 @@ import me.khruslan.tierlistmaker.databinding.FragmentDashboardBinding
 import me.khruslan.tierlistmaker.ui.navigation.TierListResultContract
 import me.khruslan.tierlistmaker.ui.navigation.TierListResultException
 import me.khruslan.tierlistmaker.ui.adapters.TierListPreviewAdapter
+import me.khruslan.tierlistmaker.ui.screens.common.EnterTierListTitleDialog
 import me.khruslan.tierlistmaker.ui.screens.tierlist.TierListActivity
 import me.khruslan.tierlistmaker.ui.viewmodels.DashboardViewModel
 import me.khruslan.tierlistmaker.utils.enableReordering
@@ -88,9 +89,7 @@ class DashboardFragment : Fragment() {
      */
     private fun initAddNewListButton() {
         binding.btnAddNewList.setOnClickListener {
-            val title = getString(R.string.tier_list_default_title)
-            val tierList = viewModel.createNewTierList(title)
-            tierListLauncher.launch(tierList)
+            showEnterTierListTitleDialog()
         }
     }
 
@@ -204,7 +203,7 @@ class DashboardFragment : Fragment() {
         val tierListTitle = viewModel.getTierListByPosition(tierListIndex).title
         val alertTitle = getString(R.string.remove_tier_list_confirmation_title, tierListTitle)
 
-        AlertDialog.Builder(requireActivity())
+        MaterialAlertDialogBuilder(requireActivity())
             .setTitle(alertTitle)
             .setPositiveButton(R.string.btn_yes) { _, _ ->
                 previewsAdapter.removePreview(tierListIndex)
@@ -218,5 +217,20 @@ class DashboardFragment : Fragment() {
             }
             .create()
             .show()
+    }
+
+    /**
+     * Shows dialog with input field that asks user to enter tier list title. On save click creates
+     * a new tier list with entered title and launches [tierListLauncher].
+     */
+    private fun showEnterTierListTitleDialog() {
+        EnterTierListTitleDialog.Builder()
+            .setDialogTitle(R.string.dialog_title_name_tier_list)
+            .setOnConfirmListener { title ->
+                val tierList = viewModel.createNewTierList(title)
+                tierListLauncher.launch(tierList)
+            }
+            .build()
+            .show(requireActivity())
     }
 }

@@ -36,6 +36,7 @@ import me.khruslan.tierlistmaker.ui.adapters.TierAdapter
 import me.khruslan.tierlistmaker.ui.adapters.TierListImageAdapter
 import me.khruslan.tierlistmaker.ui.models.LoadingProgress
 import me.khruslan.tierlistmaker.ui.navigation.TierListResultContract
+import me.khruslan.tierlistmaker.ui.screens.common.EnterTierListTitleDialog
 import me.khruslan.tierlistmaker.ui.viewmodels.TierListViewModel
 import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
 import me.khruslan.tierlistmaker.utils.drag.TierListDragListener
@@ -279,9 +280,13 @@ class TierListFragment : Fragment() {
                 setTierListResultAndFinishActivity()
             }
 
-            setOnMenuItemClickListener {
-                // TODO: Init rename tier list icon listener
-                false
+            setOnMenuItemClickListener { item ->
+                if (item.itemId == R.id.item_rename_tier_list) {
+                    showEnterTierListTitleDialog()
+                    true
+                } else {
+                    false
+                }
             }
         }
     }
@@ -452,5 +457,21 @@ class TierListFragment : Fragment() {
      */
     private fun findToolbarMenuItem(@IdRes itemId: Int): MenuItem {
         return binding.toolbar.menu.findItem(itemId)
+    }
+
+    /**
+     * Shows dialog with input field that asks user to enter new tier list title. Current title is
+     * prefilled in input field. On save click updates tier list and toolbar title.
+     **/
+    private fun showEnterTierListTitleDialog() {
+        EnterTierListTitleDialog.Builder()
+            .setDialogTitle(R.string.dialog_title_rename_tier_list)
+            .setTierListTitle(viewModel.tierList.title)
+            .setOnConfirmListener { title ->
+                binding.toolbar.title = title
+                viewModel.tierList.title = title
+            }
+            .build()
+            .show(requireActivity())
     }
 }

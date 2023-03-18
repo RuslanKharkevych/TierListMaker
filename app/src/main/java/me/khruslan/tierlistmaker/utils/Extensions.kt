@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.annotation.IdRes
 import androidx.core.animation.doOnEnd
@@ -162,6 +163,18 @@ val Resources.deviceLanguage: String
     }
 
 /**
+ * Attaches [ItemTouchHelper] with [ReorderableCallback] to the [RecyclerView]. This function
+ * requires that [RecyclerView] has set [RecyclerView.Adapter] that implements [Reorderable]
+ * interface. Enables both changing the order of items and swipe-to-dismiss functionality.
+ *
+ * @receiver recycler view for which reordering will be enabled.
+ */
+fun RecyclerView.enableReordering() {
+    val callback = ReorderableCallback(adapter as Reorderable)
+    ItemTouchHelper(callback).attachToRecyclerView(this)
+}
+
+/**
  * Gets value from the [SavedStateHandle] by the [key].
  *
  * Can be used instead of [SavedStateHandle.get] to ensure that returned value is non-nullable.
@@ -178,9 +191,18 @@ fun <T> SavedStateHandle.require(key: String): T {
 }
 
 /**
- * A helper function to start drag that supports all version.
+ * Requests to hide the soft input window.
  *
- * Starting from [Build.VERSION_CODES.N] the shadow will be fully opaque.
+ * @receiver view attached to the window that is currently accepting input.
+ */
+fun View.hideKeyboard() {
+    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+    imm?.hideSoftInputFromWindow(windowToken, 0)
+}
+
+/**
+ * A helper function to start drag that supports all versions. Starting from [Build.VERSION_CODES.N]
+ * the shadow will be fully opaque.
  *
  * @param data data of the image that will be dragged.
  * @receiver [View] that has [View.OnDragListener] set.
@@ -195,16 +217,4 @@ fun View.startDragCompat(data: ImageDragData): Boolean {
         @Suppress("DEPRECATION")
         startDrag(data.toClipData(), shadowBuilder, data, 0)
     }
-}
-
-/**
- * Attaches [ItemTouchHelper] with [ReorderableCallback] to the [RecyclerView]. This function
- * requires that [RecyclerView] has set [RecyclerView.Adapter] that implements [Reorderable]
- * interface. Enables both changing the order of items and swipe-to-dismiss functionality.
- *
- * @receiver recycler view for which reordering will be enabled.
- */
-fun RecyclerView.enableReordering() {
-    val callback = ReorderableCallback(adapter as Reorderable)
-    ItemTouchHelper(callback).attachToRecyclerView(this)
 }

@@ -19,4 +19,7 @@
 
     <!-- Bias -->
     <item name="bias_info_content" format="float" type="dimen">0.4</item>
+
+    <!-- Other -->
+    <item name="dialog_bg_dim_amount" format="float" type="dimen">0.6</item>
 </resources>

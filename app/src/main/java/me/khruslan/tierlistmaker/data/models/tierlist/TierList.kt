@@ -16,7 +16,7 @@ import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
 @Parcelize
 data class TierList(
     val id: String,
-    val title: String,
+    var title: String,
     var zoomValue: Int,
     var tiers: MutableList<Tier>,
     val backlogImages: MutableList<Image>
