@@ -39,4 +39,11 @@
     <string name="hint_tier_list_name">Назва списку</string>
     <string name="btn_confirm">Підтвердити</string>
     <string name="btn_cancel">Скасувати</string>
+    <string name="bug_report_email_subject">Tier List Maker: Повідомлення про помилку</string>
+    <string name="bug_report_info_version">Версія застосунку: %s</string>
+    <string name="bug_report_info_device">Пристрій: %s</string>
+    <string name="bug_report_info_os">ОС: Android %s</string>
+    <string name="send_us_email_alert_title">Будь ласка, надішліть електронний лист на адресу %s</string>
+    <string name="btn_copy_email">Скопіювати email</string>
+    <string name="toast_msg_text_copied">Скопійовано \"%s\"</string>
 </resources>

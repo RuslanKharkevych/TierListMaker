@@ -2,6 +2,9 @@
     <string name="app_name" translatable="false">Tier List Maker</string>
     <string name="app_language">en</string>
 
+    <!-- General -->
+    <string name="btn_cancel">Cancel</string>
+
     <!-- DashboardFragment -->
     <string name="btn_add_new_list_desc">Add new list</string>
     <string name="empty_previews_message">There\'s nothing yet. Create your first tier list!</string>
@@ -44,5 +47,13 @@
     <string name="dialog_title_rename_tier_list">Enter new tier list name:</string>
     <string name="hint_tier_list_name">Tier List Name</string>
     <string name="btn_confirm">Confirm</string>
-    <string name="btn_cancel">Cancel</string>
+
+    <!-- FeedbackUtils -->
+    <string name="bug_report_email_subject">Tier List Maker: Bug report</string>
+    <string name="bug_report_info_version">App version: %s</string>
+    <string name="bug_report_info_device">Device: %s</string>
+    <string name="bug_report_info_os">OS: Android %s</string>
+    <string name="send_us_email_alert_title">Please send email to %s</string>
+    <string name="btn_copy_email">Copy email</string>
+    <string name="toast_msg_text_copied">Copied \"%s\"</string>
 </resources>

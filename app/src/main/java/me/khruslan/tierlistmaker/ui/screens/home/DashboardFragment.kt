@@ -18,16 +18,17 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import me.khruslan.tierlistmaker.R
-import me.khruslan.tierlistmaker.ui.models.ListState
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.databinding.FragmentDashboardBinding
+import me.khruslan.tierlistmaker.ui.adapters.TierListPreviewAdapter
+import me.khruslan.tierlistmaker.ui.models.ListState
 import me.khruslan.tierlistmaker.ui.navigation.TierListResultContract
 import me.khruslan.tierlistmaker.ui.navigation.TierListResultException
-import me.khruslan.tierlistmaker.ui.adapters.TierListPreviewAdapter
 import me.khruslan.tierlistmaker.ui.screens.common.EnterTierListTitleDialog
 import me.khruslan.tierlistmaker.ui.screens.tierlist.TierListActivity
 import me.khruslan.tierlistmaker.ui.viewmodels.DashboardViewModel
 import me.khruslan.tierlistmaker.utils.enableReordering
+import me.khruslan.tierlistmaker.utils.view.FeedbackUtils
 import timber.log.Timber
 
 /**
@@ -98,7 +99,7 @@ class DashboardFragment : Fragment() {
      */
     private fun initReportIssueButton() {
         binding.groupError.btnReport.setOnClickListener {
-            // TODO: Report the error
+            FeedbackUtils.reportIssue(requireActivity())
         }
     }
 

@@ -2,6 +2,8 @@ package me.khruslan.tierlistmaker.utils
 
 import android.animation.Animator
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
@@ -11,6 +13,7 @@ import android.os.Parcelable
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.core.animation.doOnEnd
 import androidx.fragment.app.FragmentActivity
@@ -24,6 +27,7 @@ import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.models.drag.ImageDragData
 import me.khruslan.tierlistmaker.ui.adapters.reorderable.Reorderable
 import me.khruslan.tierlistmaker.ui.adapters.reorderable.ReorderableCallback
+import java.util.*
 import kotlin.text.toInt as convertToInt
 
 /**
@@ -67,6 +71,27 @@ fun CharSequence.toInt(): Int {
  * @receiver Either activity or application [Context].
  */
 val Context.displayWidthPixels get() = resources.displayMetrics.widthPixels
+
+/**
+ * Copies text to clipboard. Starting from [Build.VERSION_CODES.TIRAMISU] the system shows a default
+ * UI to users when text is copied. On older devices a custom toast is shown.
+ *
+ * @param text text to copy.
+ */
+fun Context.copyTextToClipboard(text: String) {
+    val clipboardService = getSystemService(Context.CLIPBOARD_SERVICE)
+    val clipboardManager = clipboardService as? ClipboardManager ?: return
+    val clip = ClipData.newPlainText(null, text)
+    clipboardManager.setPrimaryClip(clip)
+
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+        Toast.makeText(
+            this,
+            getString(R.string.toast_msg_text_copied, text),
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+}
 
 /**
  * Finds [NavHostFragment] by id.
@@ -188,6 +213,23 @@ fun RecyclerView.enableReordering() {
 fun <T> SavedStateHandle.require(key: String): T {
     return get<T>(key)
         ?: throw IllegalArgumentException("SavedStateHandle $this doesn't contain key $key")
+}
+
+/**
+ * Returns a copy of the string with its first letter as a capital letter. Replacement for Kotlin's
+ * deprecated [String.capitalize] function.
+ *
+ * @receiver string to capitalize.
+ * @return capitalized string.
+ */
+fun String.capitalized(): String {
+    return replaceFirstChar { char ->
+        if (char.isLowerCase())
+            char.titlecase(Locale.getDefault())
+        else {
+            char.toString()
+        }
+    }
 }
 
 /**
