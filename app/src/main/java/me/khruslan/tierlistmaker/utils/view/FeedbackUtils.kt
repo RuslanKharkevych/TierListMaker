@@ -1,15 +1,13 @@
 package me.khruslan.tierlistmaker.utils.view
 
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.os.Build
+import android.widget.Toast
 import androidx.core.net.toUri
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import me.khruslan.tierlistmaker.BuildConfig
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.utils.capitalized
-import me.khruslan.tierlistmaker.utils.copyTextToClipboard
 
 /**
  * Utility that provides user interface for sending feedback.
@@ -92,10 +90,32 @@ object FeedbackUtils {
         MaterialAlertDialogBuilder(context)
             .setTitle(context.getString(R.string.send_us_email_alert_title, RECIPIENT_EMAIL))
             .setPositiveButton(R.string.btn_copy_email) { _, _ ->
-                context.copyTextToClipboard(RECIPIENT_EMAIL)
+                copyTextToClipboard(context, RECIPIENT_EMAIL)
             }
             .setNegativeButton(R.string.btn_cancel, null)
             .create()
             .show()
+    }
+
+    /**
+     * Copies text to clipboard. Starting from [Build.VERSION_CODES.TIRAMISU] the system shows a
+     * default UI to users when text is copied. On older devices a custom toast is shown.
+     *
+     * @param context activity context.
+     * @param text text to copy.
+     */
+    private fun copyTextToClipboard(context: Context, text: String) {
+        val clipboardService = context.getSystemService(Context.CLIPBOARD_SERVICE)
+        val clipboardManager = clipboardService as? ClipboardManager ?: return
+        val clip = ClipData.newPlainText(null, text)
+        clipboardManager.setPrimaryClip(clip)
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            Toast.makeText(
+                context,
+                context.getString(R.string.toast_msg_text_copied, text),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }

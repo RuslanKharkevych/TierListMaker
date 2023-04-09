@@ -4,8 +4,10 @@ import android.content.Context
 import android.content.DialogInterface
 import android.view.Gravity
 import android.view.KeyEvent
+import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.StringRes
@@ -13,7 +15,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doAfterTextChanged
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import me.khruslan.tierlistmaker.R
-import me.khruslan.tierlistmaker.utils.hideKeyboard
 import timber.log.Timber
 
 /**
@@ -164,8 +165,18 @@ class EnterTierListTitleDialog private constructor(private val params: Params) {
             dialog.dismiss()
             confirmInput()
         } else {
-            view.hideKeyboard()
+            hideKeyboard(view)
         }
+    }
+
+    /**
+     * Requests to hide the soft input window.
+     *
+     * @param view view attached to the window that is currently accepting input.
+     */
+    private fun hideKeyboard(view: View) {
+        val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        imm?.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     /**

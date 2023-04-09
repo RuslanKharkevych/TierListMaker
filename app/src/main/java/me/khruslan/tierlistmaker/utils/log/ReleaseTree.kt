@@ -1,13 +1,11 @@
 package me.khruslan.tierlistmaker.utils.log
 
 import android.content.Context
-import android.content.res.Resources
 import android.util.Log
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.crashlytics.ktx.setCustomKeys
 import com.google.firebase.ktx.Firebase
-import me.khruslan.tierlistmaker.R
-import me.khruslan.tierlistmaker.utils.deviceLanguage
+import me.khruslan.tierlistmaker.utils.ConfigUtils
 import timber.log.Timber
 
 /**
@@ -39,9 +37,9 @@ class ReleaseTree(context: Context) : Timber.Tree() {
      */
     private fun setCustomKeys(context: Context) {
         Firebase.crashlytics.setCustomKeys {
-            key(CrashlyticsKeys.APP_LANGUAGE, context.getString(R.string.app_language))
-            key(CrashlyticsKeys.DEVICE_LANGUAGE, Resources.getSystem().deviceLanguage)
-            key(CrashlyticsKeys.DISPLAY_DENSITY, Resources.getSystem().displayMetrics.density)
+            key(CrashlyticsKeys.APP_LANGUAGE, ConfigUtils.getAppLanguage(context))
+            key(CrashlyticsKeys.DEVICE_LANGUAGE, ConfigUtils.getDeviceLanguage())
+            key(CrashlyticsKeys.DISPLAY_DENSITY, ConfigUtils.getDisplayDensity())
         }
     }
 }

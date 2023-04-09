@@ -1,6 +1,7 @@
 package me.khruslan.tierlistmaker.ui.holders
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
@@ -11,7 +12,6 @@ import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
 import me.khruslan.tierlistmaker.data.models.tierlist.image.ResourceImage
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
 import me.khruslan.tierlistmaker.utils.loadTierListImage
-import me.khruslan.tierlistmaker.utils.startDragCompat
 import timber.log.Timber
 
 /**
@@ -97,7 +97,7 @@ class TierListImageHolder(
      * @param data payload of the dragged item.
      */
     private fun startDrag(view: View, data: ImageDragData) {
-        val result = view.startDragCompat(data)
+        val result = startDragCompat(view, data)
         val resultDesc = "data = $data"
 
         if (result) {
@@ -106,6 +106,25 @@ class TierListImageHolder(
         } else if (System.currentTimeMillis() - startDragTimestamp > START_DRAG_DELTA_MILLIS) {
             // Workaround to avoid logging error when onTouch is called twice
             throw TierListImageException("onTouch: unable to start drag ($resultDesc)")
+        }
+    }
+
+    /**
+     * A helper function to start drag that supports all versions. Starting from [Build.VERSION_CODES.N]
+     * the shadow will be fully opaque.
+     *
+     * @param view [View] that has [View.OnDragListener] set.
+     * @param data data of the image that will be dragged.
+     * @return whether the drag was started successfully.
+     */
+    private fun startDragCompat(view: View ,data: ImageDragData): Boolean {
+        val shadowBuilder = View.DragShadowBuilder(view)
+
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            view.startDragAndDrop(data.toClipData(), shadowBuilder, data, View.DRAG_FLAG_OPAQUE)
+        } else {
+            @Suppress("DEPRECATION")
+            view.startDrag(data.toClipData(), shadowBuilder, data, 0)
         }
     }
 

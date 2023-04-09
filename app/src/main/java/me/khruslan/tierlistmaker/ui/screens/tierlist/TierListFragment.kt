@@ -1,5 +1,6 @@
 package me.khruslan.tierlistmaker.ui.screens.tierlist
 
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
@@ -24,7 +25,10 @@ import androidx.transition.TransitionManager
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import me.khruslan.tierlistmaker.R
-import me.khruslan.tierlistmaker.data.models.drag.*
+import me.khruslan.tierlistmaker.data.models.drag.DragLocation
+import me.khruslan.tierlistmaker.data.models.drag.ImageDragData
+import me.khruslan.tierlistmaker.data.models.drag.TierDragData
+import me.khruslan.tierlistmaker.data.models.drag.TrashBinDragData
 import me.khruslan.tierlistmaker.data.models.tierlist.*
 import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
 import me.khruslan.tierlistmaker.data.repositories.file.FileManager
@@ -39,7 +43,6 @@ import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
 import me.khruslan.tierlistmaker.utils.drag.TierListDragListener
 import me.khruslan.tierlistmaker.utils.enableReordering
 import me.khruslan.tierlistmaker.utils.scroll.AutoScrollManager
-import me.khruslan.tierlistmaker.utils.setResultDataAndFinish
 
 /**
  * [Fragment] that represents a tier list.
@@ -338,7 +341,10 @@ class TierListFragment : Fragment() {
      */
     private fun setTierListResultAndFinishActivity() {
         val data = TierListResultContract.newData(viewModel.tierList)
-        requireActivity().setResultDataAndFinish(data)
+        requireActivity().run {
+            setResult(Activity.RESULT_OK, data)
+            finish()
+        }
     }
 
     /**

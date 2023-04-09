@@ -27,12 +27,14 @@ android {
         debug {
             versionNameSuffix '-DEBUG'
             resValue("bool", "firebase_analytics_collection_deactivated", "true")
+            resValue("bool", "firebase_crashlytics_collection_enabled", "false")
             resValue("bool", "firebase_performance_logcat_enabled", "true")
         }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             resValue("bool", "firebase_analytics_collection_deactivated", "false")
+            resValue("bool", "firebase_crashlytics_collection_enabled", "true")
             resValue("bool", "firebase_performance_logcat_enabled", "false")
         }
     }

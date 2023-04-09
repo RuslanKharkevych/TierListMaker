@@ -27,7 +27,6 @@ import me.khruslan.tierlistmaker.ui.models.LoadingProgress
 import me.khruslan.tierlistmaker.ui.screens.tierlist.TierListFragment
 import me.khruslan.tierlistmaker.utils.displayWidthPixels
 import me.khruslan.tierlistmaker.utils.drag.DragPocket
-import me.khruslan.tierlistmaker.utils.require
 import java.io.File
 import javax.inject.Inject
 
@@ -64,7 +63,8 @@ class TierListViewModel @Inject constructor(
     /**
      * Initial [TierList] instance obtained from navigation arguments.
      */
-    val tierList: TierList = savedStateHandle.require(KEY_TIER_LIST)
+    val tierList: TierList = savedStateHandle[KEY_TIER_LIST]
+        ?: throw IllegalStateException("$savedStateHandle doesn't contain key: $KEY_TIER_LIST")
 
     /**
      * [Job] that updates styles of all tiers in a [tierList].
