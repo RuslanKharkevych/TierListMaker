@@ -10,6 +10,7 @@ import android.content.res.Resources
 import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
+import android.util.TypedValue
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -31,9 +32,8 @@ import java.util.*
 import kotlin.text.toInt as convertToInt
 
 /**
- * Sets activity result with result code as [Activity.RESULT_OK] and data as [data].
- *
- * After that immediately finishes the activity.
+ * Sets activity result with result code as [Activity.RESULT_OK] and data as [data]. After that
+ * immediately finishes the activity.
  *
  * @receiver Any [Activity].
  * @param data [Intent] that is sent as an activity result.
@@ -71,6 +71,17 @@ fun CharSequence.toInt(): Int {
  * @receiver Either activity or application [Context].
  */
 val Context.displayWidthPixels get() = resources.displayMetrics.widthPixels
+
+/**
+ * Converts value from dp to pixels.
+ *
+ * @param value value in dp.
+ * @receiver context for accessing display metrics.
+ * @return value in pixels.
+ */
+fun Context.dpToPx(value: Float): Float {
+    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, resources.displayMetrics)
+}
 
 /**
  * Copies text to clipboard. Starting from [Build.VERSION_CODES.TIRAMISU] the system shows a default
@@ -161,9 +172,8 @@ fun <T> MutableList<T>.updateLast(value: T) {
 }
 
 /**
- * Reads [String] from [Parcel].
- *
- * Can be used instead of [Parcel.readString] to ensure that the returned value is non-nullable.
+ * Reads [String] from [Parcel]. Can be used instead of [Parcel.readString] to ensure that the
+ * returned value is non-nullable.
  *
  * @receiver Any [Parcel].
  * @return Non-nullable [String].
@@ -200,9 +210,8 @@ fun RecyclerView.enableReordering() {
 }
 
 /**
- * Gets value from the [SavedStateHandle] by the [key].
- *
- * Can be used instead of [SavedStateHandle.get] to ensure that returned value is non-nullable.
+ * Gets value from the [SavedStateHandle] by the [key]. Can be used instead of
+ * [SavedStateHandle.get] to ensure that returned value is non-nullable.
  *
  * @param T type of the value.
  * @param key key of the value.

@@ -1,9 +1,11 @@
 package me.khruslan.tierlistmaker.utils.drag
 
 import android.content.ClipData
+import android.graphics.PointF
 import android.view.DragEvent
 import android.view.View
 import me.khruslan.tierlistmaker.data.models.drag.DragData
+import me.khruslan.tierlistmaker.data.models.drag.DragLocation
 import me.khruslan.tierlistmaker.data.models.drag.ImageDragData
 import timber.log.Timber
 
@@ -31,13 +33,12 @@ abstract class TierListDragListener : View.OnDragListener {
     abstract fun onDragStarted(dragData: ImageDragData)
 
     /**
-     * Called when the drag target has changed.
+     * Called when the drag location has changed. Note that target location could be **null** if
+     * the cursor leaves the drag area.
      *
-     * Note that target data could be **null** if the cursor leaves the drag area.
-     *
-     * @param targetData new drag target data.
+     * @param dragLocation new drag location.
      */
-    abstract fun onDragTargetChanged(targetData: DragData?)
+    abstract fun onDragLocationChanged(dragLocation: DragLocation?)
 
     /**
      * Called when the image is dropped in the target.
@@ -116,7 +117,7 @@ abstract class TierListDragListener : View.OnDragListener {
     /**
      * Processes [DragEvent.ACTION_DRAG_LOCATION] event.
      *
-     * Invokes [onDragTargetChanged] function if all preconditions are met.
+     * Invokes [onDragLocationChanged] function if all preconditions are met.
      *
      * @param event the event to handle (should always be [DragEvent.ACTION_DRAG_LOCATION]).
      * @param view view that received the drag event.
@@ -124,21 +125,21 @@ abstract class TierListDragListener : View.OnDragListener {
      */
     private fun handleDragLocationAction(event: DragEvent, view: View?): Boolean {
         checkAllPreconditions(event, view)
-        onDragTargetChanged(view?.tag as DragData?)
+        onDragLocationChanged(extractDragLocation(event, view))
         return true
     }
 
     /**
      * Processes [DragEvent.ACTION_DRAG_EXITED] event.
      *
-     * Invokes [onDragTargetChanged] function if all preconditions are met.
+     * Invokes [onDragLocationChanged] function if all preconditions are met.
      *
      * @param event the event to handle (should always be [DragEvent.ACTION_DRAG_EXITED]).
      * @return Whether the event was handled successfully (is always true).
      */
     private fun handleDragExitedAction(event: DragEvent): Boolean {
         checkEventPreconditions(event)
-        onDragTargetChanged(null)
+        onDragLocationChanged(null)
         return true
     }
 
@@ -269,6 +270,21 @@ abstract class TierListDragListener : View.OnDragListener {
             ImageDragData.fromClipData(clipData)
         } catch (e: Exception) {
             throw TierListDragException("Unable to create ImageDragData from ClipData: ${e.message}")
+        }
+    }
+
+    /**
+     * Extracts [DragLocation] from [DragEvent] and [View].
+     *
+     * @param event the event with [DragEvent.ACTION_DRAG_LOCATION] action.
+     * @param view view that received the drag event.
+     * @return extracted [DragLocation] or **null** if drag target is unavailable.
+     */
+    private fun extractDragLocation(event: DragEvent, view: View?): DragLocation? {
+        val dragTarget = view?.tag as DragData?
+        return dragTarget?.let { target ->
+            val positionInTarget = PointF(event.x, event.y)
+            DragLocation(target, positionInTarget)
         }
     }
 

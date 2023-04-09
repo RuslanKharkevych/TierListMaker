@@ -54,9 +54,9 @@ android {
 dependencies {
 
     // AndroidX
-    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
     implementation 'androidx.core:core-splashscreen:1.0.0'
 
     // Google
@@ -64,7 +64,7 @@ dependencies {
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
     // Firebase
-    implementation platform('com.google.firebase:firebase-bom:31.2.3')
+    implementation platform('com.google.firebase:firebase-bom:31.4.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-perf-ktx'
@@ -74,7 +74,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     // Image processing
-    implementation 'com.github.bumptech.glide:glide:4.15.0'
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
     implementation 'com.github.Shouheng88:compressor:1.6.0'
 
     // Logging
@@ -88,7 +88,7 @@ dependencies {
     implementation 'io.github.pilgr:paperdb:2.7.2'
 
     // Work Manager
-    implementation 'androidx.work:work-runtime-ktx:2.8.0'
+    implementation 'androidx.work:work-runtime-ktx:2.8.1'
     implementation 'androidx.hilt:hilt-work:1.0.0'
     kapt 'androidx.hilt:hilt-compiler:1.0.0'
 

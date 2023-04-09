@@ -24,10 +24,7 @@ import androidx.transition.TransitionManager
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import me.khruslan.tierlistmaker.R
-import me.khruslan.tierlistmaker.data.models.drag.DragData
-import me.khruslan.tierlistmaker.data.models.drag.ImageDragData
-import me.khruslan.tierlistmaker.data.models.drag.TierDragData
-import me.khruslan.tierlistmaker.data.models.drag.TrashBinDragData
+import me.khruslan.tierlistmaker.data.models.drag.*
 import me.khruslan.tierlistmaker.data.models.tierlist.*
 import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
 import me.khruslan.tierlistmaker.data.repositories.file.FileManager
@@ -41,6 +38,7 @@ import me.khruslan.tierlistmaker.ui.viewmodels.TierListViewModel
 import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
 import me.khruslan.tierlistmaker.utils.drag.TierListDragListener
 import me.khruslan.tierlistmaker.utils.enableReordering
+import me.khruslan.tierlistmaker.utils.scroll.AutoScrollManager
 import me.khruslan.tierlistmaker.utils.setResultDataAndFinish
 
 /**
@@ -65,6 +63,11 @@ class TierListFragment : Fragment() {
     private lateinit var backlogAdapter: TierListImageAdapter
 
     /**
+     * Manager that performs automatic scrolling withing tier list recycler view.
+     */
+    private lateinit var autoScrollManager: AutoScrollManager
+
+    /**
      * Listener of the tier list drag events.
      */
     private val dragListener = object : TierListDragListener() {
@@ -72,16 +75,19 @@ class TierListFragment : Fragment() {
             viewModel.startDrag(dragData)
         }
 
-        override fun onDragTargetChanged(targetData: DragData?) {
-            viewModel.updateDragTarget(targetData)
+        override fun onDragLocationChanged(dragLocation: DragLocation?) {
+            viewModel.updateDragTarget(dragLocation?.target)
+            autoScrollManager.updateDragLocation(dragLocation)
         }
 
         override fun onDrop(dragData: ImageDragData) {
             viewModel.dropImage(dragData)
+            autoScrollManager.stopScrolling()
         }
 
         override fun onDragEnded() {
             viewModel.restoreReleasedImage()
+            autoScrollManager.stopScrolling()
         }
 
         override fun onIsDraggingChanged(isDragging: Boolean) {
@@ -236,6 +242,7 @@ class TierListFragment : Fragment() {
             itemAnimator = null
             adapter = tiersAdapter
             layoutManager = LinearLayoutManager(activity)
+            autoScrollManager = AutoScrollManager(this)
             enableReordering()
         }
     }
