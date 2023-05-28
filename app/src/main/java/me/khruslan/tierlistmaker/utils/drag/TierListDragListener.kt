@@ -6,6 +6,7 @@ import android.view.DragEvent
 import android.view.View
 import me.khruslan.tierlistmaker.data.models.drag.DragData
 import me.khruslan.tierlistmaker.data.models.drag.DragLocation
+import me.khruslan.tierlistmaker.data.models.drag.DragState
 import me.khruslan.tierlistmaker.data.models.drag.ImageDragData
 import timber.log.Timber
 
@@ -16,13 +17,13 @@ import timber.log.Timber
 abstract class TierListDragListener : View.OnDragListener {
 
     /**
-     * Whether the drag is active at the moment. Changing the value of this field automatically
-     * triggers [onIsDraggingChanged] callback.
+     * Current drag state. Changing the value of this field automatically triggers
+     * [onIsDraggingChanged] callback.
      */
-    private var isDragging = false
+    private var dragState = DragState.Idle
         set(value) {
             field = value
-            onIsDraggingChanged(value)
+            onIsDraggingChanged(value == DragState.Dragging)
         }
 
     /**
@@ -56,13 +57,13 @@ abstract class TierListDragListener : View.OnDragListener {
      * Called when dragging starts / ends.
      *
      * @param isDragging whether the drag is active at the moment (see
-     * [TierListDragListener.isDragging]).
+     * [TierListDragListener.dragState]).
      */
     abstract fun onIsDraggingChanged(isDragging: Boolean)
 
     override fun onDrag(view: View?, event: DragEvent?): Boolean {
         try {
-            val result = when (event?.action) {
+            when (event?.action) {
                 DragEvent.ACTION_DRAG_STARTED -> handleDragStartedAction(event)
                 DragEvent.ACTION_DRAG_ENTERED -> handleDragEnteredAction(event, view)
                 DragEvent.ACTION_DRAG_LOCATION -> handleDragLocationAction(event, view)
@@ -71,105 +72,90 @@ abstract class TierListDragListener : View.OnDragListener {
                 DragEvent.ACTION_DRAG_ENDED -> handleDragEndedAction(event)
                 else -> handleNullOrUnknownAction(event)
             }
-
-            if (!result) isDragging = false
-            return result
+            return true
         } catch (e: TierListDragException) {
             Timber.e(e, "onDrag error")
-            isDragging = false
+            dragState = DragState.Idle
             return false
         }
     }
 
     /**
-     * Processes [DragEvent.ACTION_DRAG_STARTED] event.
-     *
-     * Invokes [onDragStarted] function if all preconditions are met.
+     * Processes [DragEvent.ACTION_DRAG_STARTED] event. Invokes [onDragStarted] function if all
+     * preconditions are met.
      *
      * @param event the event to handle (should always be [DragEvent.ACTION_DRAG_STARTED]).
-     * @return Whether the event was handled successfully (is always true).
      */
-    private fun handleDragStartedAction(event: DragEvent): Boolean {
+    private fun handleDragStartedAction(event: DragEvent) {
         checkEventPreconditions(event)
 
-        if (!isDragging) {
-            isDragging = true
+        if (dragState == DragState.Idle) {
+            dragState = DragState.Dragging
             onDragStarted(event.localState as ImageDragData)
         }
-
-        return true
     }
 
     /**
-     * Processes [DragEvent.ACTION_DRAG_ENTERED] event.
-     *
-     * Used only to check if all preconditions are met.
+     * Processes [DragEvent.ACTION_DRAG_ENTERED] event. Used only to check if all preconditions are
+     * met.
      *
      * @param event the event to handle (should always be [DragEvent.ACTION_DRAG_ENTERED]).
      * @param view view that received the drag event.
-     * @return Whether the event was handled successfully (is always true).
      */
-    private fun handleDragEnteredAction(event: DragEvent, view: View?): Boolean {
+    private fun handleDragEnteredAction(event: DragEvent, view: View?) {
+        if (dragState != DragState.Dragging) return
         checkAllPreconditions(event, view)
-        return true
+        onDragLocationChanged(extractDragLocation(event, view))
     }
 
     /**
-     * Processes [DragEvent.ACTION_DRAG_LOCATION] event.
-     *
-     * Invokes [onDragLocationChanged] function if all preconditions are met.
+     * Processes [DragEvent.ACTION_DRAG_LOCATION] event. Invokes [onDragLocationChanged] function
+     * if all preconditions are met.
      *
      * @param event the event to handle (should always be [DragEvent.ACTION_DRAG_LOCATION]).
      * @param view view that received the drag event.
-     * @return Whether the event was handled successfully (is always true).
      */
-    private fun handleDragLocationAction(event: DragEvent, view: View?): Boolean {
+    private fun handleDragLocationAction(event: DragEvent, view: View?) {
+        if (dragState != DragState.Dragging) return
         checkAllPreconditions(event, view)
         onDragLocationChanged(extractDragLocation(event, view))
-        return true
     }
 
     /**
-     * Processes [DragEvent.ACTION_DRAG_EXITED] event.
-     *
-     * Invokes [onDragLocationChanged] function if all preconditions are met.
+     * Processes [DragEvent.ACTION_DRAG_EXITED] event. Invokes [onDragLocationChanged] function if
+     * all preconditions are met.
      *
      * @param event the event to handle (should always be [DragEvent.ACTION_DRAG_EXITED]).
-     * @return Whether the event was handled successfully (is always true).
      */
-    private fun handleDragExitedAction(event: DragEvent): Boolean {
+    private fun handleDragExitedAction(event: DragEvent) {
+        if (dragState != DragState.Dragging) return
         checkEventPreconditions(event)
         onDragLocationChanged(null)
-        return true
     }
 
     /**
-     * Processes [DragEvent.ACTION_DROP] event.
-     *
-     * Invokes [onDrop] function if all preconditions are met.
+     * Processes [DragEvent.ACTION_DROP] event. Invokes [onDrop] function if all preconditions are
+     * met.
      *
      * @param event the event to handle (should always be [DragEvent.ACTION_DROP]).
      * @return Whether the event was handled successfully (is always true).
      */
-    private fun handleDropAction(event: DragEvent): Boolean {
+    private fun handleDropAction(event: DragEvent) {
         checkEventPreconditions(event)
+        dragState = DragState.Finishing
         onDrop(createImageDragDataFromClip(event.clipData))
-        return true
     }
 
     /**
-     * Processes [DragEvent.ACTION_DRAG_ENDED] event.
-     *
-     * Invokes [onDragEnded] function if all preconditions are met.
+     * Processes [DragEvent.ACTION_DRAG_ENDED] event. Invokes [onDragEnded] function if all
+     * preconditions are met.
      *
      * @param event the event to handle (should always be [DragEvent.ACTION_DRAG_ENDED]).
-     * @return Whether the event was handled successfully (is always true).
      */
-    private fun handleDragEndedAction(event: DragEvent): Boolean {
+    private fun handleDragEndedAction(event: DragEvent) {
         checkLocalStatePreconditions(event)
-        if (!isDragging) return false
+        dragState = DragState.Idle
         if (!event.result) onDragEnded()
-        return false
     }
 
     /**
@@ -178,10 +164,9 @@ abstract class TierListDragListener : View.OnDragListener {
      * Used only to get correct error message for the exception.
      *
      * @param event unknown drag event or null.
-     * @return Whether the event was handled successfully (never returns anything).
      * @throws TierListDragException always throws an error with the appropriate cause message.
      */
-    private fun handleNullOrUnknownAction(event: DragEvent?): Boolean {
+    private fun handleNullOrUnknownAction(event: DragEvent?) {
         throw TierListDragException(
             if (event == null) {
                 "event is null"
