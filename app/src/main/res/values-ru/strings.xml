@@ -6,7 +6,7 @@
     <string name="btn_zoom_out_desc">Уменьшить</string>
     <string name="toolbar_subtitle_determinate_loading">Загрузка (%1$d/%2$d)</string>
     <string name="btn_add_new_tier_desc">Добавить новый ранг</string>
-    <string name="empty_previews_message">Сдесь пока ничего нет. Создайте свой первый список!</string>
+    <string name="empty_previews_message">Здесь пока ничего нет. Создайте свой первый список!</string>
     <string name="load_previews_error_message">Ой! Что-то пошло не так…\nНе удалось загрузить вашу коллекцию</string>
     <string name="btn_report_issue"><u>Сообщить об ошибке</u></string>
     <string name="save_tier_list_error_message">Ой! Не удалось сохранить список :(</string>
@@ -19,7 +19,7 @@
     <string name="menu_item_rename_tier_list_title">Переименовать список</string>
     <string name="menu_item_my_collection_title">Моя коллекция</string>
     <string name="menu_item_settings_title">Настройки</string>
-    <string name="menu_item_support_title">Справка / отзыв</string>
+    <string name="menu_item_feedback_title">Обратная связь</string>
     <string name="menu_item_about_title">О программе</string>
     <string name="btn_change_theme_desc">Изменить тему</string>
     <string name="btn_share_desc">Поделиться</string>
@@ -46,4 +46,13 @@
     <string name="send_us_email_alert_title">Пожалуйста, отправьте письмо на %s</string>
     <string name="btn_copy_email">Скопировать email</string>
     <string name="toast_msg_text_copied">Скопировано \"%s\"</string>
+    <string name="send_feedback_email_subject">Tier List Maker: Обратная связь</string>
+    <string name="feedback_appbar_title">Обратная связь</string>
+    <string name="pref_contact_us_title">Связаться с нами</string>
+    <string name="pref_contact_us_summary">Расскажите о своем опыте, предложите новые функции и помогите нам улучшиться</string>
+    <string name="pref_report_bug_title">Сообщить об ошибке</string>
+    <string name="pref_report_bug_summary">Сообщите о технических ошибках, сбоях или любых других проблемах, с которыми вы столкнулись</string>
+    <string name="pref_rate_app_title">Оценить приложение</string>
+    <string name="pref_rate_app_summary">Понравился Tier List Maker? Дайте знать другим, оценив приложение и написав отзыв</string>
+    <string name="snackbar_msg_no_rate_apps_found">Не удалось оценить Tier List Maker. Не найдено подходящих приложений</string>
 </resources>

@@ -12,9 +12,9 @@
         android:title="@string/menu_item_settings_title" />
 
     <item
-        android:id="@+id/fragment_support"
+        android:id="@+id/fragment_feedback"
         android:icon="@drawable/ic_forum"
-        android:title="@string/menu_item_support_title" />
+        android:title="@string/menu_item_feedback_title" />
 
     <item
         android:id="@+id/fragment_about"

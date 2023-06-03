@@ -63,7 +63,8 @@ dependencies {
     implementation 'androidx.core:core-splashscreen:1.0.1'
 
     // Google
-    implementation 'com.google.android.material:material:1.9.0'
+    //noinspection GradleDependency (https://github.com/material-components/material-components-android/issues/3191)
+    implementation 'com.google.android.material:material:1.7.0'
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
     // Firebase
@@ -87,8 +88,9 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
-    // Database
+    // Storage
     implementation 'io.github.pilgr:paperdb:2.7.2'
+    implementation 'androidx.preference:preference-ktx:1.2.0'
 
     // Work Manager
     implementation 'androidx.work:work-runtime-ktx:2.8.1'

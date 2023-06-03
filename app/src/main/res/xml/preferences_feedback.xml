@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        app:iconSpaceReserved="false"
+        app:key="@string/pref_contact_us_key"
+        app:summary="@string/pref_contact_us_summary"
+        app:title="@string/pref_contact_us_title" />
+
+    <Preference
+        app:iconSpaceReserved="false"
+        app:key="@string/pref_report_bug_key"
+        app:summary="@string/pref_report_bug_summary"
+        app:title="@string/pref_report_bug_title" />
+
+    <Preference
+        app:iconSpaceReserved="false"
+        app:key="@string/pref_rate_app_key"
+        app:summary="@string/pref_rate_app_summary"
+        app:title="@string/pref_rate_app_title" />
+
+</PreferenceScreen>

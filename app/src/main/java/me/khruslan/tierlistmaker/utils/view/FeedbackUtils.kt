@@ -20,30 +20,54 @@ object FeedbackUtils {
     /**
      * Opens an email application with prefilled recipient, subject and message for reporting
      * an issue. In case no email applications found on the device, shows an alert asking to
-     * manually send a bug report.
+     * manually send an email.
      *
      * @param context activity context.
      */
     fun reportIssue(context: Context) {
         try {
-            launchSendEmailIntent(context)
+            launchSendEmailIntent(
+                context = context,
+                subject = context.getString(R.string.bug_report_email_subject),
+                message = buildBugReportInfo(context)
+            )
         } catch (_: ActivityNotFoundException) {
             showSendUsEmailAlert(context)
         }
     }
 
     /**
-     * Opens an email application with prefilled recipient, subject and message for reporting
-     * an issue.
+     * Opens an email application with prefilled recipient and subject for sending a feedback. In
+     * case no email applications found on the device, shows an alert asking to manually send an
+     * email.
      *
      * @param context activity context.
      */
-    private fun launchSendEmailIntent(context: Context) {
+    fun sendFeedback(context: Context) {
+        try {
+            launchSendEmailIntent(
+                context = context,
+                subject = context.getString(R.string.send_feedback_email_subject)
+            )
+        } catch (_: ActivityNotFoundException) {
+            showSendUsEmailAlert(context)
+        }
+    }
+
+    /**
+     * Opens an email application with prefilled recipient, subject and (optionally) message for
+     * reporting an issue.
+     *
+     * @param context activity context.
+     * @param subject email subject to prefill.
+     * @param message email message to prefill (optional).
+     */
+    private fun launchSendEmailIntent(context: Context, subject: String, message: String? = null) {
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = MAILTO_DATA_SCHEME.toUri()
             putExtra(Intent.EXTRA_EMAIL, arrayOf(RECIPIENT_EMAIL))
-            putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.bug_report_email_subject))
-            putExtra(Intent.EXTRA_TEXT, buildBugReportInfo(context))
+            putExtra(Intent.EXTRA_SUBJECT, subject)
+            putExtra(Intent.EXTRA_TEXT, message)
         }
 
         context.startActivity(intent)

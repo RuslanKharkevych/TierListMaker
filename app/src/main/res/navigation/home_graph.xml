@@ -11,4 +11,9 @@
         android:label="@string/app_name"
         tools:layout="@layout/fragment_dashboard" />
 
+    <fragment
+        android:id="@+id/fragment_feedback"
+        android:name="me.khruslan.tierlistmaker.ui.screens.home.FeedbackFragment"
+        android:label="@string/feedback_appbar_title" />
+
 </navigation>

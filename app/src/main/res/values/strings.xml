@@ -15,7 +15,7 @@
     <string name="btn_refresh">Refresh</string>
     <string name="menu_item_my_collection_title">My Collection</string>
     <string name="menu_item_settings_title">Settings</string>
-    <string name="menu_item_support_title">Support and feedback</string>
+    <string name="menu_item_feedback_title">Feedback</string>
     <string name="menu_item_about_title">About</string>
     <string name="btn_change_theme_desc">Change theme</string>
     <string name="btn_yes">Yes</string>
@@ -56,4 +56,18 @@
     <string name="send_us_email_alert_title">Please send email to %s</string>
     <string name="btn_copy_email">Copy email</string>
     <string name="toast_msg_text_copied">Copied \"%s\"</string>
+    <string name="send_feedback_email_subject">Tier List Maker: Feedback</string>
+
+    <!-- FeedbackFragment -->
+    <string name="feedback_appbar_title">Feedback</string>
+    <string name="pref_contact_us_key" translatable="false">contact_us</string>
+    <string name="pref_contact_us_title">Contact us</string>
+    <string name="pref_contact_us_summary">Tell us about your experience, suggest new features and help us improve</string>
+    <string name="pref_report_bug_key" translatable="false">report_bug</string>
+    <string name="pref_report_bug_title">Report bug</string>
+    <string name="pref_report_bug_summary">Report technical issues, crashes or any other problems you\'ve faced</string>
+    <string name="pref_rate_app_key" translatable="false">rate_app</string>
+    <string name="pref_rate_app_title">Rate app</string>
+    <string name="pref_rate_app_summary">Enjoyed Tier List Maker? Let others know by rating it and writing a review!</string>
+    <string name="snackbar_msg_no_rate_apps_found">Unable to rate Tier List Maker. No suitable applications found</string>
 </resources>
