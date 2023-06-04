@@ -5,10 +5,10 @@ import android.net.Uri
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import me.khruslan.tierlistmaker.data.repositories.file.ImageCompressor
 import me.khruslan.tierlistmaker.data.repositories.file.ImageCompressorImpl
+import me.khruslan.tierlistmaker.fakes.data.repositories.db.FakePreferencesHelper
 import me.khruslan.tierlistmaker.fakes.data.repositories.dispatchers.FakeDispatcherProvider
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
 import me.khruslan.tierlistmaker.utils.displayWidthPixels
@@ -29,7 +29,6 @@ import java.io.IOException
 class ImageCompressorTest {
 
     companion object {
-        private const val IMAGE_QUALITY_PERCENT = 90
         private const val DISPLAY_WIDTH_FRACTION = 0.33f
         private const val EXTENSIONS_PACKAGE = "me.khruslan.tierlistmaker.utils.ExtensionsKt"
     }
@@ -49,6 +48,7 @@ class ImageCompressorTest {
     @MockK
     private lateinit var mockCompressor: Compressor
 
+    private lateinit var fakePreferencesHelper: FakePreferencesHelper
     private lateinit var imageCompressor: ImageCompressor
 
     private val dummyTargetDir = "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures"
@@ -56,6 +56,8 @@ class ImageCompressorTest {
 
     @Before
     fun init() {
+        fakePreferencesHelper = FakePreferencesHelper()
+
         MockKAnnotations.init(this)
         mockkObject(Compress.Companion)
         mockkStatic(EXTENSIONS_PACKAGE)
@@ -64,13 +66,13 @@ class ImageCompressorTest {
 
         imageCompressor = ImageCompressorImpl(
             context = mockContext,
-            dispatcherProvider = FakeDispatcherProvider()
+            dispatcherProvider = FakeDispatcherProvider(),
+            preferencesHelper = fakePreferencesHelper
         )
     }
 
     @After
     fun release() {
-        verifyMocks()
         unmockkObject(Compress.Companion)
         unmockkStatic(EXTENSIONS_PACKAGE)
         unmockkConstructor(ConcreteBuilder::class)
@@ -82,7 +84,7 @@ class ImageCompressorTest {
         coEvery { mockCompressor.get(any()) } throws exception
 
         assertThrows(Throwable::class.java) {
-            runBlocking {
+            runTest {
                 imageCompressor.compress(uri = mockUri, targetDir = dummyTargetDir)
             }
         }
@@ -94,12 +96,13 @@ class ImageCompressorTest {
         coEvery { mockCompressor.get(any()) } returns expectedFile
         val actualFile = imageCompressor.compress(uri = mockUri, targetDir = dummyTargetDir)
 
+        verifyMocks()
         assertEquals(expectedFile, actualFile)
     }
 
     private fun initMocks() {
         every { Compress.with(mockContext, mockUri) } returns mockCompress
-        every { mockCompress.setQuality(IMAGE_QUALITY_PERCENT) } returns mockCompress
+        every { mockCompress.setQuality(fakePreferencesHelper.imageQuality) } returns mockCompress
         every { mockCompress.setTargetDir(dummyTargetDir) } returns mockCompress
         every { mockCompress.strategy(mockCompressor) } returns mockCompressor
         every { anyConstructed<ConcreteBuilder>().build() } returns mockCompressor
@@ -111,7 +114,7 @@ class ImageCompressorTest {
 
         verifyAll {
             mockCompress.run {
-                setQuality(IMAGE_QUALITY_PERCENT)
+                setQuality(fakePreferencesHelper.imageQuality)
                 setTargetDir(dummyTargetDir)
                 strategy(mockCompressor)
             }

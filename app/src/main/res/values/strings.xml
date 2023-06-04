@@ -70,4 +70,16 @@
     <string name="pref_rate_app_title">Rate app</string>
     <string name="pref_rate_app_summary">Enjoyed Tier List Maker? Let others know by rating it and writing a review!</string>
     <string name="snackbar_msg_no_rate_apps_found">Unable to rate Tier List Maker. No suitable applications found</string>
+
+    <!-- SettingsFragment -->
+    <string name="settings_appbar_title">Settings</string>
+    <string name="pref_tiers_count_key" translatable="false">tiers_count</string>
+    <string name="pref_tiers_count_title">Initial number of tiers</string>
+    <string name="pref_tiers_count_summary">How many tiers will be added when you create a new list</string>
+    <string name="pref_scale_key" translatable="false">scale</string>
+    <string name="pref_scale_title">Default scale</string>
+    <string name="pref_scale_summary">How many images will fit in a row inside a tier (affects only new lists)</string>
+    <string name="pref_image_quality_key" translatable="false">image_quality</string>
+    <string name="pref_image_quality_title">Image quality</string>
+    <string name="pref_image_quality_summary">Higher percent - better quality, lower percent - takes less memory in storage</string>
 </resources>

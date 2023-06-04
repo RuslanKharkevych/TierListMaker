@@ -55,4 +55,11 @@
     <string name="pref_rate_app_title">Оценить приложение</string>
     <string name="pref_rate_app_summary">Понравился Tier List Maker? Дайте знать другим, оценив приложение и написав отзыв</string>
     <string name="snackbar_msg_no_rate_apps_found">Не удалось оценить Tier List Maker. Не найдено подходящих приложений</string>
+    <string name="settings_appbar_title">Настройки</string>
+    <string name="pref_tiers_count_title">Изначальное количество рангов</string>
+    <string name="pref_tiers_count_summary">Сколько рангов будет добавлено при создании нового списка</string>
+    <string name="pref_scale_title">Масштаб по умолчанию</string>
+    <string name="pref_scale_summary">Сколько изображений будет помещаться в ряд внутри ранга (влияет только на новые списки)</string>
+    <string name="pref_image_quality_title">Качество изображений</string>
+    <string name="pref_image_quality_summary">Выше процент — лучше качество, меньше процент — занимает меньше памяти в хранилище</string>
 </resources>

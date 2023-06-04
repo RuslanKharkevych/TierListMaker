@@ -1,9 +1,12 @@
 package me.khruslan.tierlistmaker.data.repositories.file
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.net.Uri
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
+import me.khruslan.tierlistmaker.data.repositories.db.PreferencesHelper
 import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProvider
 import me.khruslan.tierlistmaker.utils.TIER_IMAGE_WIDTH_FRACTION
 import me.khruslan.tierlistmaker.utils.displayWidthPixels
@@ -18,18 +21,13 @@ import javax.inject.Inject
  *
  * @property context application context.
  * @property dispatcherProvider provider of [CoroutineDispatcher] for running suspend functions.
+ * @property preferencesHelper helper class for accessing [SharedPreferences].
  */
 class ImageCompressorImpl @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val dispatcherProvider: DispatcherProvider
+    private val dispatcherProvider: DispatcherProvider,
+    private val preferencesHelper: PreferencesHelper
 ) : ImageCompressor {
-
-    /**
-     * Companion object of [ImageCompressorImpl] used for storing constants.
-     */
-    companion object {
-        private const val IMAGE_QUALITY_PERCENT = 90
-    }
 
     /**
      * Max size of the compressed image calculated based on [TIER_IMAGE_WIDTH_FRACTION].
@@ -41,7 +39,7 @@ class ImageCompressorImpl @Inject constructor(
     override suspend fun compress(uri: Uri, targetDir: String): File {
         return try {
             Compress.with(context, uri)
-                .setQuality(IMAGE_QUALITY_PERCENT)
+                .setQuality(getImageQuality())
                 .setTargetDir(targetDir)
                 .concrete {
                     withMaxWidth(imageSize)
@@ -52,6 +50,17 @@ class ImageCompressorImpl @Inject constructor(
                 .get(dispatcherProvider.io)
         } catch (e: Exception) {
             throw ImageCompressorException(uri, targetDir, e)
+        }
+    }
+
+    /**
+     * Asynchronously fetches image quality from user preferences.
+     *
+     * @return image quality in percents.
+     */
+    private suspend fun getImageQuality(): Int {
+        return withContext(dispatcherProvider.io) {
+            preferencesHelper.imageQuality
         }
     }
 

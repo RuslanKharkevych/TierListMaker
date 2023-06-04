@@ -13,17 +13,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import me.khruslan.tierlistmaker.R
-import me.khruslan.tierlistmaker.data.models.tierlist.Tier
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.data.repositories.db.PaperRepository
 import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProvider
+import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListCreator
 import me.khruslan.tierlistmaker.data.work.UpdateTierListsArgsProvider
 import me.khruslan.tierlistmaker.data.work.UpdateTierListsWorker
 import me.khruslan.tierlistmaker.ui.models.ListState
 import me.khruslan.tierlistmaker.ui.navigation.TierListResultException
 import me.khruslan.tierlistmaker.ui.screens.home.DashboardFragment
 import me.khruslan.tierlistmaker.utils.swap
-import java.util.*
 import javax.inject.Inject
 
 /**
@@ -32,13 +31,15 @@ import javax.inject.Inject
  * @property paperRepository local storage repository.
  * @property dispatcherProvider provider of [CoroutineDispatcher] for running suspend functions.
  * @property updateTierListsArgsProvider provider of [UpdateTierListsWorker] arguments.
+ * @property tierListCreator creator of new tier lists.
  */
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
     application: Application,
     private val paperRepository: PaperRepository,
     private val dispatcherProvider: DispatcherProvider,
-    private val updateTierListsArgsProvider: UpdateTierListsArgsProvider
+    private val updateTierListsArgsProvider: UpdateTierListsArgsProvider,
+    private val tierListCreator: TierListCreator
 ) : AndroidViewModel(application) {
 
     /**
@@ -60,6 +61,7 @@ class DashboardViewModel @Inject constructor(
     private val _listStateLiveData by lazy { MutableLiveData<ListState>() }
     private val _errorEvent by lazy { LiveEvent<Int>() }
     private val _tierListPreviewsLiveData = MutableLiveData<MutableList<TierList.Preview>>()
+    private val _tierListCreatedEvent by lazy { LiveEvent<TierList>() }
 
     /**
      * [LiveData] that notifies observers about the position of the newly added preview.
@@ -89,25 +91,25 @@ class DashboardViewModel @Inject constructor(
         get() = _tierListPreviewsLiveData
 
     /**
-     * Creates an empty [TierList].
+     * [LiveData] that notifies observers that the new tier list has been created.
+     */
+    val tierListCreatedEvent: LiveData<TierList> get() = _tierListCreatedEvent
+
+    /**
+     * Creates an empty [TierList] asynchronously and triggers [tierListCreatedEvent].
      *
      * @param title name of the tier list.
-     * @return Created tier list.
      */
-    fun createNewTierList(title: String): TierList {
-        return TierList(
-            id = UUID.randomUUID().toString(),
-            title = title,
-            zoomValue = 5,
-            tiers = MutableList(5) { Tier() },
-            backlogImages = mutableListOf()
-        )
+    fun createNewTierList(title: String) {
+        viewModelScope.launch {
+            val tierList = tierListCreator.newTierList(title)
+            _tierListCreatedEvent.value = tierList
+        }
     }
 
     /**
-     * Handles [TierList] that was either added or updated.
-     *
-     * Persists it in the local storage and notifies UI about the updates
+     * Handles [TierList] that was either added or updated. Persists it in the local storage and
+     * notifies UI about the updates
      *
      * @param tierList new or updated tier list.
      */
@@ -166,9 +168,8 @@ class DashboardViewModel @Inject constructor(
     }
 
     /**
-     * Loads tier lists from [paperRepository] and returns the result.
-     *
-     * Updates [listStateLiveData] after loading is complete.
+     * Loads tier lists from [paperRepository] and returns the result. Updates [listStateLiveData]
+     * after loading is complete.
      *
      * @return loaded tier lists or empty list in case of error.
      */

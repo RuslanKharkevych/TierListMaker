@@ -23,4 +23,9 @@
         <item name="cornerSize">@dimen/card_corner_radius</item>
     </style>
 
+    <style name="Style.SeekBar" parent="Widget.AppCompat.SeekBar">
+        <item name="android:progressTint">?attr/colorPrimary</item>
+        <item name="android:progressBackgroundTint">?attr/colorPrimary</item>
+    </style>
+
 </resources>

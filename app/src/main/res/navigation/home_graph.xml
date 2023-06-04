@@ -16,4 +16,9 @@
         android:name="me.khruslan.tierlistmaker.ui.screens.home.FeedbackFragment"
         android:label="@string/feedback_appbar_title" />
 
+    <fragment
+        android:id="@+id/fragment_settings"
+        android:name="me.khruslan.tierlistmaker.ui.screens.home.SettingsFragment"
+        android:label="@string/settings_appbar_title" />
+
 </navigation>

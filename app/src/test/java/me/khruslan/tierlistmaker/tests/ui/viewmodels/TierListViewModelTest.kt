@@ -40,6 +40,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.io.File
+import java.lang.IllegalStateException
 
 @ExperimentalCoroutinesApi
 class TierListViewModelTest {
@@ -157,7 +158,7 @@ class TierListViewModelTest {
 
     @Test
     fun `Throws error if SavedStateHandle doesn't contain tier list`() {
-        assertThrows(IllegalArgumentException::class.java) {
+        assertThrows(IllegalStateException::class.java) {
             initViewModel()
         }
     }

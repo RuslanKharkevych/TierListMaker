@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SeekBarPreference
+        android:max="@integer/pref_max_tiers_count"
+        app:defaultValue="@integer/pref_default_tiers_count"
+        app:iconSpaceReserved="false"
+        app:key="@string/pref_tiers_count_key"
+        app:min="@integer/pref_min_tiers_count"
+        app:showSeekBarValue="true"
+        app:summary="@string/pref_tiers_count_summary"
+        app:title="@string/pref_tiers_count_title" />
+
+    <SeekBarPreference
+        android:max="@integer/pref_max_scale"
+        app:defaultValue="@integer/pref_default_scale"
+        app:iconSpaceReserved="false"
+        app:key="@string/pref_scale_key"
+        app:min="@integer/pref_min_scale"
+        app:showSeekBarValue="true"
+        app:summary="@string/pref_scale_summary"
+        app:title="@string/pref_scale_title" />
+
+    <SeekBarPreference
+        android:max="@integer/pref_max_image_quality"
+        app:defaultValue="@integer/pref_default_image_quality"
+        app:iconSpaceReserved="false"
+        app:key="@string/pref_image_quality_key"
+        app:min="@integer/pref_min_image_quality"
+        app:showSeekBarValue="true"
+        app:summary="@string/pref_image_quality_summary"
+        app:title="@string/pref_image_quality_title" />
+
+</PreferenceScreen>

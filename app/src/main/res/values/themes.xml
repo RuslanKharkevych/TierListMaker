@@ -19,6 +19,7 @@
         <item name="snackbarButtonStyle">@style/Style.SnackbarButton</item>
         <item name="navigationViewStyle">@style/Style.NavigationView</item>
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.AlertDialog</item>
+        <item name="seekBarStyle">@style/Style.SeekBar</item>
     </style>
 
     <style name="Theme.Launch" parent="Theme.SplashScreen">

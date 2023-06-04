@@ -5,8 +5,15 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.jraska.livedata.test
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.mockk
+import io.mockk.mockkObject
+import io.mockk.mockkStatic
+import io.mockk.unmockkObject
+import io.mockk.unmockkStatic
+import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -14,21 +21,20 @@ import kotlinx.coroutines.test.runTest
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.models.tierlist.Tier
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
-import me.khruslan.tierlistmaker.data.models.tierlist.TierStyle
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
 import me.khruslan.tierlistmaker.data.work.UpdateTierListsWorker
 import me.khruslan.tierlistmaker.fakes.data.repositories.db.FakePaperRepository
 import me.khruslan.tierlistmaker.fakes.data.repositories.dispatchers.FakeDispatcherProvider
+import me.khruslan.tierlistmaker.fakes.data.repositories.tierlist.FakeTierListCreator
 import me.khruslan.tierlistmaker.fakes.data.work.FakeUpdateTierListsArgsProvider
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
 import me.khruslan.tierlistmaker.ui.models.ListState
 import me.khruslan.tierlistmaker.ui.navigation.TierListResultException
 import me.khruslan.tierlistmaker.ui.viewmodels.DashboardViewModel
-import me.khruslan.tierlistmaker.utils.assertAll
-import me.khruslan.tierlistmaker.utils.assertEmpty
-import me.khruslan.tierlistmaker.utils.assertNotEmpty
 import me.khruslan.tierlistmaker.utils.awaitValue
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThrows
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -47,6 +53,7 @@ class DashboardViewModelTest {
 
     private lateinit var fakePaperRepository: FakePaperRepository
     private lateinit var fakeUpdateTierListsArgsProvider: FakeUpdateTierListsArgsProvider
+    private lateinit var fakeTierListCreator: FakeTierListCreator
     private lateinit var viewModel: DashboardViewModel
 
     @Before
@@ -54,6 +61,7 @@ class DashboardViewModelTest {
         MockKAnnotations.init(this)
         fakePaperRepository = FakePaperRepository()
         fakeUpdateTierListsArgsProvider = FakeUpdateTierListsArgsProvider()
+        fakeTierListCreator = FakeTierListCreator()
     }
 
     private fun TestScope.initViewModel() {
@@ -61,7 +69,8 @@ class DashboardViewModelTest {
             application = mockApplication,
             paperRepository = fakePaperRepository,
             dispatcherProvider = FakeDispatcherProvider(),
-            updateTierListsArgsProvider = fakeUpdateTierListsArgsProvider
+            updateTierListsArgsProvider = fakeUpdateTierListsArgsProvider,
+            tierListCreator = fakeTierListCreator
         )
 
         advanceUntilIdle()
@@ -221,18 +230,14 @@ class DashboardViewModelTest {
 
     @Test
     fun `Creates new tier list`() = runTest {
+        fakeTierListCreator.tierLists = listOf(addedTierList)
         initViewModel()
-        val tierListName = "Best shooting guards of all time"
-        val tierList = viewModel.createNewTierList(tierListName)
 
-        assertNotEmpty(tierList.id)
-        assertEquals(tierListName, tierList.title)
-        assertEquals(5, tierList.zoomValue)
-        assertEquals(5, tierList.tiers.size)
-        assertAll(tierList.tiers) { it.id.isNotEmpty() }
-        assertAll(tierList.tiers) { it.images.isEmpty() }
-        assertAll(tierList.tiers) { it.style == TierStyle() }
-        assertEmpty(tierList.backlogImages)
+        val tierListCreatedObserver = viewModel.tierListCreatedEvent.test()
+        viewModel.createNewTierList(addedTierList.title)
+        advanceUntilIdle()
+
+        tierListCreatedObserver.awaitValue(addedTierList)
     }
 
     @Test

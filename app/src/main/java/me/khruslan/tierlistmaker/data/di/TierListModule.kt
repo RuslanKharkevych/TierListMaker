@@ -7,6 +7,8 @@ import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListBitmapGenerator
 import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListBitmapGeneratorImpl
+import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListCreator
+import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListCreatorImpl
 import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListProcessor
 import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListProcessorImpl
 import me.khruslan.tierlistmaker.data.repositories.tierlist.tier.*
@@ -48,4 +50,8 @@ abstract class TierListModule {
     abstract fun bindTierListBitmapGenerator(
         tierListBitmapGeneratorImpl: TierListBitmapGeneratorImpl
     ): TierListBitmapGenerator
+
+    @Binds
+    @ViewModelScoped
+    abstract fun bindTierListCreator(tierListCreatorImpl: TierListCreatorImpl): TierListCreator
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Initial number of tiers -->
+    <integer name="pref_min_tiers_count">0</integer>
+    <integer name="pref_max_tiers_count">10</integer>
+    <integer name="pref_default_tiers_count">5</integer>
+
+    <!-- Default scale -->
+    <integer name="pref_min_scale">2</integer>
+    <integer name="pref_max_scale">8</integer>
+    <integer name="pref_default_scale">4</integer>
+
+    <!-- Image quality -->
+    <integer name="pref_min_image_quality">50</integer>
+    <integer name="pref_max_image_quality">100</integer>
+    <integer name="pref_default_image_quality">90</integer>
+</resources>

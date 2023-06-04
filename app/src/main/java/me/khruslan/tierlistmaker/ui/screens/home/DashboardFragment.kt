@@ -112,6 +112,7 @@ class DashboardFragment : Fragment() {
         viewModel.updatePreviewEvent.observe(viewLifecycleOwner, updatePreviewsObserver)
         viewModel.listStateLiveData.observe(viewLifecycleOwner, listStateObserver)
         viewModel.errorEvent.observe(viewLifecycleOwner, errorObserver)
+        viewModel.tierListCreatedEvent.observe(viewLifecycleOwner, tierListCreatedObserver)
     }
 
     /**
@@ -178,6 +179,13 @@ class DashboardFragment : Fragment() {
     }
 
     /**
+     * Observer for the created tier list event. Launches [tierListLauncher].
+     */
+    private val tierListCreatedObserver = Observer<TierList> { tierList ->
+        tierListLauncher.launch(tierList)
+    }
+
+    /**
      * Shows [Snackbar] with error message and "Refresh" action.
      *
      * @param textResId error message resource identifier.
@@ -222,15 +230,12 @@ class DashboardFragment : Fragment() {
 
     /**
      * Shows dialog with input field that asks user to enter tier list title. On save click creates
-     * a new tier list with entered title and launches [tierListLauncher].
+     * a new tier list with entered title.
      */
     private fun showEnterTierListTitleDialog() {
         EnterTierListTitleDialog.Builder()
             .setDialogTitle(R.string.dialog_title_name_tier_list)
-            .setOnConfirmListener { title ->
-                val tierList = viewModel.createNewTierList(title)
-                tierListLauncher.launch(tierList)
-            }
+            .setOnConfirmListener { title -> viewModel.createNewTierList(title) }
             .build()
             .show(requireActivity())
     }
