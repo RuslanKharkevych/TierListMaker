@@ -62,4 +62,8 @@
     <string name="pref_scale_summary">Скільки зображень поміститься в рядку всередині рангу (впливає лише на нові списки)</string>
     <string name="pref_image_quality_title">Якість зображень</string>
     <string name="pref_image_quality_summary">Більший відсоток – краща якість, менший відсоток – займає менше пам’яті</string>
+    <string name="about_appbar_title">Про програму</string>
+    <string name="pref_privacy_policy_title">Політика конфіденційності</string>
+    <string name="pref_privacy_policy_summary">Наша політика конфіденційності детально описує інформацію, яку ми збираємо від користувачів, і роз’яснює ваш вибір щодо використання ваших особистих даних</string>
+    <string name="pref_app_version_title">Версія додатку</string>
 </resources>
