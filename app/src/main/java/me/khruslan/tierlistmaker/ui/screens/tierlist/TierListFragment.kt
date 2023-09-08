@@ -29,7 +29,22 @@ import me.khruslan.tierlistmaker.data.models.drag.DragLocation
 import me.khruslan.tierlistmaker.data.models.drag.ImageDragData
 import me.khruslan.tierlistmaker.data.models.drag.TierDragData
 import me.khruslan.tierlistmaker.data.models.drag.TrashBinDragData
-import me.khruslan.tierlistmaker.data.models.tierlist.*
+import me.khruslan.tierlistmaker.data.models.tierlist.BacklogDataChanged
+import me.khruslan.tierlistmaker.data.models.tierlist.BacklogImagesAdded
+import me.khruslan.tierlistmaker.data.models.tierlist.BacklogItemChanged
+import me.khruslan.tierlistmaker.data.models.tierlist.BacklogItemInserted
+import me.khruslan.tierlistmaker.data.models.tierlist.ImageRemoved
+import me.khruslan.tierlistmaker.data.models.tierlist.ImageSizeUpdated
+import me.khruslan.tierlistmaker.data.models.tierlist.Tier
+import me.khruslan.tierlistmaker.data.models.tierlist.TierChanged
+import me.khruslan.tierlistmaker.data.models.tierlist.TierInserted
+import me.khruslan.tierlistmaker.data.models.tierlist.TierList
+import me.khruslan.tierlistmaker.data.models.tierlist.TierListChanged
+import me.khruslan.tierlistmaker.data.models.tierlist.TierListEvent
+import me.khruslan.tierlistmaker.data.models.tierlist.TierListExportError
+import me.khruslan.tierlistmaker.data.models.tierlist.TierListReadyToShare
+import me.khruslan.tierlistmaker.data.models.tierlist.TierListReadyToView
+import me.khruslan.tierlistmaker.data.models.tierlist.TrashBinHighlightUpdated
 import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
 import me.khruslan.tierlistmaker.data.repositories.file.FileManager
 import me.khruslan.tierlistmaker.databinding.FragmentTierListBinding
@@ -43,6 +58,7 @@ import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
 import me.khruslan.tierlistmaker.utils.drag.TierListDragListener
 import me.khruslan.tierlistmaker.utils.enableReordering
 import me.khruslan.tierlistmaker.utils.scroll.AutoScrollManager
+import me.khruslan.tierlistmaker.utils.view.TierListBottomBarBinder
 
 /**
  * [Fragment] that represents a tier list.
@@ -69,6 +85,11 @@ class TierListFragment : Fragment() {
      * Manager that performs automatic scrolling withing tier list recycler view.
      */
     private lateinit var autoScrollManager: AutoScrollManager
+
+    /**
+     * Binder that enables / disables buttons in the bottom bar depending on the tier list state.
+     */
+    private lateinit var bottomBarBinder: TierListBottomBarBinder
 
     /**
      * Listener of the tier list drag events.
@@ -100,13 +121,21 @@ class TierListFragment : Fragment() {
     }
 
     /**
-     * Observer of the item range inserted event for the [tiersAdapter].
-     * Performs to scroll to the inserted tier.
+     * Observer of data changes in the [tiersAdapter]. Performs scroll to the inserted tier and
+     * invalidates bottom bar buttons.
      */
     private val tiersDataObserver = object : RecyclerView.AdapterDataObserver() {
+        override fun onChanged() {
+            bottomBarBinder.invalidateZoomButtons()
+        }
+
         override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-            super.onItemRangeInserted(positionStart, itemCount)
+            bottomBarBinder.invalidateAddNewTierButton()
             binding.listTiers.smoothScrollToPosition(positionStart)
+        }
+
+        override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+            bottomBarBinder.invalidateAddNewTierButton()
         }
     }
 
@@ -302,10 +331,11 @@ class TierListFragment : Fragment() {
     }
 
     /**
-     * Initializes click listeners of the bottom bar image buttons.
+     * Initializes [bottomBarBinder] and click listeners of the bottom bar image buttons.
      */
     private fun initBottomBar() {
         with(binding.groupBottomBar) {
+            bottomBarBinder = TierListBottomBarBinder(this, viewModel.tierList)
             btnZoomIn.setOnClickListener { viewModel.zoomIn() }
             btnZoomOut.setOnClickListener { viewModel.zoomOut() }
             btnAddNewTier.setOnClickListener { viewModel.addNewTier() }

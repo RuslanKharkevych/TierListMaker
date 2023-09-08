@@ -13,12 +13,12 @@ sealed class TierListEvent
 /**
  * [TierListEvent] implementation that indicates that backlog images were changed.
  */
-object BacklogDataChanged : TierListEvent()
+data object BacklogDataChanged : TierListEvent()
 
 /**
  * [TierListEvent] implementation that indicates that new backlog images were added.
  */
-object BacklogImagesAdded : TierListEvent()
+data object BacklogImagesAdded : TierListEvent()
 
 /**
  * [TierListEvent] implementation that indicates that specific backlog image was updated.
@@ -37,7 +37,7 @@ data class BacklogItemInserted(val itemPosition: Int) : TierListEvent()
 /**
  * [TierListEvent] implementation that indicates that the entire tier list was updated.
  */
-object TierListChanged : TierListEvent()
+data object TierListChanged : TierListEvent()
 
 /**
  * [TierListEvent] implementation that indicates that specific tier was updated.
@@ -70,7 +70,7 @@ data class TrashBinHighlightUpdated(val highlighted: Boolean) : TierListEvent()
 /**
  * [TierListEvent] implementation that indicates that image was removed.
  */
-object ImageRemoved : TierListEvent()
+data object ImageRemoved : TierListEvent()
 
 /**
  * [TierListEvent] implementation that indicates that tier list image file is ready to be shared.

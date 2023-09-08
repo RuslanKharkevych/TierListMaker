@@ -22,5 +22,5 @@ sealed class LoadingProgress {
     /**
      * UI state for the indeterminate progress of loading.
      */
-    object Indeterminate : LoadingProgress()
+    data object Indeterminate : LoadingProgress()
 }

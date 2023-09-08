@@ -92,4 +92,4 @@ data class TierDragData(val tierPosition: Int) : DragData() {
 /**
  * [DragData] implementation of the trash bin.
  */
-object TrashBinDragData : DragData()
+data object TrashBinDragData : DragData()

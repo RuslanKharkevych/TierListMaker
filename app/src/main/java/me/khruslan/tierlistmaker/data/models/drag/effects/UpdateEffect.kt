@@ -82,4 +82,4 @@ data class UpdateLastInTier(val image: Image, val tierPosition: Int) : UpdateEff
 /**
  * [UpdateEffect] implementation that throws an image into the trash bin.
  */
-object ThrowToTrashBin : UpdateEffect()
+data object ThrowToTrashBin : UpdateEffect()

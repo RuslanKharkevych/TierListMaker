@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toStartOf="@id/btn_add_new_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="?attr/colorOnSurface"
+        app:tint="@color/bottom_bar_button_color"
         tools:tint="@color/grey800_dark" />
 
     <me.khruslan.tierlistmaker.utils.view.TooltipImageButton
@@ -31,7 +31,7 @@
         app:layout_constraintEnd_toStartOf="@id/btn_zoom_out"
         app:layout_constraintStart_toEndOf="@id/btn_add_new_tier"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="?attr/colorOnSurface"
+        app:tint="@color/bottom_bar_button_color"
         tools:tint="@color/grey800_dark" />
 
     <me.khruslan.tierlistmaker.utils.view.TooltipImageButton
@@ -45,7 +45,7 @@
         app:layout_constraintEnd_toStartOf="@id/btn_zoom_in"
         app:layout_constraintStart_toEndOf="@id/btn_add_new_image"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="?attr/colorOnSurface"
+        app:tint="@color/bottom_bar_button_color"
         tools:tint="@color/grey800_dark" />
 
     <me.khruslan.tierlistmaker.utils.view.TooltipImageButton
@@ -59,7 +59,7 @@
         app:layout_constraintEnd_toStartOf="@id/btn_view"
         app:layout_constraintStart_toEndOf="@id/btn_zoom_out"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="?attr/colorOnSurface"
+        app:tint="@color/bottom_bar_button_color"
         tools:tint="@color/grey800_dark" />
 
     <me.khruslan.tierlistmaker.utils.view.TooltipImageButton
@@ -73,7 +73,7 @@
         app:layout_constraintEnd_toEndOf="@id/btn_share"
         app:layout_constraintStart_toEndOf="@id/btn_zoom_in"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="?attr/colorOnSurface"
+        app:tint="@color/bottom_bar_button_color"
         tools:tint="@color/grey800_dark" />
 
     <me.khruslan.tierlistmaker.utils.view.TooltipImageButton
@@ -87,7 +87,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/btn_view"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="?attr/colorOnSurface"
+        app:tint="@color/bottom_bar_button_color"
         tools:tint="@color/grey800_dark" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

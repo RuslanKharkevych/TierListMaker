@@ -74,9 +74,9 @@ data class RemoveLastFromTier(val tierPosition: Int) : RemoveEffect()
 /**
  * [RemoveEffect] implementation that removes the last item from backlog.
  */
-object RemoveLastFromBacklog : RemoveEffect()
+data object RemoveLastFromBacklog : RemoveEffect()
 
 /**
  * [RemoveEffect] implementation that removes the highlight from the trash bin.
  */
-object UnhighlightTrashBin : RemoveEffect()
+data object UnhighlightTrashBin : RemoveEffect()

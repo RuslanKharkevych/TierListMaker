@@ -33,7 +33,7 @@ sealed class AutoScrollState {
     /**
      * Inactive state. Scrolling is not happening at the moment.
      */
-    object Idle : AutoScrollState()
+    data object Idle : AutoScrollState()
 
     /**
      * Active state. View is being automatically scrolled.

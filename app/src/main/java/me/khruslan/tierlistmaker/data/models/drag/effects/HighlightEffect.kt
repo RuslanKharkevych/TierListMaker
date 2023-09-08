@@ -74,9 +74,9 @@ data class HighlightLastInTier(val tierPosition: Int) : HighlightEffect()
 /**
  * [HighlightEffect] implementation that highlights the last item in the backlog.
  */
-object HighlightLastInBacklog : HighlightEffect()
+data object HighlightLastInBacklog : HighlightEffect()
 
 /**
  * [HighlightEffect] implementation that highlights a trash bin.
  */
-object HighlightTrashBin : HighlightEffect()
+data object HighlightTrashBin : HighlightEffect()
