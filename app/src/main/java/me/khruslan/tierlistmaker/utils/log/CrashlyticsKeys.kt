@@ -7,4 +7,6 @@ object CrashlyticsKeys {
     const val APP_LANGUAGE = "app_language"
     const val DEVICE_LANGUAGE = "device_language"
     const val DISPLAY_DENSITY = "display_density"
+    const val DISPLAY_RESOLUTION = "display_resolution"
+    const val FONT_SCALE = "font_scale"
 }

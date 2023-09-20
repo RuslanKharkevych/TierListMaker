@@ -40,6 +40,8 @@ class ReleaseTree(context: Context) : Timber.Tree() {
             key(CrashlyticsKeys.APP_LANGUAGE, ConfigUtils.getAppLanguage(context))
             key(CrashlyticsKeys.DEVICE_LANGUAGE, ConfigUtils.getDeviceLanguage())
             key(CrashlyticsKeys.DISPLAY_DENSITY, ConfigUtils.getDisplayDensity())
+            key(CrashlyticsKeys.DISPLAY_RESOLUTION, ConfigUtils.getDisplayResolution(context))
+            key(CrashlyticsKeys.FONT_SCALE, ConfigUtils.getFontScale(context))
         }
     }
 }
