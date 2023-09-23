@@ -23,7 +23,7 @@ class AutoScrollManager(private val recyclerView: RecyclerView) {
     /**
      * Companion object of [AutoScrollManager] used for storing constants.
      */
-    companion object {
+    private companion object {
         private const val SCROLL_OFFSET_DP = 5f
     }
 

@@ -28,7 +28,7 @@ class TierListImageHolder(
     /**
      * Companion object of [TierListImageHolder] used to store constants.
      */
-    companion object {
+    private companion object {
         private const val START_DRAG_DELTA_MILLIS = 200L
     }
 

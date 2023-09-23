@@ -1,4 +1,4 @@
-package me.khruslan.tierlistmaker.utils.log
+package me.khruslan.tierlistmaker.utils.log.timber
 
 import android.content.Context
 import android.util.Log
@@ -6,20 +6,21 @@ import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.crashlytics.ktx.setCustomKeys
 import com.google.firebase.ktx.Firebase
 import me.khruslan.tierlistmaker.utils.ConfigUtils
+import me.khruslan.tierlistmaker.utils.log.CrashlyticsKeys
 import timber.log.Timber
 
 /**
  * [Timber.Tree] implementation for release builds. Captures non-fatal exceptions and sends them
  * to the [Firebase.crashlytics].
  */
-class ReleaseTree(context: Context) : Timber.Tree() {
+class ReleaseTimberTree(context: Context) : Timber.Tree() {
 
     init {
         setCustomKeys(context)
     }
 
     override fun isLoggable(tag: String?, priority: Int): Boolean {
-        return priority == Log.ERROR || priority == Log.WARN
+        return priority >= Log.INFO
     }
 
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {

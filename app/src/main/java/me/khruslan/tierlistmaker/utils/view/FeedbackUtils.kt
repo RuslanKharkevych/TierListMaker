@@ -1,6 +1,10 @@
 package me.khruslan.tierlistmaker.utils.view
 
-import android.content.*
+import android.content.ActivityNotFoundException
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.widget.Toast
 import androidx.core.net.toUri
@@ -8,6 +12,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import me.khruslan.tierlistmaker.BuildConfig
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.utils.capitalized
+import me.khruslan.tierlistmaker.utils.log.navigation.setLogTag
 
 /**
  * Utility that provides user interface for sending feedback.
@@ -16,6 +21,7 @@ object FeedbackUtils {
 
     private const val MAILTO_DATA_SCHEME = "mailto:"
     private const val RECIPIENT_EMAIL = "ruslan.kharkevych@gmail.com"
+    private const val SEND_US_EMAIL_ALERT_LOG_TAG = "SendUsEmailAlert"
 
     /**
      * Opens an email application with prefilled recipient, subject and message for reporting
@@ -118,6 +124,7 @@ object FeedbackUtils {
             }
             .setNegativeButton(R.string.btn_cancel, null)
             .create()
+            .setLogTag(SEND_US_EMAIL_ALERT_LOG_TAG)
             .show()
     }
 

@@ -1,4 +1,4 @@
-package me.khruslan.tierlistmaker.utils.log
+package me.khruslan.tierlistmaker.utils.log.analytics
 
 /**
  * Service that logs analytics events.

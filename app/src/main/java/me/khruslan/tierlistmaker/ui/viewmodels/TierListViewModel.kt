@@ -56,7 +56,7 @@ class TierListViewModel @Inject constructor(
     /**
      * Companion object of [TierListViewModel] used for storing [SavedStateHandle] keys.
      */
-    companion object {
+    private companion object {
         private const val KEY_TIER_LIST = "tierList"
     }
 

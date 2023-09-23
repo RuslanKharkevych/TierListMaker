@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doAfterTextChanged
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import me.khruslan.tierlistmaker.R
+import me.khruslan.tierlistmaker.utils.log.navigation.setLogTag
 import timber.log.Timber
 
 /**
@@ -25,6 +26,13 @@ import timber.log.Timber
  * @property params parameters constructed by [EnterTierListTitleDialog.Builder].
  */
 class EnterTierListTitleDialog private constructor(private val params: Params) {
+
+    /**
+     * Companion object of the [EnterTierListTitleDialog] used for storing constants.
+     */
+    private companion object {
+        private const val LOG_TAG = "EnterTierListTitleDialog"
+    }
 
     /**
      * Wrapped alert dialog instance.
@@ -76,6 +84,7 @@ class EnterTierListTitleDialog private constructor(private val params: Params) {
             .setOnKeyListener { _, keyCode, _ -> handleKeyCode(keyCode) }
             .setCancelable(false)
             .create()
+            .setLogTag(LOG_TAG)
     }
 
     /**

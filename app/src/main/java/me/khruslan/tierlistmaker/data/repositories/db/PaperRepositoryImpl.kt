@@ -23,7 +23,7 @@ class PaperRepositoryImpl @Inject constructor(
     /**
      * Companion object of [PaperRepositoryImpl] used for storing keys and other constants.
      */
-    companion object {
+    private companion object {
         private const val MAX_TRANSACTION_ATTEMPTS = 3
         private const val KEY_TIER_LISTS = "tier-lists"
     }

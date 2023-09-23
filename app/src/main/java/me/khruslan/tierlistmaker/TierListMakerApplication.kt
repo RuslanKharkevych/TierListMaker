@@ -7,7 +7,9 @@ import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
 import io.paperdb.Paper
-import me.khruslan.tierlistmaker.utils.log.ReleaseTree
+import me.khruslan.tierlistmaker.utils.log.navigation.ActivityLifecycleLogger
+import me.khruslan.tierlistmaker.utils.log.timber.DebugTimberTree
+import me.khruslan.tierlistmaker.utils.log.timber.ReleaseTimberTree
 import me.khruslan.tierlistmaker.utils.theme.ThemeManager
 import timber.log.Timber
 import javax.inject.Inject
@@ -43,6 +45,7 @@ class TierListMakerApplication : Application(), Configuration.Provider {
 
         configureStrictModePenaltyLogging()
         plantTimberTree()
+        registerActivityLifecycleCallbacks(ActivityLifecycleLogger())
         Paper.init(this)
         themeManager.setDefaultTheme()
     }
@@ -54,10 +57,16 @@ class TierListMakerApplication : Application(), Configuration.Provider {
             .build()
 
     /**
-     * Plants [Timber.DebugTree] for logging on debug build and reporting crashes on release builds.
+     * Plants [Timber.Tree] for logging on debug build and reporting crashes on release builds.
      */
     private fun plantTimberTree() {
-        Timber.plant(if (BuildConfig.DEBUG) Timber.DebugTree() else ReleaseTree(this))
+        Timber.plant(
+            if (BuildConfig.DEBUG) {
+                DebugTimberTree()
+            } else {
+                ReleaseTimberTree(this)
+            }
+        )
     }
 
     /**

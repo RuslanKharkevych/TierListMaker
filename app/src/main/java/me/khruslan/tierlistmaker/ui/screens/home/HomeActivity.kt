@@ -14,6 +14,7 @@ import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.databinding.ActivityHomeBinding
 import me.khruslan.tierlistmaker.ui.viewmodels.HomeViewModel
 import me.khruslan.tierlistmaker.utils.findNavHostFragmentById
+import me.khruslan.tierlistmaker.utils.log.navigation.FragmentNavigationLogger
 import me.khruslan.tierlistmaker.utils.view.AnimatorUtils
 import me.khruslan.tierlistmaker.utils.view.AnimatorUtils.addOnEndAction
 
@@ -30,7 +31,7 @@ class HomeActivity : AppCompatActivity() {
      * Companion object of [HomeActivity] that stores keys for saving and restoring view state and
      * other constants.
      */
-    companion object {
+    private companion object {
         private const val KEY_DRAWER_OPENED = "isDrawerOpened"
         private const val SPLASH_SCREEN_EXIT_ANIM_DURATION = 200L
     }
@@ -73,6 +74,7 @@ class HomeActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(navController.graph, binding.root)
         binding.navView.setupWithNavController(navController)
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+        navController.addOnDestinationChangedListener(FragmentNavigationLogger())
     }
 
     /**

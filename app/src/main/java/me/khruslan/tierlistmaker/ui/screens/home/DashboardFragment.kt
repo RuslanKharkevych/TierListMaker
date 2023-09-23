@@ -28,6 +28,7 @@ import me.khruslan.tierlistmaker.ui.screens.common.EnterTierListTitleDialog
 import me.khruslan.tierlistmaker.ui.screens.tierlist.TierListActivity
 import me.khruslan.tierlistmaker.ui.viewmodels.DashboardViewModel
 import me.khruslan.tierlistmaker.utils.enableReordering
+import me.khruslan.tierlistmaker.utils.log.navigation.setLogTag
 import me.khruslan.tierlistmaker.utils.view.FeedbackUtils
 import timber.log.Timber
 
@@ -56,6 +57,14 @@ class DashboardFragment : Fragment() {
         } catch (e: TierListResultException) {
             Timber.e(e, "Unable to get tier list result")
         }
+    }
+
+    /**
+     * Companion object of the [DashboardFragment] used for storing constants.
+     */
+    private companion object {
+        private const val REMOVE_TIER_LIST_CONFIRMATION_ALERT_LOG_TAG =
+            "RemoveTierListConfirmationAlert"
     }
 
     override fun onCreateView(
@@ -225,6 +234,7 @@ class DashboardFragment : Fragment() {
                 previewsAdapter.notifyItemChanged(tierListIndex)
             }
             .create()
+            .setLogTag(REMOVE_TIER_LIST_CONFIRMATION_ALERT_LOG_TAG)
             .show()
     }
 

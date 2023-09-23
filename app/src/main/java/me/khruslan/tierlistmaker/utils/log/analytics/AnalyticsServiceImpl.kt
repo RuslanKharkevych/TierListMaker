@@ -1,4 +1,4 @@
-package me.khruslan.tierlistmaker.utils.log
+package me.khruslan.tierlistmaker.utils.log.analytics
 
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent

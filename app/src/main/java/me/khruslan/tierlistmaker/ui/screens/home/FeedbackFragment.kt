@@ -19,7 +19,7 @@ class FeedbackFragment : PreferenceFragmentCompat() {
     /**
      * Companion object of [FeedbackFragment] used for storing constants.
      */
-    companion object {
+    private companion object {
         private const val APPLICATION_ID = BuildConfig.APPLICATION_ID
         private const val APP_DETAILS_PLAY_MARKET_URL = "market://details?id=$APPLICATION_ID"
         private const val APP_DETAILS_BROWSER_URL =

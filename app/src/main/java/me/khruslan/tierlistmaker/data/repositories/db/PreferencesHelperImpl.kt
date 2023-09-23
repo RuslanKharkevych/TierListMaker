@@ -20,7 +20,7 @@ class PreferencesHelperImpl @Inject constructor(
     /**
      * Companion object of [PreferencesHelperImpl] that stores preferences file name and keys.
      */
-    companion object {
+    private companion object {
         private const val KEY_NIGHT_MODE_ENABLED = "dark_mode_enabled"
     }
 

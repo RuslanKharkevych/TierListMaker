@@ -11,6 +11,7 @@ import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.databinding.ActivityTierListBinding
 import me.khruslan.tierlistmaker.utils.findNavHostFragmentById
 import me.khruslan.tierlistmaker.utils.getParcelableExtraCompat
+import me.khruslan.tierlistmaker.utils.log.navigation.FragmentNavigationLogger
 
 /**
  * [AppCompatActivity] that represents tier list task. Can be launched from the home task.
@@ -67,7 +68,8 @@ class TierListActivity : AppCompatActivity() {
      * Initializes navigation graph with [navGraphBundle].
      */
     private fun setNavigationGraph() {
-        val navHostFragment = findNavHostFragmentById(R.id.tier_list_content)
-        navHostFragment.navController.setGraph(R.navigation.tier_list_graph, navGraphBundle)
+        val navController = findNavHostFragmentById(R.id.tier_list_content).navController
+        navController.setGraph(R.navigation.tier_list_graph, navGraphBundle)
+        navController.addOnDestinationChangedListener(FragmentNavigationLogger())
     }
 }

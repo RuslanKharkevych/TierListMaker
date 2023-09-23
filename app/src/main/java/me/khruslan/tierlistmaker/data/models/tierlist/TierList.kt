@@ -25,7 +25,7 @@ data class TierList(
     /**
      * Companion object of [TierList] used for storing constants.
      */
-    companion object {
+    private companion object {
         private const val PREVIEW_IMAGES_COUNT = 3
     }
 

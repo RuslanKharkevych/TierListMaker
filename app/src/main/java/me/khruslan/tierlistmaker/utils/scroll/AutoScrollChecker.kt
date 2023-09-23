@@ -21,7 +21,7 @@ class AutoScrollChecker(context: Context, private val layoutManager: LinearLayou
     /**
      * Companion object of [AutoScrollChecker] used for storing constants.
      */
-    companion object {
+    private companion object {
         private const val AUTOSCROLL_REGION_HEIGHT_DP = 30f
     }
 
