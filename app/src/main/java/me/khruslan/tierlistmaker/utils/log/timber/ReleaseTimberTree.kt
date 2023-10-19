@@ -2,9 +2,9 @@ package me.khruslan.tierlistmaker.utils.log.timber
 
 import android.content.Context
 import android.util.Log
-import com.google.firebase.crashlytics.ktx.crashlytics
-import com.google.firebase.crashlytics.ktx.setCustomKeys
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.crashlytics.crashlytics
+import com.google.firebase.crashlytics.setCustomKeys
+import com.google.firebase.Firebase
 import me.khruslan.tierlistmaker.utils.ConfigUtils
 import me.khruslan.tierlistmaker.utils.log.CrashlyticsKeys
 import timber.log.Timber

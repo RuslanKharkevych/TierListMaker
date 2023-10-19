@@ -29,7 +29,8 @@ class PaperRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getTierLists(): MutableList<TierList>? {
-        return withContext(dispatcherProvider.io) {
+        Timber.i("Reading tier lists from database")
+        return withContext<MutableList<TierList>?>(dispatcherProvider.io) {
             executeTransaction(
                 transaction = {
                     Paper.book().read(KEY_TIER_LISTS, mutableListOf())
@@ -42,17 +43,25 @@ class PaperRepositoryImpl @Inject constructor(
                     )
                 }
             )
+        }.also { tierLists ->
+            Timber.i("Read tier lists from database: $tierLists")
         }
     }
 
     override suspend fun saveTierList(tierList: TierList): Boolean {
+        Timber.i("Saving tier list to database: $tierList")
         return withContext(dispatcherProvider.io) {
-            val tierLists = getTierLists() ?: return@withContext false
+            val tierLists = getTierLists() ?: run {
+                Timber.i("Unable to read tier lists, cancelling transaction")
+                return@withContext false
+            }
             val index = tierLists.indexOfFirst { it.id == tierList.id }
 
             if (index == -1) {
+                Timber.i("Adding new tier list at index ${tierLists.size}")
                 tierLists += tierList
             } else {
+                Timber.i("Replacing existing tier list at index $index")
                 tierLists[index] = tierList
             }
 
@@ -61,11 +70,16 @@ class PaperRepositoryImpl @Inject constructor(
     }
 
     override suspend fun removeTierListById(id: String): Boolean {
+        Timber.i("Removing tier list from database by id $id")
         return withContext(dispatcherProvider.io) {
-            val tierLists = getTierLists() ?: return@withContext false
+            val tierLists = getTierLists() ?: run {
+                Timber.i("Unable to read tier lists, cancelling transaction")
+                return@withContext false
+            }
             val tierList = tierLists.find { it.id == id }
 
             if (tierList != null) {
+                Timber.i("Removing tier list: $tierList")
                 tierLists.remove(tierList)
                 updateTierLists(tierLists, transactionTag = "removeTierListById($id)")
             } else {
@@ -90,6 +104,7 @@ class PaperRepositoryImpl @Inject constructor(
      * [MAX_TRANSACTION_ATTEMPTS] times.
      */
     private fun updateTierLists(tierLists: List<TierList>, transactionTag: String): Boolean {
+        Timber.i("Updating tier lists in database. Transaction tag: $transactionTag")
         val result = executeTransaction(
             transaction = {
                 Paper.book().write(KEY_TIER_LISTS, tierLists)
@@ -103,7 +118,9 @@ class PaperRepositoryImpl @Inject constructor(
             }
         )
 
-        return result != null
+        return (result != null).also { success ->
+            Timber.i("Finished update transaction. Success: $success")
+        }
     }
 
     /**

@@ -45,9 +45,20 @@ class TierListMakerApplication : Application(), Configuration.Provider {
 
         configureStrictModePenaltyLogging()
         plantTimberTree()
+        Timber.i("Application created")
         registerActivityLifecycleCallbacks(ActivityLifecycleLogger())
         Paper.init(this)
         themeManager.setDefaultTheme()
+    }
+
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+        Timber.i("The system is running low on memory: $level")
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        Timber.i("The system is running low on memory")
     }
 
     override fun getWorkManagerConfiguration() =

@@ -52,10 +52,6 @@ class DashboardViewModel @Inject constructor(
      */
     private lateinit var tierListPreviews: MutableList<TierList.Preview>
 
-    init {
-        loadTierListPreviews()
-    }
-
     private val _addPreviewEvent by lazy { LiveEvent<Int>() }
     private val _updatePreviewEvent by lazy { LiveEvent<Int>() }
     private val _listStateLiveData by lazy { MutableLiveData<ListState>() }
@@ -94,6 +90,10 @@ class DashboardViewModel @Inject constructor(
      * [LiveData] that notifies observers that the new tier list has been created.
      */
     val tierListCreatedEvent: LiveData<TierList> get() = _tierListCreatedEvent
+
+    init {
+        loadTierListPreviews()
+    }
 
     /**
      * Creates an empty [TierList] asynchronously and triggers [tierListCreatedEvent].

@@ -6,6 +6,7 @@ import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import me.khruslan.tierlistmaker.R
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -28,6 +29,18 @@ class PreferencesHelperImpl @Inject constructor(
      * Singleton instance of [SharedPreferences].
      */
     private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+
+    /**
+     * Shared preference change listener that logs all updates. It must be a class field (see
+     * the documentation of [SharedPreferences.registerOnSharedPreferenceChangeListener]).
+     */
+    private val listener = SharedPreferences.OnSharedPreferenceChangeListener { preferences, key ->
+        Timber.i("$key preference has changed. Updated preferences: ${preferences.all}")
+    }
+
+    init {
+        preferences.registerOnSharedPreferenceChangeListener(listener)
+    }
 
     override var nightModeEnabled
         get() = preferences.getBoolean(

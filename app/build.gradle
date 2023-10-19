@@ -63,15 +63,14 @@ dependencies {
     implementation 'androidx.core:core-splashscreen:1.0.1'
 
     // Google
-    //noinspection GradleDependency (https://github.com/material-components/material-components-android/issues/3191)
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'com.google.android.material:material:1.10.0'
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
     // Firebase
-    implementation platform('com.google.firebase:firebase-bom:32.3.1')
-    implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx'
-    implementation 'com.google.firebase:firebase-perf-ktx'
+    implementation platform('com.google.firebase:firebase-bom:32.4.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-perf'
 
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
@@ -108,7 +107,7 @@ dependencies {
     testImplementation 'androidx.test:core:1.5.0'
     testImplementation 'androidx.arch.core:core-testing:2.2.0'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3'
-    testImplementation 'io.mockk:mockk:1.13.7'
+    testImplementation 'io.mockk:mockk:1.13.8'
     testImplementation 'com.jraska.livedata:testing-ktx:1.3.0'
     testImplementation 'io.reactivex.rxjava2:rxjava:2.2.21' // Needed to mock Compressor
 }
