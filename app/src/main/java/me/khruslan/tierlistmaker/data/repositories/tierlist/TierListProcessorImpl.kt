@@ -5,6 +5,7 @@ import me.khruslan.tierlistmaker.data.models.drag.effects.*
 import me.khruslan.tierlistmaker.data.models.tierlist.*
 import me.khruslan.tierlistmaker.data.models.tierlist.image.ResourceImage
 import me.khruslan.tierlistmaker.utils.updateLast
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -29,11 +30,14 @@ class TierListProcessorImpl @Inject constructor(): TierListProcessor {
     }
 
     override fun processDragEffect(effect: DragEffect): TierListEvent {
+        Timber.i("Processing drag effect: $effect")
         return when (effect) {
             is HighlightEffect -> tierList.processHighlightEffect(effect)
             is InsertEffect -> tierList.processInsertEffect(effect)
             is RemoveEffect -> tierList.processRemoveEffect(effect)
             is UpdateEffect -> tierList.processUpdateEffect(effect)
+        }.also { event ->
+            Timber.i("Applied tier list event: $event. Tier list: $tierList")
         }
     }
 

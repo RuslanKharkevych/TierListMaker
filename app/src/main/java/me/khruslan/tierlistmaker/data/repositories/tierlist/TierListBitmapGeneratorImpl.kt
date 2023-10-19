@@ -21,6 +21,8 @@ import me.khruslan.tierlistmaker.data.repositories.db.PreferencesHelper
 import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProvider
 import me.khruslan.tierlistmaker.utils.TIER_IMAGE_WIDTH_FRACTION
 import me.khruslan.tierlistmaker.utils.displayWidthPixels
+import me.shouheng.compress.utils.size
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.math.max
 
@@ -70,6 +72,7 @@ class TierListBitmapGeneratorImpl @Inject constructor(
     }
 
     override suspend fun generate(tierList: TierList): Bitmap {
+        Timber.i("Generating bitmap from the tier list: $tierList")
         return withContext(dispatcherProvider.io) {
             val nightModeEnabled = preferencesHelper.nightModeEnabled
             val bitmap = createBackgroundBitmap(tierList)
@@ -107,6 +110,7 @@ class TierListBitmapGeneratorImpl @Inject constructor(
                 }
             }
 
+            Timber.i("Generated bitmap. Size: ${bitmap.size()} bytes")
             bitmap
         }
     }
