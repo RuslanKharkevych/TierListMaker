@@ -38,16 +38,20 @@ class FileManagerImpl @Inject constructor(
     }
 
     override suspend fun createImageFileFromUri(uri: Uri): File? {
+        Timber.i("Creating image file from $uri")
         return try {
             val directory = getPicturesDirectory()
             imageCompressor.compress(uri, directory.path)
         } catch (e: Exception) {
             Timber.e(e, "I/O error")
             null
+        }.also { file ->
+            Timber.i("Created image file: $file")
         }
     }
 
     override suspend fun provideContentUriFromBitmap(bitmap: Bitmap, fileName: String): Uri? {
+        Timber.i("Providing content Uri for file $fileName")
         return withContext(dispatcherProvider.io) {
             val cacheDirPath = context.cacheDir.path
             val file = File("$cacheDirPath/$fileName")
@@ -58,6 +62,8 @@ class FileManagerImpl @Inject constructor(
             } catch (e: FileManagerException) {
                 Timber.e(e, "I/O error")
                 null
+            }.also { uri ->
+                Timber.i("Provided content Uri: $uri")
             }
         }
     }
