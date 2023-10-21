@@ -153,6 +153,7 @@ abstract class TierListDragListener : View.OnDragListener {
      * @param event the event to handle (should always be [DragEvent.ACTION_DRAG_ENDED]).
      */
     private fun handleDragEndedAction(event: DragEvent) {
+        if (dragState == DragState.Idle) return
         checkLocalStatePreconditions(event)
         dragState = DragState.Idle
         if (!event.result) onDragEnded()
