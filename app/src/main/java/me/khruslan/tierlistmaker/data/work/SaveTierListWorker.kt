@@ -8,6 +8,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.data.repositories.db.PaperRepository
+import timber.log.Timber
 
 /**
  * [CoroutineWorker] implementation that saves tier list in local storage.
@@ -28,8 +29,14 @@ class SaveTierListWorker @AssistedInject constructor(
 ) : CoroutineWorker(appContext, workerParams) {
 
     override suspend fun doWork(): Result {
-        val tierList = argsProvider.tierList ?: return Result.failure()
+        Timber.i("Enqueued save tier list work")
+        val tierList = argsProvider.tierList ?: run {
+            Timber.i("Couldn't get arguments, cancelling save tier list work")
+            return Result.failure()
+        }
+
         val result = paperRepository.saveTierList(tierList)
+        Timber.i("Save tier list work completed. Success: $result")
         return if (result) Result.success() else Result.failure()
     }
 }

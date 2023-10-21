@@ -7,6 +7,7 @@ import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.khruslan.tierlistmaker.data.repositories.db.PaperRepository
+import timber.log.Timber
 
 /**
  * [CoroutineWorker] implementation that updates tier lists in local storage. In order to pass
@@ -26,8 +27,14 @@ class UpdateTierListsWorker @AssistedInject constructor(
 ) : CoroutineWorker(appContext, workerParams) {
 
     override suspend fun doWork(): Result {
-        val tierLists = argsProvider.tierLists ?: return Result.failure()
+        Timber.i("Enqueued update tier lists work")
+        val tierLists = argsProvider.tierLists ?: run {
+            Timber.i("Couldn't get arguments, cancelling update tier lists work")
+            return Result.failure()
+        }
+
         val result = paperRepository.updateTierLists(tierLists)
+        Timber.i("Update tier lists work completed. Success: $result")
         return if (result) Result.success() else Result.failure()
     }
 }
