@@ -13,6 +13,7 @@ import me.khruslan.tierlistmaker.BuildConfig
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.utils.capitalized
 import me.khruslan.tierlistmaker.utils.log.navigation.setLogTag
+import timber.log.Timber
 
 /**
  * Utility that provides user interface for sending feedback.
@@ -32,12 +33,14 @@ object FeedbackUtils {
      */
     fun reportIssue(context: Context) {
         try {
+            Timber.i("Launching report issue intent")
             launchSendEmailIntent(
                 context = context,
                 subject = context.getString(R.string.bug_report_email_subject),
                 message = buildBugReportInfo(context)
             )
         } catch (_: ActivityNotFoundException) {
+            Timber.i("Activity not found, showing Send Us Email alert")
             showSendUsEmailAlert(context)
         }
     }
@@ -51,11 +54,13 @@ object FeedbackUtils {
      */
     fun sendFeedback(context: Context) {
         try {
+            Timber.i("Launching send feedback intent")
             launchSendEmailIntent(
                 context = context,
                 subject = context.getString(R.string.send_feedback_email_subject)
             )
         } catch (_: ActivityNotFoundException) {
+            Timber.i("Activity not found, showing Send Us Email alert")
             showSendUsEmailAlert(context)
         }
     }
@@ -77,6 +82,7 @@ object FeedbackUtils {
         }
 
         context.startActivity(intent)
+        Timber.i("Started activity with intent: $intent")
     }
 
     /**
@@ -121,6 +127,7 @@ object FeedbackUtils {
             .setTitle(context.getString(R.string.send_us_email_alert_title, RECIPIENT_EMAIL))
             .setPositiveButton(R.string.btn_copy_email) { _, _ ->
                 copyTextToClipboard(context, RECIPIENT_EMAIL)
+                Timber.i("Copied email to clipboard")
             }
             .setNegativeButton(R.string.btn_cancel, null)
             .create()

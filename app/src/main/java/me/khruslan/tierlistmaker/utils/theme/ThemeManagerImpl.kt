@@ -6,6 +6,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import me.khruslan.tierlistmaker.data.repositories.db.PreferencesHelper
 import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProvider
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -33,6 +34,7 @@ class ThemeManagerImpl @Inject constructor(
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )
+        Timber.i("Applied theme. Night mode: $nightModeEnabled")
     }
 
     override fun setDefaultTheme() {
@@ -40,6 +42,7 @@ class ThemeManagerImpl @Inject constructor(
     }
 
     override suspend fun toggleTheme() {
+        Timber.i("Changing theme")
         withContext(dispatcherProvider.io) {
             val nightModeEnabled = preferencesHelper.nightModeEnabled
             withContext(dispatcherProvider.main) {

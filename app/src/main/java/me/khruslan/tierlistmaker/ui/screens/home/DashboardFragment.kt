@@ -52,10 +52,11 @@ class DashboardFragment : Fragment() {
      * Used to launch [TierListActivity] and obtain the created or updated [TierList] as a result.
      */
     private val tierListLauncher = registerForActivityResult(TierListResultContract()) { result ->
+        Timber.i("Handling tier list result: $result")
         try {
             viewModel.handleTierListResult(result)
         } catch (e: TierListResultException) {
-            Timber.e(e, "Unable to get tier list result")
+            Timber.e(e, "Unable to parse tier list result")
         }
     }
 
@@ -99,6 +100,7 @@ class DashboardFragment : Fragment() {
      */
     private fun initAddNewListButton() {
         binding.btnAddNewList.setOnClickListener {
+            Timber.i("Add new list button clicked")
             showEnterTierListTitleDialog()
         }
     }
@@ -108,6 +110,7 @@ class DashboardFragment : Fragment() {
      */
     private fun initReportIssueButton() {
         binding.groupError.btnReport.setOnClickListener {
+            Timber.i("Report the issue button clicked")
             FeedbackUtils.reportIssue(requireActivity())
         }
     }
@@ -132,12 +135,15 @@ class DashboardFragment : Fragment() {
         previewsAdapter = TierListPreviewAdapter(
             tierListPreviews = previews,
             onClick = { position ->
+                Timber.i("Clicked on tier list at position $position")
                 tierListLauncher.launch(viewModel.getTierListByPosition(position))
             },
             onTierListMoved = { from, to ->
+                Timber.i("Moved tier list from position $from to $to")
                 viewModel.swapTierLists(from, to)
             },
             onTierListSwiped = { index ->
+                Timber.i("Swiped tier list at position $index")
                 showRemoveTierListConfirmationAlert(index)
             }
         )
@@ -154,6 +160,7 @@ class DashboardFragment : Fragment() {
      * inserted and scrolls to it.
      */
     private val addPreviewObserver = Observer<Int> { position ->
+        Timber.i("Inserted tier list at position $position")
         previewsAdapter.notifyItemInserted(position)
         binding.listTierLists.smoothScrollToPosition(position)
     }
@@ -163,6 +170,7 @@ class DashboardFragment : Fragment() {
      * updated
      */
     private val updatePreviewsObserver = Observer<Int> { position ->
+        Timber.i("Updated tier list at position $position")
         previewsAdapter.notifyItemChanged(position)
     }
 
@@ -171,6 +179,7 @@ class DashboardFragment : Fragment() {
      * **error** and **empty** view groups.
      */
     private val listStateObserver = Observer<ListState> { state ->
+        Timber.i("Observed list state: $state")
         with(binding) {
             groupLoading.root.isVisible = state == ListState.Loading
             groupEmpty.root.isVisible = state == ListState.Empty
@@ -184,6 +193,7 @@ class DashboardFragment : Fragment() {
      * @see presentErrorSnackbar
      */
     private val errorObserver = Observer<Int> { errorMessageResId ->
+        Timber.i("Presenting error snackbar")
         presentErrorSnackbar(errorMessageResId)
     }
 
@@ -191,6 +201,7 @@ class DashboardFragment : Fragment() {
      * Observer for the created tier list event. Launches [tierListLauncher].
      */
     private val tierListCreatedObserver = Observer<TierList> { tierList ->
+        Timber.i("Starting tier list activity for result. Tier list: $tierList")
         tierListLauncher.launch(tierList)
     }
 
@@ -204,6 +215,7 @@ class DashboardFragment : Fragment() {
             .make(binding.root, textResId, Snackbar.LENGTH_INDEFINITE)
             .setAnchorView(binding.btnAddNewList)
             .setAction(R.string.btn_refresh) {
+                Timber.i("Refresh button pressed")
                 viewModel.refreshPreviews()
                 TransitionManager.beginDelayedTransition(binding.root)
             }
@@ -224,13 +236,16 @@ class DashboardFragment : Fragment() {
         MaterialAlertDialogBuilder(requireActivity())
             .setTitle(alertTitle)
             .setPositiveButton(R.string.btn_yes) { _, _ ->
+                Timber.i("Confirmed removing the tier list")
                 previewsAdapter.removePreview(tierListIndex)
                 viewModel.removeTierList(tierListIndex)
             }
             .setNegativeButton(R.string.btn_no) { _, _ ->
+                Timber.i("Declined removing the tier list")
                 previewsAdapter.notifyItemChanged(tierListIndex)
             }
             .setOnCancelListener {
+                Timber.i("Canceled removing the tier list")
                 previewsAdapter.notifyItemChanged(tierListIndex)
             }
             .create()

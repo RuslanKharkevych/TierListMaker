@@ -10,6 +10,7 @@ import me.khruslan.tierlistmaker.BuildConfig
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.utils.view.FeedbackUtils
 import me.khruslan.tierlistmaker.utils.view.setOnPreferenceClickListener
+import timber.log.Timber
 
 /**
  * [PreferenceFragmentCompat] that represents "Feedback" section in the navigation drawer.
@@ -35,9 +36,18 @@ class FeedbackFragment : PreferenceFragmentCompat() {
      * Initializes click listeners for preferences: "Contact us", "Report bug" and "Rate app".
      */
     private fun initClickListeners() {
-        setOnPreferenceClickListener(R.string.pref_contact_us_key) { sendFeedback() }
-        setOnPreferenceClickListener(R.string.pref_report_bug_key) { reportBug() }
-        setOnPreferenceClickListener(R.string.pref_rate_app_key) { rateApp() }
+        setOnPreferenceClickListener(R.string.pref_contact_us_key) {
+            Timber.i("Contact us button clicked")
+            sendFeedback()
+        }
+        setOnPreferenceClickListener(R.string.pref_report_bug_key) {
+            Timber.i("Report bug button clicked")
+            reportBug()
+        }
+        setOnPreferenceClickListener(R.string.pref_rate_app_key) {
+            Timber.i("Rate app button clicked")
+            rateApp()
+        }
     }
 
     /**
@@ -61,11 +71,14 @@ class FeedbackFragment : PreferenceFragmentCompat() {
      */
     private fun rateApp() {
         try {
+            Timber.i("Opening the application in Play Market")
             openUrl(APP_DETAILS_PLAY_MARKET_URL)
         } catch (_: ActivityNotFoundException) {
             try {
+                Timber.i("Activity not found. Opening the application in browser")
                 openUrl(APP_DETAILS_BROWSER_URL)
             } catch (_: ActivityNotFoundException) {
+                Timber.i("Activity not found. Presenting no apps found snackbar")
                 presentNoAppsFoundSnackbar()
             }
         }
@@ -80,6 +93,7 @@ class FeedbackFragment : PreferenceFragmentCompat() {
     private fun openUrl(url: String) {
         val intent = Intent(Intent.ACTION_VIEW, url.toUri())
         startActivity(intent)
+        Timber.i("Started activity with intent: $intent")
     }
 
     /**

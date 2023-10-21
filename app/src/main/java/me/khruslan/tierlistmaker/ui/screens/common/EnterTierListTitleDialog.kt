@@ -80,7 +80,9 @@ class EnterTierListTitleDialog private constructor(private val params: Params) {
             .setTitle(params.getDialogTitle(context))
             .setView(R.layout.view_tier_list_title_input)
             .setPositiveButton(R.string.btn_confirm) { _, _ -> confirmInput() }
-            .setNegativeButton(R.string.btn_cancel, null)
+            .setNegativeButton(R.string.btn_cancel) { _, _ ->
+                Timber.i("Cancelled tier list title input")
+            }
             .setOnKeyListener { _, keyCode, _ -> handleKeyCode(keyCode) }
             .setCancelable(false)
             .create()
@@ -128,6 +130,7 @@ class EnterTierListTitleDialog private constructor(private val params: Params) {
      * a new tier list name.
      */
     private fun confirmInput() {
+        Timber.i("Confirmed tier list title input: $editTextInput")
         params.onConfirmListener?.onConfirm(editTextInput)
     }
 

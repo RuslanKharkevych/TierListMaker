@@ -59,6 +59,7 @@ import me.khruslan.tierlistmaker.utils.drag.TierListDragListener
 import me.khruslan.tierlistmaker.utils.enableReordering
 import me.khruslan.tierlistmaker.utils.scroll.AutoScrollManager
 import me.khruslan.tierlistmaker.utils.view.TierListBottomBarBinder
+import timber.log.Timber
 
 /**
  * [Fragment] that represents a tier list.
@@ -96,20 +97,24 @@ class TierListFragment : Fragment() {
      */
     private val dragListener = object : TierListDragListener() {
         override fun onDragStarted(dragData: ImageDragData) {
+            Timber.i("Invoked onDragStarted event. Drag data: $dragData")
             viewModel.startDrag(dragData)
         }
 
         override fun onDragLocationChanged(dragLocation: DragLocation?) {
+            Timber.i("Invoked onDragLocationChanged event. Drag location: $dragLocation")
             viewModel.updateDragTarget(dragLocation?.target)
             autoScrollManager.updateDragLocation(dragLocation)
         }
 
         override fun onDrop(dragData: ImageDragData) {
+            Timber.i("Invoked onDrop event. Drag data: $dragData")
             viewModel.dropImage(dragData)
             autoScrollManager.stopScrolling()
         }
 
         override fun onDragEnded() {
+            Timber.i("Invoked onDragEnded event")
             viewModel.restoreReleasedImage()
             autoScrollManager.stopScrolling()
         }
@@ -145,6 +150,7 @@ class TierListFragment : Fragment() {
      */
     private val imagePickerLauncher =
         registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { imageUris ->
+            Timber.i("Received image picker result. Images: $imageUris")
             viewModel.saveImages(imageUris)
         }
 
@@ -266,6 +272,7 @@ class TierListFragment : Fragment() {
             imageSize = imageSize,
             onTierRemoved = { tier ->
                 viewModel.insertImagesToBacklog(tier.images)
+                viewModel.updateTierStyles()
             }
         )
         tiersAdapter.registerAdapterDataObserver(tiersDataObserver)
@@ -316,11 +323,13 @@ class TierListFragment : Fragment() {
             setOnDragListener(dragListener)
 
             setNavigationOnClickListener {
+                Timber.i("Back button clicked")
                 setTierListResultAndFinishActivity()
             }
 
             setOnMenuItemClickListener { item ->
                 if (item.itemId == R.id.item_rename_tier_list) {
+                    Timber.i("Rename tier list button clicked")
                     showEnterTierListTitleDialog()
                     true
                 } else {
@@ -336,12 +345,30 @@ class TierListFragment : Fragment() {
     private fun initBottomBar() {
         with(binding.groupBottomBar) {
             bottomBarBinder = TierListBottomBarBinder(this, viewModel.tierList)
-            btnZoomIn.setOnClickListener { viewModel.zoomIn() }
-            btnZoomOut.setOnClickListener { viewModel.zoomOut() }
-            btnAddNewTier.setOnClickListener { viewModel.addNewTier() }
-            btnAddNewImage.setOnClickListener { launchImagePicker() }
-            btnView.setOnClickListener { viewModel.viewTierList() }
-            btnShare.setOnClickListener { viewModel.shareTierList() }
+            btnZoomIn.setOnClickListener {
+                Timber.i("Zoom in button clicked")
+                viewModel.zoomIn()
+            }
+            btnZoomOut.setOnClickListener {
+                Timber.i("Zoom out button clicked")
+                viewModel.zoomOut()
+            }
+            btnAddNewTier.setOnClickListener {
+                Timber.i("Add new tier button clicked")
+                viewModel.addNewTier()
+            }
+            btnAddNewImage.setOnClickListener {
+                Timber.i("Add new image button clicked")
+                launchImagePicker()
+            }
+            btnView.setOnClickListener {
+                Timber.i("View button clicked")
+                viewModel.viewTierList()
+            }
+            btnShare.setOnClickListener {
+                Timber.i("Share button clicked")
+                viewModel.shareTierList()
+            }
         }
     }
 
@@ -351,8 +378,10 @@ class TierListFragment : Fragment() {
      */
     private fun launchImagePicker() {
         try {
+            Timber.i("Launching image picker")
             imagePickerLauncher.launch(FileManager.MIME_TYPE_IMAGE)
-        } catch (e: ActivityNotFoundException) {
+        } catch (_: ActivityNotFoundException) {
+            Timber.i("Activity not found, presenting error snackbar")
             presentTierListErrorSnackbar(R.string.snackbar_msg_no_image_picker_apps_found)
         }
     }
@@ -469,10 +498,12 @@ class TierListFragment : Fragment() {
      * to restore removed image.
      */
     private fun presentImageRemovedSnackbar() {
+        Timber.i("Presenting image removed snackbar")
         Snackbar
             .make(binding.root, R.string.snackbar_msg_image_removed, Snackbar.LENGTH_LONG)
             .setAnchorView(R.id.group_bottom_bar)
             .setAction(R.string.snackbar_action_restore) {
+                Timber.i("Restore button clicked")
                 viewModel.restoreReleasedImage()
             }
             .show()

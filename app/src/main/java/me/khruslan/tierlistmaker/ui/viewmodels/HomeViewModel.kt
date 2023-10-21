@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import me.khruslan.tierlistmaker.ui.screens.home.HomeActivity
 import me.khruslan.tierlistmaker.utils.theme.ThemeManager
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -15,6 +16,14 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val themeManager: ThemeManager) : ViewModel() {
+
+    init {
+        Timber.i("HomeViewModel initialized")
+    }
+
+    override fun onCleared() {
+        Timber.i("HomeViewModel cleared")
+    }
 
     /**
      * Toggles light/dark theme. Applies changes and saves user preference.

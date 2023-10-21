@@ -14,9 +14,11 @@ import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.databinding.ActivityHomeBinding
 import me.khruslan.tierlistmaker.ui.viewmodels.HomeViewModel
 import me.khruslan.tierlistmaker.utils.findNavHostFragmentById
+import me.khruslan.tierlistmaker.utils.log.navigation.DrawerStateLogger
 import me.khruslan.tierlistmaker.utils.log.navigation.FragmentNavigationLogger
 import me.khruslan.tierlistmaker.utils.view.AnimatorUtils
 import me.khruslan.tierlistmaker.utils.view.AnimatorUtils.addOnEndAction
+import timber.log.Timber
 
 /**
  * [AppCompatActivity] that represents home task. Is a launch activity.
@@ -75,6 +77,7 @@ class HomeActivity : AppCompatActivity() {
         binding.navView.setupWithNavController(navController)
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         navController.addOnDestinationChangedListener(FragmentNavigationLogger())
+        binding.root.addDrawerListener(DrawerStateLogger())
     }
 
     /**
@@ -85,6 +88,7 @@ class HomeActivity : AppCompatActivity() {
         val navHeaderView = binding.navView.getHeaderView(0)
         val btnTheme: ImageButton = navHeaderView.findViewById(R.id.btn_theme)
         btnTheme.setOnClickListener {
+            Timber.i("Theme toggle button clicked")
             viewModel.toggleTheme()
         }
     }
@@ -97,7 +101,10 @@ class HomeActivity : AppCompatActivity() {
             AnimatorUtils
                 .createCircularConceal(splashScreenViewProvider.view)
                 .setDuration(SPLASH_SCREEN_EXIT_ANIM_DURATION)
-                .addOnEndAction { splashScreenViewProvider.remove() }
+                .addOnEndAction {
+                    splashScreenViewProvider.remove()
+                    Timber.i("Splash screen animation finished")
+                }
                 .start()
         }
     }

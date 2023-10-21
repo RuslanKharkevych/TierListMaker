@@ -23,6 +23,7 @@ import me.khruslan.tierlistmaker.ui.models.ListState
 import me.khruslan.tierlistmaker.ui.navigation.TierListResultException
 import me.khruslan.tierlistmaker.ui.screens.home.DashboardFragment
 import me.khruslan.tierlistmaker.utils.swap
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -92,7 +93,12 @@ class DashboardViewModel @Inject constructor(
     val tierListCreatedEvent: LiveData<TierList> get() = _tierListCreatedEvent
 
     init {
+        Timber.i("DashboardViewModel initialized")
         loadTierListPreviews()
+    }
+
+    override fun onCleared() {
+        Timber.i("DashboardViewModel cleared")
     }
 
     /**
@@ -101,9 +107,11 @@ class DashboardViewModel @Inject constructor(
      * @param title name of the tier list.
      */
     fun createNewTierList(title: String) {
+        Timber.i("Creating new tier list with title: $title")
         viewModelScope.launch {
             val tierList = tierListCreator.newTierList(title)
             _tierListCreatedEvent.value = tierList
+            Timber.i("Created new tier list: $tierList")
         }
     }
 
@@ -136,11 +144,14 @@ class DashboardViewModel @Inject constructor(
                 tierListPreviews += tierList.preview
                 _listStateLiveData.postValue(ListState.Filled)
                 _addPreviewEvent.postValue(tierListPreviews.lastIndex)
+                Timber.i("Added new tier list: $tierList")
             } else {
                 tierLists[index] = tierList
                 tierListPreviews[index] = tierList.preview
                 _updatePreviewEvent.postValue(index)
+                Timber.i("Updated tier list at index $index: $tierList")
             }
+            Timber.i("Updated tier lists: $tierLists")
         }
     }
 
@@ -187,10 +198,12 @@ class DashboardViewModel @Inject constructor(
      * [tierListPreviewsLiveData].
      */
     private fun loadTierListPreviews() {
+        Timber.i("Loading tier list previews")
         viewModelScope.launch {
             tierLists = loadTierLists()
             tierListPreviews = tierLists.map { it.preview }.toMutableList()
             _tierListPreviewsLiveData.value = tierListPreviews
+            Timber.i("Loaded tier list previews: $tierListPreviews")
         }
     }
 
@@ -211,6 +224,8 @@ class DashboardViewModel @Inject constructor(
      */
     fun swapTierLists(firstIndex: Int, secondIndex: Int) {
         tierLists.swap(firstIndex, secondIndex)
+        Timber.i("Swapped tier lists at indices $firstIndex and $secondIndex")
+        Timber.i("Updated tier lists: $tierLists")
     }
 
     /**
@@ -219,9 +234,11 @@ class DashboardViewModel @Inject constructor(
      * @param index position of the tier list to remove.
      */
     fun removeTierList(index: Int) {
+        Timber.i("Removing tier list at position $index")
         viewModelScope.launch {
             val tierList = tierLists[index]
             tierLists.remove(tierList)
+            Timber.i("Updated tier lists: $tierList")
             if (tierLists.isEmpty()) _listStateLiveData.value = ListState.Empty
 
             val result = paperRepository.removeTierListById(tierList.id)

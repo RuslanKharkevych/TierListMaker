@@ -27,6 +27,7 @@ import me.khruslan.tierlistmaker.ui.models.LoadingProgress
 import me.khruslan.tierlistmaker.ui.screens.tierlist.TierListFragment
 import me.khruslan.tierlistmaker.utils.displayWidthPixels
 import me.khruslan.tierlistmaker.utils.drag.DragPocket
+import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
@@ -100,8 +101,13 @@ class TierListViewModel @Inject constructor(
     val imageSize get() = displayWidth / tierList.zoomValue
 
     init {
+        Timber.i("TierListViewModel initialized")
         tierListProcessor.setTierList(tierList)
-        launchUpdateTierStylesJob()
+        updateTierStyles()
+    }
+
+    override fun onCleared() {
+        Timber.i("TierListViewModel cleared")
     }
 
     /**
@@ -110,6 +116,7 @@ class TierListViewModel @Inject constructor(
     fun zoomIn() {
         tierList.zoomValue--
         _tierListEvent.value = ImageSizeUpdated(imageSize)
+        Timber.i("Zoom value decreased to ${tierList.zoomValue}")
     }
 
     /**
@@ -118,6 +125,7 @@ class TierListViewModel @Inject constructor(
     fun zoomOut() {
         tierList.zoomValue++
         _tierListEvent.value = ImageSizeUpdated(imageSize)
+        Timber.i("Zoom value increased to ${tierList.zoomValue}")
     }
 
     /**
@@ -218,9 +226,19 @@ class TierListViewModel @Inject constructor(
      * Also updates style of all tiers.
      */
     fun addNewTier() {
+        Timber.i("Adding new tier")
         updateTierListStylesJob?.cancel()
         tierList.tiers += Tier()
         _tierListEvent.value = TierInserted(tierList.tiers.lastIndex)
+        updateTierStyles()
+        Timber.i("Added new tier. Updated tier list: $tierList")
+    }
+
+    /**
+     * Launches and assigns a job created by [launchUpdateTierStylesJob] to
+     * [updateTierListStylesJob].
+     */
+    fun updateTierStyles() {
         updateTierListStylesJob = launchUpdateTierStylesJob()
     }
 
@@ -236,6 +254,7 @@ class TierListViewModel @Inject constructor(
                 tier.style = styles[index]
             }
             _tierListEvent.postValue(TierListChanged)
+            Timber.i("Updated tier styles: $styles")
         }
     }
 
@@ -308,6 +327,8 @@ class TierListViewModel @Inject constructor(
      * @param images images to insert.
      */
     fun insertImagesToBacklog(images: List<Image>) {
+        if (images.isEmpty()) return
+        Timber.i("Inserting images to backlog: $images")
         tierList.backlogImages.addAll(0, images)
         _tierListEvent.value = BacklogImagesAdded
     }

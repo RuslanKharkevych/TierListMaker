@@ -10,6 +10,7 @@ import me.khruslan.tierlistmaker.databinding.ItemTierBinding
 import me.khruslan.tierlistmaker.ui.adapters.reorderable.Reorderable
 import me.khruslan.tierlistmaker.ui.holders.TierHolder
 import me.khruslan.tierlistmaker.utils.swap
+import timber.log.Timber
 
 /**
  * [RecyclerView.Adapter] implementation used for managing tiers in the tier list.
@@ -42,17 +43,21 @@ class TierAdapter(
     override fun getItemCount() = tiers.size
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
+        Timber.i("Swapped tiers at indices $fromPosition and $toPosition")
         tiers.swap(fromPosition, toPosition)
         swapTierStyles(fromPosition, toPosition)
         notifyItemMoved(fromPosition, toPosition)
         notifyItemRangeChanged(0, tiers.size, Unit)
+        Timber.i("Updated tiers: $tiers")
     }
 
     override fun onItemSwiped(position: Int) {
+        Timber.i("Tier removed by user at position $position")
         val tier = tiers[position]
         tiers.remove(tier)
         notifyItemRemoved(position)
         notifyItemRangeChanged(0, tiers.size, Unit)
+        Timber.i("Updated tiers: $tiers")
         onTierRemoved(tier)
     }
 
