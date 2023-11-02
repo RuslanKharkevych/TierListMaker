@@ -12,7 +12,7 @@ import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.databinding.ActivityHomeBinding
-import me.khruslan.tierlistmaker.ui.viewmodels.HomeViewModel
+import me.khruslan.tierlistmaker.ui.viewmodels.HomeActivityViewModel
 import me.khruslan.tierlistmaker.utils.findNavHostFragmentById
 import me.khruslan.tierlistmaker.utils.log.navigation.DrawerStateLogger
 import me.khruslan.tierlistmaker.utils.log.navigation.FragmentNavigationLogger
@@ -27,7 +27,7 @@ import timber.log.Timber
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
-    private val viewModel: HomeViewModel by viewModels()
+    private val viewModel: HomeActivityViewModel by viewModels()
 
     /**
      * Companion object of [HomeActivity] that stores keys for saving and restoring view state and

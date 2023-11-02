@@ -2,18 +2,9 @@ package me.khruslan.tierlistmaker.tests.ui.viewmodels
 
 import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
 import com.jraska.livedata.test
 import io.mockk.MockKAnnotations
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
-import io.mockk.mockk
-import io.mockk.mockkObject
-import io.mockk.mockkStatic
-import io.mockk.unmockkObject
-import io.mockk.unmockkStatic
-import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -22,16 +13,15 @@ import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.models.tierlist.Tier
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
-import me.khruslan.tierlistmaker.data.work.UpdateTierListsWorker
 import me.khruslan.tierlistmaker.fakes.data.repositories.db.FakePaperRepository
 import me.khruslan.tierlistmaker.fakes.data.repositories.dispatchers.FakeDispatcherProvider
 import me.khruslan.tierlistmaker.fakes.data.repositories.tierlist.FakeTierListCreator
-import me.khruslan.tierlistmaker.fakes.data.work.FakeUpdateTierListsArgsProvider
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
 import me.khruslan.tierlistmaker.ui.models.ListState
 import me.khruslan.tierlistmaker.ui.navigation.TierListResultException
 import me.khruslan.tierlistmaker.ui.viewmodels.DashboardViewModel
 import me.khruslan.tierlistmaker.utils.awaitValue
+import me.khruslan.tierlistmaker.utils.swap
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
@@ -52,7 +42,6 @@ class DashboardViewModelTest {
     private lateinit var mockApplication: Application
 
     private lateinit var fakePaperRepository: FakePaperRepository
-    private lateinit var fakeUpdateTierListsArgsProvider: FakeUpdateTierListsArgsProvider
     private lateinit var fakeTierListCreator: FakeTierListCreator
     private lateinit var viewModel: DashboardViewModel
 
@@ -60,7 +49,6 @@ class DashboardViewModelTest {
     fun init() {
         MockKAnnotations.init(this)
         fakePaperRepository = FakePaperRepository()
-        fakeUpdateTierListsArgsProvider = FakeUpdateTierListsArgsProvider()
         fakeTierListCreator = FakeTierListCreator()
     }
 
@@ -69,7 +57,6 @@ class DashboardViewModelTest {
             application = mockApplication,
             paperRepository = fakePaperRepository,
             dispatcherProvider = FakeDispatcherProvider(),
-            updateTierListsArgsProvider = fakeUpdateTierListsArgsProvider,
             tierListCreator = fakeTierListCreator
         )
 
@@ -327,13 +314,38 @@ class DashboardViewModelTest {
     }
 
     @Test
-    fun `Swaps tier lists`() = runTest {
+    fun `Swaps tier lists and successfully updates them in the database`() = runTest {
         fakePaperRepository.tierLists = tierLists
         initViewModel()
-        viewModel.swapTierLists(0, 1)
 
+        val errorObserver = viewModel.errorEvent.test()
+        viewModel.swapTierLists(0, 1)
+        advanceUntilIdle()
+
+        val expectedTierLists = tierLists.apply { swap(0, 1) }
+        val actualTierLists = checkNotNull(fakePaperRepository.tierLists)
+        assertEquals(expectedTierLists, actualTierLists)
         assertEquals(tierLists[0], viewModel.getTierListByPosition(1))
         assertEquals(tierLists[1], viewModel.getTierListByPosition(0))
+        errorObserver.assertNoValue()
+    }
+
+    @Test
+    fun `Swaps tier lists and shows error if unable to update them in the database`() = runTest {
+        fakePaperRepository.tierLists = tierLists
+        fakePaperRepository.shouldUpdateSuccessfully = false
+        initViewModel()
+
+        val errorObserver = viewModel.errorEvent.test()
+        viewModel.swapTierLists(0, 1)
+        advanceUntilIdle()
+
+        val expectedTierLists = tierLists
+        val actualTierLists = checkNotNull(fakePaperRepository.tierLists)
+        assertEquals(expectedTierLists, actualTierLists)
+        assertEquals(tierLists[0], viewModel.getTierListByPosition(1))
+        assertEquals(tierLists[1], viewModel.getTierListByPosition(0))
+        errorObserver.awaitValue(R.string.update_tier_lists_error_message)
     }
 
     @Test
@@ -384,25 +396,5 @@ class DashboardViewModelTest {
         val actualTierLists = checkNotNull(fakePaperRepository.tierLists)
         assertTrue(tierList in actualTierLists)
         errorObserver.awaitValue(R.string.remove_tier_list_error_message)
-    }
-
-    @Test
-    fun `Enqueues work to update tier lists`() = runTest {
-        mockkObject(OneTimeWorkRequest)
-        mockkStatic(WorkManager::class)
-        val mockWorkRequest: OneTimeWorkRequest = mockk()
-        val mockWorkManager: WorkManager = mockk()
-        every { OneTimeWorkRequest.from(UpdateTierListsWorker::class.java) } returns mockWorkRequest
-        every { WorkManager.getInstance(mockApplication) } returns mockWorkManager
-        every { mockWorkManager.enqueue(mockWorkRequest) } returns mockk()
-
-        fakePaperRepository.tierLists = tierLists
-        initViewModel()
-        viewModel.enqueueUpdateTierListsWork()
-
-        assertEquals(tierLists, fakeUpdateTierListsArgsProvider.tierLists)
-        verify { mockWorkManager.enqueue(mockWorkRequest) }
-        unmockkObject(OneTimeWorkRequest)
-        unmockkStatic(WorkManager::class)
     }
 }

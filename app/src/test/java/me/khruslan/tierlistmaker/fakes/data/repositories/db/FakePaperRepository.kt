@@ -8,6 +8,7 @@ class FakePaperRepository : PaperRepository {
     var tierLists: MutableList<TierList>? = null
     var shouldSaveSuccessfully = true
     var shouldRemoveSuccessfully = true
+    var shouldUpdateSuccessfully = true
 
     override suspend fun getTierLists() = tierLists?.toMutableList()
 
@@ -25,6 +26,7 @@ class FakePaperRepository : PaperRepository {
     }
 
     override suspend fun updateTierLists(tierLists: List<TierList>): Boolean {
+        if (!shouldUpdateSuccessfully) return false
         this.tierLists = tierLists.toMutableList()
         return true
     }

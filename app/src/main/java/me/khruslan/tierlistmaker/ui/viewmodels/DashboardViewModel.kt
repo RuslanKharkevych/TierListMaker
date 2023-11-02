@@ -6,8 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
 import com.hadilq.liveevent.LiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -17,8 +15,6 @@ import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.data.repositories.db.PaperRepository
 import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProvider
 import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListCreator
-import me.khruslan.tierlistmaker.data.work.UpdateTierListsArgsProvider
-import me.khruslan.tierlistmaker.data.work.UpdateTierListsWorker
 import me.khruslan.tierlistmaker.ui.models.ListState
 import me.khruslan.tierlistmaker.ui.navigation.TierListResultException
 import me.khruslan.tierlistmaker.ui.screens.home.DashboardFragment
@@ -31,7 +27,6 @@ import javax.inject.Inject
  *
  * @property paperRepository local storage repository.
  * @property dispatcherProvider provider of [CoroutineDispatcher] for running suspend functions.
- * @property updateTierListsArgsProvider provider of [UpdateTierListsWorker] arguments.
  * @property tierListCreator creator of new tier lists.
  */
 @HiltViewModel
@@ -39,7 +34,6 @@ class DashboardViewModel @Inject constructor(
     application: Application,
     private val paperRepository: PaperRepository,
     private val dispatcherProvider: DispatcherProvider,
-    private val updateTierListsArgsProvider: UpdateTierListsArgsProvider,
     private val tierListCreator: TierListCreator
 ) : AndroidViewModel(application) {
 
@@ -226,6 +220,17 @@ class DashboardViewModel @Inject constructor(
         tierLists.swap(firstIndex, secondIndex)
         Timber.i("Swapped tier lists at indices $firstIndex and $secondIndex")
         Timber.i("Updated tier lists: $tierLists")
+        updateTierLists()
+    }
+
+    /**
+     * Updates tier lists in the local storage. Triggers [errorEvent] on failure.
+     */
+    private fun updateTierLists() {
+        viewModelScope.launch {
+            val result = paperRepository.updateTierLists(tierLists)
+            if (!result) _errorEvent.value = R.string.update_tier_lists_error_message
+        }
     }
 
     /**
@@ -244,14 +249,5 @@ class DashboardViewModel @Inject constructor(
             val result = paperRepository.removeTierListById(tierList.id)
             if (!result) _errorEvent.value = R.string.remove_tier_list_error_message
         }
-    }
-
-    /**
-     * Enqueues one-time work request that updates tier lists in the local storage.
-     */
-    fun enqueueUpdateTierListsWork() {
-        val workRequest = OneTimeWorkRequest.from(UpdateTierListsWorker::class.java)
-        updateTierListsArgsProvider.tierLists = tierLists
-        WorkManager.getInstance(getApplication()).enqueue(workRequest)
     }
 }

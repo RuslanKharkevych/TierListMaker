@@ -3,8 +3,6 @@ package me.khruslan.tierlistmaker
 import android.app.Application
 import android.content.res.Configuration
 import android.os.StrictMode
-import android.util.Log
-import androidx.hilt.work.HiltWorkerFactory
 import dagger.hilt.android.HiltAndroidApp
 import io.paperdb.Paper
 import me.khruslan.tierlistmaker.utils.log.navigation.ActivityLifecycleLogger
@@ -13,33 +11,18 @@ import me.khruslan.tierlistmaker.utils.log.timber.ReleaseTimberTree
 import me.khruslan.tierlistmaker.utils.theme.ThemeManager
 import timber.log.Timber
 import javax.inject.Inject
-import androidx.work.Configuration as WorkConfig
 
 /**
  * Customized [Application] implementation for startup configurations.
  */
 @HiltAndroidApp
-class TierListMakerApplication : Application(), WorkConfig.Provider {
-
-    /**
-     * Factory used to enable dependency injection into workers.
-     */
-    @Inject
-    lateinit var workerFactory: HiltWorkerFactory
+class TierListMakerApplication : Application() {
 
     /**
      * Manager used to set default theme.
      */
     @Inject
     lateinit var themeManager: ThemeManager
-
-    /**
-     * Returns minimum logging lever of work manager:
-     * - [Log.VERBOSE] for debug builds;
-     * - [Log.ERROR] for release builds.
-     */
-    private val workManagerLogLevel
-        get() = if (BuildConfig.DEBUG) Log.VERBOSE else Log.ERROR
 
     override fun onCreate() {
         super.onCreate()
@@ -66,12 +49,6 @@ class TierListMakerApplication : Application(), WorkConfig.Provider {
         super.onTrimMemory(level)
         Timber.i("Received onTrimMemory event. Level: ${getTrimMemoryLevelName(level)}")
     }
-
-    override fun getWorkManagerConfiguration() =
-        WorkConfig.Builder()
-            .setMinimumLoggingLevel(workManagerLogLevel)
-            .setWorkerFactory(workerFactory)
-            .build()
 
     /**
      * Plants [Timber.Tree] for logging on debug build and reporting crashes on release builds.

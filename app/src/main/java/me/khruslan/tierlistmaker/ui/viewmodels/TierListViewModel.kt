@@ -3,8 +3,6 @@ package me.khruslan.tierlistmaker.ui.viewmodels
 import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.*
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
 import com.hadilq.liveevent.LiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -21,8 +19,6 @@ import me.khruslan.tierlistmaker.data.repositories.file.FileManager
 import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListBitmapGenerator
 import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListProcessor
 import me.khruslan.tierlistmaker.data.repositories.tierlist.tier.TierStyleProvider
-import me.khruslan.tierlistmaker.data.work.SaveTierListArgsProvider
-import me.khruslan.tierlistmaker.data.work.SaveTierListWorker
 import me.khruslan.tierlistmaker.ui.models.LoadingProgress
 import me.khruslan.tierlistmaker.ui.screens.tierlist.TierListFragment
 import me.khruslan.tierlistmaker.utils.displayWidthPixels
@@ -39,7 +35,6 @@ import javax.inject.Inject
  * @property fileManager manager for saving image files.
  * @property tierListProcessor processor of drag effects.
  * @property tierStyleProvider provider of tier styles.
- * @property saveTierListArgsProvider provider of [SaveTierListWorker] arguments.
  * @param application [Application] instance.
  */
 @HiltViewModel
@@ -50,7 +45,6 @@ class TierListViewModel @Inject constructor(
     private val fileManager: FileManager,
     private val tierListProcessor: TierListProcessor,
     private val tierStyleProvider: TierStyleProvider,
-    private val saveTierListArgsProvider: SaveTierListArgsProvider,
     private val tierListBitmapGenerator: TierListBitmapGenerator
 ) : AndroidViewModel(application) {
 
@@ -265,15 +259,6 @@ class TierListViewModel @Inject constructor(
      */
     private fun processDragEffect(effect: DragEffect) {
         _tierListEvent.value = tierListProcessor.processDragEffect(effect)
-    }
-
-    /**
-     * Enqueues one-time work request that saves [TierList] in the local storage.
-     */
-    fun enqueueSaveTierListWork() {
-        val workRequest = OneTimeWorkRequest.from(SaveTierListWorker::class.java)
-        saveTierListArgsProvider.tierList = tierList
-        WorkManager.getInstance(getApplication()).enqueue(workRequest)
     }
 
     /**

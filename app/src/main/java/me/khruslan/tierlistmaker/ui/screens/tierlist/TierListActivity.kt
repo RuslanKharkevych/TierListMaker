@@ -3,12 +3,14 @@ package me.khruslan.tierlistmaker.ui.screens.tierlist
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import dagger.hilt.android.AndroidEntryPoint
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.databinding.ActivityTierListBinding
+import me.khruslan.tierlistmaker.ui.viewmodels.TierListActivityViewModel
 import me.khruslan.tierlistmaker.utils.findNavHostFragmentById
 import me.khruslan.tierlistmaker.utils.getParcelableExtraCompat
 import me.khruslan.tierlistmaker.utils.log.navigation.FragmentNavigationLogger
@@ -18,6 +20,8 @@ import me.khruslan.tierlistmaker.utils.log.navigation.FragmentNavigationLogger
  */
 @AndroidEntryPoint
 class TierListActivity : AppCompatActivity() {
+
+    private val viewModel: TierListActivityViewModel by viewModels()
 
     /**
      * [TierListActivity] companion object.
@@ -54,6 +58,13 @@ class TierListActivity : AppCompatActivity() {
 
         setContentView()
         setNavigationGraph()
+    }
+
+    override fun onPause() {
+        // Save tier list when app goes to background
+        if (!isFinishing) viewModel.saveTierList()
+
+        super.onPause()
     }
 
     /**

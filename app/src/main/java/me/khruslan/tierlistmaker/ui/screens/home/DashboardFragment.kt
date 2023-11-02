@@ -85,11 +85,6 @@ class DashboardFragment : Fragment() {
         initObservers()
     }
 
-    override fun onPause() {
-        super.onPause()
-        viewModel.enqueueUpdateTierListsWork()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

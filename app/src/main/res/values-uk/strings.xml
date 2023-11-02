@@ -11,6 +11,7 @@
     <string name="btn_report_issue"><u>Повідомити про помилку</u></string>
     <string name="save_tier_list_error_message">Ой! Не вдалося зберегти список :(</string>
     <string name="remove_tier_list_error_message">Ой! Не вдалося видалити список :(</string>
+    <string name="update_tier_lists_error_message">Ой! Не вдалося оновити списки :(</string>
     <string name="btn_refresh">Оновити</string>
     <string name="app_language">uk</string>
     <string name="btn_yes">Так</string>

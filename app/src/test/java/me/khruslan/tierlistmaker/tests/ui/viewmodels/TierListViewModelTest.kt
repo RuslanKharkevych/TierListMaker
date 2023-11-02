@@ -6,27 +6,45 @@ import android.graphics.Color
 import android.net.Uri
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
 import com.jraska.livedata.test
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.models.drag.ImageDragData
 import me.khruslan.tierlistmaker.data.models.drag.TierDragData
-import me.khruslan.tierlistmaker.data.models.drag.effects.*
-import me.khruslan.tierlistmaker.data.models.tierlist.*
+import me.khruslan.tierlistmaker.data.models.drag.effects.HighlightInTier
+import me.khruslan.tierlistmaker.data.models.drag.effects.HighlightLastInTier
+import me.khruslan.tierlistmaker.data.models.drag.effects.InsertToBacklog
+import me.khruslan.tierlistmaker.data.models.drag.effects.InsertToTier
+import me.khruslan.tierlistmaker.data.models.drag.effects.RemoveFromBacklog
+import me.khruslan.tierlistmaker.data.models.drag.effects.RemoveFromTier
+import me.khruslan.tierlistmaker.data.models.drag.effects.UpdateInTier
+import me.khruslan.tierlistmaker.data.models.tierlist.BacklogDataChanged
+import me.khruslan.tierlistmaker.data.models.tierlist.BacklogImagesAdded
+import me.khruslan.tierlistmaker.data.models.tierlist.BacklogItemInserted
+import me.khruslan.tierlistmaker.data.models.tierlist.ImageSizeUpdated
+import me.khruslan.tierlistmaker.data.models.tierlist.Tier
+import me.khruslan.tierlistmaker.data.models.tierlist.TierChanged
+import me.khruslan.tierlistmaker.data.models.tierlist.TierInserted
+import me.khruslan.tierlistmaker.data.models.tierlist.TierList
+import me.khruslan.tierlistmaker.data.models.tierlist.TierListChanged
+import me.khruslan.tierlistmaker.data.models.tierlist.TierListExportError
+import me.khruslan.tierlistmaker.data.models.tierlist.TierListReadyToShare
+import me.khruslan.tierlistmaker.data.models.tierlist.TierListReadyToView
+import me.khruslan.tierlistmaker.data.models.tierlist.TierStyle
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
 import me.khruslan.tierlistmaker.data.repositories.file.FileManager
-import me.khruslan.tierlistmaker.data.work.SaveTierListWorker
 import me.khruslan.tierlistmaker.fakes.data.repositories.file.FakeFileManager
 import me.khruslan.tierlistmaker.fakes.data.repositories.tierlist.FakeTierListBitmapGenerator
 import me.khruslan.tierlistmaker.fakes.data.repositories.tierlist.FakeTierListProcessor
 import me.khruslan.tierlistmaker.fakes.data.repositories.tierlist.tier.FakeTierStyleProvider
-import me.khruslan.tierlistmaker.fakes.data.work.FakeSaveTierListArgsProvider
 import me.khruslan.tierlistmaker.fakes.utils.drag.FakeDragPocket
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
 import me.khruslan.tierlistmaker.ui.models.LoadingProgress
@@ -35,17 +53,18 @@ import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
 import me.khruslan.tierlistmaker.utils.awaitValue
 import me.khruslan.tierlistmaker.utils.awaitValues
 import me.khruslan.tierlistmaker.utils.displayWidthPixels
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.io.File
-import java.lang.IllegalStateException
 
 @ExperimentalCoroutinesApi
 class TierListViewModelTest {
 
-    companion object {
+    private companion object {
         private const val KEY_TIER_LIST = "tierList"
         private const val EXTENSIONS_PACKAGE = "me.khruslan.tierlistmaker.utils.ExtensionsKt"
     }
@@ -64,7 +83,6 @@ class TierListViewModelTest {
     private lateinit var fakeFileManager: FakeFileManager
     private lateinit var fakeTierListProcessor: FakeTierListProcessor
     private lateinit var fakeTierStyleProvider: FakeTierStyleProvider
-    private lateinit var fakeSaveTierListArgsProvider: FakeSaveTierListArgsProvider
     private lateinit var fakeTierListBitmapGenerator: FakeTierListBitmapGenerator
 
     private lateinit var viewModel: TierListViewModel
@@ -78,7 +96,6 @@ class TierListViewModelTest {
         fakeFileManager = FakeFileManager()
         fakeTierListProcessor = FakeTierListProcessor()
         fakeTierStyleProvider = FakeTierStyleProvider()
-        fakeSaveTierListArgsProvider = FakeSaveTierListArgsProvider()
         fakeTierListBitmapGenerator = FakeTierListBitmapGenerator()
     }
 
@@ -90,7 +107,6 @@ class TierListViewModelTest {
             fileManager = fakeFileManager,
             tierListProcessor = fakeTierListProcessor,
             tierStyleProvider = fakeTierStyleProvider,
-            saveTierListArgsProvider = fakeSaveTierListArgsProvider,
             tierListBitmapGenerator = fakeTierListBitmapGenerator
         )
     }
@@ -185,25 +201,6 @@ class TierListViewModelTest {
         viewModel.restoreReleasedImage()
 
         viewModel.tierListEvent.test().assertNoValue()
-    }
-
-    @Test
-    fun `Enqueues work to save tier list`() {
-        mockkObject(OneTimeWorkRequest)
-        mockkStatic(WorkManager::class)
-        val mockWorkRequest: OneTimeWorkRequest = mockk()
-        val mockWorkManager: WorkManager = mockk()
-        every { OneTimeWorkRequest.from(SaveTierListWorker::class.java) } returns mockWorkRequest
-        every { WorkManager.getInstance(mockApplication) } returns mockWorkManager
-        every { mockWorkManager.enqueue(mockWorkRequest) } returns mockk()
-
-        initViewModelWithTierList()
-        viewModel.enqueueSaveTierListWork()
-
-        assertEquals(tierList, fakeSaveTierListArgsProvider.tierList)
-        verify { mockWorkManager.enqueue(mockWorkRequest) }
-        unmockkObject(OneTimeWorkRequest)
-        unmockkStatic(WorkManager::class)
     }
 
     @Test

@@ -12,6 +12,7 @@
     <string name="btn_report_issue"><u>Report the issue</u></string>
     <string name="save_tier_list_error_message">Oops! Unable to save tier list :(</string>
     <string name="remove_tier_list_error_message">Oops! Unable to remove tier list :(</string>
+    <string name="update_tier_lists_error_message">Oops! Unable to update tier lists :(</string>
     <string name="btn_refresh">Refresh</string>
     <string name="menu_item_my_collection_title">My Collection</string>
     <string name="menu_item_settings_title">Settings</string>

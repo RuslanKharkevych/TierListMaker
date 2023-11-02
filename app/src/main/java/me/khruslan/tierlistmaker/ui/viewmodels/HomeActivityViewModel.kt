@@ -15,14 +15,16 @@ import javax.inject.Inject
  * @property themeManager manager for changing application's theme at runtime.
  */
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val themeManager: ThemeManager) : ViewModel() {
+class HomeActivityViewModel @Inject constructor(
+    private val themeManager: ThemeManager
+) : ViewModel() {
 
     init {
-        Timber.i("HomeViewModel initialized")
+        Timber.i("HomeActivityViewModel initialized")
     }
 
     override fun onCleared() {
-        Timber.i("HomeViewModel cleared")
+        Timber.i("HomeActivityViewModel cleared")
     }
 
     /**

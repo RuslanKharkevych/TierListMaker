@@ -175,15 +175,6 @@ class TierListFragment : Fragment() {
         initView()
     }
 
-    override fun onPause() {
-        super.onPause()
-
-        // Save tier list when app goes to background
-        if (!requireActivity().isFinishing) {
-            viewModel.enqueueSaveTierListWork()
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
 

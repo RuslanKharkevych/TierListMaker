@@ -5,25 +5,25 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import me.khruslan.tierlistmaker.fakes.utils.theme.FakeThemeManager
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
-import me.khruslan.tierlistmaker.ui.viewmodels.HomeViewModel
+import me.khruslan.tierlistmaker.ui.viewmodels.HomeActivityViewModel
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class HomeViewModelTest {
+class HomeActivityViewModelTest {
 
     @get:Rule
     val coroutineTestRule = CoroutineTestRule()
 
     private lateinit var fakeThemeManager: FakeThemeManager
-    private lateinit var viewModel: HomeViewModel
+    private lateinit var viewModel: HomeActivityViewModel
 
     @Before
     fun init() {
         fakeThemeManager = FakeThemeManager()
-        viewModel = HomeViewModel(fakeThemeManager)
+        viewModel = HomeActivityViewModel(fakeThemeManager)
     }
 
     @Test
