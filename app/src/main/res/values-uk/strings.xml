@@ -67,4 +67,8 @@
     <string name="pref_privacy_policy_title">Політика конфіденційності</string>
     <string name="pref_privacy_policy_summary">Наша політика конфіденційності детально описує інформацію, яку ми збираємо від користувачів, і роз’яснює ваш вибір щодо використання ваших особистих даних</string>
     <string name="pref_app_version_title">Версія додатку</string>
+    <string name="tier_list_sports">Види спорту</string>
+    <string name="tier_list_animals">Тварини</string>
+    <string name="tier_list_fast_food">Фаст-фуд</string>
+    <string name="tier_list_fruits">Фрукти</string>
 </resources>

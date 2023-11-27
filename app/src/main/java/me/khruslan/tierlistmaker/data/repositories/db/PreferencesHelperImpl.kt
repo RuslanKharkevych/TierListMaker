@@ -23,6 +23,8 @@ class PreferencesHelperImpl @Inject constructor(
      */
     private companion object {
         private const val KEY_NIGHT_MODE_ENABLED = "dark_mode_enabled"
+        private const val KEY_DEFAULT_TIER_LIST_COLLECTION_PROVIDED =
+            "default_tier_list_collection_provided"
     }
 
     /**
@@ -68,4 +70,16 @@ class PreferencesHelperImpl @Inject constructor(
             context.getString(R.string.pref_image_quality_key),
             context.resources.getInteger(R.integer.pref_default_image_quality)
         )
+
+    override val defaultTierListCollectionProvided
+        get() = preferences.getBoolean(
+            KEY_DEFAULT_TIER_LIST_COLLECTION_PROVIDED,
+            false
+        )
+
+    override fun markDefaultTierListCollectionAsProvided() {
+        preferences.edit {
+            putBoolean(KEY_DEFAULT_TIER_LIST_COLLECTION_PROVIDED, true)
+        }
+    }
 }

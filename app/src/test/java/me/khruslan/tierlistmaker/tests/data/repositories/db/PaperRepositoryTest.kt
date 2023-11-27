@@ -12,6 +12,7 @@ import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
 import me.khruslan.tierlistmaker.data.repositories.db.PaperRepository
 import me.khruslan.tierlistmaker.data.repositories.db.PaperRepositoryImpl
+import me.khruslan.tierlistmaker.fakes.data.repositories.db.FakeDefaultTierListCollectionProvider
 import me.khruslan.tierlistmaker.fakes.data.repositories.dispatchers.FakeDispatcherProvider
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
 import org.junit.*
@@ -30,6 +31,7 @@ class PaperRepositoryTest {
     @MockK
     private lateinit var book: Book
 
+    private lateinit var fakeDefaultTierListCollectionProvider: FakeDefaultTierListCollectionProvider
     private lateinit var paperRepository: PaperRepository
 
     private val tierLists
@@ -144,7 +146,11 @@ class PaperRepositoryTest {
         every { Paper.book() } returns book
 
         val dispatcherProvider = FakeDispatcherProvider()
-        paperRepository = PaperRepositoryImpl(dispatcherProvider)
+        fakeDefaultTierListCollectionProvider = FakeDefaultTierListCollectionProvider()
+        paperRepository = PaperRepositoryImpl(
+            dispatcherProvider = dispatcherProvider,
+            defaultTierListCollectionProvider = fakeDefaultTierListCollectionProvider
+        )
     }
 
     @After
@@ -172,6 +178,26 @@ class PaperRepositoryTest {
         every { book.read(KEY_TIER_LISTS, mutableListOf<TierList>()) } throws exception
 
         assertNull(paperRepository.getTierLists())
+    }
+
+    @Test
+    fun `Provides default tier list collection if was not provided before`() = runTest {
+        fakeDefaultTierListCollectionProvider.tierLists = tierLists
+        val answers = listOf(mutableListOf(), fakeDefaultTierListCollectionProvider.tierLists)
+        every { book.read(KEY_TIER_LISTS, mutableListOf<TierList>()) } returnsMany answers
+        every { book.write(KEY_TIER_LISTS, answers.last()) } returns book
+
+        assertEquals(tierLists, paperRepository.getTierLists())
+    }
+
+    @Test
+    fun `Doesn't provide default tier list collection if was provided before`() = runTest {
+        fakeDefaultTierListCollectionProvider.tierLists = tierLists
+        fakeDefaultTierListCollectionProvider.provideCollection()
+        val answers = listOf(mutableListOf(), fakeDefaultTierListCollectionProvider.tierLists)
+        every { book.read(KEY_TIER_LISTS, mutableListOf<TierList>()) } returnsMany answers
+
+        assertEquals(mutableListOf<TierList>(),  paperRepository.getTierLists())
     }
 
     @Test

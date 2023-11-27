@@ -26,4 +26,16 @@ interface PreferencesHelper {
      * The quality in percents of the new images.
      */
     val imageQuality: Int
+
+    /**
+     * Whether the default tier list collection has already been provided.
+     * @see markDefaultTierListCollectionAsProvided
+     */
+    val defaultTierListCollectionProvided: Boolean
+
+    /**
+     * Marks default tier list collection as provided.
+     * @see defaultTierListCollectionProvided
+     */
+    fun markDefaultTierListCollectionAsProvided()
 }

@@ -15,9 +15,11 @@ import javax.inject.Inject
  * All functions are running in [Dispatchers.IO] context.
  *
  * @property dispatcherProvider provider of [CoroutineDispatcher] for running suspend functions.
+ * @property defaultTierListCollectionProvider provider of the default tier list collection.
  */
 class PaperRepositoryImpl @Inject constructor(
-    private val dispatcherProvider: DispatcherProvider
+    private val dispatcherProvider: DispatcherProvider,
+    private val defaultTierListCollectionProvider: DefaultTierListCollectionProvider
 ) : PaperRepository {
 
     /**
@@ -30,6 +32,20 @@ class PaperRepositoryImpl @Inject constructor(
 
     override suspend fun getTierLists(): MutableList<TierList>? {
         Timber.i("Reading tier lists from database")
+        var tierLists = readTierLists()
+
+        if (tierLists?.isEmpty() == true && !defaultTierListCollectionProvider.collectionProvided) {
+            updateTierLists(
+                tierLists = defaultTierListCollectionProvider.provideCollection(),
+                transactionTag = "getTierLists"
+            )
+            tierLists = readTierLists()
+        }
+
+        return tierLists
+    }
+
+    private suspend fun readTierLists(): MutableList<TierList>? {
         return withContext<MutableList<TierList>?>(dispatcherProvider.io) {
             executeTransaction(
                 transaction = {
@@ -89,7 +105,7 @@ class PaperRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateTierLists(tierLists: List<TierList>): Boolean {
+    override suspend fun updateTierLists(tierLists: MutableList<TierList>): Boolean {
         return withContext(dispatcherProvider.io) {
             updateTierLists(tierLists, transactionTag = "updateTierLists($tierLists)")
         }
@@ -103,7 +119,7 @@ class PaperRepositoryImpl @Inject constructor(
      * @return **true** if transaction was successful, **false** if transaction failed
      * [MAX_TRANSACTION_ATTEMPTS] times.
      */
-    private fun updateTierLists(tierLists: List<TierList>, transactionTag: String): Boolean {
+    private fun updateTierLists(tierLists: MutableList<TierList>, transactionTag: String): Boolean {
         Timber.i("Updating tier lists in database. Transaction tag: $transactionTag")
         val result = executeTransaction(
             transaction = {

@@ -25,7 +25,7 @@ class FakePaperRepository : PaperRepository {
         return true
     }
 
-    override suspend fun updateTierLists(tierLists: List<TierList>): Boolean {
+    override suspend fun updateTierLists(tierLists: MutableList<TierList>): Boolean {
         if (!shouldUpdateSuccessfully) return false
         this.tierLists = tierLists.toMutableList()
         return true

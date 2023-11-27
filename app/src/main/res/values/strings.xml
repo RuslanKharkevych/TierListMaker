@@ -91,4 +91,10 @@
     <string name="pref_privacy_policy_summary">Our privacy policy details the information we collect from users and clarifies the choices you have regarding the usage of your data</string>
     <string name="pref_app_version_key" translatable="false">app_version</string>
     <string name="pref_app_version_title">App version</string>
+
+    <!-- DefaultTierListCollectionProvider -->
+    <string name="tier_list_animals">Animals</string>
+    <string name="tier_list_fast_food">Fast food</string>
+    <string name="tier_list_fruits">Fruits</string>
+    <string name="tier_list_sports">Sports</string>
 </resources>

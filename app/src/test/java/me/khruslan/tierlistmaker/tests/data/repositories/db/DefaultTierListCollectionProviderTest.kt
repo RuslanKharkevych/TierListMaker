@@ -1,0 +1,68 @@
+package me.khruslan.tierlistmaker.tests.data.repositories.db
+
+import android.content.Context
+import io.mockk.MockKAnnotations
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import me.khruslan.tierlistmaker.data.models.tierlist.TierList
+import me.khruslan.tierlistmaker.data.repositories.db.DefaultTierListCollectionProvider
+import me.khruslan.tierlistmaker.data.repositories.db.DefaultTierListCollectionProviderImpl
+import me.khruslan.tierlistmaker.fakes.android.MockAssetManager
+import me.khruslan.tierlistmaker.fakes.data.repositories.db.FakePreferencesHelper
+import me.khruslan.tierlistmaker.utils.assertAll
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
+import org.junit.Before
+import org.junit.Test
+
+class DefaultTierListCollectionProviderTest {
+
+    @MockK
+    private lateinit var mockContext: Context
+
+    private lateinit var fakePreferencesHelper: FakePreferencesHelper
+    private lateinit var defaultTierListCollectionProvider: DefaultTierListCollectionProvider
+
+    private val tierListTitles = listOf("Fruits", "Animals", "Sports", "Fast food")
+    private val tierListZoomValues = listOf(6, 5, 5, 4)
+
+    @Before
+    fun init() {
+        MockKAnnotations.init(this)
+        fakePreferencesHelper = FakePreferencesHelper()
+        defaultTierListCollectionProvider = DefaultTierListCollectionProviderImpl(
+            context = mockContext,
+            preferencesHelper = fakePreferencesHelper
+        )
+    }
+
+    @Test
+    fun `Verify collection is not provided if it wasn't marked as provided`() {
+        assertFalse(defaultTierListCollectionProvider.collectionProvided)
+    }
+
+    @Test
+    fun `Verify collection is provided if it was marked as provided`() {
+        fakePreferencesHelper.markDefaultTierListCollectionAsProvided()
+        assertTrue(defaultTierListCollectionProvider.collectionProvided)
+    }
+
+    @Test
+    fun `Provides collection and marks it as provided`() {
+        every { mockContext.getString(any()) } returnsMany tierListTitles
+        every { mockContext.assets } returns MockAssetManager.get()
+        val collection = defaultTierListCollectionProvider.provideCollection()
+
+        assertAll(MockAssetManager.assets) { collection.contains(it) }
+        assertAll(collection) { it.title in tierListTitles }
+        assertAll(collection) { it.zoomValue in tierListZoomValues }
+        assertAll(collection) { it.backlogImages.isEmpty() }
+        assertTrue(fakePreferencesHelper.defaultTierListCollectionProvided)
+    }
+
+    private fun MutableList<TierList>.contains(imageFilePath: String): Boolean {
+        return flatMap { it.tiers }
+            .flatMap { it.images }
+            .any { it.payload == imageFilePath }
+    }
+}

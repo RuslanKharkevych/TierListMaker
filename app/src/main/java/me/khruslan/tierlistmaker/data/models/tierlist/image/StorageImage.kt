@@ -15,10 +15,16 @@ import java.util.*
 class StorageImage(id: String, val filePath: String) : Image(id, filePath), Parcelable {
 
     /**
+     * @constructor Creates [StorageImage] with random [id] from [filePath].
+     * @param filePath image file path.
+     */
+    constructor(filePath: String) : this(id = UUID.randomUUID().toString(), filePath = filePath)
+
+    /**
      * @constructor Creates [StorageImage] with random [id] from [File].
      * @param file image file.
      */
-    constructor(file: File) : this(id = UUID.randomUUID().toString(), filePath = file.path)
+    constructor(file: File) : this(filePath = file.path)
 
     /**
      * @constructor Restores [StorageImage] from [Parcel].

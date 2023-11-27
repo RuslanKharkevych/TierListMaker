@@ -7,7 +7,8 @@ import me.khruslan.tierlistmaker.data.models.tierlist.TierList
  */
 interface PaperRepository {
     /**
-     * Fetches all saved tier lists or empty list of no saved tier lists found.
+     * Fetches all saved tier lists or empty list of no saved tier lists found. If it's the first
+     * application launch, returns default tier list collection.
      *
      * @return list of [TierList] objects or **null** if error occurred.
      */
@@ -37,5 +38,5 @@ interface PaperRepository {
      * @param tierLists updated tier lists.
      * @return Whether transaction was successful.
      */
-    suspend fun updateTierLists(tierLists: List<TierList>): Boolean
+    suspend fun updateTierLists(tierLists: MutableList<TierList>): Boolean
 }
