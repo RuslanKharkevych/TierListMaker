@@ -40,11 +40,11 @@ import me.khruslan.tierlistmaker.data.models.tierlist.TierListReadyToShare
 import me.khruslan.tierlistmaker.data.models.tierlist.TierListReadyToView
 import me.khruslan.tierlistmaker.data.models.tierlist.TierStyle
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
-import me.khruslan.tierlistmaker.data.repositories.file.FileManager
-import me.khruslan.tierlistmaker.fakes.data.repositories.file.FakeFileManager
-import me.khruslan.tierlistmaker.fakes.data.repositories.tierlist.FakeTierListBitmapGenerator
-import me.khruslan.tierlistmaker.fakes.data.repositories.tierlist.FakeTierListProcessor
-import me.khruslan.tierlistmaker.fakes.data.repositories.tierlist.tier.FakeTierStyleProvider
+import me.khruslan.tierlistmaker.data.providers.file.FileManager
+import me.khruslan.tierlistmaker.fakes.data.providers.file.FakeFileManager
+import me.khruslan.tierlistmaker.fakes.data.providers.tierlist.FakeTierListBitmapGenerator
+import me.khruslan.tierlistmaker.fakes.data.providers.tierlist.FakeTierListProcessor
+import me.khruslan.tierlistmaker.fakes.data.providers.tierlist.tier.FakeTierStyleProvider
 import me.khruslan.tierlistmaker.fakes.utils.drag.FakeDragPocket
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
 import me.khruslan.tierlistmaker.ui.models.LoadingProgress

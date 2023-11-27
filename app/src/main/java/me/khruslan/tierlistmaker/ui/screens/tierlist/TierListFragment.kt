@@ -46,7 +46,7 @@ import me.khruslan.tierlistmaker.data.models.tierlist.TierListReadyToShare
 import me.khruslan.tierlistmaker.data.models.tierlist.TierListReadyToView
 import me.khruslan.tierlistmaker.data.models.tierlist.TrashBinHighlightUpdated
 import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
-import me.khruslan.tierlistmaker.data.repositories.file.FileManager
+import me.khruslan.tierlistmaker.data.providers.file.FileManager
 import me.khruslan.tierlistmaker.databinding.FragmentTierListBinding
 import me.khruslan.tierlistmaker.ui.adapters.TierAdapter
 import me.khruslan.tierlistmaker.ui.adapters.TierListImageAdapter

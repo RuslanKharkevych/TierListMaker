@@ -4,8 +4,8 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import me.khruslan.tierlistmaker.data.repositories.db.PreferencesHelper
-import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProvider
+import me.khruslan.tierlistmaker.data.providers.db.PreferencesHelper
+import me.khruslan.tierlistmaker.data.providers.dispatchers.DispatcherProvider
 import timber.log.Timber
 import javax.inject.Inject
 

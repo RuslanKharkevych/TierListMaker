@@ -4,10 +4,10 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import me.khruslan.tierlistmaker.data.repositories.file.FileManager
-import me.khruslan.tierlistmaker.data.repositories.file.FileManagerImpl
-import me.khruslan.tierlistmaker.data.repositories.file.ImageCompressor
-import me.khruslan.tierlistmaker.data.repositories.file.ImageCompressorImpl
+import me.khruslan.tierlistmaker.data.providers.file.FileManager
+import me.khruslan.tierlistmaker.data.providers.file.FileManagerImpl
+import me.khruslan.tierlistmaker.data.providers.file.ImageCompressor
+import me.khruslan.tierlistmaker.data.providers.file.ImageCompressorImpl
 import javax.inject.Singleton
 
 @Module

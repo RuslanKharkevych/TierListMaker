@@ -12,9 +12,9 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
-import me.khruslan.tierlistmaker.data.repositories.db.PaperRepository
-import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProvider
-import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListCreator
+import me.khruslan.tierlistmaker.data.providers.db.DatabaseHelper
+import me.khruslan.tierlistmaker.data.providers.dispatchers.DispatcherProvider
+import me.khruslan.tierlistmaker.data.providers.tierlist.TierListCreator
 import me.khruslan.tierlistmaker.ui.models.ListState
 import me.khruslan.tierlistmaker.ui.navigation.TierListResultException
 import me.khruslan.tierlistmaker.ui.screens.home.DashboardFragment
@@ -25,14 +25,14 @@ import javax.inject.Inject
 /**
  * [ViewModel] for [DashboardFragment].
  *
- * @property paperRepository local storage repository.
+ * @property databaseHelper database helper.
  * @property dispatcherProvider provider of [CoroutineDispatcher] for running suspend functions.
  * @property tierListCreator creator of new tier lists.
  */
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
     application: Application,
-    private val paperRepository: PaperRepository,
+    private val databaseHelper: DatabaseHelper,
     private val dispatcherProvider: DispatcherProvider,
     private val tierListCreator: TierListCreator
 ) : AndroidViewModel(application) {
@@ -157,7 +157,7 @@ class DashboardViewModel @Inject constructor(
      */
     private fun saveTierList(tierList: TierList) {
         viewModelScope.launch {
-            val result = paperRepository.saveTierList(tierList)
+            val result = databaseHelper.saveTierList(tierList)
             if (!result) _errorEvent.value = R.string.save_tier_list_error_message
         }
     }
@@ -173,13 +173,13 @@ class DashboardViewModel @Inject constructor(
     }
 
     /**
-     * Loads tier lists from [paperRepository] and returns the result. Updates [listStateLiveData]
+     * Loads tier lists from [databaseHelper] and returns the result. Updates [listStateLiveData]
      * after loading is complete.
      *
      * @return loaded tier lists or empty list in case of error.
      */
     private suspend fun loadTierLists(): MutableList<TierList> {
-        return paperRepository.getTierLists()?.also { list ->
+        return databaseHelper.getTierLists()?.also { list ->
             _listStateLiveData.value = if (list.isEmpty()) ListState.Empty else ListState.Filled
         } ?: run {
             _listStateLiveData.value = ListState.Failed
@@ -188,7 +188,7 @@ class DashboardViewModel @Inject constructor(
     }
 
     /**
-     * Loads [tierLists] from [paperRepository], maps [tierListPreviews] and updates
+     * Loads [tierLists] from [databaseHelper], maps [tierListPreviews] and updates
      * [tierListPreviewsLiveData].
      */
     private fun loadTierListPreviews() {
@@ -228,7 +228,7 @@ class DashboardViewModel @Inject constructor(
      */
     private fun updateTierLists() {
         viewModelScope.launch {
-            val result = paperRepository.updateTierLists(tierLists)
+            val result = databaseHelper.updateTierLists(tierLists)
             if (!result) _errorEvent.value = R.string.update_tier_lists_error_message
         }
     }
@@ -246,7 +246,7 @@ class DashboardViewModel @Inject constructor(
             Timber.i("Updated tier lists: $tierList")
             if (tierLists.isEmpty()) _listStateLiveData.value = ListState.Empty
 
-            val result = paperRepository.removeTierListById(tierList.id)
+            val result = databaseHelper.removeTierListById(tierList.id)
             if (!result) _errorEvent.value = R.string.remove_tier_list_error_message
         }
     }

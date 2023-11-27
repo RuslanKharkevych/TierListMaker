@@ -15,10 +15,10 @@ import me.khruslan.tierlistmaker.data.models.tierlist.*
 import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
 import me.khruslan.tierlistmaker.data.models.tierlist.image.ResourceImage
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
-import me.khruslan.tierlistmaker.data.repositories.file.FileManager
-import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListBitmapGenerator
-import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListProcessor
-import me.khruslan.tierlistmaker.data.repositories.tierlist.tier.TierStyleProvider
+import me.khruslan.tierlistmaker.data.providers.file.FileManager
+import me.khruslan.tierlistmaker.data.providers.tierlist.TierListBitmapGenerator
+import me.khruslan.tierlistmaker.data.providers.tierlist.TierListProcessor
+import me.khruslan.tierlistmaker.data.providers.tierlist.tier.TierStyleProvider
 import me.khruslan.tierlistmaker.ui.models.LoadingProgress
 import me.khruslan.tierlistmaker.ui.screens.tierlist.TierListFragment
 import me.khruslan.tierlistmaker.utils.displayWidthPixels

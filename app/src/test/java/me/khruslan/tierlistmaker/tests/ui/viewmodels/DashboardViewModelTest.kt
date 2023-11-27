@@ -13,9 +13,9 @@ import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.models.tierlist.Tier
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
-import me.khruslan.tierlistmaker.fakes.data.repositories.db.FakePaperRepository
-import me.khruslan.tierlistmaker.fakes.data.repositories.dispatchers.FakeDispatcherProvider
-import me.khruslan.tierlistmaker.fakes.data.repositories.tierlist.FakeTierListCreator
+import me.khruslan.tierlistmaker.fakes.data.providers.db.FakeDatabaseHelper
+import me.khruslan.tierlistmaker.fakes.data.providers.dispatchers.FakeDispatcherProvider
+import me.khruslan.tierlistmaker.fakes.data.providers.tierlist.FakeTierListCreator
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
 import me.khruslan.tierlistmaker.ui.models.ListState
 import me.khruslan.tierlistmaker.ui.navigation.TierListResultException
@@ -41,21 +41,21 @@ class DashboardViewModelTest {
     @MockK
     private lateinit var mockApplication: Application
 
-    private lateinit var fakePaperRepository: FakePaperRepository
+    private lateinit var fakeDatabaseHelper: FakeDatabaseHelper
     private lateinit var fakeTierListCreator: FakeTierListCreator
     private lateinit var viewModel: DashboardViewModel
 
     @Before
     fun init() {
         MockKAnnotations.init(this)
-        fakePaperRepository = FakePaperRepository()
+        fakeDatabaseHelper = FakeDatabaseHelper()
         fakeTierListCreator = FakeTierListCreator()
     }
 
     private fun TestScope.initViewModel() {
         viewModel = DashboardViewModel(
             application = mockApplication,
-            paperRepository = fakePaperRepository,
+            databaseHelper = fakeDatabaseHelper,
             dispatcherProvider = FakeDispatcherProvider(),
             tierListCreator = fakeTierListCreator
         )
@@ -152,7 +152,7 @@ class DashboardViewModelTest {
 
     @Test
     fun `Loads empty list of previews on init`() = runTest {
-        fakePaperRepository.tierLists = mutableListOf()
+        fakeDatabaseHelper.tierLists = mutableListOf()
         initViewModel()
 
         viewModel.tierListPreviewsLiveData.awaitValue(mutableListOf())
@@ -161,7 +161,7 @@ class DashboardViewModelTest {
 
     @Test
     fun `Fails to load previews on init`() = runTest {
-        fakePaperRepository.tierLists = null
+        fakeDatabaseHelper.tierLists = null
         initViewModel()
 
         viewModel.tierListPreviewsLiveData.awaitValue(mutableListOf())
@@ -171,7 +171,7 @@ class DashboardViewModelTest {
     @Test
     fun `Loads empty list of previews on refresh`() = runTest {
         initViewModel()
-        fakePaperRepository.tierLists = mutableListOf()
+        fakeDatabaseHelper.tierLists = mutableListOf()
         viewModel.refreshPreviews()
 
         viewModel.listStateLiveData.awaitValue(ListState.Loading)
@@ -183,7 +183,7 @@ class DashboardViewModelTest {
     @Test
     fun `Fails to refresh previews`() = runTest {
         initViewModel()
-        fakePaperRepository.tierLists = null
+        fakeDatabaseHelper.tierLists = null
         viewModel.refreshPreviews()
 
         viewModel.listStateLiveData.awaitValue(ListState.Loading)
@@ -195,7 +195,7 @@ class DashboardViewModelTest {
     @Test
     fun `Loads tier list previews on init`() = runTest {
         val expectedPreviews = tierLists.map { it.preview }.toMutableList()
-        fakePaperRepository.tierLists = tierLists
+        fakeDatabaseHelper.tierLists = tierLists
         initViewModel()
 
         viewModel.tierListPreviewsLiveData.awaitValue(expectedPreviews)
@@ -206,7 +206,7 @@ class DashboardViewModelTest {
     fun `Refreshes previews`() = runTest {
         val expectedPreviews = tierLists.map { it.preview }.toMutableList()
         initViewModel()
-        fakePaperRepository.tierLists = tierLists
+        fakeDatabaseHelper.tierLists = tierLists
         viewModel.refreshPreviews()
 
         viewModel.listStateLiveData.awaitValue(ListState.Loading)
@@ -229,7 +229,7 @@ class DashboardViewModelTest {
 
     @Test
     fun `Returns tier list by position`() = runTest {
-        fakePaperRepository.tierLists = tierLists
+        fakeDatabaseHelper.tierLists = tierLists
         initViewModel()
         val position = 0
         val expectedTierList = tierLists[position]
@@ -240,7 +240,7 @@ class DashboardViewModelTest {
 
     @Test
     fun `Throws error when getting list by incorrect position`() = runTest {
-        fakePaperRepository.tierLists = tierLists
+        fakeDatabaseHelper.tierLists = tierLists
         initViewModel()
 
         assertThrows(IndexOutOfBoundsException::class.java) {
@@ -250,7 +250,7 @@ class DashboardViewModelTest {
 
     @Test
     fun `Notifies UI when new tier list is added`() = runTest {
-        fakePaperRepository.tierLists = tierLists
+        fakeDatabaseHelper.tierLists = tierLists
         initViewModel()
 
         val addPreviewObserver = viewModel.addPreviewEvent.test()
@@ -263,7 +263,7 @@ class DashboardViewModelTest {
 
     @Test
     fun `Throws TierListResultException if tier list result is null`() = runTest {
-        fakePaperRepository.tierLists = tierLists
+        fakeDatabaseHelper.tierLists = tierLists
         initViewModel()
 
         assertThrows(TierListResultException::class.java) {
@@ -273,36 +273,36 @@ class DashboardViewModelTest {
 
     @Test
     fun `Successfully saves new update to the database`() = runTest {
-        fakePaperRepository.tierLists = tierLists
+        fakeDatabaseHelper.tierLists = tierLists
         initViewModel()
 
         val errorObserver = viewModel.errorEvent.test()
         viewModel.handleTierListResult(addedTierList)
         advanceUntilIdle()
 
-        val actualTierLists = checkNotNull(fakePaperRepository.tierLists)
+        val actualTierLists = checkNotNull(fakeDatabaseHelper.tierLists)
         assertTrue(addedTierList in actualTierLists)
         errorObserver.assertNoValue()
     }
 
     @Test
     fun `Shows error when unable to save new tier list to the database`() = runTest {
-        fakePaperRepository.tierLists = tierLists
-        fakePaperRepository.shouldSaveSuccessfully = false
+        fakeDatabaseHelper.tierLists = tierLists
+        fakeDatabaseHelper.shouldSaveSuccessfully = false
         initViewModel()
 
         val errorObserver = viewModel.errorEvent.test()
         viewModel.handleTierListResult(addedTierList)
         advanceUntilIdle()
 
-        val actualTierLists = checkNotNull(fakePaperRepository.tierLists)
+        val actualTierLists = checkNotNull(fakeDatabaseHelper.tierLists)
         assertTrue(addedTierList !in actualTierLists)
         errorObserver.awaitValue(R.string.save_tier_list_error_message)
     }
 
     @Test
     fun `Notifies UI when tier list is updated`() = runTest {
-        fakePaperRepository.tierLists = tierLists
+        fakeDatabaseHelper.tierLists = tierLists
         initViewModel()
 
         val updatePreviewObserver = viewModel.updatePreviewEvent.test()
@@ -315,7 +315,7 @@ class DashboardViewModelTest {
 
     @Test
     fun `Swaps tier lists and successfully updates them in the database`() = runTest {
-        fakePaperRepository.tierLists = tierLists
+        fakeDatabaseHelper.tierLists = tierLists
         initViewModel()
 
         val errorObserver = viewModel.errorEvent.test()
@@ -323,7 +323,7 @@ class DashboardViewModelTest {
         advanceUntilIdle()
 
         val expectedTierLists = tierLists.apply { swap(0, 1) }
-        val actualTierLists = checkNotNull(fakePaperRepository.tierLists)
+        val actualTierLists = checkNotNull(fakeDatabaseHelper.tierLists)
         assertEquals(expectedTierLists, actualTierLists)
         assertEquals(tierLists[0], viewModel.getTierListByPosition(1))
         assertEquals(tierLists[1], viewModel.getTierListByPosition(0))
@@ -332,8 +332,8 @@ class DashboardViewModelTest {
 
     @Test
     fun `Swaps tier lists and shows error if unable to update them in the database`() = runTest {
-        fakePaperRepository.tierLists = tierLists
-        fakePaperRepository.shouldUpdateSuccessfully = false
+        fakeDatabaseHelper.tierLists = tierLists
+        fakeDatabaseHelper.shouldUpdateSuccessfully = false
         initViewModel()
 
         val errorObserver = viewModel.errorEvent.test()
@@ -341,7 +341,7 @@ class DashboardViewModelTest {
         advanceUntilIdle()
 
         val expectedTierLists = tierLists
-        val actualTierLists = checkNotNull(fakePaperRepository.tierLists)
+        val actualTierLists = checkNotNull(fakeDatabaseHelper.tierLists)
         assertEquals(expectedTierLists, actualTierLists)
         assertEquals(tierLists[0], viewModel.getTierListByPosition(1))
         assertEquals(tierLists[1], viewModel.getTierListByPosition(0))
@@ -350,7 +350,7 @@ class DashboardViewModelTest {
 
     @Test
     fun `Successfully removes tier list`() = runTest {
-        fakePaperRepository.tierLists = tierLists
+        fakeDatabaseHelper.tierLists = tierLists
         initViewModel()
 
         val tierListIndex = 1
@@ -359,7 +359,7 @@ class DashboardViewModelTest {
         viewModel.removeTierList(tierListIndex)
         advanceUntilIdle()
 
-        val actualTierLists = checkNotNull(fakePaperRepository.tierLists)
+        val actualTierLists = checkNotNull(fakeDatabaseHelper.tierLists)
         assertTrue(tierList !in actualTierLists)
         errorObserver.assertNoValue()
     }
@@ -368,14 +368,14 @@ class DashboardViewModelTest {
     fun `When last tier list is removed sets empty list state`() = runTest {
         val tierListIndex = 0
         val tierList = tierLists[tierListIndex]
-        fakePaperRepository.tierLists = mutableListOf(tierList)
+        fakeDatabaseHelper.tierLists = mutableListOf(tierList)
         initViewModel()
 
         val errorObserver = viewModel.errorEvent.test()
         viewModel.removeTierList(tierListIndex)
         advanceUntilIdle()
 
-        val actualTierLists = checkNotNull(fakePaperRepository.tierLists)
+        val actualTierLists = checkNotNull(fakeDatabaseHelper.tierLists)
         assertTrue(actualTierLists.isEmpty())
         viewModel.listStateLiveData.awaitValue(ListState.Empty)
         errorObserver.assertNoValue()
@@ -383,8 +383,8 @@ class DashboardViewModelTest {
 
     @Test
     fun `Shows error when unable to update tier lists in the database`() = runTest {
-        fakePaperRepository.tierLists = tierLists
-        fakePaperRepository.shouldRemoveSuccessfully = false
+        fakeDatabaseHelper.tierLists = tierLists
+        fakeDatabaseHelper.shouldRemoveSuccessfully = false
         initViewModel()
 
         val tierListIndex = 1
@@ -393,7 +393,7 @@ class DashboardViewModelTest {
         viewModel.removeTierList(tierListIndex)
         advanceUntilIdle()
 
-        val actualTierLists = checkNotNull(fakePaperRepository.tierLists)
+        val actualTierLists = checkNotNull(fakeDatabaseHelper.tierLists)
         assertTrue(tierList in actualTierLists)
         errorObserver.awaitValue(R.string.remove_tier_list_error_message)
     }

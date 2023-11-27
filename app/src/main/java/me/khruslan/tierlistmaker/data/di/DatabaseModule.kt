@@ -4,12 +4,12 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import me.khruslan.tierlistmaker.data.repositories.db.DefaultTierListCollectionProvider
-import me.khruslan.tierlistmaker.data.repositories.db.DefaultTierListCollectionProviderImpl
-import me.khruslan.tierlistmaker.data.repositories.db.PaperRepository
-import me.khruslan.tierlistmaker.data.repositories.db.PaperRepositoryImpl
-import me.khruslan.tierlistmaker.data.repositories.db.PreferencesHelper
-import me.khruslan.tierlistmaker.data.repositories.db.PreferencesHelperImpl
+import me.khruslan.tierlistmaker.data.providers.db.DefaultTierListCollectionProvider
+import me.khruslan.tierlistmaker.data.providers.db.DefaultTierListCollectionProviderImpl
+import me.khruslan.tierlistmaker.data.providers.db.DatabaseHelper
+import me.khruslan.tierlistmaker.data.providers.db.DatabaseHelperImpl
+import me.khruslan.tierlistmaker.data.providers.db.PreferencesHelper
+import me.khruslan.tierlistmaker.data.providers.db.PreferencesHelperImpl
 import javax.inject.Singleton
 
 @Module
@@ -24,7 +24,7 @@ abstract class DatabaseModule {
 
     @Binds
     @Singleton
-    abstract fun bindPaperRepository(paperRepositoryImpl: PaperRepositoryImpl): PaperRepository
+    abstract fun bindDatabaseHelper(paperRepositoryImpl: DatabaseHelperImpl): DatabaseHelper
 
     @Binds
     @Singleton

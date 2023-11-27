@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import me.khruslan.tierlistmaker.data.models.tierlist.Tier
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
-import me.khruslan.tierlistmaker.fakes.data.repositories.db.FakePaperRepository
+import me.khruslan.tierlistmaker.fakes.data.providers.db.FakeDatabaseHelper
 import me.khruslan.tierlistmaker.ui.viewmodels.TierListActivityViewModel
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
@@ -18,7 +18,7 @@ class TierListActivityViewModelTest {
     }
 
     private lateinit var savedStateHandle: SavedStateHandle
-    private lateinit var fakePaperRepository: FakePaperRepository
+    private lateinit var fakeDatabaseHelper: FakeDatabaseHelper
     private lateinit var viewModel: TierListActivityViewModel
 
     private val tierList = TierList(
@@ -60,11 +60,11 @@ class TierListActivityViewModelTest {
     @Before
     fun init() {
         savedStateHandle = SavedStateHandle()
-        fakePaperRepository = FakePaperRepository()
+        fakeDatabaseHelper = FakeDatabaseHelper()
     }
 
     private fun initViewModel() {
-        viewModel = TierListActivityViewModel(savedStateHandle, fakePaperRepository)
+        viewModel = TierListActivityViewModel(savedStateHandle, fakeDatabaseHelper)
     }
 
     private fun initViewModelWithTierList() {
@@ -85,7 +85,7 @@ class TierListActivityViewModelTest {
         viewModel.saveTierList()
 
         val expectedTierLists = listOf(tierList)
-        val actualTierLists = fakePaperRepository.tierLists
+        val actualTierLists = fakeDatabaseHelper.tierLists
         assertEquals(expectedTierLists, actualTierLists)
     }
 }

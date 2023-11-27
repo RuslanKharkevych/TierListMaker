@@ -4,8 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProvider
-import me.khruslan.tierlistmaker.data.repositories.dispatchers.DispatcherProviderImpl
+import me.khruslan.tierlistmaker.data.providers.dispatchers.DispatcherProvider
+import me.khruslan.tierlistmaker.data.providers.dispatchers.DispatcherProviderImpl
 import me.khruslan.tierlistmaker.utils.log.analytics.AnalyticsService
 import me.khruslan.tierlistmaker.utils.log.analytics.AnalyticsServiceImpl
 import me.khruslan.tierlistmaker.utils.theme.ThemeManager

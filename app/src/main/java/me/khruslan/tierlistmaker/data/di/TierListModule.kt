@@ -5,13 +5,13 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
-import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListBitmapGenerator
-import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListBitmapGeneratorImpl
-import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListCreator
-import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListCreatorImpl
-import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListProcessor
-import me.khruslan.tierlistmaker.data.repositories.tierlist.TierListProcessorImpl
-import me.khruslan.tierlistmaker.data.repositories.tierlist.tier.*
+import me.khruslan.tierlistmaker.data.providers.tierlist.TierListBitmapGenerator
+import me.khruslan.tierlistmaker.data.providers.tierlist.TierListBitmapGeneratorImpl
+import me.khruslan.tierlistmaker.data.providers.tierlist.TierListCreator
+import me.khruslan.tierlistmaker.data.providers.tierlist.TierListCreatorImpl
+import me.khruslan.tierlistmaker.data.providers.tierlist.TierListProcessor
+import me.khruslan.tierlistmaker.data.providers.tierlist.TierListProcessorImpl
+import me.khruslan.tierlistmaker.data.providers.tierlist.tier.*
 import me.khruslan.tierlistmaker.utils.drag.DragPocket
 import me.khruslan.tierlistmaker.utils.drag.DragPocketImpl
 

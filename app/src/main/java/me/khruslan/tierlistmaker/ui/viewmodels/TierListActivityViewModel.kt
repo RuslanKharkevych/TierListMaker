@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.runBlocking
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
-import me.khruslan.tierlistmaker.data.repositories.db.PaperRepository
+import me.khruslan.tierlistmaker.data.providers.db.DatabaseHelper
 import me.khruslan.tierlistmaker.ui.screens.tierlist.TierListActivity
 import timber.log.Timber
 import javax.inject.Inject
@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TierListActivityViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val paperRepository: PaperRepository
+    private val databaseHelper: DatabaseHelper
 ) : ViewModel() {
 
     /**
@@ -47,7 +47,7 @@ class TierListActivityViewModel @Inject constructor(
      */
     fun saveTierList() {
         runBlocking {
-            paperRepository.saveTierList(tierList)
+            databaseHelper.saveTierList(tierList)
         }
     }
 }
