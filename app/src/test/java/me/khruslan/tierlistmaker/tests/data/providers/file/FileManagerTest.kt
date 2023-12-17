@@ -13,6 +13,7 @@ import me.khruslan.tierlistmaker.data.providers.file.FileManager
 import me.khruslan.tierlistmaker.data.providers.file.FileManagerImpl
 import me.khruslan.tierlistmaker.fakes.data.providers.dispatchers.FakeDispatcherProvider
 import me.khruslan.tierlistmaker.fakes.data.providers.file.FakeImageCompressor
+import me.khruslan.tierlistmaker.fakes.utils.performance.NoOpPerformanceService
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -40,9 +41,13 @@ class FileManagerTest {
     @Before
     fun init() {
         MockKAnnotations.init(this)
-        val fakeDispatcherProvider = FakeDispatcherProvider()
         fakeImageCompressor = FakeImageCompressor()
-        fileManager = FileManagerImpl(mockContext, fakeImageCompressor, fakeDispatcherProvider)
+        fileManager = FileManagerImpl(
+            context = mockContext,
+            imageCompressor = fakeImageCompressor,
+            dispatcherProvider = FakeDispatcherProvider(),
+            performanceService = NoOpPerformanceService()
+        )
     }
 
     @Test

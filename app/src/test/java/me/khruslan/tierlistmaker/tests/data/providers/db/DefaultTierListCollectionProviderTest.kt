@@ -9,6 +9,7 @@ import me.khruslan.tierlistmaker.data.providers.db.DefaultTierListCollectionProv
 import me.khruslan.tierlistmaker.data.providers.db.DefaultTierListCollectionProviderImpl
 import me.khruslan.tierlistmaker.fakes.android.MockAssetManager
 import me.khruslan.tierlistmaker.fakes.data.providers.db.FakePreferencesHelper
+import me.khruslan.tierlistmaker.fakes.utils.performance.NoOpPerformanceService
 import me.khruslan.tierlistmaker.utils.assertAll
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -32,7 +33,8 @@ class DefaultTierListCollectionProviderTest {
         fakePreferencesHelper = FakePreferencesHelper()
         defaultTierListCollectionProvider = DefaultTierListCollectionProviderImpl(
             context = mockContext,
-            preferencesHelper = fakePreferencesHelper
+            preferencesHelper = fakePreferencesHelper,
+            performanceService = NoOpPerformanceService()
         )
     }
 

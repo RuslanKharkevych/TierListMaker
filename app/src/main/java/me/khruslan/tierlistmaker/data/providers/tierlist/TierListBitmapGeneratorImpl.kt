@@ -2,7 +2,14 @@ package me.khruslan.tierlistmaker.data.providers.tierlist
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.PointF
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
+import android.graphics.Typeface
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
@@ -21,6 +28,8 @@ import me.khruslan.tierlistmaker.data.providers.db.PreferencesHelper
 import me.khruslan.tierlistmaker.data.providers.dispatchers.DispatcherProvider
 import me.khruslan.tierlistmaker.utils.TIER_IMAGE_WIDTH_FRACTION
 import me.khruslan.tierlistmaker.utils.displayWidthPixels
+import me.khruslan.tierlistmaker.utils.performace.GenerateBitmapFromTierListTrace
+import me.khruslan.tierlistmaker.utils.performace.PerformanceService
 import me.shouheng.compress.utils.size
 import timber.log.Timber
 import javax.inject.Inject
@@ -32,11 +41,13 @@ import kotlin.math.max
  * @property context application context.
  * @property dispatcherProvider provider of [CoroutineDispatcher].
  * @property preferencesHelper helper class for accessing [SharedPreferences].
+ * @property performanceService service that starts performance traces.
  */
 class TierListBitmapGeneratorImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val dispatcherProvider: DispatcherProvider,
-    private val preferencesHelper: PreferencesHelper
+    private val preferencesHelper: PreferencesHelper,
+    private val performanceService: PerformanceService
 ) : TierListBitmapGenerator {
 
     /**
@@ -73,6 +84,8 @@ class TierListBitmapGeneratorImpl @Inject constructor(
 
     override suspend fun generate(tierList: TierList): Bitmap {
         Timber.i("Generating bitmap from the tier list: $tierList")
+        val trace = performanceService.startTrace(GenerateBitmapFromTierListTrace.NAME)
+
         return withContext(dispatcherProvider.io) {
             val nightModeEnabled = preferencesHelper.nightModeEnabled
             val bitmap = createBackgroundBitmap(tierList)
@@ -110,7 +123,10 @@ class TierListBitmapGeneratorImpl @Inject constructor(
                 }
             }
 
+            trace.putMetric(GenerateBitmapFromTierListTrace.METRIC_BITMAP_SIZE, bitmap.size())
+            trace.stop()
             Timber.i("Generated bitmap. Size: ${bitmap.size()} bytes")
+
             bitmap
         }
     }

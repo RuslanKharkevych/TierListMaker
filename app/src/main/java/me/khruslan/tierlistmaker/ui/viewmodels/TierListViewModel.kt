@@ -2,7 +2,12 @@ package me.khruslan.tierlistmaker.ui.viewmodels
 
 import android.app.Application
 import android.net.Uri
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.hadilq.liveevent.LiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -10,8 +15,21 @@ import kotlinx.coroutines.launch
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.models.drag.DragData
 import me.khruslan.tierlistmaker.data.models.drag.ImageDragData
-import me.khruslan.tierlistmaker.data.models.drag.effects.*
-import me.khruslan.tierlistmaker.data.models.tierlist.*
+import me.khruslan.tierlistmaker.data.models.drag.effects.DragEffect
+import me.khruslan.tierlistmaker.data.models.drag.effects.HighlightEffect
+import me.khruslan.tierlistmaker.data.models.drag.effects.InsertEffect
+import me.khruslan.tierlistmaker.data.models.drag.effects.RemoveEffect
+import me.khruslan.tierlistmaker.data.models.drag.effects.UpdateEffect
+import me.khruslan.tierlistmaker.data.models.tierlist.BacklogImagesAdded
+import me.khruslan.tierlistmaker.data.models.tierlist.ImageSizeUpdated
+import me.khruslan.tierlistmaker.data.models.tierlist.Tier
+import me.khruslan.tierlistmaker.data.models.tierlist.TierInserted
+import me.khruslan.tierlistmaker.data.models.tierlist.TierList
+import me.khruslan.tierlistmaker.data.models.tierlist.TierListChanged
+import me.khruslan.tierlistmaker.data.models.tierlist.TierListEvent
+import me.khruslan.tierlistmaker.data.models.tierlist.TierListExportError
+import me.khruslan.tierlistmaker.data.models.tierlist.TierListReadyToShare
+import me.khruslan.tierlistmaker.data.models.tierlist.TierListReadyToView
 import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
 import me.khruslan.tierlistmaker.data.models.tierlist.image.ResourceImage
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
@@ -23,6 +41,8 @@ import me.khruslan.tierlistmaker.ui.models.LoadingProgress
 import me.khruslan.tierlistmaker.ui.screens.tierlist.TierListFragment
 import me.khruslan.tierlistmaker.utils.displayWidthPixels
 import me.khruslan.tierlistmaker.utils.drag.DragPocket
+import me.khruslan.tierlistmaker.utils.performace.PerformanceService
+import me.khruslan.tierlistmaker.utils.performace.SaveImagesTrace
 import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
@@ -35,6 +55,7 @@ import javax.inject.Inject
  * @property fileManager manager for saving image files.
  * @property tierListProcessor processor of drag effects.
  * @property tierStyleProvider provider of tier styles.
+ * @property performanceService service that starts performance traces.
  * @param application [Application] instance.
  */
 @HiltViewModel
@@ -45,7 +66,8 @@ class TierListViewModel @Inject constructor(
     private val fileManager: FileManager,
     private val tierListProcessor: TierListProcessor,
     private val tierStyleProvider: TierStyleProvider,
-    private val tierListBitmapGenerator: TierListBitmapGenerator
+    private val tierListBitmapGenerator: TierListBitmapGenerator,
+    private val performanceService: PerformanceService
 ) : AndroidViewModel(application) {
 
     /**
@@ -182,6 +204,7 @@ class TierListViewModel @Inject constructor(
      */
     fun saveImages(imageUris: List<Uri>) {
         viewModelScope.launch {
+            val trace = performanceService.startTrace(SaveImagesTrace.NAME)
             val images = imageUris.mapIndexed { index, uri ->
                 val file = fileManager.createImageFileFromUri(uri)
                 createImage(file).also {
@@ -194,6 +217,8 @@ class TierListViewModel @Inject constructor(
                 }
             }
 
+            trace.putMetric(SaveImagesTrace.METRIC_COUNT, images.size)
+            trace.stop()
             insertImagesToBacklog(images)
             _loadingProgressLiveData.postValue(null)
         }

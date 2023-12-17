@@ -46,6 +46,7 @@ import me.khruslan.tierlistmaker.fakes.data.providers.tierlist.FakeTierListBitma
 import me.khruslan.tierlistmaker.fakes.data.providers.tierlist.FakeTierListProcessor
 import me.khruslan.tierlistmaker.fakes.data.providers.tierlist.tier.FakeTierStyleProvider
 import me.khruslan.tierlistmaker.fakes.utils.drag.FakeDragPocket
+import me.khruslan.tierlistmaker.fakes.utils.performance.NoOpPerformanceService
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
 import me.khruslan.tierlistmaker.ui.models.LoadingProgress
 import me.khruslan.tierlistmaker.ui.viewmodels.TierListViewModel
@@ -107,7 +108,8 @@ class TierListViewModelTest {
             fileManager = fakeFileManager,
             tierListProcessor = fakeTierListProcessor,
             tierStyleProvider = fakeTierStyleProvider,
-            tierListBitmapGenerator = fakeTierListBitmapGenerator
+            tierListBitmapGenerator = fakeTierListBitmapGenerator,
+            performanceService = NoOpPerformanceService()
         )
     }
 

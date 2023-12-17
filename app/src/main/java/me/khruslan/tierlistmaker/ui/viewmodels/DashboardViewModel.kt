@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.hadilq.liveevent.LiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
@@ -18,6 +19,7 @@ import me.khruslan.tierlistmaker.data.providers.tierlist.TierListCreator
 import me.khruslan.tierlistmaker.ui.models.ListState
 import me.khruslan.tierlistmaker.ui.navigation.TierListResultException
 import me.khruslan.tierlistmaker.ui.screens.home.DashboardFragment
+import me.khruslan.tierlistmaker.ui.screens.home.HomeActivity
 import me.khruslan.tierlistmaker.utils.swap
 import timber.log.Timber
 import javax.inject.Inject
@@ -194,6 +196,7 @@ class DashboardViewModel @Inject constructor(
     private fun loadTierListPreviews() {
         Timber.i("Loading tier list previews")
         viewModelScope.launch {
+            delay(HomeActivity.SPLASH_SCREEN_EXIT_ANIM_DURATION)
             tierLists = loadTierLists()
             tierListPreviews = tierLists.map { it.preview }.toMutableList()
             _tierListPreviewsLiveData.value = tierListPreviews

@@ -6,6 +6,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.data.providers.dispatchers.DispatcherProvider
+import me.khruslan.tierlistmaker.utils.performace.PerformanceService
+import me.khruslan.tierlistmaker.utils.performace.ReadTierListsTrace
+import me.khruslan.tierlistmaker.utils.performace.UpdateTierListsTrace
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -16,10 +19,12 @@ import javax.inject.Inject
  *
  * @property dispatcherProvider provider of [CoroutineDispatcher] for running suspend functions.
  * @property defaultTierListCollectionProvider provider of the default tier list collection.
+ * @property performanceService service that starts performance traces.
  */
 class DatabaseHelperImpl @Inject constructor(
     private val dispatcherProvider: DispatcherProvider,
-    private val defaultTierListCollectionProvider: DefaultTierListCollectionProvider
+    private val defaultTierListCollectionProvider: DefaultTierListCollectionProvider,
+    private val performanceService: PerformanceService
 ) : DatabaseHelper {
 
     /**
@@ -30,38 +35,53 @@ class DatabaseHelperImpl @Inject constructor(
         private const val KEY_TIER_LISTS = "tier-lists"
     }
 
+    /**
+     * Whether the default tier list collection has already been provided.
+     */
+    private val defaultTierListCollectionProvided
+        get() = defaultTierListCollectionProvider.collectionProvided
+
     override suspend fun getTierLists(): MutableList<TierList>? {
-        Timber.i("Reading tier lists from database")
-        var tierLists = readTierLists()
+        return withContext(dispatcherProvider.io) {
+            Timber.i("Reading tier lists from database")
+            var tierLists = readTierLists()
 
-        if (tierLists?.isEmpty() == true && !defaultTierListCollectionProvider.collectionProvided) {
-            updateTierLists(
-                tierLists = defaultTierListCollectionProvider.provideCollection(),
-                transactionTag = "getTierLists"
-            )
-            tierLists = readTierLists()
+            if (tierLists?.isEmpty() == true && !defaultTierListCollectionProvided) {
+                updateTierLists(
+                    tierLists = defaultTierListCollectionProvider.provideCollection(),
+                    transactionTag = "getTierLists"
+                )
+                tierLists = readTierLists()
+            }
+
+            tierLists
         }
-
-        return tierLists
     }
 
-    private suspend fun readTierLists(): MutableList<TierList>? {
-        return withContext<MutableList<TierList>?>(dispatcherProvider.io) {
-            executeTransaction(
-                transaction = {
-                    Paper.book().read(KEY_TIER_LISTS, mutableListOf())
-                },
-                onError = { error, attempt ->
-                    logError(
-                        transactionTag = "getTierLists",
-                        attempt = attempt,
-                        cause = error
-                    )
-                }
-            )
-        }.also { tierLists ->
-            Timber.i("Read tier lists from database: $tierLists")
-        }
+    private fun readTierLists(): MutableList<TierList>? {
+        val trace = performanceService.startTrace(ReadTierListsTrace.NAME)
+        trace.putMetric(ReadTierListsTrace.METRIC_ATTEMPTS, 1L)
+
+        val tierLists = executeTransaction<MutableList<TierList>?>(
+            transaction = {
+                Paper.book().read(KEY_TIER_LISTS, mutableListOf())
+            },
+            onError = { error, attempt ->
+                trace.putMetric(ReadTierListsTrace.METRIC_ATTEMPTS, attempt)
+                logError(
+                    transactionTag = "getTierLists",
+                    attempt = attempt,
+                    cause = error
+                )
+            }
+        )
+
+        trace.putAttribute(ReadTierListsTrace.ATTR_IS_SUCCESSFUL, tierLists != null)
+        if (tierLists != null) trace.putMetric(ReadTierListsTrace.METRIC_COUNT, tierLists.size)
+        trace.stop()
+        Timber.i("Read tier lists from database: $tierLists")
+
+        return tierLists
     }
 
     override suspend fun saveTierList(tierList: TierList): Boolean {
@@ -121,11 +141,16 @@ class DatabaseHelperImpl @Inject constructor(
      */
     private fun updateTierLists(tierLists: MutableList<TierList>, transactionTag: String): Boolean {
         Timber.i("Updating tier lists in database. Transaction tag: $transactionTag")
+        val trace = performanceService.startTrace(UpdateTierListsTrace.NAME)
+        trace.putMetric(UpdateTierListsTrace.METRIC_COUNT, tierLists.size)
+        trace.putMetric(UpdateTierListsTrace.METRIC_ATTEMPTS, 1L)
+
         val result = executeTransaction(
             transaction = {
                 Paper.book().write(KEY_TIER_LISTS, tierLists)
             },
             onError = { error, attempt ->
+                trace.putMetric(UpdateTierListsTrace.METRIC_ATTEMPTS, attempt)
                 logError(
                     transactionTag = transactionTag,
                     attempt = attempt,
@@ -134,9 +159,12 @@ class DatabaseHelperImpl @Inject constructor(
             }
         )
 
-        return (result != null).also { success ->
-            Timber.i("Finished update transaction. Success: $success")
-        }
+        val isSuccessful = result != null
+        trace.putAttribute(UpdateTierListsTrace.ATTR_IS_SUCCESSFUL, isSuccessful)
+        trace.stop()
+        Timber.i("Finished update transaction. Success: $isSuccessful")
+
+        return isSuccessful
     }
 
     /**
@@ -177,7 +205,7 @@ class DatabaseHelperImpl @Inject constructor(
      */
     private fun logError(message: String) {
         val exception = PaperException(message)
-        Timber.e(exception,"Database error")
+        Timber.e(exception, "Database error")
     }
 
     /**

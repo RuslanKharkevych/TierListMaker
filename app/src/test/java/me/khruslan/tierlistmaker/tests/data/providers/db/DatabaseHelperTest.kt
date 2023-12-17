@@ -14,6 +14,7 @@ import me.khruslan.tierlistmaker.data.providers.db.DatabaseHelper
 import me.khruslan.tierlistmaker.data.providers.db.DatabaseHelperImpl
 import me.khruslan.tierlistmaker.fakes.data.providers.db.FakeDefaultTierListCollectionProvider
 import me.khruslan.tierlistmaker.fakes.data.providers.dispatchers.FakeDispatcherProvider
+import me.khruslan.tierlistmaker.fakes.utils.performance.NoOpPerformanceService
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
 import org.junit.*
 import org.junit.Assert.*
@@ -149,7 +150,8 @@ class DatabaseHelperTest {
         fakeDefaultTierListCollectionProvider = FakeDefaultTierListCollectionProvider()
         databaseHelper = DatabaseHelperImpl(
             dispatcherProvider = dispatcherProvider,
-            defaultTierListCollectionProvider = fakeDefaultTierListCollectionProvider
+            defaultTierListCollectionProvider = fakeDefaultTierListCollectionProvider,
+            performanceService = NoOpPerformanceService()
         )
     }
 

@@ -2,14 +2,25 @@ package me.khruslan.tierlistmaker.tests.data.providers.file
 
 import android.content.Context
 import android.net.Uri
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.mockk
+import io.mockk.mockkConstructor
+import io.mockk.mockkObject
+import io.mockk.mockkStatic
+import io.mockk.unmockkConstructor
+import io.mockk.unmockkObject
+import io.mockk.unmockkStatic
+import io.mockk.verifyAll
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import me.khruslan.tierlistmaker.data.providers.file.ImageCompressor
 import me.khruslan.tierlistmaker.data.providers.file.ImageCompressorImpl
 import me.khruslan.tierlistmaker.fakes.data.providers.db.FakePreferencesHelper
 import me.khruslan.tierlistmaker.fakes.data.providers.dispatchers.FakeDispatcherProvider
+import me.khruslan.tierlistmaker.fakes.utils.performance.NoOpPerformanceService
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
 import me.khruslan.tierlistmaker.utils.displayWidthPixels
 import me.shouheng.compress.Compress
@@ -67,7 +78,8 @@ class ImageCompressorTest {
         imageCompressor = ImageCompressorImpl(
             context = mockContext,
             dispatcherProvider = FakeDispatcherProvider(),
-            preferencesHelper = fakePreferencesHelper
+            preferencesHelper = fakePreferencesHelper,
+            performanceService = NoOpPerformanceService()
         )
     }
 
@@ -93,6 +105,7 @@ class ImageCompressorTest {
     @Test
     fun `Returns file when compression succeeds`() = runTest {
         val expectedFile: File = mockk()
+        every { expectedFile.length() } returns 0
         coEvery { mockCompressor.get(any()) } returns expectedFile
         val actualFile = imageCompressor.compress(uri = mockUri, targetDir = dummyTargetDir)
 

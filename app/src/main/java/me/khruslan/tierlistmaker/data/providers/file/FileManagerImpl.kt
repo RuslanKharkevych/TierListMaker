@@ -11,6 +11,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.khruslan.tierlistmaker.BuildConfig
 import me.khruslan.tierlistmaker.data.providers.dispatchers.DispatcherProvider
+import me.khruslan.tierlistmaker.utils.performace.PerformanceService
+import me.khruslan.tierlistmaker.utils.performace.WriteBitmapToFileTrace
+import me.shouheng.compress.utils.size
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
@@ -22,11 +25,13 @@ import javax.inject.Inject
  * @property context application context.
  * @property imageCompressor compressor of image files.
  * @property dispatcherProvider provider of [CoroutineDispatcher] for running suspend functions.
+ * @property performanceService service that starts performance traces.
  */
 class FileManagerImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val imageCompressor: ImageCompressor,
-    private val dispatcherProvider: DispatcherProvider
+    private val dispatcherProvider: DispatcherProvider,
+    private val performanceService: PerformanceService
 ) : FileManager {
 
     /**
@@ -92,15 +97,26 @@ class FileManagerImpl @Inject constructor(
      * @param file the file to which the bitmap should be written.
      */
     private fun Bitmap.writeToFile(file: File) {
+        val trace = performanceService.startTrace(WriteBitmapToFileTrace.NAME)
+        trace.putMetric(WriteBitmapToFileTrace.METRIC_BITMAP_SIZE, size())
+
         runCatching {
             FileOutputStream(file).use { stream ->
                 compress(Bitmap.CompressFormat.JPEG, BITMAP_QUALITY, stream)
             }
-        }.onSuccess { result ->
-            if (!result) throw FileManagerException("Unable to compress bitmap")
+        }.onSuccess { isSuccessful ->
+            trace.putAttribute(WriteBitmapToFileTrace.ATTR_IS_SUCCESSFUL, isSuccessful)
+            if (isSuccessful) {
+                trace.putMetric(WriteBitmapToFileTrace.METRIC_FILE_SIZE, file.length())
+            } else {
+                throw FileManagerException("Unable to compress bitmap")
+            }
         }.onFailure { throwable ->
+            trace.putAttribute(WriteBitmapToFileTrace.ATTR_IS_SUCCESSFUL, false)
             throw FileManagerException("Unable to write bitmap to file $file", throwable)
         }
+
+        trace.stop()
     }
 
     /**

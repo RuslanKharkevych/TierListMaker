@@ -10,6 +10,8 @@ import me.khruslan.tierlistmaker.data.providers.db.PreferencesHelper
 import me.khruslan.tierlistmaker.data.providers.dispatchers.DispatcherProvider
 import me.khruslan.tierlistmaker.utils.TIER_IMAGE_WIDTH_FRACTION
 import me.khruslan.tierlistmaker.utils.displayWidthPixels
+import me.khruslan.tierlistmaker.utils.performace.CompressImageTrace
+import me.khruslan.tierlistmaker.utils.performace.PerformanceService
 import me.shouheng.compress.Compress
 import me.shouheng.compress.concrete
 import me.shouheng.compress.strategy.config.ScaleMode
@@ -26,7 +28,8 @@ import javax.inject.Inject
 class ImageCompressorImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val dispatcherProvider: DispatcherProvider,
-    private val preferencesHelper: PreferencesHelper
+    private val preferencesHelper: PreferencesHelper,
+    private val performanceService: PerformanceService
 ) : ImageCompressor {
 
     /**
@@ -37,6 +40,7 @@ class ImageCompressorImpl @Inject constructor(
     }
 
     override suspend fun compress(uri: Uri, targetDir: String): File {
+        val trace = performanceService.startTrace(CompressImageTrace.NAME)
         return try {
             Compress.with(context, uri)
                 .setQuality(getImageQuality())
@@ -48,8 +52,15 @@ class ImageCompressorImpl @Inject constructor(
                     withIgnoreIfSmaller(true)
                 }
                 .get(dispatcherProvider.io)
+                .also { file ->
+                    trace.putAttribute(CompressImageTrace.ATTR_IS_SUCCESSFUL, true)
+                    trace.putMetric(CompressImageTrace.METRIC_FILE_SIZE, file.length())
+                }
         } catch (e: Exception) {
+            trace.putAttribute(CompressImageTrace.ATTR_IS_SUCCESSFUL, false)
             throw ImageCompressorException(uri, targetDir, e)
+        } finally {
+            trace.stop()
         }
     }
 

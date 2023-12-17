@@ -7,6 +7,8 @@ import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.models.tierlist.Tier
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
+import me.khruslan.tierlistmaker.utils.performace.PerformanceService
+import me.khruslan.tierlistmaker.utils.performace.ProvideDefaultTierListCollectionTrace
 import timber.log.Timber
 import java.io.IOException
 import java.util.UUID
@@ -17,10 +19,12 @@ import javax.inject.Inject
  *
  * @property context context for reading resources and assets.
  * @property preferencesHelper helper for managing [collectionProvided] flag.
+ * @property performanceService service that starts performance traces.
  */
 class DefaultTierListCollectionProviderImpl @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val preferencesHelper: PreferencesHelper
+    private val preferencesHelper: PreferencesHelper,
+    private val performanceService: PerformanceService
 ) : DefaultTierListCollectionProvider {
 
     /**
@@ -46,8 +50,14 @@ class DefaultTierListCollectionProviderImpl @Inject constructor(
         get() = preferencesHelper.defaultTierListCollectionProvided
 
     override fun provideCollection(): MutableList<TierList> {
+        val trace = performanceService.startTrace(ProvideDefaultTierListCollectionTrace.NAME)
         preferencesHelper.markDefaultTierListCollectionAsProvided()
-        return tierListParamsList.mapNotNull(::buildTierList).toMutableList()
+
+        val collection =  tierListParamsList.mapNotNull(::buildTierList).toMutableList()
+        trace.putMetric(ProvideDefaultTierListCollectionTrace.METRIC_COUNT, collection.size)
+        trace.stop()
+
+        return collection
     }
 
     /**

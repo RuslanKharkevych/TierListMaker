@@ -33,9 +33,9 @@ class HomeActivity : AppCompatActivity() {
      * Companion object of [HomeActivity] that stores keys for saving and restoring view state and
      * other constants.
      */
-    private companion object {
+    companion object {
         private const val KEY_DRAWER_OPENED = "isDrawerOpened"
-        private const val SPLASH_SCREEN_EXIT_ANIM_DURATION = 200L
+        const val SPLASH_SCREEN_EXIT_ANIM_DURATION = 400L
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

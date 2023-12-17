@@ -8,6 +8,8 @@ import me.khruslan.tierlistmaker.data.providers.dispatchers.DispatcherProvider
 import me.khruslan.tierlistmaker.data.providers.dispatchers.DispatcherProviderImpl
 import me.khruslan.tierlistmaker.utils.log.analytics.AnalyticsService
 import me.khruslan.tierlistmaker.utils.log.analytics.AnalyticsServiceImpl
+import me.khruslan.tierlistmaker.utils.performace.PerformanceService
+import me.khruslan.tierlistmaker.utils.performace.PerformanceServiceImpl
 import me.khruslan.tierlistmaker.utils.theme.ThemeManager
 import me.khruslan.tierlistmaker.utils.theme.ThemeManagerImpl
 import javax.inject.Singleton
@@ -29,4 +31,10 @@ abstract class ApplicationModule {
     @Binds
     @Singleton
     abstract fun bindThemeManager(themeManagerImpl: ThemeManagerImpl): ThemeManager
+
+    @Binds
+    @Singleton
+    abstract fun bindPerformanceService(
+        performanceServiceImpl: PerformanceServiceImpl
+    ): PerformanceService
 }
