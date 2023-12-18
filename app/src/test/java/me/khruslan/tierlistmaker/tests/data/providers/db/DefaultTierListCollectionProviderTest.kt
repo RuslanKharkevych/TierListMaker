@@ -24,8 +24,8 @@ class DefaultTierListCollectionProviderTest {
     private lateinit var fakePreferencesHelper: FakePreferencesHelper
     private lateinit var defaultTierListCollectionProvider: DefaultTierListCollectionProvider
 
-    private val tierListTitles = listOf("Fruits", "Animals", "Sports", "Fast food")
-    private val tierListZoomValues = listOf(6, 5, 5, 4)
+    private val tierListTitles = listOf("Fruits", "Animals", "Sports", "Fast food", "Zodiac signs")
+    private val tierListZoomValues = listOf(6, 5, 5, 4, 3)
 
     @Before
     fun init() {
