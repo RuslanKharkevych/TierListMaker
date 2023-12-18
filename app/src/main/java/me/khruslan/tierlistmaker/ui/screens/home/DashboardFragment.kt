@@ -30,6 +30,7 @@ import me.khruslan.tierlistmaker.ui.viewmodels.DashboardViewModel
 import me.khruslan.tierlistmaker.utils.enableReordering
 import me.khruslan.tierlistmaker.utils.log.navigation.setLogTag
 import me.khruslan.tierlistmaker.utils.view.FeedbackUtils
+import me.khruslan.tierlistmaker.utils.view.setOnThrottledClickListener
 import timber.log.Timber
 
 /**
@@ -91,10 +92,10 @@ class DashboardFragment : Fragment() {
     }
 
     /**
-     * Sets [View.OnClickListener] to the "Add new list" button.
+     * Sets click listener to the "Add new list" button.
      */
     private fun initAddNewListButton() {
-        binding.btnAddNewList.setOnClickListener {
+        binding.btnAddNewList.setOnThrottledClickListener {
             Timber.i("Add new list button clicked")
             showEnterTierListTitleDialog()
         }

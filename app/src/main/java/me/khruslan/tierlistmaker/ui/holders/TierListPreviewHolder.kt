@@ -9,6 +9,7 @@ import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.databinding.ItemTierListPreviewBinding
 import me.khruslan.tierlistmaker.utils.loadTierListImage
+import me.khruslan.tierlistmaker.utils.view.setOnThrottledClickListener
 
 /**
  * [RecyclerView.ViewHolder] implementation for the tier list preview.
@@ -22,7 +23,7 @@ class TierListPreviewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     init {
-        binding.root.setOnClickListener {
+        binding.root.setOnThrottledClickListener {
             onClick(adapterPosition)
         }
     }
