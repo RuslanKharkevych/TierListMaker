@@ -43,6 +43,7 @@ class DefaultTierListCollectionProviderImpl @Inject constructor(
             TierListParams(R.string.tier_list_fruits, "fruits", 6),
             TierListParams(R.string.tier_list_animals, "animals", 5),
             TierListParams(R.string.tier_list_sports, "sports", 5),
+            TierListParams(R.string.tier_list_flowers, "flowers", 5),
             TierListParams(R.string.tier_list_fast_food, "fast_food", 4),
             TierListParams(R.string.tier_list_zodiac_signs, "zodiac_signs", 3)
         )

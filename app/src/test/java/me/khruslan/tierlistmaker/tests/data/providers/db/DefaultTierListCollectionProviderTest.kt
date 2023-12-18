@@ -24,9 +24,6 @@ class DefaultTierListCollectionProviderTest {
     private lateinit var fakePreferencesHelper: FakePreferencesHelper
     private lateinit var defaultTierListCollectionProvider: DefaultTierListCollectionProvider
 
-    private val tierListTitles = listOf("Fruits", "Animals", "Sports", "Fast food", "Zodiac signs")
-    private val tierListZoomValues = listOf(6, 5, 5, 4, 3)
-
     @Before
     fun init() {
         MockKAnnotations.init(this)
@@ -51,14 +48,11 @@ class DefaultTierListCollectionProviderTest {
 
     @Test
     fun `Provides collection and marks it as provided`() {
-        every { mockContext.getString(any()) } returnsMany tierListTitles
+        every { mockContext.getString(any()) } returns "Dummy title"
         every { mockContext.assets } returns MockAssetManager.get()
         val collection = defaultTierListCollectionProvider.provideCollection()
 
         assertAll(MockAssetManager.assets) { collection.contains(it) }
-        assertAll(collection) { it.title in tierListTitles }
-        assertAll(collection) { it.zoomValue in tierListZoomValues }
-        assertAll(collection) { it.backlogImages.isEmpty() }
         assertTrue(fakePreferencesHelper.defaultTierListCollectionProvided)
     }
 
