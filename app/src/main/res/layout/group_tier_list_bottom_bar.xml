@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="?attr/colorSurface">
 
-    <me.khruslan.tierlistmaker.utils.view.TooltipImageButton
+    <me.khruslan.tierlistmaker.presentation.views.TooltipImageButton
         android:id="@+id/btn_add_new_tier"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         app:tint="@color/bottom_bar_button_color"
         tools:tint="@color/grey800_dark" />
 
-    <me.khruslan.tierlistmaker.utils.view.TooltipImageButton
+    <me.khruslan.tierlistmaker.presentation.views.TooltipImageButton
         android:id="@+id/btn_add_new_image"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
         app:tint="@color/bottom_bar_button_color"
         tools:tint="@color/grey800_dark" />
 
-    <me.khruslan.tierlistmaker.utils.view.TooltipImageButton
+    <me.khruslan.tierlistmaker.presentation.views.TooltipImageButton
         android:id="@+id/btn_zoom_out"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
         app:tint="@color/bottom_bar_button_color"
         tools:tint="@color/grey800_dark" />
 
-    <me.khruslan.tierlistmaker.utils.view.TooltipImageButton
+    <me.khruslan.tierlistmaker.presentation.views.TooltipImageButton
         android:id="@+id/btn_zoom_in"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
         app:tint="@color/bottom_bar_button_color"
         tools:tint="@color/grey800_dark" />
 
-    <me.khruslan.tierlistmaker.utils.view.TooltipImageButton
+    <me.khruslan.tierlistmaker.presentation.views.TooltipImageButton
         android:id="@+id/btn_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
         app:tint="@color/bottom_bar_button_color"
         tools:tint="@color/grey800_dark" />
 
-    <me.khruslan.tierlistmaker.utils.view.TooltipImageButton
+    <me.khruslan.tierlistmaker.presentation.views.TooltipImageButton
         android:id="@+id/btn_share"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

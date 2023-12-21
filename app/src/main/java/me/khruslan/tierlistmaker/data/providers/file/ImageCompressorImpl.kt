@@ -6,12 +6,12 @@ import android.net.Uri
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import me.khruslan.tierlistmaker.data.providers.db.PreferencesHelper
+import me.khruslan.tierlistmaker.data.providers.database.PreferencesHelper
 import me.khruslan.tierlistmaker.data.providers.dispatchers.DispatcherProvider
-import me.khruslan.tierlistmaker.utils.TIER_IMAGE_WIDTH_FRACTION
-import me.khruslan.tierlistmaker.utils.displayWidthPixels
-import me.khruslan.tierlistmaker.utils.performace.CompressImageTrace
-import me.khruslan.tierlistmaker.utils.performace.PerformanceService
+import me.khruslan.tierlistmaker.util.TIER_IMAGE_WIDTH_FRACTION
+import me.khruslan.tierlistmaker.util.displayWidthPixels
+import me.khruslan.tierlistmaker.util.performace.CompressImageTrace
+import me.khruslan.tierlistmaker.util.performace.PerformanceService
 import me.shouheng.compress.Compress
 import me.shouheng.compress.concrete
 import me.shouheng.compress.strategy.config.ScaleMode

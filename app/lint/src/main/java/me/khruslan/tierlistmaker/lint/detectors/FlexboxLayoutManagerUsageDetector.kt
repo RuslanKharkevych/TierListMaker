@@ -32,9 +32,9 @@ class FlexboxLayoutManagerUsageDetector : Detector(), SourceCodeScanner {
         private const val FLEXBOX_LAYOUT_MANAGER_CLASS_NAME =
             "com.google.android.flexbox.FlexboxLayoutManager"
         private const val FLEX_LAYOUT_MANAGER_CLASS_NAME =
-            "me.khruslan.tierlistmaker.utils.view.FlexLayoutManager"
+            "me.khruslan.tierlistmaker.presentation.utils.recyclerview.FlexLayoutManager"
         private const val FLEX_LAYOUT_MANAGER_FILE_PATH =
-            "src/main/java/me/khruslan/tierlistmaker/utils/view/FlexLayoutManager.kt"
+            "src/main/java/me/khruslan/tierlistmaker/presentation/utils/recyclerview/FlexLayoutManager.kt"
 
         private const val REPORT_MESSAGE =
             "FlexboxLayoutManager usage is prohibited. Use FlexLayoutManager"

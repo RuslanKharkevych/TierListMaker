@@ -4,8 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import me.khruslan.tierlistmaker.data.models.tierlist.Tier
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
-import me.khruslan.tierlistmaker.fakes.data.providers.db.FakeDatabaseHelper
-import me.khruslan.tierlistmaker.ui.viewmodels.TierListActivityViewModel
+import me.khruslan.tierlistmaker.fakes.data.providers.database.FakeDatabaseHelper
+import me.khruslan.tierlistmaker.presentation.viewmodels.TierListActivityViewModel
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Before

@@ -5,10 +5,10 @@ import android.content.res.Configuration
 import android.os.StrictMode
 import dagger.hilt.android.HiltAndroidApp
 import io.paperdb.Paper
-import me.khruslan.tierlistmaker.utils.log.navigation.ActivityLifecycleLogger
-import me.khruslan.tierlistmaker.utils.log.timber.DebugTimberTree
-import me.khruslan.tierlistmaker.utils.log.timber.ReleaseTimberTree
-import me.khruslan.tierlistmaker.utils.theme.ThemeManager
+import me.khruslan.tierlistmaker.util.log.navigation.ActivityLifecycleLogger
+import me.khruslan.tierlistmaker.util.log.timber.DebugTimberTree
+import me.khruslan.tierlistmaker.util.log.timber.ReleaseTimberTree
+import me.khruslan.tierlistmaker.presentation.utils.theme.ThemeManager
 import timber.log.Timber
 import javax.inject.Inject
 

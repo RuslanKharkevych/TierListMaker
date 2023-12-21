@@ -1,7 +1,7 @@
 package me.khruslan.tierlistmaker.tests.utils
 
-import me.khruslan.tierlistmaker.utils.swap
-import me.khruslan.tierlistmaker.utils.updateLast
+import me.khruslan.tierlistmaker.util.swap
+import me.khruslan.tierlistmaker.util.updateLast
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

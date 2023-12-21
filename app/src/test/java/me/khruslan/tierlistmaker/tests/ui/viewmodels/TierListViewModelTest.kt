@@ -42,18 +42,18 @@ import me.khruslan.tierlistmaker.data.models.tierlist.TierStyle
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
 import me.khruslan.tierlistmaker.data.providers.file.FileManager
 import me.khruslan.tierlistmaker.fakes.data.providers.file.FakeFileManager
-import me.khruslan.tierlistmaker.fakes.data.providers.tierlist.FakeTierListBitmapGenerator
+import me.khruslan.tierlistmaker.fakes.presentation.utils.tierlist.FakeTierListBitmapGenerator
 import me.khruslan.tierlistmaker.fakes.data.providers.tierlist.FakeTierListProcessor
 import me.khruslan.tierlistmaker.fakes.data.providers.tierlist.tier.FakeTierStyleProvider
-import me.khruslan.tierlistmaker.fakes.utils.drag.FakeDragPocket
+import me.khruslan.tierlistmaker.fakes.data.providers.drag.FakeDragPocket
 import me.khruslan.tierlistmaker.fakes.utils.performance.NoOpPerformanceService
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
-import me.khruslan.tierlistmaker.ui.models.LoadingProgress
-import me.khruslan.tierlistmaker.ui.viewmodels.TierListViewModel
-import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
+import me.khruslan.tierlistmaker.presentation.models.LoadingProgress
+import me.khruslan.tierlistmaker.presentation.viewmodels.TierListViewModel
+import me.khruslan.tierlistmaker.util.BACKLOG_TIER_POSITION
 import me.khruslan.tierlistmaker.utils.awaitValue
 import me.khruslan.tierlistmaker.utils.awaitValues
-import me.khruslan.tierlistmaker.utils.displayWidthPixels
+import me.khruslan.tierlistmaker.util.displayWidthPixels
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertThrows
@@ -67,7 +67,7 @@ class TierListViewModelTest {
 
     private companion object {
         private const val KEY_TIER_LIST = "tierList"
-        private const val EXTENSIONS_PACKAGE = "me.khruslan.tierlistmaker.utils.ExtensionsKt"
+        private const val EXTENSIONS_PACKAGE = "me.khruslan.tierlistmaker.util.ExtensionsKt"
     }
 
     @get:Rule

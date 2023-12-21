@@ -1,6 +1,6 @@
 package me.khruslan.tierlistmaker.fakes.utils.performance
 
-import me.khruslan.tierlistmaker.utils.performace.PerformanceTrace
+import me.khruslan.tierlistmaker.util.performace.PerformanceTrace
 
 class NoOpPerformanceTrace : PerformanceTrace {
     override fun start() {}

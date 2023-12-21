@@ -5,7 +5,7 @@ import me.khruslan.tierlistmaker.data.models.drag.TierDragData
 import me.khruslan.tierlistmaker.data.models.drag.TrashBinDragData
 import me.khruslan.tierlistmaker.data.models.drag.effects.*
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
-import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
+import me.khruslan.tierlistmaker.util.BACKLOG_TIER_POSITION
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

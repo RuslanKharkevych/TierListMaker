@@ -4,7 +4,7 @@ import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.models.drag.effects.*
 import me.khruslan.tierlistmaker.data.models.tierlist.*
 import me.khruslan.tierlistmaker.data.models.tierlist.image.ResourceImage
-import me.khruslan.tierlistmaker.utils.updateLast
+import me.khruslan.tierlistmaker.util.updateLast
 import timber.log.Timber
 import javax.inject.Inject
 

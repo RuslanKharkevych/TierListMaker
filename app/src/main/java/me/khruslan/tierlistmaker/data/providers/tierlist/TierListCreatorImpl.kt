@@ -3,7 +3,7 @@ package me.khruslan.tierlistmaker.data.providers.tierlist
 import kotlinx.coroutines.withContext
 import me.khruslan.tierlistmaker.data.models.tierlist.Tier
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
-import me.khruslan.tierlistmaker.data.providers.db.PreferencesHelper
+import me.khruslan.tierlistmaker.data.providers.database.PreferencesHelper
 import me.khruslan.tierlistmaker.data.providers.dispatchers.DispatcherProvider
 import java.util.UUID
 import javax.inject.Inject

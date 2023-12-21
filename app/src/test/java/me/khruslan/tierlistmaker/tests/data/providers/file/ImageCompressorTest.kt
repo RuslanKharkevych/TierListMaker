@@ -18,11 +18,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import me.khruslan.tierlistmaker.data.providers.file.ImageCompressor
 import me.khruslan.tierlistmaker.data.providers.file.ImageCompressorImpl
-import me.khruslan.tierlistmaker.fakes.data.providers.db.FakePreferencesHelper
+import me.khruslan.tierlistmaker.fakes.data.providers.database.FakePreferencesHelper
 import me.khruslan.tierlistmaker.fakes.data.providers.dispatchers.FakeDispatcherProvider
 import me.khruslan.tierlistmaker.fakes.utils.performance.NoOpPerformanceService
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
-import me.khruslan.tierlistmaker.utils.displayWidthPixels
+import me.khruslan.tierlistmaker.util.displayWidthPixels
 import me.shouheng.compress.Compress
 import me.shouheng.compress.ConcreteBuilder
 import me.shouheng.compress.strategy.compress.Compressor
@@ -41,7 +41,7 @@ class ImageCompressorTest {
 
     companion object {
         private const val DISPLAY_WIDTH_FRACTION = 0.33f
-        private const val EXTENSIONS_PACKAGE = "me.khruslan.tierlistmaker.utils.ExtensionsKt"
+        private const val EXTENSIONS_PACKAGE = "me.khruslan.tierlistmaker.util.ExtensionsKt"
     }
 
     @get:Rule

@@ -1,6 +1,6 @@
 package me.khruslan.tierlistmaker.tests.ui.models
 
-import me.khruslan.tierlistmaker.ui.models.LoadingProgress
+import me.khruslan.tierlistmaker.presentation.models.LoadingProgress
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

@@ -7,23 +7,23 @@
 
     <fragment
         android:id="@+id/fragment_dashboard"
-        android:name="me.khruslan.tierlistmaker.ui.screens.home.DashboardFragment"
+        android:name="me.khruslan.tierlistmaker.presentation.screens.home.DashboardFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/fragment_feedback"
-        android:name="me.khruslan.tierlistmaker.ui.screens.home.FeedbackFragment"
+        android:name="me.khruslan.tierlistmaker.presentation.screens.home.FeedbackFragment"
         android:label="@string/feedback_appbar_title" />
 
     <fragment
         android:id="@+id/fragment_settings"
-        android:name="me.khruslan.tierlistmaker.ui.screens.home.SettingsFragment"
+        android:name="me.khruslan.tierlistmaker.presentation.screens.home.SettingsFragment"
         android:label="@string/settings_appbar_title" />
 
     <fragment
         android:id="@+id/fragment_about"
-        android:name="me.khruslan.tierlistmaker.ui.screens.home.AboutFragment"
+        android:name="me.khruslan.tierlistmaker.presentation.screens.home.AboutFragment"
         android:label="@string/about_appbar_title" />
 
 </navigation>

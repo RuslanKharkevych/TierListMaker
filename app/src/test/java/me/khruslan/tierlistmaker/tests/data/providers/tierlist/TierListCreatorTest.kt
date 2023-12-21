@@ -5,7 +5,7 @@ import kotlinx.coroutines.test.runTest
 import me.khruslan.tierlistmaker.data.models.tierlist.TierStyle
 import me.khruslan.tierlistmaker.data.providers.tierlist.TierListCreator
 import me.khruslan.tierlistmaker.data.providers.tierlist.TierListCreatorImpl
-import me.khruslan.tierlistmaker.fakes.data.providers.db.FakePreferencesHelper
+import me.khruslan.tierlistmaker.fakes.data.providers.database.FakePreferencesHelper
 import me.khruslan.tierlistmaker.fakes.data.providers.dispatchers.FakeDispatcherProvider
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
 import me.khruslan.tierlistmaker.utils.assertAll

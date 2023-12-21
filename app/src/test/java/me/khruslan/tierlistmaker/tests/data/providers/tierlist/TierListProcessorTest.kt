@@ -9,7 +9,7 @@ import me.khruslan.tierlistmaker.data.models.tierlist.image.ResourceImage
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
 import me.khruslan.tierlistmaker.data.providers.tierlist.TierListProcessor
 import me.khruslan.tierlistmaker.data.providers.tierlist.TierListProcessorImpl
-import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
+import me.khruslan.tierlistmaker.util.BACKLOG_TIER_POSITION
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragment_tier_list"
-        android:name="me.khruslan.tierlistmaker.ui.screens.tierlist.TierListFragment"
+        android:name="me.khruslan.tierlistmaker.presentation.screens.tierlist.TierListFragment"
         tools:layout="@layout/fragment_tier_list">
 
         <!--suppress NavigationFile https://issuetracker.google.com/issues/293665984 -->

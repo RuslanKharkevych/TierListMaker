@@ -11,8 +11,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.khruslan.tierlistmaker.BuildConfig
 import me.khruslan.tierlistmaker.data.providers.dispatchers.DispatcherProvider
-import me.khruslan.tierlistmaker.utils.performace.PerformanceService
-import me.khruslan.tierlistmaker.utils.performace.WriteBitmapToFileTrace
+import me.khruslan.tierlistmaker.util.performace.PerformanceService
+import me.khruslan.tierlistmaker.util.performace.WriteBitmapToFileTrace
 import me.shouheng.compress.utils.size
 import timber.log.Timber
 import java.io.File

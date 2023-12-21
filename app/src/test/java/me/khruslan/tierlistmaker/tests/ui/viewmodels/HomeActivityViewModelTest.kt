@@ -3,9 +3,9 @@ package me.khruslan.tierlistmaker.tests.ui.viewmodels
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import me.khruslan.tierlistmaker.fakes.utils.theme.FakeThemeManager
+import me.khruslan.tierlistmaker.fakes.presentation.utils.theme.FakeThemeManager
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
-import me.khruslan.tierlistmaker.ui.viewmodels.HomeActivityViewModel
+import me.khruslan.tierlistmaker.presentation.viewmodels.HomeActivityViewModel
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule

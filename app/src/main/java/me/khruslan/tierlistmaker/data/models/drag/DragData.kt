@@ -2,7 +2,7 @@ package me.khruslan.tierlistmaker.data.models.drag
 
 import android.content.ClipData
 import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
-import me.khruslan.tierlistmaker.utils.BACKLOG_TIER_POSITION
+import me.khruslan.tierlistmaker.util.BACKLOG_TIER_POSITION
 
 /**
  * Base class that contains the data of a drag event.
@@ -40,7 +40,7 @@ data class ImageDragData(
         /**
          * The label of [ClipData] created from an object of [ImageDragData] type.
          */
-        const val LABEL = "me.khruslan.tierlistmaker.data.drag.ImageDragData"
+        const val LABEL = "me.khruslan.tierlistmaker.data.models.drag.ImageDragData"
 
         /**
          * Creates [ImageDragData] from [ClipData].
