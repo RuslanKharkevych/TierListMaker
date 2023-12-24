@@ -25,18 +25,6 @@ class TierListImageHolder(
     dragListener: View.OnDragListener
 ) : RecyclerView.ViewHolder(imageView), View.OnTouchListener {
 
-    /**
-     * Companion object of [TierListImageHolder] used to store constants.
-     */
-    private companion object {
-        private const val START_DRAG_DELTA_MILLIS = 200L
-    }
-
-    /**
-     * Timestamp of when the latest successful drag started.
-     */
-    private var startDragTimestamp = 0L
-
     init {
         itemView.setOnTouchListener(this)
         itemView.setOnDragListener(dragListener)
@@ -66,6 +54,7 @@ class TierListImageHolder(
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(view: View?, event: MotionEvent?): Boolean {
+        if (event?.action != MotionEvent.ACTION_DOWN) return false
         return try {
             startDrag(view)
             true
@@ -101,10 +90,8 @@ class TierListImageHolder(
         val resultDesc = "data = $data"
 
         if (result) {
-            startDragTimestamp = System.currentTimeMillis()
             Timber.i("onTouch: successfully started drag ($resultDesc)")
-        } else if (System.currentTimeMillis() - startDragTimestamp > START_DRAG_DELTA_MILLIS) {
-            // Workaround to avoid logging error when onTouch is called twice
+        } else {
             throw TierListImageException("onTouch: unable to start drag ($resultDesc)")
         }
     }
