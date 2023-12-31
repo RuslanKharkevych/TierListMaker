@@ -8,6 +8,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -29,8 +30,11 @@ import me.khruslan.tierlistmaker.presentation.screens.tierlist.TierListActivity
 import me.khruslan.tierlistmaker.presentation.viewmodels.DashboardViewModel
 import me.khruslan.tierlistmaker.util.log.navigation.setLogTag
 import me.khruslan.tierlistmaker.presentation.utils.FeedbackUtils
+import me.khruslan.tierlistmaker.presentation.utils.hints.dashboard.DashboardHintGroup
+import me.khruslan.tierlistmaker.presentation.utils.hints.dashboard.DashboardHintStep
 import me.khruslan.tierlistmaker.presentation.utils.recyclerview.reorderable.enableReordering
 import me.khruslan.tierlistmaker.presentation.utils.setOnThrottledClickListener
+import me.khruslan.tierlistmaker.presentation.viewmodels.HomeActivityViewModel
 import timber.log.Timber
 
 /**
@@ -42,6 +46,7 @@ class DashboardFragment : Fragment() {
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
     private val viewModel: DashboardViewModel by viewModels()
+    private val activityViewModel: HomeActivityViewModel by activityViewModels()
 
     /**
      * Adapter for the tier list previews.
@@ -121,6 +126,7 @@ class DashboardFragment : Fragment() {
         viewModel.listStateLiveData.observe(viewLifecycleOwner, listStateObserver)
         viewModel.errorEvent.observe(viewLifecycleOwner, errorObserver)
         viewModel.tierListCreatedEvent.observe(viewLifecycleOwner, tierListCreatedObserver)
+        activityViewModel.hintEvent.observe(viewLifecycleOwner, hintObserver)
     }
 
     /**
@@ -199,6 +205,13 @@ class DashboardFragment : Fragment() {
     private val tierListCreatedObserver = Observer<TierList> { tierList ->
         Timber.i("Starting tier list activity for result. Tier list: $tierList")
         tierListLauncher.launch(tierList)
+    }
+
+    /**
+     * Observer for the hint events. Shows a hint from [DashboardHintGroup].
+     */
+    private val hintObserver = Observer<DashboardHintStep> { step ->
+        DashboardHintGroup(requireActivity(), binding).show(step)
     }
 
     /**

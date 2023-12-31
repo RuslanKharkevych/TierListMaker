@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="@android:color/black"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <ImageButton
+        android:id="@+id/btn_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_hint_button"
+        android:contentDescription="@string/btn_close_desc"
+        android:layout_marginTop="@dimen/margin_24"
+        android:padding="@dimen/margin_16"
+        android:src="@drawable/ic_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_hint"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:justificationMode="inter_word"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_20"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_next"
+        app:layout_constraintStart_toEndOf="@id/btn_previous"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:targetApi="o"
+        tools:text="@string/hint_reorder_tier_lists" />
+
+    <ImageButton
+        android:id="@+id/btn_previous"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_hint_button"
+        android:contentDescription="@string/btn_previous_desc"
+        android:padding="@dimen/margin_16"
+        android:src="@drawable/ic_arrow_back_ios_new"
+        app:layout_constraintBottom_toBottomOf="@id/text_hint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/text_hint"
+        app:tint="@color/color_hint_overlay_button" />
+
+    <ImageButton
+        android:id="@+id/btn_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_hint_button"
+        android:contentDescription="@string/btn_next_desc"
+        android:padding="@dimen/margin_16"
+        android:src="@drawable/ic_arrow_forward_ios"
+        app:layout_constraintBottom_toBottomOf="@id/text_hint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/text_hint"
+        app:tint="@color/color_hint_overlay_button" />
+
+</merge>

@@ -68,9 +68,21 @@
     <string name="pref_privacy_policy_summary">В нашей политике конфиденциальности подробно описывается информация, которую мы собираем от пользователей, и разъясняется ваш выбор в отношении использования ваших личных данных</string>
     <string name="pref_app_version_title">Версия приложения</string>
     <string name="tier_list_sports">Виды спорта</string>
+    <string name="pref_collection_hints_category_title">Подсказки по спискам</string>
+    <string name="pref_reorder_tier_lists_hint_title">Как изменить порядок списков?</string>
+    <string name="pref_add_new_tier_list_hint_title">Как добавить новый список?</string>
+    <string name="pref_remove_tier_list_hint_title">Как удалить список?</string>
     <string name="tier_list_animals">Животные</string>
     <string name="tier_list_fast_food">Фастфуд</string>
     <string name="tier_list_fruits">Фрукты</string>
     <string name="tier_list_zodiac_signs">Знаки зодиака</string>
     <string name="tier_list_flowers">Цветы</string>
+    <string name="hints_appbar_title">Подсказки</string>
+    <string name="menu_item_hints_title">Подсказки</string>
+    <string name="btn_close_desc">Закрыть</string>
+    <string name="btn_previous_desc">Предыдущий</string>
+    <string name="btn_next_desc">Следующий</string>
+    <string name="hint_add_new_tier_list">Чтобы добавить новый список, нажмите на кнопку \"+\" в правом нижнем углу экрана</string>
+    <string name="hint_remove_tier_list">Проведите пальцем слева направо, чтобы удалить список</string>
+    <string name="hint_reorder_tier_lists">Нажмите и удерживайте список, затем переместите его вверх или вниз, чтобы изменить порядок</string>
 </resources>

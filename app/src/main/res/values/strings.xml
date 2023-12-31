@@ -5,6 +5,14 @@
     <!-- General -->
     <string name="btn_cancel">Cancel</string>
 
+    <!-- HomeActivity -->
+    <string name="menu_item_my_collection_title">My Collection</string>
+    <string name="menu_item_settings_title">Settings</string>
+    <string name="menu_item_hints_title">Hints</string>
+    <string name="menu_item_feedback_title">Feedback</string>
+    <string name="menu_item_about_title">About</string>
+    <string name="btn_change_theme_desc">Change theme</string>
+
     <!-- DashboardFragment -->
     <string name="btn_add_new_list_desc">Add new list</string>
     <string name="empty_previews_message">There\'s nothing yet. Create your first tier list!</string>
@@ -14,11 +22,6 @@
     <string name="remove_tier_list_error_message">Oops! Unable to remove tier list :(</string>
     <string name="update_tier_lists_error_message">Oops! Unable to update tier lists :(</string>
     <string name="btn_refresh">Refresh</string>
-    <string name="menu_item_my_collection_title">My Collection</string>
-    <string name="menu_item_settings_title">Settings</string>
-    <string name="menu_item_feedback_title">Feedback</string>
-    <string name="menu_item_about_title">About</string>
-    <string name="btn_change_theme_desc">Change theme</string>
     <string name="btn_yes">Yes</string>
     <string name="btn_no">No</string>
     <string name="remove_tier_list_confirmation_title">Are you sure you want to remove tier list \"%s\"?</string>
@@ -92,6 +95,16 @@
     <string name="pref_app_version_key" translatable="false">app_version</string>
     <string name="pref_app_version_title">App version</string>
 
+    <!-- HintsFragment -->
+    <string name="hints_appbar_title">Hints</string>
+    <string name="pref_collection_hints_category_title">Collection hints</string>
+    <string name="pref_reorder_tier_lists_hint_key" translatable="false">reorder_tier_lists_hint</string>
+    <string name="pref_reorder_tier_lists_hint_title">How to reorder tier lists?</string>
+    <string name="pref_add_new_tier_list_hint_key" translatable="false">add_new_tier_list_hint</string>
+    <string name="pref_add_new_tier_list_hint_title">How to add a new tier list?</string>
+    <string name="pref_remove_tier_lists_hint_key" translatable="false">remove_tier_lists_hint</string>
+    <string name="pref_remove_tier_list_hint_title">How to remove a tier list?</string>
+
     <!-- DefaultTierListCollectionProvider -->
     <string name="tier_list_animals">Animals</string>
     <string name="tier_list_fast_food">Fast food</string>
@@ -99,4 +112,12 @@
     <string name="tier_list_fruits">Fruits</string>
     <string name="tier_list_sports">Sports</string>
     <string name="tier_list_zodiac_signs">Zodiac signs</string>
+
+    <!-- DashboardHintGroup -->
+    <string name="btn_close_desc">Close</string>
+    <string name="btn_previous_desc">Previous</string>
+    <string name="btn_next_desc">Next</string>
+    <string name="hint_add_new_tier_list">Click on the \"+\" button in the bottom-right corner in order to add a new tier list</string>
+    <string name="hint_remove_tier_list">Swipe the card from left to right in order to remove the tier list</string>
+    <string name="hint_reorder_tier_lists">Long press on the card, then move it up or down in order to reorder tier lists</string>
 </resources>

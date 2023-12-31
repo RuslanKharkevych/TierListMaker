@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/pref_collection_hints_category_title">
+
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="@string/pref_reorder_tier_lists_hint_key"
+            app:title="@string/pref_reorder_tier_lists_hint_title" />
+
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="@string/pref_add_new_tier_list_hint_key"
+            app:title="@string/pref_add_new_tier_list_hint_title" />
+
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="@string/pref_remove_tier_lists_hint_key"
+            app:title="@string/pref_remove_tier_list_hint_title" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

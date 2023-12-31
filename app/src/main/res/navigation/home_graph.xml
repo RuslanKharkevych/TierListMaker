@@ -26,4 +26,9 @@
         android:name="me.khruslan.tierlistmaker.presentation.screens.home.AboutFragment"
         android:label="@string/about_appbar_title" />
 
+    <fragment
+        android:id="@+id/fragment_hints"
+        android:name="me.khruslan.tierlistmaker.presentation.screens.home.HintsFragment"
+        android:label="@string/hints_appbar_title"/>
+
 </navigation>

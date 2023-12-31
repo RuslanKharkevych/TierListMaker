@@ -12,6 +12,11 @@
         android:title="@string/menu_item_settings_title" />
 
     <item
+        android:id="@+id/fragment_hints"
+        android:icon="@drawable/ic_lightbulb"
+        android:title="@string/menu_item_hints_title" />
+
+    <item
         android:id="@+id/fragment_feedback"
         android:icon="@drawable/ic_forum"
         android:title="@string/menu_item_feedback_title" />

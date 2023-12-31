@@ -36,18 +36,9 @@ class FeedbackFragment : PreferenceFragmentCompat() {
      * Initializes click listeners for preferences: "Contact us", "Report bug" and "Rate app".
      */
     private fun initClickListeners() {
-        setOnPreferenceClickListener(R.string.pref_contact_us_key) {
-            Timber.i("Contact us button clicked")
-            sendFeedback()
-        }
-        setOnPreferenceClickListener(R.string.pref_report_bug_key) {
-            Timber.i("Report bug button clicked")
-            reportBug()
-        }
-        setOnPreferenceClickListener(R.string.pref_rate_app_key) {
-            Timber.i("Rate app button clicked")
-            rateApp()
-        }
+        setOnPreferenceClickListener(R.string.pref_contact_us_key, ::sendFeedback)
+        setOnPreferenceClickListener(R.string.pref_report_bug_key, ::reportBug)
+        setOnPreferenceClickListener(R.string.pref_rate_app_key, ::rateApp)
     }
 
     /**

@@ -17,7 +17,11 @@ fun PreferenceFragmentCompat.setOnPreferenceClickListener(
     onClick: () -> Unit
 ) {
     try {
-        findPreference(keyResId).setOnThrottledPreferenceClickListener(onClick)
+        val preference = findPreference(keyResId)
+        preference.setOnThrottledPreferenceClickListener {
+            Timber.i("${preference.key} preference clicked")
+            onClick()
+        }
     } catch (e: PreferenceNotFoundException) {
         Timber.e(e, "Unable to set preference click listener")
     }

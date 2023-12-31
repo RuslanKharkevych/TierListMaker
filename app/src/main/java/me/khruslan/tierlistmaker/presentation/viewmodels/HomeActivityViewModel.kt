@@ -1,10 +1,14 @@
 package me.khruslan.tierlistmaker.presentation.viewmodels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hadilq.liveevent.LiveEvent
+import com.hadilq.liveevent.LiveEventConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import me.khruslan.tierlistmaker.presentation.screens.home.HomeActivity
+import me.khruslan.tierlistmaker.presentation.utils.hints.dashboard.DashboardHintStep
 import me.khruslan.tierlistmaker.presentation.utils.theme.ThemeManager
 import timber.log.Timber
 import javax.inject.Inject
@@ -18,6 +22,16 @@ import javax.inject.Inject
 class HomeActivityViewModel @Inject constructor(
     private val themeManager: ThemeManager
 ) : ViewModel() {
+
+    private val _hintEvent by lazy {
+        LiveEvent<DashboardHintStep>(LiveEventConfig.PreferFirstObserver)
+    }
+
+    /**
+     * The hint event is sent when the collection hint needs to be shown. The value of the event
+     * corresponds to the step of the hint within its group.
+     */
+    val hintEvent: LiveData<DashboardHintStep> get() = _hintEvent
 
     init {
         Timber.i("HomeActivityViewModel initialized")
@@ -34,5 +48,14 @@ class HomeActivityViewModel @Inject constructor(
         viewModelScope.launch {
             themeManager.toggleTheme()
         }
+    }
+
+    /**
+     * Notifies the observers that hint needs to be shown.
+     *
+     * @param step the step of the hint within its group.
+     */
+    fun showHint(step: DashboardHintStep) {
+        _hintEvent.value = step
     }
 }

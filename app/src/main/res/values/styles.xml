@@ -6,8 +6,8 @@
     </style>
 
     <style name="Style.NavigationView" parent="Widget.Design.NavigationView">
-        <item name="itemIconTint">@color/nav_item_color</item>
-        <item name="itemTextColor">@color/nav_item_color</item>
+        <item name="itemIconTint">@color/color_nav_item</item>
+        <item name="itemTextColor">@color/color_nav_item</item>
     </style>
 
     <style name="Style.AlertDialog" parent="MaterialAlertDialog.MaterialComponents">

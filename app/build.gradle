@@ -97,6 +97,9 @@ dependencies {
     // Live Event
     implementation 'com.github.hadilq:live-event:1.3.0'
 
+    // Hints
+    implementation 'com.github.takusemba:spotlight:2.0.5'
+
     // Lint
     lintChecks project(':app:lint')
 
