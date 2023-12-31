@@ -93,11 +93,18 @@ class TierListFragment : Fragment() {
     private lateinit var bottomBarBinder: TierListBottomBarBinder
 
     /**
+     * Snackbar that allows to restore removed image. Must be dismissed once drag is started to
+     * avoid restoring wrong image.
+     */
+    private var imageRemovedSnackbar: Snackbar? = null
+
+    /**
      * Listener of the tier list drag events.
      */
     private val dragListener = object : TierListDragListener() {
         override fun onDragStarted(dragData: ImageDragData) {
             Timber.i("Invoked onDragStarted event. Drag data: $dragData")
+            imageRemovedSnackbar?.dismiss()
             viewModel.startDrag(dragData)
         }
 
@@ -490,14 +497,21 @@ class TierListFragment : Fragment() {
      */
     private fun presentImageRemovedSnackbar() {
         Timber.i("Presenting image removed snackbar")
-        Snackbar
+        imageRemovedSnackbar = Snackbar
             .make(binding.root, R.string.snackbar_msg_image_removed, Snackbar.LENGTH_LONG)
             .setAnchorView(R.id.group_bottom_bar)
             .setAction(R.string.snackbar_action_restore) {
                 Timber.i("Restore button clicked")
                 viewModel.restoreReleasedImage()
             }
-            .show()
+            .addCallback(object : Snackbar.Callback() {
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    imageRemovedSnackbar = null
+                }
+            })
+            .also {
+                it.show()
+            }
     }
 
     /**
