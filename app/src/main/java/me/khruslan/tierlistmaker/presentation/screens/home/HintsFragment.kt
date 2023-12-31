@@ -5,7 +5,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceFragmentCompat
 import me.khruslan.tierlistmaker.R
-import me.khruslan.tierlistmaker.presentation.utils.hints.dashboard.DashboardHintStep
+import me.khruslan.tierlistmaker.presentation.utils.hints.collection.CollectionHintStep
 import me.khruslan.tierlistmaker.presentation.utils.setOnPreferenceClickListener
 import me.khruslan.tierlistmaker.presentation.viewmodels.HomeActivityViewModel
 
@@ -25,13 +25,13 @@ class HintsFragment : PreferenceFragmentCompat() {
      */
     private fun initClickListeners() {
         setOnPreferenceClickListener(R.string.pref_reorder_tier_lists_hint_key) {
-            navigateBackAndShowHint(DashboardHintStep.ReorderTierLists)
+            navigateBackAndShowHint(CollectionHintStep.ReorderTierLists)
         }
         setOnPreferenceClickListener(R.string.pref_add_new_tier_list_hint_key) {
-            navigateBackAndShowHint(DashboardHintStep.AddNewTierList)
+            navigateBackAndShowHint(CollectionHintStep.AddNewTierList)
         }
         setOnPreferenceClickListener(R.string.pref_remove_tier_lists_hint_key) {
-            navigateBackAndShowHint(DashboardHintStep.RemoveTierList)
+            navigateBackAndShowHint(CollectionHintStep.RemoveTierList)
         }
     }
 
@@ -40,7 +40,7 @@ class HintsFragment : PreferenceFragmentCompat() {
      *
      * @param step selected hint step.
      */
-    private fun navigateBackAndShowHint(step: DashboardHintStep) {
+    private fun navigateBackAndShowHint(step: CollectionHintStep) {
         activityViewModel.showHint(step)
         findNavController().popBackStack()
     }

@@ -18,7 +18,7 @@
     <string name="btn_no">Ні</string>
     <string name="remove_tier_list_confirmation_title">Ви впевнені, що бажаєте видалити список \"%s\"?</string>
     <string name="menu_item_rename_tier_list_title">Перейменувати список</string>
-    <string name="menu_item_my_collection_title">Моя колекція</string>
+    <string name="menu_item_collection_title">Моя колекція</string>
     <string name="menu_item_settings_title">Налаштування</string>
     <string name="menu_item_feedback_title">Звототній зв\'язок</string>
     <string name="menu_item_about_title">Про програму</string>

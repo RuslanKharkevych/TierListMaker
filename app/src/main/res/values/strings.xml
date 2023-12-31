@@ -2,18 +2,20 @@
     <string name="app_name" translatable="false">Tier List Maker</string>
     <string name="app_language">en</string>
 
-    <!-- General -->
+    <!-- region General -->
     <string name="btn_cancel">Cancel</string>
+    <!-- endregion General -->
 
-    <!-- HomeActivity -->
-    <string name="menu_item_my_collection_title">My Collection</string>
+    <!-- region HomeActivity -->
+    <string name="menu_item_collection_title">My Collection</string>
     <string name="menu_item_settings_title">Settings</string>
     <string name="menu_item_hints_title">Hints</string>
     <string name="menu_item_feedback_title">Feedback</string>
     <string name="menu_item_about_title">About</string>
     <string name="btn_change_theme_desc">Change theme</string>
+    <!-- endregion HomeActivity -->
 
-    <!-- DashboardFragment -->
+    <!-- region CollectionFragment -->
     <string name="btn_add_new_list_desc">Add new list</string>
     <string name="empty_previews_message">There\'s nothing yet. Create your first tier list!</string>
     <string name="load_previews_error_message">Oops! Something went wrong…\nUnable to load your collection</string>
@@ -25,8 +27,9 @@
     <string name="btn_yes">Yes</string>
     <string name="btn_no">No</string>
     <string name="remove_tier_list_confirmation_title">Are you sure you want to remove tier list \"%s\"?</string>
+    <!-- endregion CollectionFragment -->
 
-    <!-- TierListFragment -->
+    <!-- region TierListFragment -->
     <string name="menu_item_rename_tier_list_title">Rename tier list</string>
     <string name="menu_item_remove_image_title">Remove image</string>
     <string name="toolbar_subtitle_determinate_loading">Loading (%1$d/%2$d)</string>
@@ -45,14 +48,16 @@
     <string name="snackbar_msg_no_view_apps_found">Unable to view tier list. No suitable applications found</string>
     <string name="snackbar_msg_image_removed">Image removed</string>
     <string name="snackbar_action_restore">Restore</string>
+    <!-- endregion TierListFragment -->
 
-    <!-- EnterTierListTitleDialog -->
+    <!-- region EnterTierListTitleDialog -->
     <string name="dialog_title_name_tier_list">Enter tier list name:</string>
     <string name="dialog_title_rename_tier_list">Enter new tier list name:</string>
     <string name="hint_tier_list_name">Tier List Name</string>
     <string name="btn_confirm">Confirm</string>
+    <!-- endregion EnterTierListTitleDialog -->
 
-    <!-- FeedbackUtils -->
+    <!-- region FeedbackUtils -->
     <string name="bug_report_email_subject">Tier List Maker: Bug report</string>
     <string name="bug_report_info_version">App version: %s</string>
     <string name="bug_report_info_device">Device: %s</string>
@@ -61,8 +66,9 @@
     <string name="btn_copy_email">Copy email</string>
     <string name="toast_msg_text_copied">Copied \"%s\"</string>
     <string name="send_feedback_email_subject">Tier List Maker: Feedback</string>
+    <!-- endregion FeedbackUtils -->
 
-    <!-- FeedbackFragment -->
+    <!-- region FeedbackFragment -->
     <string name="feedback_appbar_title">Feedback</string>
     <string name="pref_contact_us_key" translatable="false">contact_us</string>
     <string name="pref_contact_us_title">Contact us</string>
@@ -74,8 +80,9 @@
     <string name="pref_rate_app_title">Rate app</string>
     <string name="pref_rate_app_summary">Enjoyed Tier List Maker? Let others know by rating it and writing a review!</string>
     <string name="snackbar_msg_no_rate_apps_found">Unable to rate Tier List Maker. No suitable applications found</string>
+    <!-- endregion FeedbackFragment -->
 
-    <!-- SettingsFragment -->
+    <!-- region SettingsFragment -->
     <string name="settings_appbar_title">Settings</string>
     <string name="pref_tiers_count_key" translatable="false">tiers_count</string>
     <string name="pref_tiers_count_title">Initial number of tiers</string>
@@ -86,16 +93,18 @@
     <string name="pref_image_quality_key" translatable="false">image_quality</string>
     <string name="pref_image_quality_title">Image quality</string>
     <string name="pref_image_quality_summary">Higher percent - better quality, lower percent - takes less memory in storage</string>
+    <!-- endregion SettingsFragment -->
 
-    <!-- AboutFragment -->
+    <!-- region AboutFragment -->
     <string name="about_appbar_title">About</string>
     <string name="pref_privacy_policy_key" translatable="false">privacy_policy</string>
     <string name="pref_privacy_policy_title">Privacy policy</string>
     <string name="pref_privacy_policy_summary">Our privacy policy details the information we collect from users and clarifies the choices you have regarding the usage of your data</string>
     <string name="pref_app_version_key" translatable="false">app_version</string>
     <string name="pref_app_version_title">App version</string>
+    <!-- endregion AboutFragment -->
 
-    <!-- HintsFragment -->
+    <!-- region HintsFragment -->
     <string name="hints_appbar_title">Hints</string>
     <string name="pref_collection_hints_category_title">Collection hints</string>
     <string name="pref_reorder_tier_lists_hint_key" translatable="false">reorder_tier_lists_hint</string>
@@ -104,20 +113,23 @@
     <string name="pref_add_new_tier_list_hint_title">How to add a new tier list?</string>
     <string name="pref_remove_tier_lists_hint_key" translatable="false">remove_tier_lists_hint</string>
     <string name="pref_remove_tier_list_hint_title">How to remove a tier list?</string>
+    <!-- endregion HintsFragment -->
 
-    <!-- DefaultTierListCollectionProvider -->
+    <!-- region DefaultTierListCollectionProvider -->
     <string name="tier_list_animals">Animals</string>
     <string name="tier_list_fast_food">Fast food</string>
     <string name="tier_list_flowers">Flowers</string>
     <string name="tier_list_fruits">Fruits</string>
     <string name="tier_list_sports">Sports</string>
     <string name="tier_list_zodiac_signs">Zodiac signs</string>
+    <!-- endregion DefaultTierListCollectionProvider -->
 
-    <!-- DashboardHintGroup -->
+    <!-- region CollectionHintGroup -->
     <string name="btn_close_desc">Close</string>
     <string name="btn_previous_desc">Previous</string>
     <string name="btn_next_desc">Next</string>
     <string name="hint_add_new_tier_list">Click on the \"+\" button in the bottom-right corner in order to add a new tier list</string>
     <string name="hint_remove_tier_list">Swipe the card from left to right in order to remove the tier list</string>
     <string name="hint_reorder_tier_lists">Long press on the card, then move it up or down in order to reorder tier lists</string>
+    <!-- endregion CollectionHintGroup -->
 </resources>

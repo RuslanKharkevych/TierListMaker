@@ -20,32 +20,32 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
-import me.khruslan.tierlistmaker.databinding.FragmentDashboardBinding
+import me.khruslan.tierlistmaker.databinding.FragmentCollectionBinding
 import me.khruslan.tierlistmaker.presentation.adapters.TierListPreviewAdapter
 import me.khruslan.tierlistmaker.presentation.models.ListState
-import me.khruslan.tierlistmaker.presentation.utils.navigation.TierListResultContract
-import me.khruslan.tierlistmaker.presentation.utils.navigation.TierListResultException
 import me.khruslan.tierlistmaker.presentation.screens.common.EnterTierListTitleDialog
 import me.khruslan.tierlistmaker.presentation.screens.tierlist.TierListActivity
-import me.khruslan.tierlistmaker.presentation.viewmodels.DashboardViewModel
-import me.khruslan.tierlistmaker.util.log.navigation.setLogTag
 import me.khruslan.tierlistmaker.presentation.utils.FeedbackUtils
-import me.khruslan.tierlistmaker.presentation.utils.hints.dashboard.DashboardHintGroup
-import me.khruslan.tierlistmaker.presentation.utils.hints.dashboard.DashboardHintStep
+import me.khruslan.tierlistmaker.presentation.utils.hints.collection.CollectionHintGroup
+import me.khruslan.tierlistmaker.presentation.utils.hints.collection.CollectionHintStep
+import me.khruslan.tierlistmaker.presentation.utils.navigation.TierListResultContract
+import me.khruslan.tierlistmaker.presentation.utils.navigation.TierListResultException
 import me.khruslan.tierlistmaker.presentation.utils.recyclerview.reorderable.enableReordering
 import me.khruslan.tierlistmaker.presentation.utils.setOnThrottledClickListener
+import me.khruslan.tierlistmaker.presentation.viewmodels.CollectionViewModel
 import me.khruslan.tierlistmaker.presentation.viewmodels.HomeActivityViewModel
+import me.khruslan.tierlistmaker.util.log.navigation.setLogTag
 import timber.log.Timber
 
 /**
- * [Fragment] that represents dashboard screen.
- * Is a start destination for the home navigation graph.
+ * [Fragment] that represents tier list collection screen. Is a start destination for the home
+ * navigation graph.
  */
 @AndroidEntryPoint
-class DashboardFragment : Fragment() {
-    private var _binding: FragmentDashboardBinding? = null
+class CollectionFragment : Fragment() {
+    private var _binding: FragmentCollectionBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: DashboardViewModel by viewModels()
+    private val viewModel: CollectionViewModel by viewModels()
     private val activityViewModel: HomeActivityViewModel by activityViewModels()
 
     /**
@@ -67,7 +67,7 @@ class DashboardFragment : Fragment() {
     }
 
     /**
-     * Companion object of the [DashboardFragment] used for storing constants.
+     * Companion object of the [CollectionFragment] used for storing constants.
      */
     private companion object {
         private const val REMOVE_TIER_LIST_CONFIRMATION_ALERT_LOG_TAG =
@@ -79,7 +79,7 @@ class DashboardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        _binding = FragmentCollectionBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -208,10 +208,10 @@ class DashboardFragment : Fragment() {
     }
 
     /**
-     * Observer for the hint events. Shows a hint from [DashboardHintGroup].
+     * Observer for the hint events. Shows a hint from [CollectionHintGroup].
      */
-    private val hintObserver = Observer<DashboardHintStep> { step ->
-        DashboardHintGroup(requireActivity(), binding).show(step)
+    private val hintObserver = Observer<CollectionHintStep> { step ->
+        CollectionHintGroup(requireActivity(), binding).show(step)
     }
 
     /**

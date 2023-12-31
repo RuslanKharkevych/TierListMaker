@@ -15,21 +15,21 @@
 
     <include
         android:id="@+id/group_loading"
-        layout="@layout/group_dashboard_loading"
+        layout="@layout/group_collection_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:visibility="gone" />
 
     <include
         android:id="@+id/group_empty"
-        layout="@layout/group_dashboard_empty"
+        layout="@layout/group_collection_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
 
     <include
         android:id="@+id/group_error"
-        layout="@layout/group_dashboard_error"
+        layout="@layout/group_collection_error"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />

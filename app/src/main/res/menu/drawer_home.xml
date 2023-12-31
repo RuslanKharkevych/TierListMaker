@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/fragment_dashboard"
+        android:id="@+id/fragment_collection"
         android:icon="@drawable/ic_folder"
-        android:title="@string/menu_item_my_collection_title" />
+        android:title="@string/menu_item_collection_title" />
 
     <item
         android:id="@+id/fragment_settings"

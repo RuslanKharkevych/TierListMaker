@@ -66,7 +66,7 @@ class FlexboxLayoutManagerUsageDetector {
                     Fix for src/me/khruslan/tierlistmaker/TierHolder.kt line 20: Replace with FlexLayoutManager:
                     @@ -20 +20
                     -         binding.listImages.layoutManager = FlexboxLayoutManager(binding.root.context)
-                    +         binding.listImages.layoutManager = me.khruslan.tierlistmaker.utils.view.FlexLayoutManager(binding.root.context)
+                    +         binding.listImages.layoutManager = me.khruslan.tierlistmaker.presentation.utils.recyclerview.FlexLayoutManager(binding.root.context)
                 """
             )
     }

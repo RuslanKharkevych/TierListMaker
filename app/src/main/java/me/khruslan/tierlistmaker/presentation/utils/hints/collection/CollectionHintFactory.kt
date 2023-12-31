@@ -1,4 +1,4 @@
-package me.khruslan.tierlistmaker.presentation.utils.hints.dashboard
+package me.khruslan.tierlistmaker.presentation.utils.hints.collection
 
 import android.content.Context
 import com.google.android.material.R.attr.colorSecondary
@@ -6,8 +6,8 @@ import com.google.android.material.R.attr.colorSurface
 import com.google.android.material.card.MaterialCardView
 import com.takusemba.spotlight.shape.Circle
 import me.khruslan.tierlistmaker.R
-import me.khruslan.tierlistmaker.databinding.FragmentDashboardBinding
-import me.khruslan.tierlistmaker.presentation.screens.home.DashboardFragment
+import me.khruslan.tierlistmaker.databinding.FragmentCollectionBinding
+import me.khruslan.tierlistmaker.presentation.screens.home.CollectionFragment
 import me.khruslan.tierlistmaker.presentation.utils.getMaterialColor
 import me.khruslan.tierlistmaker.presentation.utils.hints.core.Hint
 import me.khruslan.tierlistmaker.presentation.utils.hints.core.HintFactory
@@ -17,21 +17,21 @@ import me.khruslan.tierlistmaker.presentation.utils.hints.core.shapes.CardShape
 import me.khruslan.tierlistmaker.presentation.views.HintOverlayView
 
 /**
- * Factory that creates hints for [DashboardHintStep] entries.
+ * Factory that creates hints for [CollectionHintStep] entries.
  *
  * @property context activity context.
- * @property binding [DashboardFragment] binding.
+ * @property binding [CollectionFragment] binding.
  */
-class DashboardHintFactory(
+class CollectionHintFactory(
     private val context: Context,
-    private val binding: FragmentDashboardBinding
-) : HintFactory<DashboardHintStep>() {
+    private val binding: FragmentCollectionBinding
+) : HintFactory<CollectionHintStep>() {
 
-    override fun create(step: DashboardHintStep): Hint {
+    override fun create(step: CollectionHintStep): Hint {
         return when (step) {
-            DashboardHintStep.AddNewTierList -> createAddNewTierListHint()
-            DashboardHintStep.RemoveTierList -> createRemoveTierListHint()
-            DashboardHintStep.ReorderTierLists -> createReorderTierListsHint()
+            CollectionHintStep.AddNewTierList -> createAddNewTierListHint()
+            CollectionHintStep.RemoveTierList -> createRemoveTierListHint()
+            CollectionHintStep.ReorderTierLists -> createReorderTierListsHint()
         }
     }
 
@@ -45,7 +45,7 @@ class DashboardHintFactory(
         val shapeRadius = anchor.width / 2f
 
         return Hint(
-            name = DashboardHintStep.AddNewTierList.name,
+            name = CollectionHintStep.AddNewTierList.name,
             overlay = HintOverlayView(context).apply {
                 setHintText(R.string.hint_add_new_tier_list)
             },
@@ -65,7 +65,7 @@ class DashboardHintFactory(
      */
     private fun createRemoveTierListHint(): Hint {
         return createTierListPreviewHint(
-            name = DashboardHintStep.RemoveTierList.name,
+            name = CollectionHintStep.RemoveTierList.name,
             overlay = HintOverlayView(context).apply {
                 setHintText(R.string.hint_remove_tier_list)
                 disableNextButton()
@@ -80,7 +80,7 @@ class DashboardHintFactory(
      */
     private fun createReorderTierListsHint(): Hint {
         return createTierListPreviewHint(
-            name = DashboardHintStep.ReorderTierLists.name,
+            name = CollectionHintStep.ReorderTierLists.name,
             overlay = HintOverlayView(context).apply {
                 setHintText(R.string.hint_reorder_tier_lists)
                 disablePreviousButton()

@@ -19,7 +19,7 @@ import me.khruslan.tierlistmaker.fakes.data.providers.tierlist.FakeTierListCreat
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
 import me.khruslan.tierlistmaker.presentation.models.ListState
 import me.khruslan.tierlistmaker.presentation.utils.navigation.TierListResultException
-import me.khruslan.tierlistmaker.presentation.viewmodels.DashboardViewModel
+import me.khruslan.tierlistmaker.presentation.viewmodels.CollectionViewModel
 import me.khruslan.tierlistmaker.utils.awaitValue
 import me.khruslan.tierlistmaker.util.swap
 import org.junit.Assert.assertEquals
@@ -30,7 +30,7 @@ import org.junit.Rule
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class DashboardViewModelTest {
+class CollectionViewModelTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -43,7 +43,7 @@ class DashboardViewModelTest {
 
     private lateinit var fakeDatabaseHelper: FakeDatabaseHelper
     private lateinit var fakeTierListCreator: FakeTierListCreator
-    private lateinit var viewModel: DashboardViewModel
+    private lateinit var viewModel: CollectionViewModel
 
     @Before
     fun init() {
@@ -53,7 +53,7 @@ class DashboardViewModelTest {
     }
 
     private fun TestScope.initViewModel() {
-        viewModel = DashboardViewModel(
+        viewModel = CollectionViewModel(
             application = mockApplication,
             databaseHelper = fakeDatabaseHelper,
             dispatcherProvider = FakeDispatcherProvider(),

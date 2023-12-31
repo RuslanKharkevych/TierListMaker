@@ -1,38 +1,38 @@
-package me.khruslan.tierlistmaker.presentation.utils.hints.dashboard
+package me.khruslan.tierlistmaker.presentation.utils.hints.collection
 
 import android.app.Activity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.doOnPreDraw
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
-import me.khruslan.tierlistmaker.databinding.FragmentDashboardBinding
-import me.khruslan.tierlistmaker.presentation.screens.home.DashboardFragment
+import me.khruslan.tierlistmaker.databinding.FragmentCollectionBinding
+import me.khruslan.tierlistmaker.presentation.screens.home.CollectionFragment
 import me.khruslan.tierlistmaker.presentation.utils.hints.core.HintFactory
 import me.khruslan.tierlistmaker.presentation.utils.hints.core.HintGroup
 
 /**
- * A group of hints for [DashboardFragment].
+ * A group of hints for [CollectionFragment].
  *
  * @property binding binding of the fragment.
  * @param activity an activity that hosts the fragment.
  */
-class DashboardHintGroup(
+class CollectionHintGroup(
     private val activity: Activity,
-    private val binding: FragmentDashboardBinding
-) : HintGroup<DashboardHintStep>(
+    private val binding: FragmentCollectionBinding
+) : HintGroup<CollectionHintStep>(
     name = NAME,
     activity = activity,
-    steps = DashboardHintStep.entries
+    steps = CollectionHintStep.entries
 ) {
 
     private companion object {
-        private const val NAME = "DashboardHintGroup"
+        private const val NAME = "CollectionHintGroup"
     }
 
-    override fun hintFactory(): HintFactory<DashboardHintStep> {
-        return DashboardHintFactory(activity, binding)
+    override fun hintFactory(): HintFactory<CollectionHintStep> {
+        return CollectionHintFactory(activity, binding)
     }
 
-    override fun show(step: DashboardHintStep) {
+    override fun show(step: CollectionHintStep) {
         prepareForShowing {
             showAddNewListButton()
             super.show(step)

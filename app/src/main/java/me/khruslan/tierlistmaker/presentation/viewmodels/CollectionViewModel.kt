@@ -18,21 +18,21 @@ import me.khruslan.tierlistmaker.data.providers.dispatchers.DispatcherProvider
 import me.khruslan.tierlistmaker.data.providers.tierlist.TierListCreator
 import me.khruslan.tierlistmaker.presentation.models.ListState
 import me.khruslan.tierlistmaker.presentation.utils.navigation.TierListResultException
-import me.khruslan.tierlistmaker.presentation.screens.home.DashboardFragment
+import me.khruslan.tierlistmaker.presentation.screens.home.CollectionFragment
 import me.khruslan.tierlistmaker.presentation.screens.home.HomeActivity
 import me.khruslan.tierlistmaker.util.swap
 import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * [ViewModel] for [DashboardFragment].
+ * [ViewModel] for [CollectionFragment].
  *
  * @property databaseHelper database helper.
  * @property dispatcherProvider provider of [CoroutineDispatcher] for running suspend functions.
  * @property tierListCreator creator of new tier lists.
  */
 @HiltViewModel
-class DashboardViewModel @Inject constructor(
+class CollectionViewModel @Inject constructor(
     application: Application,
     private val databaseHelper: DatabaseHelper,
     private val dispatcherProvider: DispatcherProvider,
@@ -89,12 +89,12 @@ class DashboardViewModel @Inject constructor(
     val tierListCreatedEvent: LiveData<TierList> get() = _tierListCreatedEvent
 
     init {
-        Timber.i("DashboardViewModel initialized")
+        Timber.i("CollectionViewModel initialized")
         loadTierListPreviews()
     }
 
     override fun onCleared() {
-        Timber.i("DashboardViewModel cleared")
+        Timber.i("CollectionViewModel cleared")
     }
 
     /**

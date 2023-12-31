@@ -9,13 +9,13 @@ import org.junit.Test
 class AlertDialogBuilderUsageDetectorTest {
 
     private companion object {
-        private val DASHBOARD_FRAGMENT = kotlin(
+        private val COLLECTION_FRAGMENT = kotlin(
             """
                 package me.khruslan.tierlistmaker
 
                 import androidx.appcompat.app.AlertDialog
 
-                class DashboardFragment: Fragment() {
+                class CollectionFragment: Fragment() {
                     private fun showRemoveTierListConfirmationAlert(tierListIndex: Int) {
                         val tierListTitle = viewModel.getTierListByPosition(tierListIndex).title
                         val alertTitle = getString(R.string.remove_tier_list_confirmation_title, tierListTitle)
@@ -44,13 +44,13 @@ class AlertDialogBuilderUsageDetectorTest {
     @Test
     fun `Reports AlertDialogBuilderUsage issue`() {
         lint()
-            .files(DASHBOARD_FRAGMENT, ALERT_DIALOG_STUB)
+            .files(COLLECTION_FRAGMENT, ALERT_DIALOG_STUB)
             .issues(AlertDialogBuilderUsageDetector.ISSUE)
             .allowMissingSdk()
             .run()
             .expect(
                 """
-                    src/me/khruslan/tierlistmaker/DashboardFragment.kt:10: Warning: Consider using MaterialAlertDialogBuilder to match material design style [AlertDialogBuilderUsage]
+                    src/me/khruslan/tierlistmaker/CollectionFragment.kt:10: Warning: Consider using MaterialAlertDialogBuilder to match material design style [AlertDialogBuilderUsage]
                             AlertDialog.Builder(requireActivity())
                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     0 errors, 1 warnings
@@ -61,13 +61,13 @@ class AlertDialogBuilderUsageDetectorTest {
     @Test
     fun `Fixes AlertDialogBuilderUsage issue`() {
         lint()
-            .files(DASHBOARD_FRAGMENT, ALERT_DIALOG_STUB)
+            .files(COLLECTION_FRAGMENT, ALERT_DIALOG_STUB)
             .issues(AlertDialogBuilderUsageDetector.ISSUE)
             .allowMissingSdk()
             .run()
             .expectFixDiffs(
                 """
-                    Fix for src/me/khruslan/tierlistmaker/DashboardFragment.kt line 10: Replace with MaterialAlertDialogBuilder:
+                    Fix for src/me/khruslan/tierlistmaker/CollectionFragment.kt line 10: Replace with MaterialAlertDialogBuilder:
                     @@ -10 +10
                     -         AlertDialog.Builder(requireActivity())
                     +         com.google.android.material.dialog.MaterialAlertDialogBuilder(requireActivity())

@@ -1,11 +1,11 @@
-package me.khruslan.tierlistmaker.presentation.utils.hints.dashboard
+package me.khruslan.tierlistmaker.presentation.utils.hints.collection
 
 import me.khruslan.tierlistmaker.presentation.utils.hints.core.Indexable
 
 /**
- * Hint steps of the [DashboardHintGroup].
+ * Hint steps of the [CollectionHintGroup].
  */
-enum class DashboardHintStep : Indexable {
+enum class CollectionHintStep : Indexable {
 
     /**
      * How to reorder tier lists.
