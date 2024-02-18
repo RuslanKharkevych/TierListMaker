@@ -4,21 +4,25 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
-import me.khruslan.tierlistmaker.presentation.utils.tierlist.TierListBitmapGenerator
-import me.khruslan.tierlistmaker.presentation.utils.tierlist.TierListBitmapGeneratorImpl
+import me.khruslan.tierlistmaker.data.providers.drag.DragPocket
+import me.khruslan.tierlistmaker.data.providers.drag.DragPocketImpl
+import me.khruslan.tierlistmaker.data.providers.file.FileManager
+import me.khruslan.tierlistmaker.data.providers.file.FileManagerImpl
+import me.khruslan.tierlistmaker.data.providers.file.ImageCompressor
+import me.khruslan.tierlistmaker.data.providers.file.ImageCompressorImpl
 import me.khruslan.tierlistmaker.data.providers.tierlist.TierListCreator
 import me.khruslan.tierlistmaker.data.providers.tierlist.TierListCreatorImpl
 import me.khruslan.tierlistmaker.data.providers.tierlist.TierListProcessor
 import me.khruslan.tierlistmaker.data.providers.tierlist.TierListProcessorImpl
 import me.khruslan.tierlistmaker.data.providers.tierlist.tier.*
-import me.khruslan.tierlistmaker.data.providers.drag.DragPocket
-import me.khruslan.tierlistmaker.data.providers.drag.DragPocketImpl
+import me.khruslan.tierlistmaker.presentation.utils.tierlist.TierListBitmapGenerator
+import me.khruslan.tierlistmaker.presentation.utils.tierlist.TierListBitmapGeneratorImpl
 
 /**
- * Hilt module that contains bindings related to tier lists.
+ * Hilt module for tier list bindings.
  *
- * This class must be used only by Hilt codegen.
+ * A container for non-reusable tier list dependencies, which lifecycle matches the lifecycle of a
+ * view model.
  *
  * @constructor Default empty constructor.
  */
@@ -33,7 +37,6 @@ abstract class TierListModule {
      * @return Drag pocket interface.
      */
     @Binds
-    @ViewModelScoped
     abstract fun bindDragPocket(dragPocketImpl: DragPocketImpl): DragPocket
 
     /**
@@ -43,7 +46,6 @@ abstract class TierListModule {
      * @return Tier list processor interface.
      */
     @Binds
-    @ViewModelScoped
     abstract fun bindTierListProcessor(
         tierListProcessorImpl: TierListProcessorImpl
     ): TierListProcessor
@@ -55,7 +57,6 @@ abstract class TierListModule {
      * @return Tier color provider interface.
      */
     @Binds
-    @ViewModelScoped
     abstract fun bindTierColorProvider(
         tierColorProviderImpl: TierColorProviderImpl
     ): TierColorProvider
@@ -67,7 +68,6 @@ abstract class TierListModule {
      * @return Tier name provider interface.
      */
     @Binds
-    @ViewModelScoped
     abstract fun bindTierNameProvider(tierNameProviderImpl: TierNameProviderImpl): TierNameProvider
 
     /**
@@ -77,7 +77,6 @@ abstract class TierListModule {
      * @return Tier style provider interface.
      */
     @Binds
-    @ViewModelScoped
     abstract fun bindTierStyleProvider(
         tierStyleProviderImpl: TierStyleProviderImpl
     ): TierStyleProvider
@@ -89,7 +88,6 @@ abstract class TierListModule {
      * @return Tier list bitmap generator interface.
      */
     @Binds
-    @ViewModelScoped
     abstract fun bindTierListBitmapGenerator(
         tierListBitmapGeneratorImpl: TierListBitmapGeneratorImpl
     ): TierListBitmapGenerator
@@ -101,6 +99,23 @@ abstract class TierListModule {
      * @return Tier list processor interface.
      */
     @Binds
-    @ViewModelScoped
     abstract fun bindTierListCreator(tierListCreatorImpl: TierListCreatorImpl): TierListCreator
+
+    /**
+     * Binds image compressor interface to its implementation.
+     *
+     * @param imageCompressorImpl Image compressor implementation.
+     * @return Image compressor interface.
+     */
+    @Binds
+    abstract fun bindImageCompressor(imageCompressorImpl: ImageCompressorImpl): ImageCompressor
+
+    /**
+     * Binds file manager interface to its implementation.
+     *
+     * @param fileManagerImpl File manager implementation.
+     * @return File manager interface.
+     */
+    @Binds
+    abstract fun bindFileManager(fileManagerImpl: FileManagerImpl): FileManager
 }

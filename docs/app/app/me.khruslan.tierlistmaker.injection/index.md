@@ -8,7 +8,5 @@ Hilt modules for dependency injection.
 
 | Name | Summary |
 |---|---|
-| [ApplicationModule](-application-module/index.md) | @Module<br>abstract class [ApplicationModule](-application-module/index.md)<br>Hilt module that contains miscellaneous global bindings. |
-| [DatabaseModule](-database-module/index.md) | @Module<br>abstract class [DatabaseModule](-database-module/index.md)<br>Hilt module that contains database-related bindings. |
-| [FileManagerModule](-file-manager-module/index.md) | @Module<br>abstract class [FileManagerModule](-file-manager-module/index.md)<br>Hilt module that contains bindings related to file manager. |
-| [TierListModule](-tier-list-module/index.md) | @Module<br>abstract class [TierListModule](-tier-list-module/index.md)<br>Hilt module that contains bindings related to tier lists. |
+| [ApplicationModule](-application-module/index.md) | @Module<br>abstract class [ApplicationModule](-application-module/index.md)<br>Hilt module for miscellaneous global bindings. |
+| [TierListModule](-tier-list-module/index.md) | @Module<br>abstract class [TierListModule](-tier-list-module/index.md)<br>Hilt module for tier list bindings. |

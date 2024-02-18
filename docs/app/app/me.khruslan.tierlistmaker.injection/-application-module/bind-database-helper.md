@@ -1,4 +1,4 @@
-//[app](../../../index.md)/[me.khruslan.tierlistmaker.injection](../index.md)/[DatabaseModule](index.md)/[bindDatabaseHelper](bind-database-helper.md)
+//[app](../../../index.md)/[me.khruslan.tierlistmaker.injection](../index.md)/[ApplicationModule](index.md)/[bindDatabaseHelper](bind-database-helper.md)
 
 # bindDatabaseHelper
 

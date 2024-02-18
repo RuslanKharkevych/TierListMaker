@@ -6,9 +6,9 @@
 
 abstract class [TierListModule](index.md)
 
-Hilt module that contains bindings related to tier lists.
+Hilt module for tier list bindings.
 
-This class must be used only by Hilt codegen.
+A container for non-reusable tier list dependencies, which lifecycle matches the lifecycle of a view model.
 
 ## Constructors
 
@@ -21,6 +21,8 @@ This class must be used only by Hilt codegen.
 | Name | Summary |
 |---|---|
 | [bindDragPocket](bind-drag-pocket.md) | @Binds<br>abstract fun [bindDragPocket](bind-drag-pocket.md)(dragPocketImpl: [DragPocketImpl](../../me.khruslan.tierlistmaker.data.providers.drag/-drag-pocket-impl/index.md)): [DragPocket](../../me.khruslan.tierlistmaker.data.providers.drag/-drag-pocket/index.md)<br>Binds drag pocket interface  to its implementation. |
+| [bindFileManager](bind-file-manager.md) | @Binds<br>abstract fun [bindFileManager](bind-file-manager.md)(fileManagerImpl: [FileManagerImpl](../../me.khruslan.tierlistmaker.data.providers.file/-file-manager-impl/index.md)): [FileManager](../../me.khruslan.tierlistmaker.data.providers.file/-file-manager/index.md)<br>Binds file manager interface to its implementation. |
+| [bindImageCompressor](bind-image-compressor.md) | @Binds<br>abstract fun [bindImageCompressor](bind-image-compressor.md)(imageCompressorImpl: [ImageCompressorImpl](../../me.khruslan.tierlistmaker.data.providers.file/-image-compressor-impl/index.md)): [ImageCompressor](../../me.khruslan.tierlistmaker.data.providers.file/-image-compressor/index.md)<br>Binds image compressor interface to its implementation. |
 | [bindTierColorProvider](bind-tier-color-provider.md) | @Binds<br>abstract fun [bindTierColorProvider](bind-tier-color-provider.md)(tierColorProviderImpl: [TierColorProviderImpl](../../me.khruslan.tierlistmaker.data.providers.tierlist.tier/-tier-color-provider-impl/index.md)): [TierColorProvider](../../me.khruslan.tierlistmaker.data.providers.tierlist.tier/-tier-color-provider/index.md)<br>Binds tier color provider interface to its implementation. |
 | [bindTierListBitmapGenerator](bind-tier-list-bitmap-generator.md) | @Binds<br>abstract fun [bindTierListBitmapGenerator](bind-tier-list-bitmap-generator.md)(tierListBitmapGeneratorImpl: [TierListBitmapGeneratorImpl](../../me.khruslan.tierlistmaker.presentation.utils.tierlist/-tier-list-bitmap-generator-impl/index.md)): [TierListBitmapGenerator](../../me.khruslan.tierlistmaker.presentation.utils.tierlist/-tier-list-bitmap-generator/index.md)<br>Binds tier list bitmap generator interface to its implementation. |
 | [bindTierListCreator](bind-tier-list-creator.md) | @Binds<br>abstract fun [bindTierListCreator](bind-tier-list-creator.md)(tierListCreatorImpl: [TierListCreatorImpl](../../me.khruslan.tierlistmaker.data.providers.tierlist/-tier-list-creator-impl/index.md)): [TierListCreator](../../me.khruslan.tierlistmaker.data.providers.tierlist/-tier-list-creator/index.md)<br>Binds tier list creator interface to its implementation. |
