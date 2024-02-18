@@ -10,13 +10,11 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,20 +23,17 @@ import androidx.transition.TransitionManager
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import me.khruslan.tierlistmaker.R
-import me.khruslan.tierlistmaker.presentation.models.drag.DragLocation
 import me.khruslan.tierlistmaker.data.models.drag.ImageDragData
 import me.khruslan.tierlistmaker.data.models.drag.TierDragData
 import me.khruslan.tierlistmaker.data.models.drag.TrashBinDragData
 import me.khruslan.tierlistmaker.data.models.tierlist.BacklogDataChanged
 import me.khruslan.tierlistmaker.data.models.tierlist.BacklogImagesAdded
-import me.khruslan.tierlistmaker.data.models.tierlist.BacklogItemChanged
 import me.khruslan.tierlistmaker.data.models.tierlist.BacklogItemInserted
 import me.khruslan.tierlistmaker.data.models.tierlist.ImageRemoved
 import me.khruslan.tierlistmaker.data.models.tierlist.ImageSizeUpdated
 import me.khruslan.tierlistmaker.data.models.tierlist.Tier
 import me.khruslan.tierlistmaker.data.models.tierlist.TierChanged
 import me.khruslan.tierlistmaker.data.models.tierlist.TierInserted
-import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.data.models.tierlist.TierListChanged
 import me.khruslan.tierlistmaker.data.models.tierlist.TierListEvent
 import me.khruslan.tierlistmaker.data.models.tierlist.TierListExportError
@@ -51,57 +46,100 @@ import me.khruslan.tierlistmaker.databinding.FragmentTierListBinding
 import me.khruslan.tierlistmaker.presentation.adapters.TierAdapter
 import me.khruslan.tierlistmaker.presentation.adapters.TierListImageAdapter
 import me.khruslan.tierlistmaker.presentation.models.LoadingProgress
-import me.khruslan.tierlistmaker.presentation.utils.navigation.TierListResultContract
+import me.khruslan.tierlistmaker.presentation.models.drag.DragLocation
 import me.khruslan.tierlistmaker.presentation.screens.common.EnterTierListTitleDialog
-import me.khruslan.tierlistmaker.presentation.viewmodels.TierListViewModel
-import me.khruslan.tierlistmaker.util.BACKLOG_TIER_POSITION
 import me.khruslan.tierlistmaker.presentation.utils.drag.TierListDragListener
+import me.khruslan.tierlistmaker.presentation.utils.navigation.TierListResultContract
+import me.khruslan.tierlistmaker.presentation.utils.recyclerview.reorderable.enableReordering
 import me.khruslan.tierlistmaker.presentation.utils.recyclerview.scroll.AutoScrollManager
 import me.khruslan.tierlistmaker.presentation.utils.tierlist.TierListBottomBarBinder
-import me.khruslan.tierlistmaker.presentation.utils.recyclerview.reorderable.enableReordering
+import me.khruslan.tierlistmaker.presentation.viewmodels.TierListViewModel
+import me.khruslan.tierlistmaker.util.BACKLOG_TIER_POSITION
 import timber.log.Timber
 
 /**
- * [Fragment] that represents a tier list.
+ * Fragment that represents a tier list.
+ *
  * It is a start destination for the tier list navigation graph.
+ *
+ * @constructor Default no-arg constructor.
  */
 @AndroidEntryPoint
 class TierListFragment : Fragment() {
+
+    /**
+     * Nullable reference of [binding].
+     *
+     * Must be initialized in [onCreateView] and deinitialized in [onDestroyView].
+     */
     private var _binding: FragmentTierListBinding? = null
+
+    /**
+     * View binding of the fragment.
+     *
+     * Make sure to access this property only when fragment's view is created to avoid
+     * [NullPointerException].
+     */
     private val binding get() = _binding!!
+
+    /**
+     * Navigation arguments of the fragment.
+     *
+     * Contains a single tier list argument.
+     */
     private val args: TierListFragmentArgs by navArgs()
+
+    /**
+     * View model of the fragment.
+     *
+     * Provides UI state and handles user actions.
+     */
     private val viewModel: TierListViewModel by viewModels()
 
     /**
-     * [RecyclerView.Adapter] for the tiers.
+     * Recycler view adapter for the tiers.
+     *
+     * Initialized when fragment's view is created.
      */
     private lateinit var tiersAdapter: TierAdapter
 
     /**
-     * [RecyclerView.Adapter] for the backlog images.
+     * Recycler view adapter for the backlog images.
+     *
+     * Initialized when fragment's view is created.
      */
     private lateinit var backlogAdapter: TierListImageAdapter
 
     /**
-     * Manager that performs automatic scrolling withing tier list recycler view.
+     * Manager that performs automatic scrolling withing the tiers recycler view.
+     *
+     * Initialized once recycler view is available.
      */
     private lateinit var autoScrollManager: AutoScrollManager
 
     /**
      * Binder that enables / disables buttons in the bottom bar depending on the tier list state.
+     *
+     * Initialized when fragment's view is created.
      */
     private lateinit var bottomBarBinder: TierListBottomBarBinder
 
     /**
-     * Snackbar that allows to restore removed image. Must be dismissed once drag is started to
-     * avoid restoring wrong image.
+     * Snackbar that allows to restore removed image.
+     *
+     * Must be dismissed once new drag is started to avoid restoring wrong image.
      */
     private var imageRemovedSnackbar: Snackbar? = null
 
     /**
      * Listener of the tier list drag events.
+     *
+     * 1. On drag started - dismisses [imageRemovedSnackbar] and starts a new drag.
+     * 2. On drag location changed - updates drag target and drag location in [autoScrollManager].
+     * 3. On drop - drops image and stops auto-scrolling.
+     * 4. On drag ended - restores released image and stops auto-scrolling.
      */
-    private val dragListener = object : TierListDragListener() {
+    private val dragListener: TierListDragListener = object : TierListDragListener() {
         override fun onDragStarted(dragData: ImageDragData) {
             Timber.i("Invoked onDragStarted event. Drag data: $dragData")
             imageRemovedSnackbar?.dismiss()
@@ -133,27 +171,30 @@ class TierListFragment : Fragment() {
     }
 
     /**
-     * Observer of data changes in the [tiersAdapter]. Performs scroll to the inserted tier and
-     * invalidates bottom bar buttons.
+     * Observer of data changes in the [tiersAdapter].
+     *
+     * Performs scroll to the inserted tier and invalidates bottom bar buttons.
      */
-    private val tiersDataObserver = object : RecyclerView.AdapterDataObserver() {
-        override fun onChanged() {
-            bottomBarBinder.invalidateZoomButtons()
-        }
+    private val tiersDataObserver: RecyclerView.AdapterDataObserver =
+        object : RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                bottomBarBinder.invalidateZoomButtons()
+            }
 
-        override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-            bottomBarBinder.invalidateAddNewTierButton()
-            binding.listTiers.smoothScrollToPosition(positionStart)
-        }
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                bottomBarBinder.invalidateAddNewTierButton()
+                binding.listTiers.smoothScrollToPosition(positionStart)
+            }
 
-        override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
-            bottomBarBinder.invalidateAddNewTierButton()
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+                bottomBarBinder.invalidateAddNewTierButton()
+            }
         }
-    }
 
     /**
-     * [ActivityResultLauncher] of the [ActivityResultContracts.GetMultipleContents].
-     * Allows user to pick one or more images.
+     * Activity result launcher of the [ActivityResultContracts.GetMultipleContents].
+     *
+     * Allows user to pick one or more images. On result saves  all selected images.
      */
     private val imagePickerLauncher =
         registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { imageUris ->
@@ -161,11 +202,32 @@ class TierListFragment : Fragment() {
             viewModel.saveImages(imageUris)
         }
 
+    /**
+     * Adds on back pressed callback.
+     *
+     * Called after [onAttach] and before [onCreateView].
+     *
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state,
+     * this is the state.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         addOnBackPressedCallback()
     }
 
+    /**
+     * Inflates [binding] and returns its root.
+     *
+     * Called to have the fragment instantiate its user interface view.
+     *
+     * @param inflater Used to inflate any views in the fragment.
+     * @param container If non-null, this is the parent view that the fragment's UI should be
+     * attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
+     * saved state as given here.
+     *
+     * @return Returns the root view of the fragment's binding.
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -175,6 +237,16 @@ class TierListFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Initializes view and live data observers.
+     *
+     * Called immediately after [onCreateView] has returned, but before any saved state has been
+     * restored in to the view.
+     *
+     * @param view The view returned by [onCreateView] method.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
+     * saved state as given here.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -182,6 +254,11 @@ class TierListFragment : Fragment() {
         initView()
     }
 
+    /**
+     * Unregisters [tiersDataObserver] and deinitializes [binding].
+     *
+     * Called when the view previously created by onCreateView has been detached from the fragment.
+     */
     override fun onDestroyView() {
         super.onDestroyView()
 
@@ -190,7 +267,10 @@ class TierListFragment : Fragment() {
     }
 
     /**
-     * Initializes all [LiveData] observers.
+     * Initializes all live data observers.
+     *
+     * This function must be called from [onViewCreated] because all observers are scoped to the
+     * fragment's view lifecycle.
      */
     private fun initObservers() {
         viewModel.tierListEvent.observe(viewLifecycleOwner, tierListEventObserver)
@@ -207,8 +287,10 @@ class TierListFragment : Fragment() {
     }
 
     /**
-     * [Observer] for the loading progress. Shows determinate progress of adding new images or
-     * indeterminate progress of creating a tier list image file.
+     * Observer of the loading progress.
+     *
+     * Shows determinate progress of adding new images or indeterminate progress of creating a tier
+     * list image file.
      */
     private val loadingProgressObserver = Observer<LoadingProgress?> { progress ->
         when (progress) {
@@ -219,7 +301,9 @@ class TierListFragment : Fragment() {
     }
 
     /**
-     * [Observer] of the tier list events. Notifies adapters about the changes in the tier list.
+     * Observer of the tier list events.
+     *
+     * Notifies adapters about the changes in the tier list.
      */
     private val tierListEventObserver = Observer<TierListEvent> { event ->
         when (event) {
@@ -228,7 +312,6 @@ class TierListFragment : Fragment() {
                 backlogAdapter.notifyDataSetChanged()
                 binding.listBacklogImages.smoothScrollToPosition(0)
             }
-            is BacklogItemChanged -> backlogAdapter.notifyItemChanged(event.itemPosition)
             is BacklogItemInserted -> backlogAdapter.notifyItemInserted(event.itemPosition)
             is TierListChanged -> tiersAdapter.notifyDataSetChanged()
             is TierChanged -> tiersAdapter.notifyItemChanged(event.tierPosition)
@@ -258,10 +341,13 @@ class TierListFragment : Fragment() {
     }
 
     /**
-     * Initializes [tiersAdapter] and attaches it to the [RecyclerView].
+     * Initializes [tiersAdapter] and attaches it to the recycler view.
      *
-     * @param tiers list of the tiers.
-     * @param imageSize size of the image.
+     * Configures recycler view to disable animations, enable auto-scrolling and reordering.
+     * Registers [tiersDataObserver].
+     *
+     * @param tiers List of the tiers.
+     * @param imageSize Size of the image.
      */
     private fun initTiersAdapter(tiers: MutableList<Tier>, imageSize: Int) {
         tiersAdapter = TierAdapter(
@@ -285,10 +371,10 @@ class TierListFragment : Fragment() {
     }
 
     /**
-     * Initializes [backlogAdapter] and attaches it to the [RecyclerView].
+     * Initializes [backlogAdapter] and attaches it to the recycler view.
      *
-     * @param images list of backlog images.
-     * @param imageSize size of the image.
+     * @param images List of backlog images.
+     * @param imageSize Size of the image.
      */
     private fun initBacklogAdapter(images: MutableList<Image>, imageSize: Int) {
         backlogAdapter = TierListImageAdapter(
@@ -311,8 +397,10 @@ class TierListFragment : Fragment() {
     }
 
     /**
-     * Initializes toolbar title, navigation action and menu click listeners. Drag listener and tag
-     * are added to be able to receive drag events (related to the trash bin action).
+     * Initializes toolbar title, navigation action and menu click listeners.
+     *
+     * Drag listener and tag are added to be able to receive drag events (related to the trash bin
+     * action).
      */
     private fun initToolbar() {
         with(binding.toolbar) {
@@ -338,6 +426,8 @@ class TierListFragment : Fragment() {
     }
 
     /**
+     * Initializes bottom bar layout.
+     *
      * Initializes [bottomBarBinder] and click listeners of the bottom bar image buttons.
      */
     private fun initBottomBar() {
@@ -371,21 +461,24 @@ class TierListFragment : Fragment() {
     }
 
     /**
-     * Launches [imagePickerLauncher] to get images from the device. Presents snackbar with error
-     * message in case no suitable activities are found.
+     * Launches [imagePickerLauncher] to get images from the device.
+     *
+     * Presents snackbar with error message in case no suitable activities are found.
      */
     private fun launchImagePicker() {
         try {
             Timber.i("Launching image picker")
             imagePickerLauncher.launch(FileManager.MIME_TYPE_IMAGE)
-        } catch (_: ActivityNotFoundException) {
-            Timber.i("Activity not found, presenting error snackbar")
+        } catch (e: ActivityNotFoundException) {
+            Timber.w(e, "Activity not found, presenting error snackbar")
             presentTierListErrorSnackbar(R.string.snackbar_msg_no_image_picker_apps_found)
         }
     }
 
     /**
-     * Overrides default back pressed listener. Sets activity result and finishes it.
+     * Overrides default back pressed listener.
+     *
+     * Sets activity result and finishes it.
      */
     private fun addOnBackPressedCallback() {
         requireActivity().onBackPressedDispatcher.addCallback(this) {
@@ -394,7 +487,7 @@ class TierListFragment : Fragment() {
     }
 
     /**
-     * Sets [TierList] as activity result and finishes it.
+     * Sets tier list as activity result and finishes it.
      */
     private fun setTierListResultAndFinishActivity() {
         val data = TierListResultContract.newData(viewModel.tierList)
@@ -408,7 +501,7 @@ class TierListFragment : Fragment() {
      * Shows / updates a determinate loading progress as a subtitle with a linear progress indicator
      * on the top bar.
      *
-     * @param progress current loading progress.
+     * @param progress Current loading progress.
      */
     private fun showDeterminateLoadingProgress(progress: LoadingProgress.Determinate) {
         binding.toolbar.subtitle = getString(
@@ -441,8 +534,9 @@ class TierListFragment : Fragment() {
     }
 
     /**
-     * Launches intent to share tier list. Presents snackbar with error message in case no suitable
-     * activities are found.
+     * Launches intent to share tier list.
+     *
+     * Presents snackbar with error message in case no suitable activities are found.
      *
      * @param uri URI holding a tier list image file.
      */
@@ -454,15 +548,18 @@ class TierListFragment : Fragment() {
         }
 
         try {
+            Timber.i("Launching share tier list intent")
             startActivity(intent)
         } catch (e: ActivityNotFoundException) {
+            Timber.w(e, "Activity not found, presenting error snackbar")
             presentTierListErrorSnackbar(R.string.snackbar_msg_no_share_apps_found)
         }
     }
 
     /**
-     * Launches intent to view tier list. Presents snackbar with error message in case no suitable
-     * activities are found.
+     * Launches intent to view tier list.
+     *
+     * Presents snackbar with error message in case no suitable activities are found.
      *
      * @param uri URI holding a tier list image file.
      */
@@ -473,8 +570,10 @@ class TierListFragment : Fragment() {
         }
 
         try {
+            Timber.i("Launching view tier list intent")
             startActivity(intent)
         } catch (e: ActivityNotFoundException) {
+            Timber.w(e, "Activity not found, presenting error snackbar")
             presentTierListErrorSnackbar(R.string.snackbar_msg_no_view_apps_found)
         }
     }
@@ -482,7 +581,9 @@ class TierListFragment : Fragment() {
     /**
      * Presents [Snackbar] to inform user that an error has occurred.
      *
-     * @param errorMessageResId string resource of the error message to show.
+     * The snackbar doesn't have any actions.
+     *
+     * @param errorMessageResId String resource of the error message to show.
      */
     private fun presentTierListErrorSnackbar(@StringRes errorMessageResId: Int) {
         Snackbar
@@ -494,6 +595,8 @@ class TierListFragment : Fragment() {
     /**
      * Presents [Snackbar] to inform user that image was removed with an action button that allows
      * to restore removed image.
+     *
+     * The snackbar is assigned to [imageRemovedSnackbar] field and cleared when it's dismissed.
      */
     private fun presentImageRemovedSnackbar() {
         Timber.i("Presenting image removed snackbar")
@@ -515,10 +618,11 @@ class TierListFragment : Fragment() {
     }
 
     /**
-     * Shows or hides hint (as a toolbar subtitle) about how to remove image. Should be visible
-     * when user drags an image on top of toolbar.
+     * Shows or hides hint (as a toolbar subtitle) about how to remove image.
      *
-     * @param visible whether remove image hint has to be shown.
+     * Should be visible when user drags an image on top of toolbar.
+     *
+     * @param visible Whether remove image hint has to be shown.
      */
     private fun setRemoveImageHintVisible(visible: Boolean) {
         binding.toolbar.subtitle = if (visible) {
@@ -531,7 +635,9 @@ class TierListFragment : Fragment() {
     /**
      * Returns the toolbar menu item with a particular identifier.
      *
-     * @param itemId identifier of the item to find.
+     * To avoid null pointer errors, make sure that provided ID is guaranteed to exist.
+     *
+     * @param itemId Identifier of the item to find.
      * @return The menu item object.
      */
     private fun findToolbarMenuItem(@IdRes itemId: Int): MenuItem {
@@ -539,8 +645,9 @@ class TierListFragment : Fragment() {
     }
 
     /**
-     * Shows dialog with input field that asks user to enter new tier list title. Current title is
-     * prefilled in input field. On save click updates tier list and toolbar title.
+     * Shows dialog with input field that asks user to enter new tier list title.
+     *
+     * Current title is prefilled in input field. On save click updates tier list and toolbar title.
      **/
     private fun showEnterTierListTitleDialog() {
         EnterTierListTitleDialog.Builder()

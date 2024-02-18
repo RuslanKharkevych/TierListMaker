@@ -4,27 +4,29 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
 /**
- * Contract for providing [CoroutineDispatcher].
+ * Contract for providing coroutine dispatchers.
+ *
+ * Used for injecting test dispatcher in unit tests.
  */
 interface DispatcherProvider {
 
     /**
-     * Wrapper for [Dispatchers.Default].
+     * Returns [Dispatchers.Default] in production code.
      */
     val default: CoroutineDispatcher
 
     /**
-     * Wrapper for [Dispatchers.IO].
+     * Returns [Dispatchers.IO] in production code.
      */
     val io: CoroutineDispatcher
 
     /**
-     * Wrapper for [Dispatchers.Main].
+     * Returns [Dispatchers.Main] in production code.
      */
     val main: CoroutineDispatcher
 
     /**
-     * Wrapper for [Dispatchers.Unconfined]
+     * Returns [Dispatchers.Unconfined] in production code.
      */
     val unconfined: CoroutineDispatcher
 }

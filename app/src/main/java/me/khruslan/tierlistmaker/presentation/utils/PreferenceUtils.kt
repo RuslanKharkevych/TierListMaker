@@ -6,11 +6,12 @@ import androidx.preference.PreferenceFragmentCompat
 import timber.log.Timber
 
 /**
- * Sets click listener for the preference found by the key resolved from [keyResId]. If the
- * preference is not found, logs error.
+ * Sets click listener for the preference found by the key resolved from [keyResId].
  *
- * @param keyResId string resource identifier of the preference key.
- * @param onClick the callback to be invoked when the preference is clicked.
+ * If the preference is not found, logs error.
+ *
+ * @param keyResId String resource identifier of the preference key.
+ * @param onClick The callback to be invoked when the preference is clicked.
  */
 fun PreferenceFragmentCompat.setOnPreferenceClickListener(
     @StringRes keyResId: Int,
@@ -28,11 +29,12 @@ fun PreferenceFragmentCompat.setOnPreferenceClickListener(
 }
 
 /**
- * Sets summary for the preference found by the key resolved from [keyResId]. If the preference is
- * not found, logs error.
+ * Sets summary for the preference found by the key resolved from [keyResId].
  *
- * @param keyResId string resource identifier of the preference key.
- * @param summary preference summary.
+ * If the preference is not found, logs error.
+ *
+ * @param keyResId String resource identifier of the preference key.
+ * @param summary Preference summary.
  */
 fun PreferenceFragmentCompat.setPreferenceSummary(@StringRes keyResId: Int, summary: String) {
     try {
@@ -45,9 +47,9 @@ fun PreferenceFragmentCompat.setPreferenceSummary(@StringRes keyResId: Int, summ
 /**
  * Finds preference by the key resolved from [keyResId].
  *
- * @param keyResId string resource identifier of the preference key.
- * @return found preference.
- * @throws [PreferenceNotFoundException] when preference was not found.
+ * @param keyResId String resource identifier of the preference key.
+ * @return Found preference.
+ * @throws [PreferenceNotFoundException] When preference was not found.
  */
 private fun PreferenceFragmentCompat.findPreference(@StringRes keyResId: Int): Preference {
     val key = getString(keyResId)
@@ -57,7 +59,8 @@ private fun PreferenceFragmentCompat.findPreference(@StringRes keyResId: Int): P
 /**
  * Thrown to indicate that the preference was not found.
  *
- * @param preferenceKey key of the preference.
+ * @param preferenceKey Key of the preference.
+ * @constructor Creates an exception with descriptive error message.
  */
 private class PreferenceNotFoundException(preferenceKey: String) :
     Exception("Preference with key $preferenceKey not found")

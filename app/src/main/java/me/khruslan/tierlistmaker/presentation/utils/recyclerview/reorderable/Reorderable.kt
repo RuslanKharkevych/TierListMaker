@@ -15,15 +15,19 @@ interface Reorderable {
     /**
      * Notifies that item was moved.
      *
-     * @param fromPosition initial position of the item.
-     * @param toPosition final position of the item.
+     * To apply changes, swap items and call [RecyclerView.Adapter.notifyItemMoved].
+     *
+     * @param fromPosition Initial position of the item.
+     * @param toPosition Target position of the item.
      */
     fun onItemMove(fromPosition: Int, toPosition: Int)
 
     /**
      * Notifies that item was swiped.
      *
-     * @param position position of the item.
+     * To apply changes, remove the item and call [RecyclerView.Adapter.notifyItemRemoved].
+     *
+     * @param position Position of the item.
      */
     fun onItemSwiped(position: Int)
 }

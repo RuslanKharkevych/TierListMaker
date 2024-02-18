@@ -1,7 +1,11 @@
 package me.khruslan.tierlistmaker.presentation.models.drag
 
 /**
- * Current state of dragging.
+ * UI state of dragging.
+ *
+ * Indicates whether the dragging is happening at a given point in time.
+ *
+ * @constructor Default empty constructor.
  */
 enum class DragState {
 

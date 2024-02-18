@@ -2,6 +2,8 @@ package me.khruslan.tierlistmaker.presentation.models.scroll
 
 /**
  * Enum that represents direction of autoscroll.
+ *
+ * @constructor Default empty constructor.
  */
 enum class AutoScrollDirection {
 

@@ -6,27 +6,30 @@ import me.khruslan.tierlistmaker.data.models.drag.TierDragData
 import me.khruslan.tierlistmaker.data.models.drag.TrashBinDragData
 
 /**
- * [DragEffect] implementation for highlight effects.
- * Base class that represents the effect of the current drag location.
+ * Base class that represents the highlight effect of the current drag location.
  *
- * @see HighlightInBacklog
- * @see HighlightInTier
- * @see HighlightLastInBacklog
- * @see HighlightLastInTier
- * @see HighlightTrashBin
+ * Highlight effects are produced when user hovers the drag shadow over views that are able to
+ * receive drag events.
+ *
+ * @constructor Default constructor for use by subclasses.
  */
 sealed class HighlightEffect : DragEffect() {
 
     /**
-     * Factory for creating [HighlightEffect].
+     * Factory for creating highlight effects.
+     *
+     * This should be the only place where instances of [HighlightEffect] subclasses are
+     * instantiated.
      */
     companion object Factory {
 
         /**
-         * Creates [HighlightEffect] based on [DragData] of the target.
+         * Creates highlight effect from the drag data of the target.
          *
-         * @param target data of current drag location.
-         * @return created [HighlightEffect].
+         * All drag data types are acceptable.
+         *
+         * @param target Data of current drag location.
+         * @return Created highlight effect.
          */
         fun create(target: DragData): HighlightEffect {
             return when (target) {
@@ -50,33 +53,48 @@ sealed class HighlightEffect : DragEffect() {
 }
 
 /**
- * [HighlightEffect] implementation that highlights the item in the tier at given position.
+ * Highlight effect of the item  at given position in tier.
  *
- * @property itemPosition position of the item in a tier.
- * @property tierPosition position of the tier in a tier list.
+ * This effect is produced when user hovers the drag shadow over an image inside a tier.
+ *
+ * @property itemPosition Position of the item in a tier.
+ * @property tierPosition Position of the tier in a tier list.
+ * @constructor Creates the effect from the item position in tier list.
  */
 data class HighlightInTier(val itemPosition: Int, val tierPosition: Int) : HighlightEffect()
 
 /**
- * [HighlightEffect] implementation that highlights the item in the backlog at given position.
+ * Highlight effect of the item at given position in backlog.
  *
- * @property itemPosition position of the item in the backlog.
+ * This effect is produced when user hovers the drag shadow over an image inside the backlog.
+ *
+ * @property itemPosition Position of the item in the backlog.
+ * @constructor Creates the effect from the item position in backlog.
  */
 data class HighlightInBacklog(val itemPosition: Int) : HighlightEffect()
 
 /**
- * [HighlightEffect] implementation that highlights the last item in the tier at given position.
+ * Highlight effect of the last item in tier.
  *
- * @property tierPosition position of the tier in a tier list.
+ * This effect is produced when user hovers the drag shadow over a spot in tier where there are no
+ * images.
+ *
+ * @property tierPosition Position of the tier in a tier list.
+ * @constructor Creates the effect from the tier position.
  */
 data class HighlightLastInTier(val tierPosition: Int) : HighlightEffect()
 
 /**
- * [HighlightEffect] implementation that highlights the last item in the backlog.
+ * Highlight effect of the last item in backlog.
+ *
+ * This effect is produced when user hovers the drag shadow over a spot in backlog where there are
+ * no images.
  */
 data object HighlightLastInBacklog : HighlightEffect()
 
 /**
- * [HighlightEffect] implementation that highlights a trash bin.
+ * Highlight effect of the trash bin.
+ *
+ * This effect is produced when user hovers the drag shadow over the trash bin.
  */
 data object HighlightTrashBin : HighlightEffect()

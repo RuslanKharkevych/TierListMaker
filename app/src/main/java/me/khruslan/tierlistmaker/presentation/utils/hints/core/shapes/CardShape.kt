@@ -7,13 +7,17 @@ import com.takusemba.spotlight.shape.Shape
 /**
  * Shape of a card.
  *
- * @param delegate rounded rectangle shape delegate.
+ * It's a helper for creating [RoundedRectangle] shape for the [MaterialCardView].
+ *
+ * @param delegate Rounded rectangle shape delegate.
+ * @constructor Creates a card shape from the delegate.
  */
 class CardShape private constructor(delegate: RoundedRectangle) : Shape by delegate {
 
     /**
-     * @constructor Creates card shape from the card view.
-     * @param card card view of the target.
+     * Creates card shape from the card view.
+     *
+     * @param card Card view of the target.
      */
     constructor(card: MaterialCardView) : this(
         RoundedRectangle(

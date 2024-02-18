@@ -1,25 +1,28 @@
 package me.khruslan.tierlistmaker.data.providers.database
 
 import io.paperdb.Paper
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.data.providers.dispatchers.DispatcherProvider
-import me.khruslan.tierlistmaker.util.performace.PerformanceService
-import me.khruslan.tierlistmaker.util.performace.ReadTierListsTrace
-import me.khruslan.tierlistmaker.util.performace.UpdateTierListsTrace
+import me.khruslan.tierlistmaker.util.performance.PerformanceService
+import me.khruslan.tierlistmaker.util.performance.ReadTierListsTrace
+import me.khruslan.tierlistmaker.util.performance.UpdateTierListsTrace
 import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * [DatabaseHelper] implementation. Implemented with [Paper] database.
+ * [DatabaseHelper] implementation.
  *
- * All functions are running in [Dispatchers.IO] context.
+ * Implemented with [Paper](https://github.com/pilgr/Paper) database. On the first app launch
+ * provides the default tier list collection. Moves all transactions to the background thread. Uses
+ * retry policy in case transaction fails. Logs all transactions and their results. Collects
+ * performance traces for all transactions. This class must be injected as a singleton.
  *
- * @property dispatcherProvider provider of [CoroutineDispatcher] for running suspend functions.
- * @property defaultTierListCollectionProvider provider of the default tier list collection.
- * @property performanceService service that starts performance traces.
+ * @property dispatcherProvider Provides [Dispatchers.IO] context.
+ * @property defaultTierListCollectionProvider Provides the default tier list collection.
+ * @property performanceService Traces database transactions.
+ * @constructor Creates a new database helper instance.
  */
 class DatabaseHelperImpl @Inject constructor(
     private val dispatcherProvider: DispatcherProvider,
@@ -28,10 +31,18 @@ class DatabaseHelperImpl @Inject constructor(
 ) : DatabaseHelper {
 
     /**
-     * Companion object of [DatabaseHelperImpl] used for storing keys and other constants.
+     * Database helper constants for internal usage.
      */
-    private companion object {
+    private companion object Constants {
+
+        /**
+         * Maximum number of transaction attempts before returning error.
+         */
         private const val MAX_TRANSACTION_ATTEMPTS = 3
+
+        /**
+         * Key used for storing tier lists in the Paper database.
+         */
         private const val KEY_TIER_LISTS = "tier-lists"
     }
 
@@ -41,6 +52,21 @@ class DatabaseHelperImpl @Inject constructor(
     private val defaultTierListCollectionProvided
         get() = defaultTierListCollectionProvider.collectionProvided
 
+    /**
+     * Fetches all saved tier lists.
+     *
+     * If it's the first application launch, returns the default tier list collection. The full
+     * algorithm is the following:
+     * 1. Read all tier lists from the database.
+     *    - If transaction fails, or it's successful and tier lists are not empty, or the default
+     *    tier list collection has been already provided - return the result.
+     *    - If tier lists are empty and the default tier list collection wasn't provided before -
+     *    move to step 2.
+     * 2. Provide the default tier list collection and save it in the database.
+     * 3. Read all tier lists from the database again and return the result.
+     *
+     * @return Fetched tier lists or null if error occurred.
+     */
     override suspend fun getTierLists(): MutableList<TierList>? {
         return withContext(dispatcherProvider.io) {
             Timber.i("Reading tier lists from database")
@@ -58,6 +84,13 @@ class DatabaseHelperImpl @Inject constructor(
         }
     }
 
+    /**
+     * Reads all tier lists from the database.
+     *
+     * Transaction is traced with [ReadTierListsTrace].
+     *
+     * @return Fetched tier lists or null if error occurred.
+     */
     private fun readTierLists(): MutableList<TierList>? {
         val trace = performanceService.startTrace(ReadTierListsTrace.NAME)
         trace.putMetric(ReadTierListsTrace.METRIC_ATTEMPTS, 1L)
@@ -84,10 +117,26 @@ class DatabaseHelperImpl @Inject constructor(
         return tierLists
     }
 
+    /**
+     * Saves tier list in the database.
+     *
+     * Due to the limitations of the Paper database, the entire tier list collection must be
+     * overwritten. The full algorithm is the following:
+     * 1. Read all saved tier lists.
+     *    - If transaction fails - return false.
+     *    - If transaction is successful - move to step 2.
+     * 2. Search a tier list by ID.
+     *    - If tier list exists - replace it with the new one.
+     *    - If tier list doesn't exist - insert the new tier list.
+     * 3. Save updated tier lists in the database and return the result of this transaction.
+     *
+     * @param tierList Tier list to save.
+     * @return Whether the tier list was saved successfully.
+     */
     override suspend fun saveTierList(tierList: TierList): Boolean {
         Timber.i("Saving tier list to database: $tierList")
         return withContext(dispatcherProvider.io) {
-            val tierLists = getTierLists() ?: run {
+            val tierLists = readTierLists() ?: run {
                 Timber.i("Unable to read tier lists, cancelling transaction")
                 return@withContext false
             }
@@ -105,10 +154,27 @@ class DatabaseHelperImpl @Inject constructor(
         }
     }
 
+    /**
+     * Removes tier list from the database by identifier.
+     *
+     * Due to the limitations of the Paper database, the entire tier list collection must be
+     * overwritten. The full algorithm is the following:
+     *
+     * 1. Read all saved tier lists.
+     *    - If transaction fails - return false.
+     *    - If transaction is successful - move to step 2.
+     * 2. Search a tier list by ID.
+     *    - If tier list exists - remove it.
+     *    - If tier list doesn't exist - return false.
+     * 3. Save updated tier lists in the database and return the result of this transaction.
+     *
+     * @param id Identifier of the tier list to remove.
+     * @return Whether the tier list was removed successfully.
+     */
     override suspend fun removeTierListById(id: String): Boolean {
         Timber.i("Removing tier list from database by id $id")
         return withContext(dispatcherProvider.io) {
-            val tierLists = getTierLists() ?: run {
+            val tierLists = readTierLists() ?: run {
                 Timber.i("Unable to read tier lists, cancelling transaction")
                 return@withContext false
             }
@@ -125,6 +191,12 @@ class DatabaseHelperImpl @Inject constructor(
         }
     }
 
+    /**
+     * Replaces all tier lists with the new ones.
+     *
+     * @param tierLists Tier lists to save.
+     * @return Whether tier lists were updated successfully.
+     */
     override suspend fun updateTierLists(tierLists: MutableList<TierList>): Boolean {
         return withContext(dispatcherProvider.io) {
             updateTierLists(tierLists, transactionTag = "updateTierLists($tierLists)")
@@ -132,12 +204,13 @@ class DatabaseHelperImpl @Inject constructor(
     }
 
     /**
-     * Updates all tier lists with the new ones with retry policy (see [executeTransaction]).
+     * Updates all tier lists in the database with the new ones.
      *
-     * @param tierLists updated tier lists.
-     * @param transactionTag tag used for error logging.
-     * @return **true** if transaction was successful, **false** if transaction failed
-     * [MAX_TRANSACTION_ATTEMPTS] times.
+     * Transaction is traced with [UpdateTierListsTrace].
+     *
+     * @param tierLists Tier lists to save.
+     * @param transactionTag Tag used for error logging.
+     * @return Whether tier lists was updated successfully.
      */
     private fun updateTierLists(tierLists: MutableList<TierList>, transactionTag: String): Boolean {
         Timber.i("Updating tier lists in database. Transaction tag: $transactionTag")
@@ -169,13 +242,14 @@ class DatabaseHelperImpl @Inject constructor(
 
     /**
      * Executes the [transaction] and retries in case of failure.
-     * Each time transaction fails [onError] callback is invoked.
-     * Returns **null** if transaction fails [MAX_TRANSACTION_ATTEMPTS] times.
      *
-     * @param T return type of the transaction.
-     * @param transaction [Paper] read/write transaction.
-     * @param onError error callback.
-     * @param attempt transaction attempt.
+     * Each time transaction fails [onError] callback is invoked. Returns null if transaction fails
+     * [MAX_TRANSACTION_ATTEMPTS] times.
+     *
+     * @param T Return type of the transaction.
+     * @param transaction Read/write transaction.
+     * @param onError Error callback.
+     * @param attempt Transaction attempt.
      * @return Result of the [transaction] or **null** if all attempts failed.
      */
     private fun <T> executeTransaction(
@@ -201,7 +275,7 @@ class DatabaseHelperImpl @Inject constructor(
     /**
      * Logs generic error.
      *
-     * @param message error message.
+     * @param message Error message.
      */
     private fun logError(message: String) {
         val exception = PaperException(message)
@@ -211,9 +285,9 @@ class DatabaseHelperImpl @Inject constructor(
     /**
      * Logs transaction error.
      *
-     * @param transactionTag tag of the transaction.
-     * @param attempt transaction attempt.
-     * @param cause cause of the transaction failure.
+     * @param transactionTag Tag of the transaction.
+     * @param attempt Transaction attempt.
+     * @param cause Cause of the transaction failure.
      */
     private fun logError(transactionTag: String, attempt: Int, cause: Throwable?) {
         val exception = PaperException(transactionTag, attempt, cause)
@@ -226,16 +300,18 @@ class DatabaseHelperImpl @Inject constructor(
     private class PaperException : Exception {
 
         /**
-         * @param message error message.
-         * @constructor Creates generic [PaperException].
+         * Creates generic [PaperException].
+         *
+         * @param message Error message.
          */
         constructor(message: String) : super(message)
 
         /**
-         * @param transactionTag tag of the transaction.
-         * @param attempt transaction attempt.
-         * @param cause cause of the transaction failure.
-         * @constructor Creates [PaperException] caused by transaction failure.
+         * Creates [PaperException] caused by transaction failure.
+         *
+         * @param transactionTag Tag of the transaction.
+         * @param attempt Transaction attempt.
+         * @param cause Cause of the transaction failure.
          */
         constructor(transactionTag: String, attempt: Int, cause: Throwable?) :
                 super("Transaction failed (tag = $transactionTag, attempt = $attempt)", cause)

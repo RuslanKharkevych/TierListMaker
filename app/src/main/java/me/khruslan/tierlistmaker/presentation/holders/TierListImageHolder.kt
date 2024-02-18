@@ -15,10 +15,13 @@ import me.khruslan.tierlistmaker.presentation.utils.loadTierListImage
 import timber.log.Timber
 
 /**
- * [RecyclerView.ViewHolder] implementation for the tier list image.
+ * Holder of the tier list image.
  *
- * @property imageView view of the image.
- * @param dragListener listener of tier list drag events.
+ * Allows to start a drag.
+ *
+ * @property imageView View of the image.
+ * @param dragListener Listener of tier list drag events.
+ * @constructor Creates a new holder instance.
  */
 class TierListImageHolder(
     private val imageView: ImageView,
@@ -26,16 +29,17 @@ class TierListImageHolder(
 ) : RecyclerView.ViewHolder(imageView), View.OnTouchListener {
 
     init {
-        itemView.setOnTouchListener(this)
-        itemView.setOnDragListener(dragListener)
+        initListeners(dragListener)
     }
 
     /**
-     * Binds image data to the [itemView].
+     * Binds image to the [itemView].
      *
-     * @param image image model.
-     * @param imageSize size of the image.
-     * @param tag drag data of the image.
+     * Loads image and updates its size.
+     *
+     * @param image Image model.
+     * @param imageSize Size of the image.
+     * @param tag Drag data of the image.
      */
     fun bind(image: Image, imageSize: Int, tag: ImageDragData) {
         with(imageView) {
@@ -52,6 +56,16 @@ class TierListImageHolder(
         }
     }
 
+
+    /**
+     * If event action is [MotionEvent.ACTION_DOWN], attempts to start a drag.
+     *
+     * Called when a touch event is dispatched to a view.
+     *
+     * @param view The view the touch event has been dispatched to.
+     * @param event The motion event object containing full information about the event.
+     * @return True if touch event was consumed, false otherwise.
+     */
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(view: View?, event: MotionEvent?): Boolean {
         if (event?.action != MotionEvent.ACTION_DOWN) return false
@@ -65,9 +79,12 @@ class TierListImageHolder(
     }
 
     /**
-     * Attempts to start drag.
+     * Attempts to start a drag.
      *
-     * @param view view that should be dragged.
+     * This functions validates the view tag.
+     *
+     * @param view View that should be dragged.
+     * @throws TierListImageException When view is null or has incompatible tag.
      */
     private fun startDrag(view: View?) {
         val data = view?.tag
@@ -80,10 +97,13 @@ class TierListImageHolder(
     }
 
     /**
-     * Starts drag.
+     * Attempts to start a drag.
      *
-     * @param view view that should be dragged.
-     * @param data payload of the dragged item.
+     * If drag started successfully, logs the information about the drag data.
+     *
+     * @param view View that should be dragged.
+     * @param data Payload of the dragged item.
+     * @throws TierListImageException If unable to start drag.
      */
     private fun startDrag(view: View, data: ImageDragData) {
         val result = startDragCompat(view, data)
@@ -97,12 +117,13 @@ class TierListImageHolder(
     }
 
     /**
-     * A helper function to start drag that supports all versions. Starting from [Build.VERSION_CODES.N]
-     * the shadow will be fully opaque.
+     * A helper function to start drag that supports all versions.
      *
-     * @param view [View] that has [View.OnDragListener] set.
-     * @param data data of the image that will be dragged.
-     * @return whether the drag was started successfully.
+     * Starting from [Build.VERSION_CODES.N] the shadow will be fully opaque.
+     *
+     * @param view View that has [View.OnDragListener] set.
+     * @param data Data of the image that will be dragged.
+     * @return Whether the drag was started successfully.
      */
     private fun startDragCompat(view: View ,data: ImageDragData): Boolean {
         val shadowBuilder = View.DragShadowBuilder(view)
@@ -116,9 +137,23 @@ class TierListImageHolder(
     }
 
     /**
-     * Exception that can happen when tier list image can't be dragged successfully.
+     * Initializes image view listeners.
      *
-     * @param message exception message.
+     * 1. Touch events are handled by [onTouch] function.
+     * 2. Drag events are propagated to [dragListener].
+     *
+     * @param dragListener Listener of tier list drag events.
+     */
+    private fun initListeners(dragListener: View.OnDragListener) {
+        itemView.setOnTouchListener(this)
+        itemView.setOnDragListener(dragListener)
+    }
+
+    /**
+     * Thrown when tier list image can't be dragged successfully.
+     *
+     * @param message Error message.
+     * @constructor Creates a new exception instance.
      */
     private class TierListImageException(message: String) : Exception(message)
 }

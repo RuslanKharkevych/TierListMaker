@@ -19,41 +19,54 @@ import me.khruslan.tierlistmaker.util.log.navigation.setLogTag
 import timber.log.Timber
 
 /**
- * Dialog with input field that asks user to enter tier list title. Essentially a wrapper on
- * [AlertDialog] with custom view. Use [EnterTierListTitleDialog.Builder] to create a dialog
- * instance.
+ * Dialog with input field that asks user to enter tier list title.
  *
- * @property params parameters constructed by [EnterTierListTitleDialog.Builder].
+ * Essentially a wrapper on [AlertDialog] with custom view. Use [EnterTierListTitleDialog.Builder]
+ * to create a dialog instance.
+ *
+ * @property params Parameters constructed by the builder.
+ * @constructor Creates a new dialog instance from the builder params.
  */
 class EnterTierListTitleDialog private constructor(private val params: Params) {
 
     /**
-     * Companion object of the [EnterTierListTitleDialog] used for storing constants.
+     * Constants for internal usage.
      */
-    private companion object {
+    private companion object Constants {
+
+        /**
+         * A name of the dialog in logs.
+         */
         private const val LOG_TAG = "EnterTierListTitleDialog"
     }
 
     /**
      * Wrapped alert dialog instance.
+     *
+     * Must be initialized before showing the dialog.
      */
     private lateinit var dialog: AlertDialog
 
     /**
-     * Instance of edit text view. Can be initialized only after [dialog] is shown.
+     * Instance of the edit text view.
+     *
+     * Can be initialized only after [dialog] is shown.
      */
     private var editText: EditText? = null
 
     /**
-     * Current input of [editText]. Returns empty string if edit text wasn't initialized or its
-     * text has not been set yet.
+     * Current input of [editText].
+     *
+     * Returns empty string if edit text wasn't initialized or its text has not been set yet.
      */
     private val editTextInput
         get() = editText?.text?.toString().orEmpty()
 
     /**
-     * Whether tier list name can be saved. In order for an input to be savable, it must not be
-     * blank and it must be different from initial tier list name.
+     * Whether tier list name can be saved.
+     *
+     * In order for an input to be savable, it must not be blank and it must be different from
+     * initial tier list name.
      */
     private val isInputSavable
         get() = editTextInput.isNotBlank() && editTextInput != params.tierListTitle
@@ -61,7 +74,7 @@ class EnterTierListTitleDialog private constructor(private val params: Params) {
     /**
      * Creates, configures and shows the dialog.
      *
-     * @param context activity context.
+     * @param context Activity context.
      */
     fun show(context: Context) {
         createDialog(context)
@@ -71,9 +84,11 @@ class EnterTierListTitleDialog private constructor(private val params: Params) {
     }
 
     /**
-     * Constructs and instantiates [dialog]. Dialog title is obtained from [params].
+     * Constructs and instantiates [dialog].
      *
-     * @param context activity context.
+     * Dialog title is obtained from [params].
+     *
+     * @param context Activity context.
      */
     private fun createDialog(context: Context) {
         dialog = MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_AlertDialog_EnterTierList)
@@ -90,8 +105,10 @@ class EnterTierListTitleDialog private constructor(private val params: Params) {
     }
 
     /**
-     * Prepares window before showing the dialog. Aligns dialog to the bottom of the window and
-     * makes soft keyboard show up right after the dialog is shown. Logs error if window is **null**.
+     * Prepares window before showing the dialog.
+     *
+     * Aligns dialog to the bottom of the window and makes soft keyboard show up right after the
+     * dialog is shown. Logs error if window is null.
      */
     private fun prepareWindow() {
         dialog.window?.run {
@@ -101,9 +118,10 @@ class EnterTierListTitleDialog private constructor(private val params: Params) {
     }
 
     /**
-     * Configures edit text. Adds text watcher to validate input and editor action listener to
-     * handle IME action clicks. Prefills initial tier list name taken from [params] and requests
-     * focus.
+     * Configures edit text.
+     *
+     * Adds text watcher to validate input and editor action listener to handle IME action clicks.
+     * Prefills initial tier list name taken from [params] and requests focus.
      */
     private fun setupEditText() {
         setupEditText {
@@ -115,10 +133,11 @@ class EnterTierListTitleDialog private constructor(private val params: Params) {
     }
 
     /**
-     * Initializes edit text and provides a builder interface to configure it. Logs error if edit
-     * text is not found in dialog.
+     * Initializes edit text and provides a builder interface to configure it.
      *
-     * @param builder a lambda that allows to configure edit text after it was initialized.
+     * Logs error if edit text is not found in dialog.
+     *
+     * @param builder A lambda that allows to configure edit text after it was initialized.
      */
     private fun setupEditText(builder: EditText.() -> Unit) {
         editText = dialog.findViewById(R.id.edit_text)
@@ -127,7 +146,10 @@ class EnterTierListTitleDialog private constructor(private val params: Params) {
 
     /**
      * Invokes [OnConfirmListener.onConfirm] callback to notify observers that user has confirmed
-     * a new tier list name.
+     * the new tier list name.
+     *
+     * Does nothing if dialog was built without the confirm listener. Though, this is not an
+     * expected scenario.
      */
     private fun confirmInput() {
         Timber.i("Confirmed tier list title input: $editTextInput")
@@ -135,11 +157,13 @@ class EnterTierListTitleDialog private constructor(private val params: Params) {
     }
 
     /**
-     * Handles code received from dialog key event. Dismisses dialog when user clicks on system
-     * back button (it's not automatically dismissed because it's not cancelable).
+     * Handles code received from dialog key event.
      *
-     * @param keyCode the code of the physical key that was pressed.
-     * @return **true** if event was handled, **false** otherwise.
+     * Dismisses dialog when user clicks on a system back button (it's not automatically dismissed
+     * because the dialog is not cancelable on outside touch).
+     *
+     * @param keyCode The code of the physical key that was pressed.
+     * @return True if event was handled, false otherwise.
      */
     private fun handleKeyCode(keyCode: Int): Boolean {
         return if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -153,9 +177,11 @@ class EnterTierListTitleDialog private constructor(private val params: Params) {
     /**
      * Handles editor action if it has [EditorInfo.IME_ACTION_DONE] identifier.
      *
-     * @param view view associated with action.
-     * @param actionId identifier of the action.
-     * @return **true** if action was handled, **false** otherwise.
+     * Does nothing if editor action is different. Though, this is not an expected scenario.
+     *
+     * @param view View associated with action.
+     * @param actionId Identifier of the action.
+     * @return True if action was handled, False otherwise.
      */
     private fun handleEditorAction(view: TextView, actionId: Int): Boolean {
         return if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -167,10 +193,11 @@ class EnterTierListTitleDialog private constructor(private val params: Params) {
     }
 
     /**
-     * Handles "Done" IME action click. If input is savable, dismisses the dialog and confirms
-     * input. Otherwise hides the keyboard.
+     * Handles "Done" IME action click.
      *
-     * @param view view associated with action.
+     * If input is savable, dismisses the dialog and confirms input. Otherwise hides the keyboard.
+     *
+     * @param view View associated with action.
      */
     private fun handleDoneAction(view: TextView) {
         if (isInputSavable) {
@@ -184,7 +211,7 @@ class EnterTierListTitleDialog private constructor(private val params: Params) {
     /**
      * Requests to hide the soft input window.
      *
-     * @param view view attached to the window that is currently accepting input.
+     * @param view View attached to the window that is currently accepting input.
      */
     private fun hideKeyboard(view: View) {
         val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
@@ -202,7 +229,7 @@ class EnterTierListTitleDialog private constructor(private val params: Params) {
     /**
      * Logs error that occurred during showing the dialog.
      *
-     * @param message error message.
+     * @param message Error message.
      */
     private fun logError(message: String) {
         val exception = EditTierListTitleDialogException(message)
@@ -210,18 +237,24 @@ class EnterTierListTitleDialog private constructor(private val params: Params) {
     }
 
     /**
-     * Exception that may occur during showing the dialog. Used for logging.
+     * Exception for various errors that may occur during showing the dialog.
      *
-     * @param message error message.
+     * Note that it is never thrown. Used for logging purpose only.
+     *
+     * @param message Error message.
+     * @constructor Creates an exception with error message.
      */
     private class EditTierListTitleDialogException(message: String) : Exception(message)
 
     /**
-     * [EnterTierListTitleDialog] parameters. Configured by [EnterTierListTitleDialog.Builder].
+     * [EnterTierListTitleDialog] parameters.
      *
-     * @property dialogTitleResId string resource of the dialog title.
-     * @property tierListTitle initial tier list title.
-     * @property onConfirmListener title confirmation callback.
+     * This class is mutable. Configured by [EnterTierListTitleDialog.Builder].
+     *
+     * @property dialogTitleResId String resource of the dialog title.
+     * @property tierListTitle Initial tier list title.
+     * @property onConfirmListener Title confirmation callback.
+     * @constructor Creates new params.
      */
     private data class Params(
         @StringRes private var dialogTitleResId: Int? = null,
@@ -232,8 +265,8 @@ class EnterTierListTitleDialog private constructor(private val params: Params) {
         /**
          * Resolves localized dialog title.
          *
-         * @param context activity context needed to resolve string resource.
-         * @return dialog title string or **null** if it wasn't set by builder.
+         * @param context Activity context needed to resolve string resource.
+         * @return Dialog title string or null if it wasn't set by builder.
          */
         fun getDialogTitle(context: Context): String? {
             return dialogTitleResId?.let { id ->
@@ -242,9 +275,9 @@ class EnterTierListTitleDialog private constructor(private val params: Params) {
         }
 
         /**
-         * Setter for [dialogTitleResId].
+         * Setter of [dialogTitleResId].
          *
-         * @param titleResId string resource of the dialog title.
+         * @param titleResId String resource of the dialog title.
          */
         fun setDialogTitle(@StringRes titleResId: Int) {
             dialogTitleResId = titleResId
@@ -259,27 +292,32 @@ class EnterTierListTitleDialog private constructor(private val params: Params) {
         /**
          * Called when tier list title is confirmed by user.
          *
-         * @param title new tier list title.
+         * @param title New tier list title.
          */
         fun onConfirm(title: String)
     }
 
     /**
-     * Builder for [EnterTierListTitleDialog]. Dialog title, tier list title and confirm listener
-     * can be customized.
+     * Builder of [EnterTierListTitleDialog].
+     *
+     * Dialog title, tier list title and confirm listener can be customized.
+     *
+     * @constructor Creates a new builder with empty params.
      */
     class Builder {
 
         /**
-         * [EnterTierListTitleDialog] parameters. Empty by default.
+         * Dialog parameters.
+         *
+         * Initially all parameters are empty.
          */
         private val params = Params()
 
         /**
          * Set the dialog title to display using the given resource id.
          *
-         * @param titleResId string resource of the dialog title.
-         * @return builder instance to allow chaining methods.
+         * @param titleResId String resource of the dialog title.
+         * @return Builder instance to allow chaining methods.
          */
         fun setDialogTitle(@StringRes titleResId: Int): Builder {
             params.setDialogTitle(titleResId)
@@ -289,8 +327,8 @@ class EnterTierListTitleDialog private constructor(private val params: Params) {
         /**
          * Set the initial tier list title.
          *
-         * @param title initial tier list title.
-         * @return builder instance to allow chaining methods.
+         * @param title Initial tier list title.
+         * @return Builder instance to allow chaining methods.
          */
         fun setTierListTitle(title: String): Builder {
             params.tierListTitle = title
@@ -300,8 +338,8 @@ class EnterTierListTitleDialog private constructor(private val params: Params) {
         /**
          * Set a callback to be invoked on tier list title confirmation.
          *
-         * @param listener the [OnConfirmListener] to use.
-         * @return builder instance to allow chaining methods.
+         * @param listener The listener to use.
+         * @return Builder instance to allow chaining methods.
          */
         fun setOnConfirmListener(listener: OnConfirmListener): Builder {
             params.onConfirmListener = listener
@@ -311,7 +349,7 @@ class EnterTierListTitleDialog private constructor(private val params: Params) {
         /**
          * Builds [EnterTierListTitleDialog] with [params].
          *
-         * @return created dialog.
+         * @return Created dialog.
          */
         fun build(): EnterTierListTitleDialog {
             return EnterTierListTitleDialog(params)

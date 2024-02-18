@@ -11,9 +11,13 @@ import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * [ViewModel] for [TierListActivity].
+ * View model for [TierListActivity].
  *
- * @param savedStateHandle handle for saving [TierList].
+ * Obtains tier list from the navigation arguments and saves it in the database on need.
+ *
+ * @param savedStateHandle Provides navigation arguments.
+ * @property databaseHelper Saves tier list in the database.
+ * @constructor Creates view model with all dependencies.
  */
 @HiltViewModel
 class TierListActivityViewModel @Inject constructor(
@@ -22,14 +26,19 @@ class TierListActivityViewModel @Inject constructor(
 ) : ViewModel() {
 
     /**
-     * Companion object of [TierListActivityViewModel] used for storing [SavedStateHandle] keys.
+     * Navigation argument keys.
+     *
+     * These keys must be passed as extras when navigating to the [TierListActivity]. Inside the
+     * view model, the arguments can be obtained from the saved state handle.
      */
-    private companion object {
+    private companion object NavArgKeys {
         private const val EXTRA_TIER_LIST = "me.khruslan.tierlistmaker.TIER_LIST"
     }
 
     /**
-     * Initial [TierList] instance obtained from intent extras.
+     * Initial tier list instance obtained from navigation arguments.
+     *
+     * @throws [IllegalStateException] If argument was not found.
      */
     private val tierList: TierList = savedStateHandle[EXTRA_TIER_LIST]
         ?: throw IllegalStateException("$savedStateHandle doesn't contain extra: $EXTRA_TIER_LIST")
@@ -38,6 +47,11 @@ class TierListActivityViewModel @Inject constructor(
         Timber.i("TierListActivityViewModel initialized")
     }
 
+    /**
+     * Logs the onCleared lifecycle event.
+     *
+     * Called when this view model is no longer used and will be destroyed.
+     */
     override fun onCleared() {
         Timber.i("TierListActivityViewModel cleared")
     }

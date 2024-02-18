@@ -6,23 +6,27 @@ import me.khruslan.tierlistmaker.data.models.tierlist.TierListEvent
 
 /**
  * Processor that converts [DragEffect] into [TierListEvent].
+ *
+ * Implementations might also update the tier list as a result of the effect.
  */
 interface TierListProcessor {
 
     /**
-     * Attaches [TierList] to the processor.
+     * Attaches tier list to the processor.
+     *
      * It is required to set tier list before calling [processDragEffect].
      *
-     * @param tierList [TierList] to set.
+     * @param tierList Tier list to set.
      */
     fun setTierList(tierList: TierList)
 
     /**
-     * Converts [DragEffect] into [TierListEvent].
+     * Converts drag effect into tier list event.
+     *
      * It is required to [setTierList] before calling this function.
      *
-     * @param effect drag effect to process.
-     * @return Resulting [TierListEvent].
+     * @param effect Drag effect to process.
+     * @return Resulting tier list event.
      */
     fun processDragEffect(effect: DragEffect): TierListEvent
 }

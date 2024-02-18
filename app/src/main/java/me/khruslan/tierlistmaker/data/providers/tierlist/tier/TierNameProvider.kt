@@ -1,18 +1,17 @@
 package me.khruslan.tierlistmaker.data.providers.tierlist.tier
 
-import me.khruslan.tierlistmaker.data.models.tierlist.Tier
-import me.khruslan.tierlistmaker.data.models.tierlist.TierList
-
 /**
- * Provider of name for [Tier] in the [TierList].
+ * Provider of names for tiers in a tier list.
+ *
+ * Synchronously provides one name at a time.
  */
 interface TierNameProvider {
 
     /**
-     * Generates [Tier] name based on its position.
+     * Generates tier name based on its position.
      *
-     * @param tierIndex position of the [Tier].
-     * @return Name of the [Tier].
+     * @param tierIndex Position of the tier in a tier list.
+     * @return Name of the tier.
      */
     fun getNameByIndex(tierIndex: Int): String
 }

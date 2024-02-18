@@ -1,20 +1,23 @@
 package me.khruslan.tierlistmaker.presentation.models.scroll
 
 /**
- * State of automatic scrolling.
+ * UI state of automatic scrolling.
+ *
+ * Indicates whether the automatic scrolling is happening at a given point in time..
+ *
+ * @constructor Default empty constructor.
  */
 sealed class AutoScrollState {
 
     /**
-     * Companion object of [AutoScrollState] that exposes functions for simplified creation of
-     * [AutoScrollState.Scrolling] state.
+     * Convenience functions for creating [AutoScrollState.Scrolling].
      */
-    companion object {
+    companion object Helpers {
 
         /**
          * Creates [AutoScrollState.Scrolling] with [AutoScrollDirection.Up].
          *
-         * @return created state.
+         * @return Created state.
          */
         fun scrollingUp(): AutoScrollState {
             return Scrolling(AutoScrollDirection.Up)
@@ -23,7 +26,7 @@ sealed class AutoScrollState {
         /**
          * Creates [AutoScrollState.Scrolling] with [AutoScrollDirection.Down].
          *
-         * @return created state.
+         * @return Created state.
          */
         fun scrollingDown(): AutoScrollState {
             return Scrolling(AutoScrollDirection.Down)
@@ -38,7 +41,8 @@ sealed class AutoScrollState {
     /**
      * Active state. View is being automatically scrolled.
      *
-     * @property direction autoscroll direction.
+     * @property direction Autoscroll direction.
+     * @constructor Creates a scrolling state from the direction.
      */
     data class Scrolling(val direction: AutoScrollDirection) : AutoScrollState()
 }

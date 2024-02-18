@@ -3,8 +3,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        mavenLocal()
     }
 }
-rootProject.name = "TierListMaker"
+rootProject.name = 'TierListMaker'
 include ':app'
+include ':app:dokka'
 include ':app:lint'

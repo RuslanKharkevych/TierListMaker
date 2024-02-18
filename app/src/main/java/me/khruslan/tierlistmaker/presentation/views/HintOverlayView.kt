@@ -8,18 +8,26 @@ import me.khruslan.tierlistmaker.databinding.ViewHintOverlayBinding
 import me.khruslan.tierlistmaker.presentation.utils.hints.core.Hint
 
 /**
- * View of the [Hint] overlay. Includes hint text and buttons: "Previous", "Next" and "Close". This
- * view doesn't support XML attributes. It must be instantiated only in Java/Kotlin code.
+ * View of the [Hint] overlay.
  *
- * @param context activity context.
+ * Includes hint text and buttons: "Previous", "Next" and "Close". This view doesn't support XML
+ * attributes. It must be instantiated only in Java/Kotlin code.
+ *
+ * @param context Activity context.
+ * @constructor Creates the hint overlay view with empty hint text and enabled previous/next
+ * buttons.
  */
 class HintOverlayView(context: Context) : ConstraintLayout(context) {
+
+    /**
+     * Binding of the hint overlay view.
+     */
     private val binding = ViewHintOverlayBinding.inflate(LayoutInflater.from(context), this)
 
     /**
-     * Sets hint text.
+     * Updates the hint text.
      *
-     * @param resId the resource identifier of the string to be displayed.
+     * @param resId The resource identifier of the string to be displayed.
      */
     fun setHintText(@StringRes resId: Int) {
         binding.textHint.setText(resId)
@@ -27,6 +35,8 @@ class HintOverlayView(context: Context) : ConstraintLayout(context) {
 
     /**
      * Disables "Previous" button.
+     *
+     * The disabled button is not clickable.
      */
     fun disablePreviousButton() {
         binding.btnPrevious.isEnabled = false
@@ -34,33 +44,35 @@ class HintOverlayView(context: Context) : ConstraintLayout(context) {
 
     /**
      * Disables "Next" button.
+     *
+     * The disabled button is not clickable.
      */
     fun disableNextButton() {
         binding.btnNext.isEnabled = false
     }
 
     /**
-     * Sets click listener to the "Previous" button.
+     * Registers click listener for the "Previous" button.
      *
-     * @param listener the listener to set.
+     * @param listener The listener to set.
      */
     fun setOnPreviousButtonClickListener(listener: OnClickListener) {
         binding.btnPrevious.setOnClickListener(listener)
     }
 
     /**
-     * Sets click listener to the "Next" button.
+     * Registers click listener for the "Next" button.
      *
-     * @param listener the listener to set.
+     * @param listener The listener to set.
      */
     fun setOnNextButtonClickListener(listener: OnClickListener) {
         binding.btnNext.setOnClickListener(listener)
     }
 
     /**
-     * Sets click listener to the "Close" button.
+     * Registers click listener for the "Close" button.
      *
-     * @param listener the listener to set.
+     * @param listener The listener to set.
      */
     fun setOnCloseButtonClickListener(listener: OnClickListener) {
         binding.btnClose.setOnClickListener(listener)

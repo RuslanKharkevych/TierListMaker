@@ -40,7 +40,7 @@ import java.io.IOException
 class ImageCompressorTest {
 
     companion object {
-        private const val DISPLAY_WIDTH_FRACTION = 0.33f
+        private const val DISPLAY_WIDTH_FRACTION = 1f / 3f
         private const val EXTENSIONS_PACKAGE = "me.khruslan.tierlistmaker.util.ExtensionsKt"
     }
 
@@ -62,7 +62,8 @@ class ImageCompressorTest {
     private lateinit var fakePreferencesHelper: FakePreferencesHelper
     private lateinit var imageCompressor: ImageCompressor
 
-    private val dummyTargetDir = "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures"
+    private val dummyTargetDir =
+        "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures"
     private val displayWidthPixels = 1080
 
     @Before

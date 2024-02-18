@@ -11,10 +11,13 @@ import me.khruslan.tierlistmaker.presentation.adapters.TierListImageAdapter
 import me.khruslan.tierlistmaker.presentation.utils.recyclerview.FlexLayoutManager
 
 /**
- * [RecyclerView.ViewHolder] implementation for the tier view.
+ * Holder of the tier view.
  *
- * @property binding binding of the tier item view.
- * @property dragListener listener of tier list drag events.
+ * The tier view includes header and nested recycler view with images.
+ *
+ * @property binding Binding of the tier item view.
+ * @property dragListener Listener of tier list drag events.
+ * @constructor Creates a new holder instance.
  */
 class TierHolder(
     private val binding: ItemTierBinding,
@@ -22,15 +25,17 @@ class TierHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     init {
-        binding.listImages.setOnDragListener(dragListener)
+        setOnDragListener()
     }
 
     /**
      * Binds tier data to the [itemView].
      *
-     * @param tier tier model.
-     * @param imageSize size of the image.
-     * @param tag drag data of the tier.
+     * Updates tier style and populates images list view.
+     *
+     * @param tier Tier model.
+     * @param imageSize Size of the image.
+     * @param tag Drag data of the tier.
      */
     fun bind(tier: Tier, imageSize: Int, tag: TierDragData) {
         binding.listImages.tag = tag
@@ -51,5 +56,14 @@ class TierHolder(
             )
             layoutManager = FlexLayoutManager(binding.root.context)
         }
+    }
+
+    /**
+     * Registers a drag event listener callback object for the tier images view.
+     *
+     * This allows dropping images into a tier.
+     */
+    private fun setOnDragListener() {
+        binding.listImages.setOnDragListener(dragListener)
     }
 }

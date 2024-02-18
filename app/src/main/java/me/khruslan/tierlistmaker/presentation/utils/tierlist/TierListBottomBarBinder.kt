@@ -7,8 +7,9 @@ import me.khruslan.tierlistmaker.databinding.GroupTierListBottomBarBinding
 /**
  * Binder that enables / disables buttons in the bottom bar depending on the tier list state.
  *
- * @property binding bottom bar binding.
- * @property tierList tier list to bind.
+ * @property binding Bottom bar binding.
+ * @property tierList Tier list to bind.
+ * @constructor Creates a new binder for provided tier list.
  */
 class TierListBottomBarBinder(
     private val binding: GroupTierListBottomBarBinding,
@@ -36,6 +37,7 @@ class TierListBottomBarBinder(
 
     /**
      * Invalidates zoom buttons.
+     *
      * - Disables "Zoom in" button if minimal zoom value has been reached.
      * - Disables "Zoom out" button if maximal zoom value has been reached.
      */

@@ -10,22 +10,31 @@ import me.khruslan.tierlistmaker.util.getParcelableExtraCompat
 import timber.log.Timber
 
 /**
- * [ActivityResultContract] implementation used for getting [TierList] result from an activity.
+ * Activity result contract used for getting tier list result from an activity.
+ *
+ * Tier list is used as both input and output of this contract. No modifications are done to the
+ * input. Output is nullable in case parsing fails due to unexpected error.
  */
 class TierListResultContract : ActivityResultContract<TierList, TierList?>() {
 
     /**
-     * Companion object used for creating data [Intent].
+     * Creator of the data [Intent].
      */
-    companion object {
+    companion object IntentCreator {
+
+        /**
+         * Name of the intent extra for tier list.
+         */
         private const val EXTRA_TIER_LIST = "me.khruslan.tierlistmaker.TIER_LIST"
 
         /**
-         * Creates data [Intent]. This data should be passed to [Activity.setResult]
-         * function in the activity that was started with [TierListResultContract].
+         * Creates data intent.
          *
-         * @param tierList tier list passed as activity result.
-         * @return created data [Intent].
+         * This data should be passed to [Activity.setResult] function in the activity that was
+         * started with [TierListResultContract].
+         *
+         * @param tierList Tier list passed as activity result.
+         * @return Created data intent.
          */
         fun newData(tierList: TierList): Intent {
             return Intent().apply {
@@ -34,9 +43,25 @@ class TierListResultContract : ActivityResultContract<TierList, TierList?>() {
         }
     }
 
+    /**
+     * Creates an intent that can be used for [Activity.onActivityResult].
+     *
+     * @param context Activity context.
+     * @param input Passed tier list.
+     * @return Created intent.
+     */
     override fun createIntent(context: Context, input: TierList) =
         TierListActivity.newIntent(context, input)
 
+    /**
+     * Converts result obtained from [Activity.onActivityResult] to the tier list.
+     *
+     * @param resultCode The integer result code returned by the child activity through its
+     * [Activity.setResult].
+     * @param intent An intent, which can return result data to the caller (various data can be attached
+     * to intent "extras").
+     * @return Resolved tier list or null in case of parsing error.
+     */
     override fun parseResult(resultCode: Int, intent: Intent?): TierList? {
         return try {
             parseTierList(resultCode, intent)
@@ -47,12 +72,12 @@ class TierListResultContract : ActivityResultContract<TierList, TierList?>() {
     }
 
     /**
-     * Returns [TierList] obtained as an extra from the [Intent]. Throws [TierListResultException]
-     * in case result code is not successful or intent doesn't contain such extra.
+     * Returns tier list obtained as an extra from the intent.
      *
-     * @param resultCode result code returned by the child activity.
-     * @param intent an [Intent] that can contain [TierList] extra.
-     * @return parsed [TierList].
+     * @param resultCode Result code returned by the child activity.
+     * @param intent An intent that is expected to contain tier list extra.
+     * @return Parsed tier list.
+     * @throws [TierListResultException] In case result code is not successful or intent doesn't contain such extra.
      */
     private fun parseTierList(resultCode: Int, intent: Intent?): TierList {
         when {

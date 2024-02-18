@@ -6,13 +6,12 @@ import android.net.Uri
 import android.os.Environment
 import androidx.core.content.FileProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.khruslan.tierlistmaker.BuildConfig
 import me.khruslan.tierlistmaker.data.providers.dispatchers.DispatcherProvider
-import me.khruslan.tierlistmaker.util.performace.PerformanceService
-import me.khruslan.tierlistmaker.util.performace.WriteBitmapToFileTrace
+import me.khruslan.tierlistmaker.util.performance.PerformanceService
+import me.khruslan.tierlistmaker.util.performance.WriteBitmapToFileTrace
 import me.shouheng.compress.utils.size
 import timber.log.Timber
 import java.io.File
@@ -20,12 +19,16 @@ import java.io.FileOutputStream
 import javax.inject.Inject
 
 /**
- * [FileManager] implementation. All functions are running in [Dispatchers.IO] context.
+ * [FileManager] implementation.
  *
- * @property context application context.
- * @property imageCompressor compressor of image files.
- * @property dispatcherProvider provider of [CoroutineDispatcher] for running suspend functions.
- * @property performanceService service that starts performance traces.
+ * Moves all operations to the background thread. Collects performance traces. No manifest
+ * permissions are required to use this class.
+ *
+ * @property context Application context.
+ * @property imageCompressor Compresses image files.
+ * @property dispatcherProvider Provides [Dispatchers.IO] context.
+ * @property performanceService Traces performance of the operations.
+ * @constructor Creates a new file manager instance.
  */
 class FileManagerImpl @Inject constructor(
     @ApplicationContext private val context: Context,
@@ -35,13 +38,31 @@ class FileManagerImpl @Inject constructor(
 ) : FileManager {
 
     /**
-     * [FileManagerImpl] companion object. Used for storing constants.
+     * File manager constants for internal use.
      */
-    companion object {
+    private companion object Constants {
+
+        /**
+         * The authority of the [FileProvider].
+         *
+         * Must be defined in a provider element in the app's manifest.
+         */
         private const val FILE_PROVIDER_AUTHORITY = "${BuildConfig.APPLICATION_ID}.fileprovider"
-        private const val BITMAP_QUALITY = 100
+
+        /**
+         * The maximum quality of a bitmap as a percentage.
+         */
+        private const val BITMAP_MAX_QUALITY = 100
     }
 
+    /**
+     * Saves image file from URI into the external pictures directory.
+     *
+     * Note that the image is compressed before it's saved.
+     *
+     * @param uri URI of the image file.
+     * @return Created file or null in case of error.
+     */
     override suspend fun createImageFileFromUri(uri: Uri): File? {
         Timber.i("Creating image file from $uri")
         return try {
@@ -55,6 +76,15 @@ class FileManagerImpl @Inject constructor(
         }
     }
 
+    /**
+     * Returns a content URI for a file, created from bitmap.
+     *
+     * The file is saved to the cache directory.
+     *
+     * @param bitmap Bitmap that should be written to file.
+     * @param fileName The name of the file to be created.
+     * @return Content URI of the created file or null in case of error.
+     */
     override suspend fun provideContentUriFromBitmap(bitmap: Bitmap, fileName: String): Uri? {
         Timber.i("Providing content Uri for file $fileName")
         return withContext(dispatcherProvider.io) {
@@ -74,9 +104,9 @@ class FileManagerImpl @Inject constructor(
     }
 
     /**
-     * Attempts to get external pictures directory. No permissions are required for this action.
+     * Attempts to get external pictures directory.
      *
-     * @return external picture directory or null in case of error.
+     * @return External pictures directory or null in case of error.
      */
     private suspend fun getPicturesDirectory(): File {
         return withContext(dispatcherProvider.io) {
@@ -91,10 +121,12 @@ class FileManagerImpl @Inject constructor(
     }
 
     /**
-     * Writes [Bitmap] to a given [file].
+     * Writes bitmap to a given file.
      *
-     * @receiver bitmap that should be written to file.
-     * @param file the file to which the bitmap should be written.
+     * The operation is traced with [WriteBitmapToFileTrace].
+     *
+     * @receiver Bitmap that should be written to file.
+     * @param file The file to which the bitmap should be written.
      */
     private fun Bitmap.writeToFile(file: File) {
         val trace = performanceService.startTrace(WriteBitmapToFileTrace.NAME)
@@ -102,7 +134,7 @@ class FileManagerImpl @Inject constructor(
 
         runCatching {
             FileOutputStream(file).use { stream ->
-                compress(Bitmap.CompressFormat.JPEG, BITMAP_QUALITY, stream)
+                compress(Bitmap.CompressFormat.JPEG, BITMAP_MAX_QUALITY, stream)
             }
         }.onSuccess { isSuccessful ->
             trace.putAttribute(WriteBitmapToFileTrace.ATTR_IS_SUCCESSFUL, isSuccessful)
@@ -120,9 +152,11 @@ class FileManagerImpl @Inject constructor(
     }
 
     /**
-     * Returns a content [Uri] for the [File].
+     * Returns a content URI for the file.
      *
-     * @receiver a file pointing to the filename for which you want a content Uri.
+     * Uses [FILE_PROVIDER_AUTHORITY].
+     *
+     * @receiver A file pointing to the filename for which you want a content Uri.
      * @return A content URI of the given file.
      */
     private fun File.getContentUri(): Uri {
@@ -134,10 +168,13 @@ class FileManagerImpl @Inject constructor(
     }
 
     /**
-     * [Exception] implementation for the errors that could happen inside the [FileManagerImpl].
+     * Thrown on I/O errors caught inside the file manager.
      *
-     * @param message description of the error.
-     * @param cause cause of the error.
+     * When a system exception is rethrown, make sure to pass it as a cause.
+     *
+     * @param message Description of the error.
+     * @param cause Cause of the error.
+     * @constructor Creates the exception with message and (optionally) cause.
      */
     private class FileManagerException(message: String, cause: Throwable? = null) :
         Exception(message, cause)

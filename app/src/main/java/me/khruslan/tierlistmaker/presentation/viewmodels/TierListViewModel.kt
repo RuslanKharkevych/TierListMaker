@@ -6,7 +6,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hadilq.liveevent.LiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,22 +40,26 @@ import me.khruslan.tierlistmaker.presentation.models.LoadingProgress
 import me.khruslan.tierlistmaker.presentation.screens.tierlist.TierListFragment
 import me.khruslan.tierlistmaker.util.displayWidthPixels
 import me.khruslan.tierlistmaker.data.providers.drag.DragPocket
-import me.khruslan.tierlistmaker.util.performace.PerformanceService
-import me.khruslan.tierlistmaker.util.performace.SaveImagesTrace
+import me.khruslan.tierlistmaker.util.performance.PerformanceService
+import me.khruslan.tierlistmaker.util.performance.SaveImagesTrace
 import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
 /**
- * [ViewModel] for [TierListFragment].
+ * View model for [TierListFragment].
  *
- * @property savedStateHandle handle for saving [TierList].
- * @property dragPocket pocket for the [DragData].
- * @property fileManager manager for saving image files.
- * @property tierListProcessor processor of drag effects.
- * @property tierStyleProvider provider of tier styles.
- * @property performanceService service that starts performance traces.
- * @param application [Application] instance.
+ * The view model operates on a tier list object received from the saved state handle. Handles
+ * drag effects and sends tier list events that allow observers to reflect UI changes.
+ *
+ * @property savedStateHandle Provides navigation arguments.
+ * @property dragPocket Keeps drag data in memory.
+ * @property fileManager Saves image files.
+ * @property tierListProcessor Processes drag effects.
+ * @property tierStyleProvider Provides tier styles.
+ * @property performanceService Tracks performance traces.
+ * @param application Provides access to global resources.
+ * @constructor Creates view model with all dependencies.
  */
 @HiltViewModel
 class TierListViewModel @Inject constructor(
@@ -71,63 +74,88 @@ class TierListViewModel @Inject constructor(
 ) : AndroidViewModel(application) {
 
     /**
-     * Companion object of [TierListViewModel] used for storing [SavedStateHandle] keys.
+     * Navigation argument keys.
+     *
+     * These keys must be passed as arguments when navigating to the [TierListFragment]. Inside the
+     * view model, the arguments can be obtained from [savedStateHandle].
      */
-    private companion object {
+    private companion object NavArgKeys {
         private const val KEY_TIER_LIST = "tierList"
     }
 
     /**
-     * Initial [TierList] instance obtained from navigation arguments.
+     * Initial tier list instance obtained from navigation arguments.
+     *
+     * @throws [IllegalStateException] If argument was not found.
      */
     val tierList: TierList = savedStateHandle[KEY_TIER_LIST]
         ?: throw IllegalStateException("$savedStateHandle doesn't contain key: $KEY_TIER_LIST")
 
     /**
-     * [Job] that updates styles of all tiers in a [tierList].
+     * Updates styles of all tiers in the tier list.
+     *
+     * Make sure to cancel the old job whenever the new one is launched to avoid race condition
+     * bugs.
      */
     private var updateTierListStylesJob: Job? = null
 
+    /**
+     * A mutable reference to [tierListEvent].
+     */
     private val _tierListEvent by lazy { LiveEvent<TierListEvent>() }
+
+    /**
+     * A mutable reference to [loadingProgressLiveData].
+     */
     private val _loadingProgressLiveData by lazy { MutableLiveData<LoadingProgress?>() }
 
     /**
-     * [LiveData] that notifies observers about the tier list events.
+     * Live data that notifies observers about the tier list events.
      */
     val tierListEvent: LiveData<TierListEvent> get() = _tierListEvent
 
     /**
-     * [LiveData] that notifies observers about the progress of loading image files or creating
-     * an image file of the tier list.
+     * Live data that notifies observers about the progress of loading image files or creating an
+     * image file of the tier list.
      *
-     * If the value is **null**, then no loading is happening at the moment.
+     * If the value is null, then no loading is happening at the moment.
      */
     val loadingProgressLiveData: LiveData<LoadingProgress?> get() = _loadingProgressLiveData
 
     /**
      * Width of the device screen in pixels.
+     *
+     * Obtained from the application resources. Used to calculate image size.
      */
     private val displayWidth by lazy {
         getApplication<Application>().displayWidthPixels
     }
 
     /**
-     * Size of the tier list image. Calculated based on the current [TierList.zoomValue].
+     * Size of the tier list image.
+     *
+     * Calculated based on the current [TierList.zoomValue].
      */
     val imageSize get() = displayWidth / tierList.zoomValue
 
     init {
         Timber.i("TierListViewModel initialized")
-        tierListProcessor.setTierList(tierList)
-        updateTierStyles()
+        initTierList()
     }
 
+    /**
+     * Logs the onCleared lifecycle event.
+     *
+     * Called when this view model is no longer used and will be destroyed.
+     */
     override fun onCleared() {
         Timber.i("TierListViewModel cleared")
     }
 
     /**
-     * Reduces [TierList.zoomValue] by one and notifies UI.
+     * Decrements [TierList.zoomValue].
+     *
+     * Updates [tierListEvent] with [ImageSizeUpdated].
      */
     fun zoomIn() {
         tierList.zoomValue--
@@ -136,7 +164,9 @@ class TierListViewModel @Inject constructor(
     }
 
     /**
-     * Increases [TierList.zoomValue] by one and notifies UI.
+     * Increments [TierList.zoomValue].
+     *
+     * Updates [tierListEvent] with [ImageSizeUpdated].
      */
     fun zoomOut() {
         tierList.zoomValue++
@@ -145,9 +175,11 @@ class TierListViewModel @Inject constructor(
     }
 
     /**
-     * Starts drag. Saves [dragData] in the [dragPocket] and notifies UI that it was removed.
+     * Starts drag.
      *
-     * @param dragData drag data that received the drag event.
+     * Saves [dragData] in the [dragPocket] and notifies UI that it was removed.
+     *
+     * @param dragData Drag data that received the drag event.
      */
     fun startDrag(dragData: ImageDragData) {
         dragPocket.shadow = dragData
@@ -156,11 +188,12 @@ class TierListViewModel @Inject constructor(
 
     /**
      * Updates the drag target.
+     *
      * - Pops old target from [dragPocket].
      * - Saves [newTarget] in the [dragPocket].
      * - Notifies UI about the updates.
      *
-     * @param newTarget drag data of the new target or **null** if target was removed.
+     * @param newTarget Drag data of the new target or null if target was removed.
      */
     fun updateDragTarget(newTarget: DragData?) {
         val oldTarget = dragPocket.target
@@ -171,10 +204,13 @@ class TierListViewModel @Inject constructor(
     }
 
     /**
-     * Drops the image. Pops [DragPocket.target] (or [DragPocket.cachedTarget] if necessary) and
-     * notifies the UI that it should be updated with [dragData].
+     * Drops the image into a target.
      *
-     * @param dragData drag data of the dropped image.
+     * Pops [DragPocket.target] (or [DragPocket.cachedTarget] if necessary) and notifies the UI that
+     * it should be updated with [dragData]. If cached target is not found in the pocket, returns
+     * without any action.
+     *
+     * @param dragData Drag data of the dropped image.
      */
     fun dropImage(dragData: ImageDragData) {
         val target = dragPocket.target
@@ -188,8 +224,10 @@ class TierListViewModel @Inject constructor(
     }
 
     /**
-     * Restores released image. It can be called to either end the drag without dropping, or put
-     * back image. Pops [DragPocket.shadow] and notified the UI that it should be restored.
+     * Restores released image from the "pocket".
+     *
+     * It can be called to either end the drag without dropping, or put back image. Pops
+     * [DragPocket.shadow] and notified the UI that it should be restored.
      */
     fun restoreReleasedImage() {
         val shadow = dragPocket.shadow ?: return
@@ -197,10 +235,12 @@ class TierListViewModel @Inject constructor(
     }
 
     /**
-     * Saves images to the local storage, adds them to the [TierList.backlogImages]
-     * and notifies UI about the updates.
+     * Saves images to the local storage.
      *
-     * @param imageUris list of [Uri] of the images that should be saved.
+     * Inserts saved images at the start of the backlog and notifies UI about the updates. Traced
+     * with [SaveImagesTrace].
+     *
+     * @param imageUris URIs of the images that should be saved.
      */
     fun saveImages(imageUris: List<Uri>) {
         viewModelScope.launch {
@@ -225,24 +265,10 @@ class TierListViewModel @Inject constructor(
     }
 
     /**
-     * Creates image from [file]. If [file] is **null**, creates "broken" image.
+     * Inserts a new empty tier at the end.
      *
-     * @param file image file or null.
-     * @return Created [Image].
-     */
-    private fun createImage(file: File?): Image {
-        return if (file != null) {
-            StorageImage(file)
-        } else {
-            ResourceImage(resId = R.drawable.ic_broken_image)
-        }
-    }
-
-    /**
-     * Adds empty [Tier] and notifies the UI that it was inserted. Cancels current
-     * [updateTierListStylesJob] and starts a new one.
-     *
-     * Also updates style of all tiers.
+     * Updates [tierListEvent] with [TierInserted]. Cancels current [updateTierListStylesJob] and
+     * starts a new job to update style of all tiers.
      */
     fun addNewTier() {
         Timber.i("Adding new tier")
@@ -254,6 +280,8 @@ class TierListViewModel @Inject constructor(
     }
 
     /**
+     * Update styles of all tiers.
+     *
      * Launches and assigns a job created by [launchUpdateTierStylesJob] to
      * [updateTierListStylesJob].
      */
@@ -262,9 +290,38 @@ class TierListViewModel @Inject constructor(
     }
 
     /**
-     * Creates and starts [Job] that updates styles of all tiers and notifies UI about the updates.
+     * Runs initial configurations of the tier list.
      *
-     * @return created job.
+     * Initializes [tierList] in [tierListProcessor] and updates tier styles. This function must
+     * be called from the view model's initialization block.
+     */
+    private fun initTierList() {
+        tierListProcessor.setTierList(tierList)
+        updateTierStyles()
+    }
+
+    /**
+     * Creates image from file.
+     *
+     * Normally creates [StorageImage], bu in case file is null, creates "broken" [ResourceImage].
+     *
+     * @param file Image file or null.
+     * @return Created image.
+     */
+    private fun createImage(file: File?): Image {
+        return if (file != null) {
+            StorageImage(file)
+        } else {
+            ResourceImage(resId = R.drawable.ic_broken_image)
+        }
+    }
+
+    /**
+     * Creates and starts a job that updates styles of all tiers.
+     *
+     * On job completion updates [tierListEvent] with [TierListChanged].
+     *
+     * @return Created job.
      */
     private fun launchUpdateTierStylesJob(): Job {
         return viewModelScope.launch {
@@ -278,17 +335,21 @@ class TierListViewModel @Inject constructor(
     }
 
     /**
-     * Converts [DragEffect] to the [TierListEvent] and notifies UI about it.
+     * Converts drag effect to the tier list event.
      *
-     * @param effect drag effect to process.
+     * Delegates handling logic to [tierListProcessor]. Triggers [tierListEvent] update.
+     *
+     * @param effect Drag effect to process.
      */
     private fun processDragEffect(effect: DragEffect) {
         _tierListEvent.value = tierListProcessor.processDragEffect(effect)
     }
 
     /**
-     * Attempts to save [tierList] to file. On success - notifies observers that tier list is ready
-     * to be shared. On error - notifies observers about it.
+     * Handles share tier list action.
+     *
+     * Attempts to save tier list to a file. On success updates [tierListEvent] with
+     * [TierListReadyToShare], on failure - with [TierListExportError].
      */
     fun shareTierList() {
         viewModelScope.launch {
@@ -302,8 +363,10 @@ class TierListViewModel @Inject constructor(
     }
 
     /**
-     * Attempts to save [tierList] to file. On success - notifies observers that tier list is ready
-     * to be viewed. On error - notifies observers about it.
+     * Handles view tier list action.
+     *
+     * Attempts to save tier list to a file. On success updates [tierListEvent] with
+     * [TierListReadyToView], on failure - with [TierListExportError].
      */
     fun viewTierList() {
         viewModelScope.launch {
@@ -317,10 +380,12 @@ class TierListViewModel @Inject constructor(
     }
 
     /**
-     * Generates bitmap from [tierList] and saves it to a file. Notifies observers about loading
-     * state.
+     * Generates bitmap from tier list and saves it to a file.
      *
-     * @return Content [Uri] of the created file or **null** in case of error.
+     * The file name is taken from the tier list title. Updates [loadingProgressLiveData] with
+     * indeterminate loading progress.
+     *
+     * @return Content URI of the created file or null in case of error.
      */
     private suspend fun saveTierListToFile(): Uri? {
         _loadingProgressLiveData.value = LoadingProgress.Indeterminate
@@ -332,9 +397,12 @@ class TierListViewModel @Inject constructor(
     }
 
     /**
-     * Inserts images at the start of the backlog and notifies UI about the updates.
+     * Inserts images at the start of the backlog.
      *
-     * @param images images to insert.
+     * If the list of images is empty, completes without any action. Updates [tierListEvent] with
+     * [BacklogImagesAdded].
+     *
+     * @param images Images to insert.
      */
     fun insertImagesToBacklog(images: List<Image>) {
         if (images.isEmpty()) return

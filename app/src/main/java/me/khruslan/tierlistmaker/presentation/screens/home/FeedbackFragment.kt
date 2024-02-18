@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.core.net.toUri
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceScreen
 import com.google.android.material.snackbar.Snackbar
 import me.khruslan.tierlistmaker.BuildConfig
 import me.khruslan.tierlistmaker.R
@@ -13,20 +14,48 @@ import me.khruslan.tierlistmaker.presentation.utils.setOnPreferenceClickListener
 import timber.log.Timber
 
 /**
- * [PreferenceFragmentCompat] that represents "Feedback" section in the navigation drawer.
+ * Fragment that represents "Feedback" section in the navigation drawer.
+ *
+ * Consists of "Contact us", "Report bug" and "Rate app" sections.
+ *
+ * @constructor Default no-arg constructor.
  */
 class FeedbackFragment : PreferenceFragmentCompat() {
 
     /**
-     * Companion object of [FeedbackFragment] used for storing constants.
+     * Constants for internal use.
      */
-    private companion object {
+    private companion object Constants {
+
+        /**
+         * Application ID read from the build configuration.
+         *
+         * Uniquely identifies the app on the device and in the Google Play Store.
+         */
         private const val APPLICATION_ID = BuildConfig.APPLICATION_ID
+
+        /**
+         * A link to the app at Google Play Store.
+         */
         private const val APP_DETAILS_PLAY_MARKET_URL = "market://details?id=$APPLICATION_ID"
+
+        /**
+         * A fallback browser link to the app.
+         */
         private const val APP_DETAILS_BROWSER_URL =
             "https://play.google.com/store/apps/details?id=$APPLICATION_ID"
     }
 
+    /**
+     * Inflates preferences XML and initializes click listeners.
+     *
+     * Called during [onCreate] to supply the preferences for this fragment.
+     *
+     * @param savedInstanceState If the fragment is being re-created from a previous saved state,
+     * this is the state.
+     * @param rootKey If non-null, this preference fragment should be rooted at the
+     * [PreferenceScreen] with this key.
+     */
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences_feedback, rootKey)
         initClickListeners()
@@ -56,20 +85,22 @@ class FeedbackFragment : PreferenceFragmentCompat() {
     }
 
     /**
-     * Opens application details in Play Market app or in browser in case Play Market is not
-     * installed on the device. If no browsers are installed either, presents snackbar to inform
-     * user that rating the app is not possible.
+     * Opens application details in Play Market app.
+     *
+     * In case Play Market is not installed on the device, opens application details webpage in
+     * browser. If no browsers are installed either, presents snackbar to inform user that rating
+     * the app is not possible.
      */
     private fun rateApp() {
         try {
             Timber.i("Opening the application in Play Market")
             openUrl(APP_DETAILS_PLAY_MARKET_URL)
-        } catch (_: ActivityNotFoundException) {
+        } catch (pme: ActivityNotFoundException) {
             try {
-                Timber.i("Activity not found. Opening the application in browser")
+                Timber.w(pme, "Activity not found. Opening the application in browser")
                 openUrl(APP_DETAILS_BROWSER_URL)
-            } catch (_: ActivityNotFoundException) {
-                Timber.i("Activity not found. Presenting no apps found snackbar")
+            } catch (be: ActivityNotFoundException) {
+                Timber.e(be, "Activity not found. Presenting no apps found snackbar")
                 presentNoAppsFoundSnackbar()
             }
         }
@@ -79,7 +110,7 @@ class FeedbackFragment : PreferenceFragmentCompat() {
      * Launches intent to open URL.
      *
      * @param url URL to open.
-     * @throws [ActivityNotFoundException] if no applications found that can open this URL.
+     * @throws [ActivityNotFoundException] If no applications found that can open this URL.
      */
     private fun openUrl(url: String) {
         val intent = Intent(Intent.ACTION_VIEW, url.toUri())

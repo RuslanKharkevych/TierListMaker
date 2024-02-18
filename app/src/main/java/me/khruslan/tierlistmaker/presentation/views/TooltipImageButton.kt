@@ -2,34 +2,38 @@ package me.khruslan.tierlistmaker.presentation.views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.ImageButton
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.TooltipCompat
 
 /**
- * Extended [ImageButton] that shows tooltip on long click. Works on all Android versions. Text of
- * the tooltip is taken from [getContentDescription] function.
+ * Extended image button that shows tooltip on long click.
+ *
+ * Works on all Android versions. Text of the tooltip is taken from [getContentDescription]
+ * function.
  */
 class TooltipImageButton : AppCompatImageButton {
 
     /**
-     * @constructor To instantiate [TooltipImageButton] in code.
-     * @param context activity context.
+     * Instantiates tooltip image button from code.
+     *
+     * @param context Activity context.
      */
     constructor(context: Context) : super(context)
 
     /**
-     * @constructor To instantiate [TooltipImageButton] in XML.
-     * @param context activity context.
-     * @param attrs attribute values provided via XML.
+     * Instantiates tooltip image button from XML.
+     *
+     * @param context Activity context.
+     * @param attrs Attribute values provided via XML.
      */
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
     /**
-     * @constructor To instantiate [TooltipImageButton] with default style attributes.
-     * @param context activity context.
-     * @param attrs attribute values provided via XML.
-     * @param defStyleAttrs default style attributes.
+     * Instantiates tooltip image button from XML with default style attributes.
+     *
+     * @param context Activity context.
+     * @param attrs Attribute values provided via XML.
+     * @param defStyleAttrs Default style attributes.
      */
     constructor(
         context: Context,
@@ -41,13 +45,18 @@ class TooltipImageButton : AppCompatImageButton {
         invalidateTooltipText()
     }
 
+    /**
+     * Updates button's content description and triggers [invalidateTooltipText].
+     *
+     * @param contentDescription The content description to set.
+     */
     override fun setContentDescription(contentDescription: CharSequence?) {
         super.setContentDescription(contentDescription)
         invalidateTooltipText()
     }
 
     /**
-     * Syncs tooltip text with content description.
+     * Synchronizes tooltip text with content description.
      **/
     private fun invalidateTooltipText() {
         TooltipCompat.setTooltipText(this, contentDescription)

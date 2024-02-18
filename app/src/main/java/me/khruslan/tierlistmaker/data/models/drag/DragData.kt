@@ -1,25 +1,28 @@
 package me.khruslan.tierlistmaker.data.models.drag
 
 import android.content.ClipData
+import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
 import me.khruslan.tierlistmaker.util.BACKLOG_TIER_POSITION
 
 /**
- * Base class that contains the data of a drag event.
- * Used to represent both shadow and target data.
+ * Base class that contains the data of various drag items.
  *
- * @see ImageDragData
- * @see TierDragData
- * @see TrashBinDragData
+ * Used to represent both shadows and targets.
+ *
+ * @constructor Default constructor for use by subclasses.
  */
 sealed class DragData
 
 /**
- * [DragData] implementation of the tier list image.
+ * Drag data of the tier list image.
  *
- * @property image tier list image.
- * @property itemPosition position of the item in tier or backlog.
- * @property tierPosition position of the tier or [BACKLOG_TIER_POSITION] if image's in the backlog.
+ * Can be used for both shadow and target inside a tier or backlog.
+ *
+ * @property image Tier list image.
+ * @property itemPosition Position of the item in tier or backlog.
+ * @property tierPosition Position of the tier or [BACKLOG_TIER_POSITION] if image's in the backlog.
+ * @constructor Creates image drag data from image and its position in tier list.
  */
 data class ImageDragData(
     val image: Image,
@@ -28,14 +31,9 @@ data class ImageDragData(
 ) : DragData() {
 
     /**
-     * Indicates whether this drag data represents a backlog image.
+     * Converts [ClipData] to [ImageDragData].
      */
-    val isBacklogImage = tierPosition == BACKLOG_TIER_POSITION
-
-    /**
-     * Companion object for creating [ImageDragData] from [ClipData].
-     */
-    companion object {
+    companion object Mapper {
 
         /**
          * The label of [ClipData] created from an object of [ImageDragData] type.
@@ -43,11 +41,12 @@ data class ImageDragData(
         const val LABEL = "me.khruslan.tierlistmaker.data.models.drag.ImageDragData"
 
         /**
-         * Creates [ImageDragData] from [ClipData].
+         * Creates image drag data from the clip data.
+         *
          * Use [toClipData] function for the opposite conversion.
          *
-         * @param clipData [ClipData] object mapped from [ImageDragData].
-         * @return created [ImageDragData].
+         * @param clipData Clip data object that contains image drag data.
+         * @return Created image drag data.
          */
         fun fromClipData(clipData: ClipData): ImageDragData {
             return ImageDragData(
@@ -62,10 +61,16 @@ data class ImageDragData(
     }
 
     /**
-     * Maps [ImageDragData] to [ClipData].
-     * Use [fromClipData] for the opposite conversion.
+     * Indicates whether this drag data represents a backlog image.
+     */
+    val isBacklogImage = tierPosition == BACKLOG_TIER_POSITION
+
+    /**
+     * Maps image drag data to the clip data.
      *
-     * @return mapped [ClipData].
+     * Use [fromClipData] function for the opposite conversion.
+     *
+     * @return Clip data that contains image drag data.
      */
     fun toClipData(): ClipData {
         return ClipData.newPlainText(LABEL, image.id).apply {
@@ -77,9 +82,12 @@ data class ImageDragData(
 }
 
 /**
- * [DragData] implementation of the tier or backlog.
+ * Drag data of the tier target.
  *
- * @property tierPosition position of the tier or [BACKLOG_TIER_POSITION] in case of the backlog.
+ * In addition to tiers, it can also be used as a drag target of the backlog.
+ *
+ * @property tierPosition Position of the tier or [BACKLOG_TIER_POSITION] in case of the backlog.
+ * @constructor Creates tier drag data from tier position.
  */
 data class TierDragData(val tierPosition: Int) : DragData() {
 
@@ -90,6 +98,9 @@ data class TierDragData(val tierPosition: Int) : DragData() {
 }
 
 /**
- * [DragData] implementation of the trash bin.
+ * Drag data of the trash bin.
+ *
+ * Used as a specific drag target type not directly related to the [TierList]. Suitable for removing
+ * images from the tier list.
  */
 data object TrashBinDragData : DragData()

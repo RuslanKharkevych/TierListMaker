@@ -19,14 +19,24 @@ import me.khruslan.tierlistmaker.presentation.views.HintOverlayView
 /**
  * Factory that creates hints for [CollectionHintStep] entries.
  *
- * @property context activity context.
+ * @property context Activity context.
  * @property binding [CollectionFragment] binding.
+ * @constructor Creates a new hint factory.
  */
 class CollectionHintFactory(
     private val context: Context,
     private val binding: FragmentCollectionBinding
 ) : HintFactory<CollectionHintStep>() {
 
+    /**
+     * Creates a collection hint for the provided step.
+     *
+     * When adding or removing steps, make sure to update overlay views to show/hide previous and
+     * next buttons depending on the step index.
+     *
+     * @param step Step of the hint.
+     * @return Created hint.
+     */
     override fun create(step: CollectionHintStep): Hint {
         return when (step) {
             CollectionHintStep.AddNewTierList -> createAddNewTierListHint()
@@ -38,7 +48,9 @@ class CollectionHintFactory(
     /**
      * Creates a hint that shows how to create a new tier list.
      *
-     * @return created hint.
+     * Anchored to the "Add new list" button. Previous and next buttons are enabled.
+     *
+     * @return Created hint.
      */
     private fun createAddNewTierListHint(): Hint {
         val anchor = binding.btnAddNewList
@@ -61,7 +73,10 @@ class CollectionHintFactory(
     /**
      * Creates a hint that shows how to remove a tier list.
      *
-     * @return created hint.
+     * Anchored to the tier list card. This is the last hint, that's why the next button is
+     * disabled.
+     *
+     * @return Created hint.
      */
     private fun createRemoveTierListHint(): Hint {
         return createTierListPreviewHint(
@@ -76,7 +91,10 @@ class CollectionHintFactory(
     /**
      * Creates a hint that shows how to reorder tier lists.
      *
-     * @return created hint.
+     * Anchored to the tier list card. This is the first hint, that's why the next button is
+     * disabled.
+     *
+     * @return Created hint.
      */
     private fun createReorderTierListsHint(): Hint {
         return createTierListPreviewHint(
@@ -91,9 +109,11 @@ class CollectionHintFactory(
     /**
      * A helper function that creates a hint with tier list card as an anchor.
      *
-     * @param name the name of the hint.
-     * @param overlay overlay view.
-     * @return created hint.
+     * If tier list cart is not found, the hint will be created without the anchor.
+     *
+     * @param name The name of the hint.
+     * @param overlay Overlay view.
+     * @return Created hint.
      */
     private fun createTierListPreviewHint(name: String, overlay: HintOverlayView): Hint {
         val anchor = findFirstTierListPreview()
@@ -117,7 +137,9 @@ class CollectionHintFactory(
     /**
      * Finds the first tier list preview.
      *
-     * @return card view or null if wasn't not found.
+     * Card view can be found only if recycler view has layout manager set up and it's not empty.
+     *
+     * @return Card view or null if wasn't not found.
      */
     private fun findFirstTierListPreview(): MaterialCardView? {
         return binding.listTierLists.layoutManager?.findViewByPosition(0) as? MaterialCardView

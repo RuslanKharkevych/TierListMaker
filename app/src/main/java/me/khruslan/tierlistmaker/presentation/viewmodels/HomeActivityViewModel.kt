@@ -14,22 +14,29 @@ import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * [ViewModel] for [HomeActivity].
+ * View model for [HomeActivity].
  *
- * @property themeManager manager for changing application's theme at runtime.
+ * Responsible for changing theme and showing hints.
+ *
+ * @property themeManager Toggles application theme.
+ * @constructor Creates view model with all dependencies.
  */
 @HiltViewModel
 class HomeActivityViewModel @Inject constructor(
     private val themeManager: ThemeManager
 ) : ViewModel() {
 
+    /**
+     * Mutable reference to [hintEvent].
+     */
     private val _hintEvent by lazy {
         LiveEvent<CollectionHintStep>(LiveEventConfig.PreferFirstObserver)
     }
 
     /**
-     * The hint event is sent when the collection hint needs to be shown. The value of the event
-     * corresponds to the step of the hint within its group.
+     * Live data that is updated when the collection hint needs to be shown.
+     *
+     * The value corresponds to the step of the hint within its group.
      */
     val hintEvent: LiveData<CollectionHintStep> get() = _hintEvent
 
@@ -37,12 +44,19 @@ class HomeActivityViewModel @Inject constructor(
         Timber.i("HomeActivityViewModel initialized")
     }
 
+    /**
+     * Logs the onCleared lifecycle event.
+     *
+     * Called when this view model is no longer used and will be destroyed.
+     */
     override fun onCleared() {
         Timber.i("HomeActivityViewModel cleared")
     }
 
     /**
-     * Toggles light/dark theme. Applies changes and saves user preference.
+     * Toggles light/dark theme.
+     *
+     * Asynchronously changes and saves user preference.
      */
     fun toggleTheme() {
         viewModelScope.launch {
@@ -53,7 +67,7 @@ class HomeActivityViewModel @Inject constructor(
     /**
      * Notifies the observers that hint needs to be shown.
      *
-     * @param step the step of the hint within its group.
+     * @param step The step of the hint within its group.
      */
     fun showHint(step: CollectionHintStep) {
         _hintEvent.value = step

@@ -7,28 +7,27 @@ import me.khruslan.tierlistmaker.data.models.drag.TrashBinDragData
 import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
 
 /**
- * [DragEffect] implementation for update effects.
- * Base class that represents the effect of updating an image in a tier list.
+ * Base class that represents the effect of updating an item in a tier list.
  *
- * @see UpdateInBacklog
- * @see UpdateInTier
- * @see UpdateLastInBacklog
- * @see UpdateLastInTier
- * @see ThrowToTrashBin
+ * Update effects are produced when an image is dropped into a drag target.
+ *
+ * @constructor Default constructor for use by subclasses.
  */
 sealed class UpdateEffect : DragEffect() {
 
     /**
-     * Factory for creating [UpdateEffect].
+     * Factory for creating update effects.
+     *
+     * This should be the only place where instances of [UpdateEffect] subclasses are instantiated.
      */
     companion object Factory {
 
         /**
-         * Creates [UpdateEffect] based on shadow and target.
+         * Creates update effect from shadow and target.
          *
-         * @param shadow data of the updated image.
-         * @param target data of the target to update.
-         * @return created [UpdateEffect].
+         * @param shadow Image data of the shadow.
+         * @param target Data of the drag target.
+         * @return Created update effect.
          */
         fun create(shadow: ImageDragData, target: DragData): UpdateEffect {
             return when (target) {
@@ -51,35 +50,51 @@ sealed class UpdateEffect : DragEffect() {
 }
 
 /**
- * [UpdateEffect] implementation that updates the given image in the backlog.
+ * Update effect of the image in the backlog.
  *
- * @property data image data to update.
+ * This effect is produced when user drops an image into the drag target that is a backlog image.
+ *
+ * @property data Image data to update.
+ * @constructor Creates the effect from backlog image drag data.
  */
 data class UpdateInBacklog(val data: ImageDragData) : UpdateEffect()
 
 /**
- * [UpdateEffect] implementation that updates the given image in the tier.
+ * Update effect of the image in a tier.
  *
- * @property data image data to update.
+ * This effect is produced when user drops an image into the drag target that is a tier image.
+ *
+ * @property data Image data to update.
+ * @constructor Creates the effect from tier image drag data.
  */
 data class UpdateInTier(val data: ImageDragData) : UpdateEffect()
 
 /**
- * [UpdateEffect] implementation that updates the last image in the backlog.
+ * Update effect of the last image in the backlog.
  *
- * @property image image to update.
+ * This effect is produced when user drops an image into the drag target that is the last image in
+ * backlog.
+ *
+ * @property image Image to update.
+ * @constructor Creates the effect from backlog image.
  */
 data class UpdateLastInBacklog(val image: Image) : UpdateEffect()
 
 /**
- * [UpdateEffect] implementation that updates the last image in the tier.
+ * Update effect of the last image in a tier.
  *
- * @property image image to update.
- * @property tierPosition position of the tier.
+ * This effect is produced when user drops an image into the drag target that is the last image in a
+ * tier.
+ *
+ * @property image Image to update.
+ * @property tierPosition Position of the tier.
+ * @constructor Creates the effect from image at tier position.
  */
 data class UpdateLastInTier(val image: Image, val tierPosition: Int) : UpdateEffect()
 
 /**
- * [UpdateEffect] implementation that throws an image into the trash bin.
+ * Update effect of the trash bin.
+ *
+ * This effect is produced when user drops an image into the trash bin.
  */
 data object ThrowToTrashBin : UpdateEffect()

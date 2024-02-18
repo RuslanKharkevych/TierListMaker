@@ -14,24 +14,45 @@ import me.khruslan.tierlistmaker.lint.utils.PRIORITY_MEDIUM
 import org.jetbrains.uast.UCallExpression
 
 /**
- * Detects usages of the **AlertDialog.Builder** constructor and shows a warning with a suggestion
- * to replace it with **MaterialAlertDialogBuilder**.
+ * Detects usages of the [AlertDialog.Builder](https://developer.android.com/reference/android/app/AlertDialog.Builder)
+ * constructor and shows a warning with a suggestion to replace it with
+ * [MaterialAlertDialogBuilder](https://developer.android.com/reference/com/google/android/material/dialog/MaterialAlertDialogBuilder).
+ *
+ * The motivation of this detector is to maintain consistency and to make sure alert dialogs are
+ * styled properly.
+ *
+ * @constructor Default constructor. Should not be called from the library code.
  */
 class AlertDialogBuilderUsageDetector : Detector(), SourceCodeScanner {
 
     /**
-     * Companion object of [AlertDialogBuilderUsageDetector] that contains corresponding [Issue],
-     * [LintFix] and other constants.
+     * Contains [ISSUE] and other constants of this detector.
      */
-    companion object {
+    companion object Constants {
+
+        /**
+         * A fully qualified AlertDialog.Builder class name.
+         */
         private const val ALERT_DIALOG_BUILDER_CLASS_NAME =
             "androidx.appcompat.app.AlertDialog.Builder"
+
+        /**
+         * A fully qualified MaterialAlertDialogBuilder class name.
+         */
         private const val MATERIAL_ALERT_DIALOG_BUILDER_CLASS_NAME =
             "com.google.android.material.dialog.MaterialAlertDialogBuilder"
 
+        /**
+         * The message of the reported warning.
+         */
         private const val REPORT_MESSAGE =
             "Consider using MaterialAlertDialogBuilder to match material design style"
 
+        /**
+         * The issue reported by [AlertDialogMissingLogTagDetector].
+         *
+         * Reported when AlertDialog.Builder constructor is found. Has medium priority.
+         */
         val ISSUE = Issue.create(
             id = "AlertDialogBuilderUsage",
             briefDescription = "AlertDialogBuilder usage detected",
@@ -48,6 +69,11 @@ class AlertDialogBuilderUsageDetector : Detector(), SourceCodeScanner {
             )
         )
 
+        /**
+         * Quickfix of the [ISSUE].
+         *
+         * Replaces AlertDialog.Builder with MaterialAlertDialogBuilder.
+         */
         private val QUICKFIX = LintFix.create()
             .name("Replace with MaterialAlertDialogBuilder")
             .replace()
@@ -58,10 +84,28 @@ class AlertDialogBuilderUsageDetector : Detector(), SourceCodeScanner {
             .build()
     }
 
+    /**
+     * Returns AlertDialog.Builder constructor type.
+     *
+     * Any AST nodes that match the constructor call will be passed to the [visitConstructor] method
+     * for processing.
+     *
+     * @return A list of applicable fully qualified types.
+     */
     override fun getApplicableConstructorTypes(): List<String> {
         return listOf(ALERT_DIALOG_BUILDER_CLASS_NAME)
     }
 
+    /**
+     * Reports the issue applicable to a given AST node.
+     *
+     * This method is invoked for any constructor calls found that matches any names returned by
+     * [getApplicableConstructorTypes].
+     *
+     * @param context The context of the lint request.
+     * @param node The node for the invoked method.
+     * @param constructor The called constructor method.
+     */
     override fun visitConstructor(
         context: JavaContext,
         node: UCallExpression,

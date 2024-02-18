@@ -8,10 +8,12 @@ import com.google.android.material.color.MaterialColors
 /**
  * Returns the color int for the provided theme color attribute.
  *
- * @param colorAttrRes color theme attribute.
- * @receiver activity context.
- * @return resolved color.
- * @throws [IllegalArgumentException] if the attribute is not set in the current theme.
+ * This extension is a shorthand of the [MaterialColors.getColor] function.
+ *
+ * @param colorAttrRes Color theme attribute.
+ * @receiver Activity context.
+ * @return Resolved color.
+ * @throws [IllegalArgumentException] If the attribute is not set in the current theme.
  */
 @ColorInt
 fun Context.getMaterialColor(@AttrRes colorAttrRes: Int): Int {

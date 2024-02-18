@@ -10,35 +10,56 @@ import com.android.tools.lint.detector.api.Scope
 import com.android.tools.lint.detector.api.Severity
 import com.android.tools.lint.detector.api.SourceCodeScanner
 import com.intellij.psi.PsiMethod
-import me.khruslan.tierlistmaker.lint.utils.PRIORITY_HIGH
+import me.khruslan.tierlistmaker.lint.utils.PRIORITY_MAX
 import org.jetbrains.uast.UCallExpression
 
 /**
- * Detects usages of the **FlexboxLayoutManager** constructor and shows a warning with a suggestion
- * to replace it with **FlexLayoutManager**.
+ * Detects usages of the [FlexboxLayoutManager](https://github.com/google/flexbox-layout)
+ * constructor and shows a warning with a suggestion to replace it with
+ * [FlexLayoutManager](https://github.com/RuslanKharkevych/TierListMaker/blob/master/app/src/main/java/me/khruslan/tierlistmaker/presentation/utils/recyclerview/FlexLayoutManager.kt).
+ *
+ * The motivation of this detector is to prevent a crash caused by a
+ * [bug](https://github.com/google/flexbox-layout/issues/568) in FlexboxLayoutManager.
+ *
+ * @constructor Default constructor. Should not be called from the library code.
  */
 class FlexboxLayoutManagerUsageDetector : Detector(), SourceCodeScanner {
 
     /**
-     * A set of nodes that are already visited used to avoid reporting the same issue twice.
+     * Contains [ISSUE] and other constants of this detector.
      */
-    private val visitedNodes = mutableSetOf<UCallExpression>()
+    companion object Constants {
 
-    /**
-     * Companion object of [FlexboxLayoutManagerUsageDetector] that contains corresponding [Issue],
-     * [LintFix] and other constants.
-     */
-    companion object {
+        /**
+         * A fully qualified FlexboxLayoutManager class name.
+         */
         private const val FLEXBOX_LAYOUT_MANAGER_CLASS_NAME =
             "com.google.android.flexbox.FlexboxLayoutManager"
+
+        /**
+         * A fully qualified FlexLayoutManager class name.
+         */
         private const val FLEX_LAYOUT_MANAGER_CLASS_NAME =
             "me.khruslan.tierlistmaker.presentation.utils.recyclerview.FlexLayoutManager"
+
+        /**
+         * A path to the FlexLayoutManager.kt file relative to the project directory.
+         */
         private const val FLEX_LAYOUT_MANAGER_FILE_PATH =
             "src/main/java/me/khruslan/tierlistmaker/presentation/utils/recyclerview/FlexLayoutManager.kt"
 
+        /**
+         * The message of the reported warning.
+         */
         private const val REPORT_MESSAGE =
             "FlexboxLayoutManager usage is prohibited. Use FlexLayoutManager"
 
+        /**
+         * The issue reported by [FlexboxLayoutManagerUsageDetector].
+         *
+         * Reported when FlexboxLayoutManager constructor is found outside of the
+         * FlexLayoutManager.kt file. Has maximum priority.
+         */
         val ISSUE = Issue.create(
             id = "FlexBoxLayoutManagerUsage",
             briefDescription = "FlexboxLayoutManager usage detected",
@@ -49,7 +70,7 @@ class FlexboxLayoutManagerUsageDetector : Detector(), SourceCodeScanner {
                 FlexLayoutManager fixes this problem while retaining the same functionality.
             """,
             category = Category.CORRECTNESS,
-            priority = PRIORITY_HIGH,
+            priority = PRIORITY_MAX,
             severity = Severity.ERROR,
             implementation = Implementation(
                 FlexboxLayoutManagerUsageDetector::class.java,
@@ -57,6 +78,11 @@ class FlexboxLayoutManagerUsageDetector : Detector(), SourceCodeScanner {
             )
         )
 
+        /**
+         * Quickfix of the [ISSUE].
+         *
+         * Replaces FlexboxLayoutManager with FlexLayoutManager.
+         */
         private val QUICKFIX = LintFix.create()
             .name("Replace with FlexLayoutManager")
             .replace()
@@ -68,16 +94,45 @@ class FlexboxLayoutManagerUsageDetector : Detector(), SourceCodeScanner {
     }
 
     /**
+     * A set of nodes that are already visited.
+     *
+     * A workaround to avoid reporting the same issue twice.
+     */
+    private val visitedNodes = mutableSetOf<UCallExpression>()
+
+    /**
      * A path of the [JavaContext.file] relative to the project directory.
-     * @receiver context from the [visitConstructor] method.
+     *
+     * @receiver Context from the [visitConstructor] method.
      */
     private val JavaContext.relativeFilePath: String
         get() = file.relativeTo(project.dir).path
 
+    /**
+     * Returns FlexboxLayoutManager constructor type.
+     *
+     * Any AST nodes that match the constructor call will be passed to the [visitConstructor] method
+     * for processing.
+     *
+     * @return A list of applicable fully qualified types.
+     */
     override fun getApplicableConstructorTypes(): List<String> {
         return listOf(FLEXBOX_LAYOUT_MANAGER_CLASS_NAME)
     }
 
+    /**
+     * Reports the issue if it's applicable to a given AST node.
+     *
+     * This method is invoked for any constructor calls found that matches any names returned by
+     * [getApplicableConstructorTypes]. The issue is not reported if any of the following conditions
+     * is true:
+     * - The node has already been visited.
+     * - The file of the context is FlexLayoutManager.kt.
+     *
+     * @param context The context of the lint request.
+     * @param node The node for the invoked method.
+     * @param constructor The called constructor method.
+     */
     override fun visitConstructor(
         context: JavaContext,
         node: UCallExpression,

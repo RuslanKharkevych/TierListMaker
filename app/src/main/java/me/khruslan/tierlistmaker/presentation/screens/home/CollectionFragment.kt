@@ -4,16 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -38,24 +35,55 @@ import me.khruslan.tierlistmaker.util.log.navigation.setLogTag
 import timber.log.Timber
 
 /**
- * [Fragment] that represents tier list collection screen. Is a start destination for the home
- * navigation graph.
+ * Fragment that represents tier list collection screen.
+ *
+ * It is a start destination for the home navigation graph.
+ *
+ * @constructor Default no-arg constructor.
  */
 @AndroidEntryPoint
 class CollectionFragment : Fragment() {
+
+    /**
+     * Nullable reference of [binding].
+     *
+     * Must be initialized in [onCreateView] and deinitialized in [onDestroyView].
+     */
     private var _binding: FragmentCollectionBinding? = null
+
+    /**
+     * View binding of the fragment.
+     *
+     * Make sure to access this property only when fragment's view is created to avoid
+     * [NullPointerException].
+     */
     private val binding get() = _binding!!
+
+    /**
+     * View model of the fragment.
+     *
+     * Provides UI state and handles user actions.
+     */
     private val viewModel: CollectionViewModel by viewModels()
+
+    /**
+     * View model of the hosting activity.
+     *
+     * Used for handling events sent by other fragments.
+     */
     private val activityViewModel: HomeActivityViewModel by activityViewModels()
 
     /**
-     * Adapter for the tier list previews.
+     * Recycler view adapter for the tier list previews.
+     *
+     * Initialized when tier list previews are fetched.
      */
     private lateinit var previewsAdapter: TierListPreviewAdapter
 
     /**
-     * [ActivityResultLauncher] of the [TierListResultContract].
-     * Used to launch [TierListActivity] and obtain the created or updated [TierList] as a result.
+     * Activity result launcher of the [TierListResultContract].
+     *
+     * Used to launch [TierListActivity] and obtain the created or updated tier list as a result.
      */
     private val tierListLauncher = registerForActivityResult(TierListResultContract()) { result ->
         Timber.i("Handling tier list result: $result")
@@ -67,13 +95,30 @@ class CollectionFragment : Fragment() {
     }
 
     /**
-     * Companion object of the [CollectionFragment] used for storing constants.
+     * Collection fragment constants for internal use.
      */
-    private companion object {
+    private companion object Constants {
+
+        /**
+         * A log tag of the alert for confirmation tier list removal.
+         */
         private const val REMOVE_TIER_LIST_CONFIRMATION_ALERT_LOG_TAG =
             "RemoveTierListConfirmationAlert"
     }
 
+    /**
+     * Inflates [binding] and returns its root.
+     *
+     * Called to have the fragment instantiate its user interface view.
+     *
+     * @param inflater Used to inflate any views in the fragment.
+     * @param container If non-null, this is the parent view that the fragment's UI should be
+     * attached to.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
+     * saved state as given here.
+     *
+     * @return Returns the root view of the fragment's binding.
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -83,6 +128,16 @@ class CollectionFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Initializes button click listeners and live data observers.
+     *
+     * Called immediately after [onCreateView] has returned, but before any saved state has been
+     * restored in to the view.
+     *
+     * @param view The view returned by [onCreateView] method.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
+     * saved state as given here.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -91,6 +146,11 @@ class CollectionFragment : Fragment() {
         initObservers()
     }
 
+    /**
+     * Deinitializes [binding].
+     *
+     * Called when the view previously created by onCreateView has been detached from the fragment.
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -98,6 +158,8 @@ class CollectionFragment : Fragment() {
 
     /**
      * Sets click listener to the "Add new list" button.
+     *
+     * On click shows [EnterTierListTitleDialog].
      */
     private fun initAddNewListButton() {
         binding.btnAddNewList.setOnThrottledClickListener {
@@ -107,7 +169,9 @@ class CollectionFragment : Fragment() {
     }
 
     /**
-     * Sets [View.OnClickListener] to the "Report the issue" button.
+     * Sets click listener to the "Report the issue" button.
+     *
+     * On click calls [FeedbackUtils.reportIssue].
      */
     private fun initReportIssueButton() {
         binding.groupError.btnReport.setOnClickListener {
@@ -117,7 +181,10 @@ class CollectionFragment : Fragment() {
     }
 
     /**
-     * Initializes all [LiveData] observers.
+     * Initializes all live data observers.
+     *
+     * This function must be called from [onViewCreated] because all observers are scoped to the
+     * fragment's view lifecycle.
      */
     private fun initObservers() {
         viewModel.tierListPreviewsLiveData.observe(viewLifecycleOwner, tierListPreviewsObserver)
@@ -130,8 +197,9 @@ class CollectionFragment : Fragment() {
     }
 
     /**
-     * Observer for the tier list previews.
-     * Initializes [previewsAdapter] and attaches it to the [RecyclerView].
+     * Observer of the tier list previews.
+     *
+     * Initializes [previewsAdapter] and attaches it to the recycler view.
      */
     private val tierListPreviewsObserver = Observer<MutableList<TierList.Preview>> { previews ->
         previewsAdapter = TierListPreviewAdapter(
@@ -140,11 +208,11 @@ class CollectionFragment : Fragment() {
                 Timber.i("Clicked on tier list at position $position")
                 tierListLauncher.launch(viewModel.getTierListByPosition(position))
             },
-            onTierListMoved = { from, to ->
+            onPreviewMoved = { from, to ->
                 Timber.i("Moved tier list from position $from to $to")
                 viewModel.swapTierLists(from, to)
             },
-            onTierListSwiped = { index ->
+            onPreviewSwiped = { index ->
                 Timber.i("Swiped tier list at position $index")
                 showRemoveTierListConfirmationAlert(index)
             }
@@ -158,8 +226,9 @@ class CollectionFragment : Fragment() {
     }
 
     /**
-     * Observer for the added preview event. Notifies [previewsAdapter] that new preview was
-     * inserted and scrolls to it.
+     * Observer of the added preview event.
+     *
+     * Notifies [previewsAdapter] that new preview has been inserted and scrolls to it.
      */
     private val addPreviewObserver = Observer<Int> { position ->
         Timber.i("Inserted tier list at position $position")
@@ -168,8 +237,9 @@ class CollectionFragment : Fragment() {
     }
 
     /**
-     * Observer for the updated preview event. Notifies [previewsAdapter] that the preview was
-     * updated
+     * Observer of the updated preview event.
+     *
+     * Notifies [previewsAdapter] that the preview has been updated.
      */
     private val updatePreviewsObserver = Observer<Int> { position ->
         Timber.i("Updated tier list at position $position")
@@ -177,8 +247,9 @@ class CollectionFragment : Fragment() {
     }
 
     /**
-     * Observer for the state of the loaded list of previews. Updates visibility of **loading**,
-     * **error** and **empty** view groups.
+     * Observer of the state of the loaded list of previews.
+     *
+     * Updates visibility of loading, error and empty layouts.
      */
     private val listStateObserver = Observer<ListState> { state ->
         Timber.i("Observed list state: $state")
@@ -191,8 +262,9 @@ class CollectionFragment : Fragment() {
     }
 
     /**
-     * Observer for error events. Presents error snackbar.
-     * @see presentErrorSnackbar
+     * Observer of error events.
+     *
+     * Presents error snackbar with observed error message.
      */
     private val errorObserver = Observer<Int> { errorMessageResId ->
         Timber.i("Presenting error snackbar")
@@ -200,7 +272,9 @@ class CollectionFragment : Fragment() {
     }
 
     /**
-     * Observer for the created tier list event. Launches [tierListLauncher].
+     * Observer of the created tier list event.
+     *
+     * Launches [tierListLauncher].
      */
     private val tierListCreatedObserver = Observer<TierList> { tierList ->
         Timber.i("Starting tier list activity for result. Tier list: $tierList")
@@ -208,7 +282,9 @@ class CollectionFragment : Fragment() {
     }
 
     /**
-     * Observer for the hint events. Shows a hint from [CollectionHintGroup].
+     * Observer of the hint events.
+     *
+     * Shows a hint from [CollectionHintGroup].
      */
     private val hintObserver = Observer<CollectionHintStep> { step ->
         CollectionHintGroup(requireActivity(), binding).show(step)
@@ -217,7 +293,9 @@ class CollectionFragment : Fragment() {
     /**
      * Shows [Snackbar] with error message and "Refresh" action.
      *
-     * @param textResId error message resource identifier.
+     * On "Refresh" button click refreshes previews with animation.
+     *
+     * @param textResId Error message resource identifier.
      */
     private fun presentErrorSnackbar(@StringRes textResId: Int) {
         Snackbar
@@ -232,11 +310,12 @@ class CollectionFragment : Fragment() {
     }
 
     /**
-     * Shows confirmation alert for removing tier list when preview is swiped. On positive button
-     * click removes tier list and the corresponding preview. On negative button click or when
-     * alert is canceled restores swiped preview.
+     * Shows confirmation alert for removing tier list when preview is swiped.
      *
-     * @param tierListIndex position of the tier list to remove.
+     * On positive button click removes tier list and the corresponding preview. On negative button
+     * click or when alert is canceled restores swiped preview.
+     *
+     * @param tierListIndex Position of the tier list to remove.
      */
     private fun showRemoveTierListConfirmationAlert(tierListIndex: Int) {
         val tierListTitle = viewModel.getTierListByPosition(tierListIndex).title
@@ -263,8 +342,9 @@ class CollectionFragment : Fragment() {
     }
 
     /**
-     * Shows dialog with input field that asks user to enter tier list title. On save click creates
-     * a new tier list with entered title.
+     * Shows dialog with input field that asks user to enter tier list title.
+     *
+     * On save click creates a new tier list with entered title.
      */
     private fun showEnterTierListTitleDialog() {
         EnterTierListTitleDialog.Builder()

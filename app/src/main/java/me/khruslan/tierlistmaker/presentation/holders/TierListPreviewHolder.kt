@@ -12,10 +12,13 @@ import me.khruslan.tierlistmaker.presentation.utils.loadTierListImage
 import me.khruslan.tierlistmaker.presentation.utils.setOnThrottledClickListener
 
 /**
- * [RecyclerView.ViewHolder] implementation for the tier list preview.
+ * View holder of the tier list preview.
  *
- * @property binding binding of the tier list preview.
- * @property onClick item click listener.
+ * Tier list preview is a card with a title and three images.
+ *
+ * @property binding Binding of the tier list preview.
+ * @property onClick Item click listener.
+ * @constructor Creates a new holder instance.
  */
 class TierListPreviewHolder(
     private val binding: ItemTierListPreviewBinding,
@@ -23,15 +26,15 @@ class TierListPreviewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     init {
-        binding.root.setOnThrottledClickListener {
-            onClick(adapterPosition)
-        }
+        setOnClickListener()
     }
 
     /**
-     * Binds [TierList.Preview] to the [itemView].
+     * Binds tier list preview to the [itemView].
      *
-     * @param preview preview of the tier list.
+     * Updates title and loads images.
+     *
+     * @param preview Preview of the tier list.
      */
     fun bind(preview: TierList.Preview) {
         with(binding) {
@@ -44,15 +47,29 @@ class TierListPreviewHolder(
     }
 
     /**
-     * Binds [Image] to the [ImageView].
+     * Binds image to the image view.
      *
-     * @param image image or null.
+     * If image is null, placeholder is used.
+     *
+     * @param image Image or null.
+     * @receiver Image view to which image is set.
      */
     private fun ImageView.bindImage(image: Image?) {
-        when(image) {
+        when (image) {
             null -> setImageResource(R.drawable.ic_image)
             is StorageImage -> loadTierListImage(image.filePath)
             is ResourceImage -> setImageResource(image.resId)
+        }
+    }
+
+    /**
+     * Initializes the item click listener.
+     *
+     * The whole preview card is clickable. The clicks are throttled.
+     */
+    private fun setOnClickListener() {
+        binding.root.setOnThrottledClickListener {
+            onClick(adapterPosition)
         }
     }
 }

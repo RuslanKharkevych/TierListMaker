@@ -4,6 +4,8 @@ import me.khruslan.tierlistmaker.presentation.utils.hints.core.Indexable
 
 /**
  * Hint steps of the [CollectionHintGroup].
+ *
+ * @constructor Default empty constructor.
  */
 enum class CollectionHintStep : Indexable {
 
@@ -22,5 +24,8 @@ enum class CollectionHintStep : Indexable {
      */
     RemoveTierList;
 
+    /**
+     * Hint step position determined by [ordinal].
+     */
     override val index = ordinal
 }

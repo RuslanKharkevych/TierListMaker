@@ -1,12 +1,11 @@
 package me.khruslan.tierlistmaker.presentation.models
 
 /**
- * UI state for the list with dynamically loaded data.
+ * UI state of the list with asynchronously loaded data.
  *
- * @see [ListState.Loading]
- * @see [ListState.Empty]
- * @see [ListState.Filled]
- * @see [ListState.Failed]
+ * Represents the status of data loading at a given point in time.
+ *
+ * @constructor Default empty constructor.
  */
 enum class ListState {
 

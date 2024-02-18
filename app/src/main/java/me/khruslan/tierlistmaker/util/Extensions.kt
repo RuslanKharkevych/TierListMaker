@@ -14,37 +14,41 @@ import java.util.Locale
 /**
  * Display width of the device in pixels.
  *
- * @receiver Either activity or application [Context].
+ * @receiver Either activity or application context.
  */
 val Context.displayWidthPixels get() = resources.displayMetrics.widthPixels
 
 /**
  * Converts value from dp to pixels.
  *
- * @param value value in dp.
- * @receiver context for accessing display metrics.
- * @return value in pixels.
+ * @param value Value in dp.
+ * @receiver Context for accessing display metrics.
+ * @return Value in pixels.
  */
 fun Context.dpToPx(value: Float): Float {
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, resources.displayMetrics)
 }
 
 /**
- * Finds [NavHostFragment] by id.
+ * Finds NavHostFragment by id.
  *
- * @param id id of the [NavHostFragment].
- * @receiver [FragmentActivity] that hosts [NavHostFragment].
- * @return The found [NavHostFragment].
+ * The fragment must be added to the fragment manager, otherwise the function will crash.
+ *
+ * @param id Id of the HavHostFragment.
+ * @receiver FragmentActivity that hosts NavHostFragment.
+ * @return The found NavHostFragment.
  */
 fun FragmentActivity.findNavHostFragmentById(@IdRes id: Int) =
     supportFragmentManager.findFragmentById(id) as NavHostFragment
 
 /**
- * A helper to get [Parcelable] extra from [Intent] that supports all versions.
+ * A helper to get parcelable extra from intent that supports all versions.
  *
- * @param T type of the [Parcelable].
- * @param name name of the extra.
- * @return the value of the resolved item.
+ * Starting from Android 13 uses type-safe overload of the [Intent.getParcelableExtra] function.
+ *
+ * @param T Type of the parcelable.
+ * @param name Name of the extra.
+ * @return The value of the resolved item.
  */
 inline fun <reified T : Parcelable> Intent.getParcelableExtraCompat(name: String): T? {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -56,12 +60,12 @@ inline fun <reified T : Parcelable> Intent.getParcelableExtraCompat(name: String
 }
 
 /**
- * Swaps two items in the [MutableList].
+ * Swaps two items in a mutable list.
  *
- * @param T type of the list item.
- * @param a first item.
- * @param b second item.
- * @receiver [MutableList] of an arbitrary type.
+ * @param T Type of the list item.
+ * @param a First item position.
+ * @param b Second item position.
+ * @receiver Mutable list of an arbitrary type.
  */
 fun <T> MutableList<T>.swap(a: Int, b: Int) {
     val temp = this[a]
@@ -70,34 +74,38 @@ fun <T> MutableList<T>.swap(a: Int, b: Int) {
 }
 
 /**
- * Sets the [value] to the last item in the [MutableList].
+ * Sets the value to the last item in a mutable list.
  *
- * @param T type of the list item.
- * @param value value to set.
- * @receiver [MutableList] of an arbitrary type.
+ * Note that the list must not be empty, otherwise the function will crash.
+ *
+ * @param T Type of the list item.
+ * @param value Value to set.
+ * @receiver Mutable list of an arbitrary type.
  */
 fun <T> MutableList<T>.updateLast(value: T) {
     this[lastIndex] = value
 }
 
 /**
- * Reads [String] from [Parcel]. Can be used instead of [Parcel.readString] to ensure that the
- * returned value is non-nullable.
+ * Reads string from the parcel.
  *
- * @receiver Any [Parcel].
- * @return Non-nullable [String].
- * @throws [IllegalStateException] if unable to read.
+ * Can be used instead of [Parcel.readString] to ensure that the returned value is non-nullable.
+ *
+ * @receiver A parcel that contains string at current data position.
+ * @return Non-nullable string.
+ * @throws [IllegalStateException] If unable to resolve a string.
  */
 fun Parcel.requireString(): String {
     return readString() ?: throw IllegalStateException("Can't read string from parcel $this")
 }
 
 /**
- * Returns a copy of the string with its first letter as a capital letter. Replacement for Kotlin's
- * deprecated [String.capitalize] function.
+ * Returns a copy of the string with its first letter as a capital letter.
  *
- * @receiver string to capitalize.
- * @return capitalized string.
+ * Replacement for Kotlin's deprecated [String.capitalize] function.
+ *
+ * @receiver String to capitalize.
+ * @return Capitalized string.
  */
 fun String.capitalized(): String {
     return replaceFirstChar { char ->

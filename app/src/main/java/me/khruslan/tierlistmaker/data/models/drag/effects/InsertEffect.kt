@@ -7,27 +7,30 @@ import me.khruslan.tierlistmaker.data.models.drag.TrashBinDragData
 import me.khruslan.tierlistmaker.data.models.tierlist.image.Image
 
 /**
- * [DragEffect] implementation for insert effects.
- * Base class that represents an effect of inserting the image data into a tier list.
+ * Base class that represents the effect of inserting the image data into a tier list.
  *
- * @see InsertToBacklog
- * @see InsertToTier
- * @see InsertToEndOfBacklog
- * @see InsertToEndOfTier
+ * Insert effects are usually produced when drag images are restored after drag has ended. Besides
+ * that, they can also be produced when drag images are dropped into the target. This could happen
+ * if the drop is too fast for the highlight effect to take place.
+ *
+ * @constructor Default constructor for use by subclasses.
  */
 sealed class InsertEffect : DragEffect() {
 
     /**
-     * Factory for creating [InsertEffect].
+     * Factory for creating insert effects.
+     *
+     * This should be the only place where instances of [InsertEffect] subclasses are instantiated.
      */
     companion object Factory {
 
         /**
-         * Creates [InsertEffect] based on [ImageDragData].
-         * Used for restoring the image in a tier list.
+         * Creates insert effect from the image drag data.
          *
-         * @param data image data to restore.
-         * @return created [InsertEffect] of either [InsertToBacklog] or [InsertToTier] type.
+         * Used for creating effects as a result of restoring the image in the tier list.
+         *
+         * @param data Image data to restore.
+         * @return Created insert effect.
          */
         fun create(data: ImageDragData): InsertEffect {
             return if (data.isBacklogImage) {
@@ -38,13 +41,16 @@ sealed class InsertEffect : DragEffect() {
         }
 
         /**
-         * Creates [InsertEffect] based on image data and target.
-         * Used to create an effect of inserting image data into specific target.
+         * Creates insert effect from shadow and target.
          *
-         * @param shadow image data to insert.
-         * @param target data of the target.
-         * @throws [IllegalArgumentException] if target is [TrashBinDragData].
-         * @return created [InsertEffect].
+         * Used for creating effects as a result of inserting the image into specific target. Note
+         * that it's impossible to insert into the trash bin because [ThrowToTrashBin] is an
+         * update effect.
+         *
+         * @param shadow Image data to insert.
+         * @param target Data of the target.
+         * @throws [IllegalArgumentException] If target is [TrashBinDragData].
+         * @return Created insert effect.
          */
         fun create(shadow: ImageDragData, target: DragData): InsertEffect {
             return when (target) {
@@ -58,11 +64,7 @@ sealed class InsertEffect : DragEffect() {
                     )
                 }
                 is TrashBinDragData -> throw IllegalArgumentException(
-                    String.format(
-                        "Cannot create %s for target of type %s",
-                        InsertEffect::class.qualifiedName,
-                        TrashBinDragData::class.qualifiedName
-                    )
+                    "Cannot create InsertEffect for TrashBinDragData"
                 )
             }
         }
@@ -70,30 +72,42 @@ sealed class InsertEffect : DragEffect() {
 }
 
 /**
- * [InsertEffect] implementation that inserts image into the backlog at given position.
+ * Insert effect of the image at given position in backlog.
  *
- * @property data image data to insert.
+ * This effect is produced when image is restored or dropped into the backlog.
+ *
+ * @property data Image data to insert.
+ * @constructor Creates the effect from backlog image drag data.
  */
 data class InsertToBacklog(val data: ImageDragData) : InsertEffect()
 
 /**
- * [InsertEffect] implementation that inserts image into the tier at given position.
+ * Insert effect of the image at given position in tier.
  *
- * @property data image data to insert.
+ * This effect is produced when image is restored or dropped into a tier.
+ *
+ * @property data Image data to insert.
+ * @constructor Creates the effect from tier image drag data.
  */
 data class InsertToTier(val data: ImageDragData) : InsertEffect()
 
 /**
- * [InsertEffect] implementation that inserts image into the end of the backlog.
+ * Insert effect of the image at the end of the backlog.
  *
- * @property image image to insert.
+ * This effect is produced when image is dropped into the spot in backlog where there are no images.
+ *
+ * @property image Image to insert.
+ * @constructor Creates the effect from backlog image.
  */
 data class InsertToEndOfBacklog(val image: Image) : InsertEffect()
 
 /**
- * [InsertEffect] implementation that inserts image into the end of the tier at given position.
+ * Insert effect of the image at the end of the tier.
  *
- * @property image image to insert.
- * @property tierPosition position of the tier.
+ * This effect is produced when image is dropped into the spot in tier where there are no images.
+ *
+ * @property image Image to insert.
+ * @property tierPosition Position of the tier.
+ * @constructor Creates the effect from image at tier position.
  */
 data class InsertToEndOfTier(val image: Image, val tierPosition: Int) : InsertEffect()

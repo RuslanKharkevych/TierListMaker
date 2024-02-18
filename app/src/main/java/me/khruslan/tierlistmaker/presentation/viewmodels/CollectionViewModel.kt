@@ -4,11 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hadilq.liveevent.LiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.khruslan.tierlistmaker.R
@@ -17,19 +15,22 @@ import me.khruslan.tierlistmaker.data.providers.database.DatabaseHelper
 import me.khruslan.tierlistmaker.data.providers.dispatchers.DispatcherProvider
 import me.khruslan.tierlistmaker.data.providers.tierlist.TierListCreator
 import me.khruslan.tierlistmaker.presentation.models.ListState
-import me.khruslan.tierlistmaker.presentation.utils.navigation.TierListResultException
 import me.khruslan.tierlistmaker.presentation.screens.home.CollectionFragment
 import me.khruslan.tierlistmaker.presentation.screens.home.HomeActivity
+import me.khruslan.tierlistmaker.presentation.utils.navigation.TierListResultException
 import me.khruslan.tierlistmaker.util.swap
 import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * [ViewModel] for [CollectionFragment].
+ * View model for [CollectionFragment].
  *
- * @property databaseHelper database helper.
- * @property dispatcherProvider provider of [CoroutineDispatcher] for running suspend functions.
- * @property tierListCreator creator of new tier lists.
+ * Manages tier list previews.
+ *
+ * @property databaseHelper Manages tier lists in the database.
+ * @property dispatcherProvider Provides default dispatcher.
+ * @property tierListCreator Creates new tier lists.
+ * @constructor Creates view model with all dependencies.
  */
 @HiltViewModel
 class CollectionViewModel @Inject constructor(
@@ -40,51 +41,75 @@ class CollectionViewModel @Inject constructor(
 ) : AndroidViewModel(application) {
 
     /**
-     * List of [TierList] objects that are used for passing to the next screen.
+     * Tier lists that are used for passing to the next screen.
      */
     private lateinit var tierLists: MutableList<TierList>
 
     /**
-     * List of [TierList.Preview] object that are displayed on UI.
+     * Tier list previews that are displayed on UI.
      */
     private lateinit var tierListPreviews: MutableList<TierList.Preview>
 
+    /**
+     * Mutable reference to [addPreviewEvent].
+     */
     private val _addPreviewEvent by lazy { LiveEvent<Int>() }
+
+    /**
+     * Mutable reference to [updatePreviewEvent].
+     */
     private val _updatePreviewEvent by lazy { LiveEvent<Int>() }
+
+    /**
+     * Mutable reference to [listStateLiveData].
+     */
     private val _listStateLiveData by lazy { MutableLiveData<ListState>() }
+
+    /**
+     * Mutable reference to [errorEvent].
+     */
     private val _errorEvent by lazy { LiveEvent<Int>() }
+
+    /**
+     * Mutable reference to [tierListPreviewsLiveData].
+     */
     private val _tierListPreviewsLiveData = MutableLiveData<MutableList<TierList.Preview>>()
+
+    /**
+     * Mutable reference to [tierListCreatedEvent].
+     */
     private val _tierListCreatedEvent by lazy { LiveEvent<TierList>() }
 
     /**
-     * [LiveData] that notifies observers about the position of the newly added preview.
+     * Live data that notifies observers about the position of the newly added preview.
      */
     val addPreviewEvent: LiveData<Int> get() = _addPreviewEvent
 
     /**
-     * [LiveData] that notifies observers about the position of the updated preview.
+     * Live data that notifies observers about the position of the updated preview.
      */
     val updatePreviewEvent: LiveData<Int> get() = _updatePreviewEvent
 
     /**
-     * [LiveData] that notifies observer about the state of the list of previews.
+     * Live data that notifies observer about the state of the list of previews.
      */
     val listStateLiveData: LiveData<ListState> get() = _listStateLiveData
 
     /**
-     * [LiveData] that notifies observer about errors. The value of the live data is a string
-     * resource of the error message.
+     * Live data that notifies observer about errors.
+     *
+     * The value of the live data is a string resource of the error message.
      */
     val errorEvent: LiveData<Int> get() = _errorEvent
 
     /**
-     * [LiveData] that notifies observers about the tier list previews.
+     * Live data that notifies observers about the tier list previews.
      */
     val tierListPreviewsLiveData: LiveData<MutableList<TierList.Preview>>
         get() = _tierListPreviewsLiveData
 
     /**
-     * [LiveData] that notifies observers that the new tier list has been created.
+     * Live data that notifies observers that the new tier list has been created.
      */
     val tierListCreatedEvent: LiveData<TierList> get() = _tierListCreatedEvent
 
@@ -93,14 +118,21 @@ class CollectionViewModel @Inject constructor(
         loadTierListPreviews()
     }
 
+    /**
+     * Logs the onCleared lifecycle event.
+     *
+     * Called when this view model is no longer used and will be destroyed.
+     */
     override fun onCleared() {
         Timber.i("CollectionViewModel cleared")
     }
 
     /**
-     * Creates an empty [TierList] asynchronously and triggers [tierListCreatedEvent].
+     * Asynchronously creates an empty tier list.
      *
-     * @param title name of the tier list.
+     * Triggers [tierListCreatedEvent].
+     *
+     * @param title Name of the tier list.
      */
     fun createNewTierList(title: String) {
         Timber.i("Creating new tier list with title: $title")
@@ -112,10 +144,12 @@ class CollectionViewModel @Inject constructor(
     }
 
     /**
-     * Handles [TierList] that was either added or updated. Persists it in the local storage and
-     * notifies UI about the updates
+     * Handles tier list that was either added or updated.
      *
-     * @param tierList new or updated tier list.
+     * Persists it in the local storage and notifies UI about the updates.
+     *
+     * @param tierList New or updated tier list.
+     * @throws [TierListResultException] If tier list is null.
      */
     fun handleTierListResult(tierList: TierList?) {
         if (tierList == null) {
@@ -127,10 +161,20 @@ class CollectionViewModel @Inject constructor(
     }
 
     /**
-     * Updates [tierLists] and [tierListPreviews] with added or updated [TierList].
-     * Notifies UI about the updates.
+     * Asynchronously updates tier lists with added or updated tier list.
      *
-     * @param tierList new or updated tier list.
+     * If tier list is found by ID:
+     * - Updates the tier list in [tierLists].
+     * - Updates the respective preview in [tierListPreviews].
+     * - Triggers [updatePreviewEvent] update.
+     *
+     * If tier list is not found by ID:
+     * - Inserts the tier list into [tierLists].
+     * - Inserts the respective preview into [tierListPreviews].
+     * - Updates [listStateLiveData] with [ListState.Filled].
+     * - Triggers [updatePreviewEvent] update.
+     *
+     * @param tierList New or updated tier list.
      */
     private fun addOrUpdateTierList(tierList: TierList) {
         viewModelScope.launch(dispatcherProvider.default) {
@@ -152,10 +196,12 @@ class CollectionViewModel @Inject constructor(
     }
 
     /**
-     * Saves added or updated [TierList] in the local storage. Triggers [errorEvent] in case of
-     * error.
+     * Asynchronously saves added or updated tier list in the local storage.
      *
-     * @param tierList new or updated tier list.
+     * Triggers [errorEvent] in case of error. Note that in such case [tierLists] will become out of
+     * sync with the real data.
+     *
+     * @param tierList New or updated tier list.
      */
     private fun saveTierList(tierList: TierList) {
         viewModelScope.launch {
@@ -165,20 +211,21 @@ class CollectionViewModel @Inject constructor(
     }
 
     /**
-     * Obtains [TierList] by [position].
+     * Obtains tier list by position.
      *
-     * @param position position of the tier lists.
-     * @return obtained tier list.
+     * @param position Position of the tier list.
+     * @return Obtained tier list.
      */
     fun getTierListByPosition(position: Int): TierList {
         return tierLists[position]
     }
 
     /**
-     * Loads tier lists from [databaseHelper] and returns the result. Updates [listStateLiveData]
-     * after loading is complete.
+     * Asynchronously loads tier lists from database and returns the result.
      *
-     * @return loaded tier lists or empty list in case of error.
+     * Updates [listStateLiveData] after loading is complete.
+     *
+     * @return Loaded tier lists or empty list in case of error.
      */
     private suspend fun loadTierLists(): MutableList<TierList> {
         return databaseHelper.getTierLists()?.also { list ->
@@ -192,6 +239,8 @@ class CollectionViewModel @Inject constructor(
     /**
      * Loads [tierLists] from [databaseHelper], maps [tierListPreviews] and updates
      * [tierListPreviewsLiveData].
+     *
+     * The function is delayed to make sure that splash screen exit animation finishes gracefully.
      */
     private fun loadTierListPreviews() {
         Timber.i("Loading tier list previews")
@@ -205,8 +254,9 @@ class CollectionViewModel @Inject constructor(
     }
 
     /**
-     * Re-loads tier list previews (see [loadTierListPreviews]) and updates [listStateLiveData]
-     * accordingly.
+     * Re-loads tier list previews.
+     *
+     * Updates [listStateLiveData] with [ListState.Loading] and calls [loadTierListPreviews].
      */
     fun refreshPreviews() {
         _listStateLiveData.value = ListState.Loading
@@ -216,8 +266,10 @@ class CollectionViewModel @Inject constructor(
     /**
      * Swaps order of two tier lists.
      *
-     * @param firstIndex position of the first tier list.
-     * @param secondIndex position of the second tier list.
+     * The updated order is then saved in the database.
+     *
+     * @param firstIndex Position of the first tier list.
+     * @param secondIndex Position of the second tier list.
      */
     fun swapTierLists(firstIndex: Int, secondIndex: Int) {
         tierLists.swap(firstIndex, secondIndex)
@@ -227,7 +279,10 @@ class CollectionViewModel @Inject constructor(
     }
 
     /**
-     * Updates tier lists in the local storage. Triggers [errorEvent] on failure.
+     * Asynchronously updates tier lists in the local storage.
+     *
+     * Triggers [errorEvent] on database transaction failure. Note that in such case [tierLists]
+     * will become out of sync with the real data.
      */
     private fun updateTierLists() {
         viewModelScope.launch {
@@ -237,9 +292,13 @@ class CollectionViewModel @Inject constructor(
     }
 
     /**
-     * Removes tier list from the local storage. Triggers [errorEvent] in case of failure.
+     * Asynchronously removes tier list from the local storage.
      *
-     * @param index position of the tier list to remove.
+     * If the last tier list is being removed, updates [listStateLiveData] with [ListState.Empty].
+     * If database transaction fails, triggers [errorEvent]. Note that the tier list will always be
+     * removed from [tierLists], regardless of the transaction result.
+     *
+     * @param index Position of the tier list to remove.
      */
     fun removeTierList(index: Int) {
         Timber.i("Removing tier list at position $index")

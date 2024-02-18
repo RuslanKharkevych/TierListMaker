@@ -1,15 +1,22 @@
 package me.khruslan.tierlistmaker.presentation.models
 
 /**
- * UI State that represents a process of loading. Could be either [Determinate] or [Indeterminate].
+ * UI state that represents a process of loading.
+ *
+ * Could be either determinate or indeterminate.
+ *
+ * @constructor Default empty constructor.
  */
 sealed class LoadingProgress {
 
     /**
      * UI state for the determinate progress of loading items.
      *
-     * @property currentItem number of the item that is loading now.
-     * @property totalItems total number of items that should be loaded.
+     * Note that this class is immutable.
+     *
+     * @property currentItem Index of the item that is loading now.
+     * @property totalItems Total number of items that should be loaded.
+     * @constructor Creates a new instance of the determinate loading progress class.
      */
     data class Determinate(val currentItem: Int, val totalItems: Int) : LoadingProgress() {
 

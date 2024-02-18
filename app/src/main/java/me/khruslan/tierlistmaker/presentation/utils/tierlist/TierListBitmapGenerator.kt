@@ -5,14 +5,19 @@ import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 
 /**
  * Tool that allows to generate [Bitmap] from [TierList].
+ *
+ * The generation is asynchronous. The subclasses must ensure that it can be safely called from the
+ * main thread.
  */
 interface TierListBitmapGenerator {
 
     /**
-     * Generates [Bitmap] from [TierList]. Note that [TierList.backlogImages] are ignored.
+     * Generates bitmap from tier list.
      *
-     * @param tierList tier list to process.
-     * @return generated [Bitmap].
+     * Note that [TierList.backlogImages] are ignored.
+     *
+     * @param tierList Tier list to process.
+     * @return Generated bitmap.
      */
     suspend fun generate(tierList: TierList): Bitmap
 }

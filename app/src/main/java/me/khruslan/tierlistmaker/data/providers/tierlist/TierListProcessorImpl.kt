@@ -10,6 +10,8 @@ import javax.inject.Inject
 
 /**
  * [TierListProcessor] implementation.
+ *
+ * @constructor Creates a new tier list processor instance.
  */
 class TierListProcessorImpl @Inject constructor(): TierListProcessor {
 
@@ -19,16 +21,31 @@ class TierListProcessorImpl @Inject constructor(): TierListProcessor {
     private lateinit var tierList: TierList
 
     /**
-     * [ResourceImage] that represents a drag target.
+     * Resource image that represents a drag target.
      */
     private val targetImage by lazy {
         ResourceImage(resId = R.drawable.ic_crop_free)
     }
 
+    /**
+     * Attaches tier list to the processor.
+     *
+     * It is required to set tier list before calling [processDragEffect].
+     *
+     * @param tierList Tier list to set.
+     */
     override fun setTierList(tierList: TierList) {
         this.tierList = tierList
     }
 
+    /**
+     * Converts drag effect to tier list event.
+     *
+     * It is required to [setTierList] before calling this function.
+     *
+     * @param effect Drag effect to process.
+     * @return Resulting tier list event.
+     */
     override fun processDragEffect(effect: DragEffect): TierListEvent {
         Timber.i("Processing drag effect: $effect")
         return when (effect) {
@@ -42,10 +59,14 @@ class TierListProcessorImpl @Inject constructor(): TierListProcessor {
     }
 
     /**
-     * Converts [HighlightEffect] into [TierListEvent].
+     * Converts highlight effect to tier list event.
      *
-     * @param effect highlight effect to process.
-     * @return Resulting [TierListEvent].
+     * Unless the effect is [HighlightTrashBin], additionally inserts [targetImage] into the target
+     * position.
+     *
+     * @param effect Highlight effect to process.
+     * @receiver Tier list that consumes the effect.
+     * @return Resulting tier list event.
      */
     private fun TierList.processHighlightEffect(effect: HighlightEffect): TierListEvent {
         return when (effect) {
@@ -70,10 +91,13 @@ class TierListProcessorImpl @Inject constructor(): TierListProcessor {
     }
 
     /**
-     * Converts [InsertEffect] into [TierListEvent].
+     * Converts insert effect to tier list event.
      *
-     * @param effect insert effect to process.
-     * @return Resulting [TierListEvent].
+     * Additionally inserts the image into the tier list.
+     *
+     * @param effect Insert effect to process.
+     * @receiver Tier list that consumes the effect.
+     * @return Resulting tier list event.
      */
     private fun TierList.processInsertEffect(effect: InsertEffect): TierListEvent {
         return when (effect) {
@@ -97,10 +121,13 @@ class TierListProcessorImpl @Inject constructor(): TierListProcessor {
     }
 
     /**
-     * Converts [RemoveEffect] into [TierListEvent].
+     * Converts remove effect to tier list event.
      *
-     * @param effect remove effect to process.
-     * @return Resulting [TierListEvent].
+     * Unless the effect is [UnhighlightTrashBin], additionally removes the target image.
+     *
+     * @param effect Remove effect to process.
+     * @receiver Tier list that consumes the effect.
+     * @return Resulting tier list event.
      */
     private fun TierList.processRemoveEffect(effect: RemoveEffect): TierListEvent {
         return when (effect) {
@@ -125,10 +152,13 @@ class TierListProcessorImpl @Inject constructor(): TierListProcessor {
     }
 
     /**
-     * Converts [UpdateEffect] into [TierListEvent].
+     * Converts update effect to tier list event.
      *
-     * @param effect update effect to process.
-     * @return Resulting [TierListEvent].
+     * Unless the effect is [ThrowToTrashBin], additionally updates the image in the tier list.
+     *
+     * @param effect Update effect to process.
+     * @receiver Tier list that consumes the effect.
+     * @return Resulting tier list event.
      */
     private fun TierList.processUpdateEffect(effect: UpdateEffect): TierListEvent {
         return when (effect) {

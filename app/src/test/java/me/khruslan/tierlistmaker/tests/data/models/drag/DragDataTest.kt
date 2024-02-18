@@ -3,7 +3,7 @@ package me.khruslan.tierlistmaker.tests.data.models.drag
 import android.content.ClipData
 import io.mockk.*
 import me.khruslan.tierlistmaker.data.models.drag.ImageDragData
-import me.khruslan.tierlistmaker.data.models.drag.ImageDragData.Companion.LABEL
+import me.khruslan.tierlistmaker.data.models.drag.ImageDragData.Mapper.LABEL
 import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame

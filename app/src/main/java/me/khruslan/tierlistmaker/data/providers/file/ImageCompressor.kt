@@ -5,15 +5,20 @@ import java.io.File
 
 /**
  * Compressor of image files.
+ *
+ * The compressing is asynchronous. The subclasses must ensure that it can be safely called from the
+ * main thread.
  */
 interface ImageCompressor {
 
     /**
-     * Compresses the image from [Uri] and saves the resulting file into the target directory.
+     * Compresses the image from Uri and saves the resulting file into the target directory.
      *
-     * @param uri [Uri] of the image to compress.
-     * @param targetDir target directory path.
-     * @return Compressed [File]
+     * The quality of the image depends on user preference. Throws exception on error.
+     *
+     * @param uri URI of the image to compress.
+     * @param targetDir Target directory path.
+     * @return Compressed file.
      */
     suspend fun compress(uri: Uri, targetDir: String): File
 }

@@ -17,19 +17,39 @@ import timber.log.Timber
 
 /**
  * Utility that provides user interface for sending feedback.
+ *
+ * Allows to open an email application with prefilled information for reporting an issue or sending
+ * a feedback.
  */
 object FeedbackUtils {
 
-    private const val MAILTO_DATA_SCHEME = "mailto:"
+    /**
+     * A URI scheme for email addresses.
+     *
+     * Set as a data of the "Compose an email" intents.
+     */
+    private const val MAILTO_URI_SCHEME = "mailto:"
+
+    /**
+     * The person that is intended to receive feedback emails.
+     *
+     * This email is prefilled in the “to” field in the email client.
+     */
     private const val RECIPIENT_EMAIL = "ruslan.kharkevych@gmail.com"
+
+    /**
+     * The log tag of the alert, shown by [showSendUsEmailAlert] method.
+     */
     private const val SEND_US_EMAIL_ALERT_LOG_TAG = "SendUsEmailAlert"
 
     /**
      * Opens an email application with prefilled recipient, subject and message for reporting
-     * an issue. In case no email applications found on the device, shows an alert asking to
-     * manually send an email.
+     * an issue.
      *
-     * @param context activity context.
+     * In case no email applications found on the device, shows an alert asking to manually send an
+     * email.
+     *
+     * @param context Activity context.
      */
     fun reportIssue(context: Context) {
         try {
@@ -39,18 +59,19 @@ object FeedbackUtils {
                 subject = context.getString(R.string.bug_report_email_subject),
                 message = buildBugReportInfo(context)
             )
-        } catch (_: ActivityNotFoundException) {
-            Timber.i("Activity not found, showing Send Us Email alert")
+        } catch (e: ActivityNotFoundException) {
+            Timber.w(e, "Activity not found, showing Send Us Email alert")
             showSendUsEmailAlert(context)
         }
     }
 
     /**
-     * Opens an email application with prefilled recipient and subject for sending a feedback. In
-     * case no email applications found on the device, shows an alert asking to manually send an
+     * Opens an email application with prefilled recipient and subject for sending a feedback.
+     *
+     * In case no email applications found on the device, shows an alert asking to manually send an
      * email.
      *
-     * @param context activity context.
+     * @param context Activity context.
      */
     fun sendFeedback(context: Context) {
         try {
@@ -59,8 +80,8 @@ object FeedbackUtils {
                 context = context,
                 subject = context.getString(R.string.send_feedback_email_subject)
             )
-        } catch (_: ActivityNotFoundException) {
-            Timber.i("Activity not found, showing Send Us Email alert")
+        } catch (e: ActivityNotFoundException) {
+            Timber.w(e, "Activity not found, showing Send Us Email alert")
             showSendUsEmailAlert(context)
         }
     }
@@ -69,13 +90,14 @@ object FeedbackUtils {
      * Opens an email application with prefilled recipient, subject and (optionally) message for
      * reporting an issue.
      *
-     * @param context activity context.
-     * @param subject email subject to prefill.
-     * @param message email message to prefill (optional).
+     * @param context Activity context.
+     * @param subject Email subject to prefill.
+     * @param message Email message to prefill (optional).
+     * @throws [ActivityNotFoundException] If case no email applications found on device.
      */
     private fun launchSendEmailIntent(context: Context, subject: String, message: String? = null) {
         val intent = Intent(Intent.ACTION_SENDTO).apply {
-            data = MAILTO_DATA_SCHEME.toUri()
+            data = MAILTO_URI_SCHEME.toUri()
             putExtra(Intent.EXTRA_EMAIL, arrayOf(RECIPIENT_EMAIL))
             putExtra(Intent.EXTRA_SUBJECT, subject)
             putExtra(Intent.EXTRA_TEXT, message)
@@ -86,11 +108,12 @@ object FeedbackUtils {
     }
 
     /**
-     * Builds a string with environment information for reporting a bug. Includes application
-     * version, device model and operating system.
+     * Builds a string with environment information for reporting a bug.
      *
-     * @param context activity context.
-     * @return report info string.
+     * Includes application version, device model and operating system.
+     *
+     * @param context Activity context.
+     * @return Report info string.
      */
     private fun buildBugReportInfo(context: Context): String {
         return with(context) {
@@ -106,7 +129,7 @@ object FeedbackUtils {
     /**
      * Returns device model in user-friendly format, e.g. Samsung SM-M325FV.
      *
-     * @return device model.
+     * @return Device model.
      */
     private fun getDeviceModel(): String {
         return if (Build.MODEL.startsWith(Build.MANUFACTURER, ignoreCase = true)) {
@@ -120,7 +143,7 @@ object FeedbackUtils {
      * Shows an alert asking to manually send a bug report with a "Copy email" button that allows
      * to copy [RECIPIENT_EMAIL] to the clipboard.
      *
-     * @param context activity context.
+     * @param context Activity context.
      */
     private fun showSendUsEmailAlert(context: Context) {
         MaterialAlertDialogBuilder(context)
@@ -136,11 +159,13 @@ object FeedbackUtils {
     }
 
     /**
-     * Copies text to clipboard. Starting from [Build.VERSION_CODES.TIRAMISU] the system shows a
-     * default UI to users when text is copied. On older devices a custom toast is shown.
+     * Copies text to clipboard.
      *
-     * @param context activity context.
-     * @param text text to copy.
+     * Starting from [Build.VERSION_CODES.TIRAMISU] the system shows a default UI to users when text
+     * is copied. On older devices a custom toast is shown.
+     *
+     * @param context Activity context.
+     * @param text Text to copy.
      */
     private fun copyTextToClipboard(context: Context, text: String) {
         val clipboardService = context.getSystemService(Context.CLIPBOARD_SERVICE)

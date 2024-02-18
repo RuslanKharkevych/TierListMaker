@@ -1,8 +1,12 @@
 package me.khruslan.tierlistmaker.presentation.utils.navigation
 
 /**
- * [Exception] implementation for the errors that could happen inside the [TierListResultContract].
+ * Indicates that tier list navigation result can't be resolved.
  *
- * @param message error message of the exception.
+ * Can be thrown during parsing of the result in the contract, or at a later stage when attempting
+ * to obtain the tier list inside the activity or fragment.
+ *
+ * @param message Error message of the exception.
+ * @constructor Creates exception with error message.
  */
 class TierListResultException(message: String) : Exception(message)

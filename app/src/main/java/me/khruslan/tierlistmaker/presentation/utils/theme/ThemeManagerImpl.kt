@@ -1,8 +1,6 @@
 package me.khruslan.tierlistmaker.presentation.utils.theme
 
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import me.khruslan.tierlistmaker.data.providers.database.PreferencesHelper
 import me.khruslan.tierlistmaker.data.providers.dispatchers.DispatcherProvider
@@ -10,10 +8,11 @@ import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * Implementation of [ThemeManager].
+ * [ThemeManager] implementation.
  *
- * @property preferencesHelper helper class for accessing [SharedPreferences].
- * @property dispatcherProvider provider of [CoroutineDispatcher].
+ * @property preferencesHelper Saves user theme preference.
+ * @property dispatcherProvider Provides coroutine dispatchers.
+ * @constructor Creates theme manager with injected dependencies.
  */
 class ThemeManagerImpl @Inject constructor(
     private val preferencesHelper: PreferencesHelper,
@@ -21,10 +20,11 @@ class ThemeManagerImpl @Inject constructor(
 ) : ThemeManager {
 
     /**
-     * Applies light or dark theme based on [nightModeEnabled] flag. Can cause configuration change
-     * to update resources if theme has been updated.
+     * Applies light or dark theme based on [nightModeEnabled] flag.
      *
-     * @param nightModeEnabled if true - dark theme, else - light theme.
+     * Can cause configuration change to update resources if theme has been updated.
+     *
+     * @param nightModeEnabled If true - dark theme, else - light theme.
      */
     private fun applyTheme(nightModeEnabled: Boolean) {
         AppCompatDelegate.setDefaultNightMode(
@@ -37,10 +37,20 @@ class ThemeManagerImpl @Inject constructor(
         Timber.i("Applied theme. Night mode: $nightModeEnabled")
     }
 
+    /**
+     * Synchronously applies default application's theme.
+     *
+     * The default theme is synchronously fetched from shared preferences.
+     */
     override fun setDefaultTheme() {
         applyTheme(preferencesHelper.nightModeEnabled)
     }
 
+    /**
+     * Asynchronously toggles light/dark theme.
+     *
+     * Applies changes and saves user preference.
+     */
     override suspend fun toggleTheme() {
         Timber.i("Changing theme")
         withContext(dispatcherProvider.io) {

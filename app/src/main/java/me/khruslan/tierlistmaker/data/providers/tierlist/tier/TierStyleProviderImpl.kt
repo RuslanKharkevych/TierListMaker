@@ -1,19 +1,19 @@
 package me.khruslan.tierlistmaker.data.providers.tierlist.tier
 
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import me.khruslan.tierlistmaker.data.models.tierlist.Tier
 import me.khruslan.tierlistmaker.data.models.tierlist.TierStyle
 import me.khruslan.tierlistmaker.data.providers.dispatchers.DispatcherProvider
 import javax.inject.Inject
 
 /**
- * [TierStyleProvider] implementation. All functions are running in [Dispatchers.Default] context.
+ * [TierStyleProvider] implementation.
  *
- * @property colorProvider provider of color for [Tier].
- * @property nameProvider provider of name for [Tier].
- * @property dispatchersProvider provider of [CoroutineDispatcher] for running suspend functions.
+ * Moves tier styles generation to the background thread.
+ *
+ * @property colorProvider Provides tier colors.
+ * @property nameProvider Provides tier names.
+ * @property dispatchersProvider Provides default dispatcher.
+ * @constructor Creates a new tier style provider instance.
  */
 class TierStyleProviderImpl @Inject constructor(
     private val colorProvider: TierColorProvider,
@@ -21,6 +21,14 @@ class TierStyleProviderImpl @Inject constructor(
     private val dispatchersProvider: DispatcherProvider
 ) : TierStyleProvider {
 
+    /**
+     * Generates list of tier styles with given size.
+     *
+     * Ordered from the first tier to the the last one.
+     *
+     * @param size Number of tiers to generate styles for.
+     * @return Generated tier styles.
+     */
     override suspend fun getTierStyles(size: Int): List<TierStyle> {
         return withContext(dispatchersProvider.default) {
             val colors = colorProvider.getColors(size)

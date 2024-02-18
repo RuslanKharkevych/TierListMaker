@@ -7,16 +7,19 @@ import com.takusemba.spotlight.effet.RippleEffect
 /**
  * Draws a circular ripple effect.
  *
- * @param delegate ripple effect delegate.
+ * It's a helper for creating [RippleEffect] without explicitly specifying radius.
+ *
+ * @param delegate Ripple effect delegate.
+ * @constructor Creates a circular ripple effect from the delegate.
  */
 class CircularRippleEffect private constructor(delegate: RippleEffect) : Effect by delegate {
 
     /**
-     * @constructor Creates a circular ripple effect for the target view with provided radius and
-     * color. An offset of the ripple doubles the radius of the target.
+     * Creates a circular ripple effect for the target view with provided radius and color. An
+     * offset of the ripple doubles the radius of the target.
      *
-     * @param radius radius of the target view.
-     * @param color color of the ripple.
+     * @param radius Radius of the target view.
+     * @param color Color of the ripple.
      */
     constructor(radius: Float, @ColorInt color: Int) : this(
         RippleEffect(

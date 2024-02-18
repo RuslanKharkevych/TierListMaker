@@ -18,28 +18,56 @@ import org.jetbrains.uast.UMethod
 import org.jetbrains.uast.getParentOfType
 
 /**
- * Detects **MaterialAlertDialogBuilder** or **AlertDialog.Builder** usages that are created
- * without setting a log tag with a suggestion to add it.
+ * Detects [MaterialAlertDialogBuilder](https://developer.android.com/reference/com/google/android/material/dialog/MaterialAlertDialogBuilder)
+ * or [AlertDialog.Builder](https://developer.android.com/reference/android/app/AlertDialog.Builder)
+ * usages that are created without setting a log tag with a suggestion to add it.
+ *
+ * The motivation of this detector is to make sure all dialog events are logged.
+ *
+ * @constructor Default constructor. Should not be called from the library code.
  */
 class AlertDialogMissingLogTagDetector : Detector(), SourceCodeScanner {
 
     /**
-     * Companion object of [AlertDialogMissingLogTagDetector] that contains corresponding [Issue],
-     * [LintFix] and other constants.
+     * Contains [ISSUE] and other constants of this detector.
      */
-    companion object {
+    companion object Constants {
+
+        /**
+         * The name of the AlertDialog.create method.
+         */
         private const val METHOD_CREATE = "create"
+
+        /**
+         * The name of the AlertDialog.setLogTag extension function.
+         */
         private const val METHOD_SET_LOG_TAG = "setLogTag"
+
+        /**
+         * The import statement of the AlertDialog.setLogTag extension function.
+         */
         private const val METHOD_SET_LOG_TAG_IMPORT =
             "me.khruslan.tierlistmaker.utils.log.setLogTag"
+
+        /**
+         * Fully qualified class names of AlertDialog.Builder and MaterialAlertDialogBuilder.
+         */
         private val ALERT_DIALOG_BUILDER_CLASS_NAMES = listOf(
             "androidx.appcompat.app.AlertDialog.Builder",
             "com.google.android.material.dialog.MaterialAlertDialogBuilder"
         )
 
+        /**
+         * The message of the reporting warning.
+         */
         private const val REPORT_MESSAGE =
             "Consider setting log tag to enable logging dialog events"
 
+        /**
+         * The issue reported by [AlertDialogMissingLogTagDetector].
+         *
+         * Reported when alert dialog is created but log tag is not set. Has medium priority.
+         */
         val ISSUE = Issue.create(
             id = "AlertDialogMissingLogTag",
             briefDescription = "AlertDialog created without log tag",
@@ -56,6 +84,11 @@ class AlertDialogMissingLogTagDetector : Detector(), SourceCodeScanner {
             )
         )
 
+        /**
+         * Quickfix of the [ISSUE].
+         *
+         * Inserts .setLogTag("") function call after create().
+         */
         private val QUICKFIX = LintFix.create()
             .name("Set log tag")
             .replace()
@@ -67,10 +100,32 @@ class AlertDialogMissingLogTagDetector : Detector(), SourceCodeScanner {
             .build()
     }
 
+    /**
+     * Returns AlertDialog.create method name.
+     *
+     * Any AST nodes that match the method call will be passed to the [visitMethodCall] method for
+     * processing.
+     *
+     * @return A list of applicable method names.
+     */
     override fun getApplicableMethodNames(): List<String> {
         return listOf(METHOD_CREATE)
     }
 
+    /**
+     * Reports the issue if it's applicable to a given AST node.
+     *
+     * This method is invoked for any method calls found that matches any names returned by
+     * [getApplicableMethodNames]. The issue is reported if both of the following conditions are
+     * true:
+     * - Containing class of the method call is either AlertDialog.Builder or
+     * MaterialAlertDialogBuilder.
+     * - Data flow doesn't reach the setLogTag function.
+     *
+     * @param context The context of the lint request.
+     * @param node The node for the invoked method.
+     * @param method The method being called.
+     */
     override fun visitMethodCall(context: JavaContext, node: UCallExpression, method: PsiMethod) {
         val containingClass = method.containingClass ?: return
         if (containingClass.qualifiedName !in ALERT_DIALOG_BUILDER_CLASS_NAMES) return

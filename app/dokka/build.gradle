@@ -1,0 +1,25 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm'
+    id 'maven-publish'
+}
+
+dependencies {
+    compileOnly("org.jetbrains.dokka:dokka-core:$dokka_version")
+    implementation("org.jetbrains.dokka:dokka-base:$dokka_version")
+    implementation("org.jetbrains.dokka:gfm-plugin:$dokka_version")
+    testImplementation("org.jetbrains.dokka:dokka-test-api:$dokka_version")
+    testImplementation("org.jetbrains.dokka:dokka-base-test-utils:$dokka_version")
+    testImplementation "junit:junit:$junit_version"
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'me.khruslan.tierlistmaker'
+            artifactId = 'dokka'
+            version = '1.0.0'
+
+            from components.java
+        }
+    }
+}

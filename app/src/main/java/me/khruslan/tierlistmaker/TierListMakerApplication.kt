@@ -13,45 +13,105 @@ import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * Customized [Application] implementation for startup configurations.
+ * Customized application implementation for startup configurations.
+ *
+ * Custom application class is also required by [Hilt](https://dagger.dev/hilt) for generating
+ * [Dagger](https://dagger.dev) components.
+ *
+ * @constructor Default constructor called by Android system.
  */
 @HiltAndroidApp
 class TierListMakerApplication : Application() {
 
     /**
-     * Manager used to set default theme.
+     * Manager used to set the application theme.
+     *
+     * Needs to be injected inside the application because updating the theme leads to configuration
+     * change. Therefore, it must be done before any activity is created to avoid UI glitches.
      */
     @Inject
     lateinit var themeManager: ThemeManager
 
+    /**
+     * Performs global initialization tasks.
+     *
+     * Called when the application is starting, before any activity, service, or receiver objects
+     * (excluding content providers) have been created.
+     */
     override fun onCreate() {
         super.onCreate()
 
-        configureStrictModePenaltyLogging()
-        plantTimberTree()
+        performInitializationTasks()
         Timber.i("Application created")
-        registerActivityLifecycleCallbacks(ActivityLifecycleLogger())
-        Paper.init(this)
-        themeManager.setDefaultTheme()
     }
 
+    /**
+     * Logs configuration changes.
+     *
+     * Called by the system when the device configuration changes while your component is running.
+     *
+     * @param newConfig The new device configuration.
+     */
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         Timber.i("Configuration changed: $newConfig")
     }
 
+    /**
+     * Logs low memory events.
+     *
+     * This is called when the overall system is running low on memory, and actively running
+     * processes should trim their memory usage
+     */
     override fun onLowMemory() {
         super.onLowMemory()
         Timber.i("The system is running low on memory")
     }
 
+    /**
+     * Logs trim memory events.
+     *
+     * Called when the operating system has determined that it is a good time for a process to trim
+     * unneeded memory from its process.
+     *
+     * @param level The context of the trim, giving a hint of the amount of trimming the application
+     * may like to perform.
+     */
     override fun onTrimMemory(level: Int) {
         super.onTrimMemory(level)
         Timber.i("Received onTrimMemory event. Level: ${getTrimMemoryLevelName(level)}")
     }
 
     /**
-     * Plants [Timber.Tree] for logging on debug build and reporting crashes on release builds.
+     * Initializes global components and applies the application theme.
+     *
+     * Global components include logging services and [Paper](https://github.com/pilgr/Paper)
+     * database.
+     */
+    private fun performInitializationTasks() {
+        setupLogging()
+        Paper.init(this)
+        themeManager.setDefaultTheme()
+    }
+
+    /**
+     * Initializes logging services.
+     *
+     * - Configures [StrictMode] penalty logging.
+     * - Plants [Timber.Tree].
+     * - Registers [ActivityLifecycleLogger].
+     */
+    private fun setupLogging() {
+        configureStrictModePenaltyLogging()
+        plantTimberTree()
+        registerActivityLifecycleCallbacks(ActivityLifecycleLogger())
+    }
+
+    /**
+     * Plants [Timber.Tree] for logging in debug build and reporting crashes in release builds.
+     *
+     * This function must be called as soon as possible to ensure crashes are reported during the
+     * application components initialization phase.
      */
     private fun plantTimberTree() {
         Timber.plant(
@@ -65,6 +125,8 @@ class TierListMakerApplication : Application() {
 
     /**
      * Enables penalty logging of all [StrictMode] violations in debug builds.
+     *
+     * Does nothing in release builds.
      */
     private fun configureStrictModePenaltyLogging() {
         if (BuildConfig.DEBUG) {
@@ -75,6 +137,9 @@ class TierListMakerApplication : Application() {
 
     /**
      * Enables penalty logging of all [StrictMode.ThreadPolicy] violations.
+     *
+     * To catch violations during initialization phase, this function should be called immediately
+     * when the application is created.
      */
     private fun enableThreadPolicyPenaltyLogging() {
         StrictMode.setThreadPolicy(
@@ -87,6 +152,9 @@ class TierListMakerApplication : Application() {
 
     /**
      * Enables penalty logging of all [StrictMode.VmPolicy] violations.
+     *
+     * To catch violations during initialization phase, this function should be called immediately
+     * when the application is created.
      */
     private fun enableVmPolicyPenaltyLogging() {
         StrictMode.setVmPolicy(
@@ -100,8 +168,10 @@ class TierListMakerApplication : Application() {
     /**
      * Converts trim memory level value to a readable format.
      *
-     * @param level trim memory level obtained from [onTrimMemory] callback.
-     * @return level name string, e.g. "RUNNING_LOW"
+     * If level is unknown, simply converts it to string as is.
+     *
+     * @param level Trim memory level obtained from [onTrimMemory] callback.
+     * @return Level name string, e.g. "RUNNING_LOW".
      */
     private fun getTrimMemoryLevelName(level: Int): String {
         return when (level) {
