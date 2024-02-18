@@ -52,7 +52,7 @@ class FlexboxLayoutManagerUsageDetector : Detector(), SourceCodeScanner {
          * The message of the reported warning.
          */
         private const val REPORT_MESSAGE =
-            "FlexboxLayoutManager usage is prohibited. Use FlexLayoutManager"
+            "`FlexboxLayoutManager` usage is prohibited. Use `FlexLayoutManager`"
 
         /**
          * The issue reported by [FlexboxLayoutManagerUsageDetector].
@@ -64,10 +64,11 @@ class FlexboxLayoutManagerUsageDetector : Detector(), SourceCodeScanner {
             id = "FlexBoxLayoutManagerUsage",
             briefDescription = "FlexboxLayoutManager usage detected",
             explanation = """
-                The problem with FlexboxLayoutManager is that it overrides only 
-                generateLayoutParams(Context c, AttributeSet attrs) but does not override 
-                generateLayoutParams(ViewGroup.LayoutParams lp), which may lead to unexpected crashes. 
-                FlexLayoutManager fixes this problem while retaining the same functionality.
+                The problem with `FlexboxLayoutManager` is that it overrides only \
+                `generateLayoutParams(Context c, AttributeSet attrs)` but does not override \
+                `generateLayoutParams(ViewGroup.LayoutParams lp)`, which may lead to unexpected \
+                crashes. `FlexLayoutManager` fixes this problem while retaining the same \
+                functionality.
             """,
             category = Category.CORRECTNESS,
             priority = PRIORITY_MAX,

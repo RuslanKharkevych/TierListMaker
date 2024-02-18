@@ -46,7 +46,7 @@ class AlertDialogBuilderUsageDetector : Detector(), SourceCodeScanner {
          * The message of the reported warning.
          */
         private const val REPORT_MESSAGE =
-            "Consider using MaterialAlertDialogBuilder to match material design style"
+            "Consider using `MaterialAlertDialogBuilder` to match material design style"
 
         /**
          * The issue reported by [AlertDialogMissingLogTagDetector].
@@ -57,8 +57,8 @@ class AlertDialogBuilderUsageDetector : Detector(), SourceCodeScanner {
             id = "AlertDialogBuilderUsage",
             briefDescription = "AlertDialogBuilder usage detected",
             explanation = """
-                Consider using MaterialAlertDialogBuilder, which offers the same functionality as
-                AlertDialogBuilder but is designed specifically for use with a Material theme.
+                Consider using `MaterialAlertDialogBuilder`, which offers the same functionality \
+                as `AlertDialogBuilder` but is designed specifically for use with a Material theme.
             """,
             category = CATEGORY_STYLING,
             priority = PRIORITY_MEDIUM,

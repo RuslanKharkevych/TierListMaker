@@ -17,3 +17,7 @@ dependencies {
     testImplementation "com.android.tools.lint:lint-tests:$lint_version"
     testImplementation "junit:junit:$junit_version"
 }
+
+lint {
+    warningsAsErrors true
+}

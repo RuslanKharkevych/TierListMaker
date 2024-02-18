@@ -72,7 +72,7 @@ class AlertDialogMissingLogTagDetector : Detector(), SourceCodeScanner {
             id = "AlertDialogMissingLogTag",
             briefDescription = "AlertDialog created without log tag",
             explanation = """
-                For debugging purposes, log tag should be set for each dialog shown in the
+                For debugging purposes, log tag should be set for each dialog shown in the \
                 application. Once it is set, dialog events will be automatically logged.
             """,
             category = CATEGORY_LOGGING,

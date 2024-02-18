@@ -1,6 +1,7 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm'
     id 'maven-publish'
+    id 'com.android.lint'
 }
 
 dependencies {
@@ -22,4 +23,8 @@ publishing {
             from components.java
         }
     }
+}
+
+lint {
+    warningsAsErrors true
 }
