@@ -2,6 +2,6 @@
 
 # addPreviewEvent
 
-val [addPreviewEvent](add-preview-event.md): [LiveData](https://developer.android.com/reference/kotlin/androidx/lifecycle/LiveData.html)&lt;[Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)&gt;
+val [addPreviewEvent](add-preview-event.md): [LiveData](https://developer.android.com/reference/kotlin/androidx/lifecycle/LiveData.html)&lt;[Unit](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html)&gt;
 
-Live data that notifies observers about the position of the newly added preview.
+Live data that notifies observers about the newly added preview.

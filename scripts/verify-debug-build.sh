@@ -9,7 +9,8 @@ function echo_step {
 }
 
 set -e
-cd '../'
+cd "$(realpath "$(dirname "$0")")"
+cd "../"
 
 echo_task 'BUILDING THE PROJECT'
 echo_step '(1/4) Deleting build directories'

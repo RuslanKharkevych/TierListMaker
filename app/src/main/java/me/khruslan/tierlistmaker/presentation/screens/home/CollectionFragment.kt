@@ -230,10 +230,10 @@ class CollectionFragment : Fragment() {
      *
      * Notifies [previewsAdapter] that new preview has been inserted and scrolls to it.
      */
-    private val addPreviewObserver = Observer<Int> { position ->
-        Timber.i("Inserted tier list at position $position")
-        previewsAdapter.notifyItemInserted(position)
-        binding.listTierLists.smoothScrollToPosition(position)
+    private val addPreviewObserver = Observer<Unit> {
+        Timber.i("Inserted new tier list")
+        previewsAdapter.notifyDataSetChanged()
+        binding.listTierLists.smoothScrollToPosition(0)
     }
 
     /**

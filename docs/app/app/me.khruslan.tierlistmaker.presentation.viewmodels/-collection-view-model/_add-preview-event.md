@@ -2,6 +2,6 @@
 
 # _addPreviewEvent
 
-private val [_addPreviewEvent](_add-preview-event.md): LiveEvent&lt;[Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)&gt;
+private val [_addPreviewEvent](_add-preview-event.md): LiveEvent&lt;[Unit](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html)&gt;
 
 Mutable reference to [addPreviewEvent](add-preview-event.md).

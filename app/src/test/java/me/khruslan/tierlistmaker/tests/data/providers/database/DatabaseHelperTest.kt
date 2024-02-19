@@ -134,6 +134,9 @@ class DatabaseHelperTest {
         backlogImages = mutableListOf()
     )
 
+    private val tierListsWithInserted
+        get() = mutableListOf(newTierList, tierLists[0], tierLists[1])
+
     private val updatedTierLists
         get() = mutableListOf(updatedTierList, tierLists[1])
 
@@ -213,7 +216,7 @@ class DatabaseHelperTest {
     @Test
     fun `Saves new tier list`() = runTest {
         every { book.read(KEY_TIER_LISTS, mutableListOf<TierList>()) } returns tierLists
-        every { book.write(KEY_TIER_LISTS, tierLists + newTierList) } returns book
+        every { book.write(KEY_TIER_LISTS, tierListsWithInserted) } returns book
 
         assertTrue(databaseHelper.saveTierList(newTierList))
     }
@@ -222,7 +225,7 @@ class DatabaseHelperTest {
     fun `Saves new tier list on retry attempt`() = runTest {
         val exception = PaperDbException("Couldn't save file")
         every { book.read(KEY_TIER_LISTS, mutableListOf<TierList>()) } returns tierLists
-        every { book.write(KEY_TIER_LISTS, tierLists + newTierList) } throws exception andThen book
+        every { book.write(KEY_TIER_LISTS, tierListsWithInserted) } throws exception andThen book
 
         assertTrue(databaseHelper.saveTierList(newTierList))
     }

@@ -15,7 +15,7 @@ Due to the limitations of the Paper database, the entire tier list collection mu
 3. Search a tier list by ID.
 
    - If tier list exists - replace it with the new one.
-   - If tier list doesn't exist - insert the new tier list.
+   - If tier list doesn't exist - insert the new tier list at the start of the list.
 5. Save updated tier lists in the database and return the result of this transaction.
 
 #### Return

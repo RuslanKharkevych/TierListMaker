@@ -127,7 +127,7 @@ class DatabaseHelperImpl @Inject constructor(
      *    - If transaction is successful - move to step 2.
      * 2. Search a tier list by ID.
      *    - If tier list exists - replace it with the new one.
-     *    - If tier list doesn't exist - insert the new tier list.
+     *    - If tier list doesn't exist - insert the new tier list at the start of the list.
      * 3. Save updated tier lists in the database and return the result of this transaction.
      *
      * @param tierList Tier list to save.
@@ -143,8 +143,8 @@ class DatabaseHelperImpl @Inject constructor(
             val index = tierLists.indexOfFirst { it.id == tierList.id }
 
             if (index == -1) {
-                Timber.i("Adding new tier list at index ${tierLists.size}")
-                tierLists += tierList
+                Timber.i("Adding new tier list")
+                tierLists.add(0, tierList)
             } else {
                 Timber.i("Replacing existing tier list at index $index")
                 tierLists[index] = tierList

@@ -53,7 +53,7 @@ class CollectionViewModel @Inject constructor(
     /**
      * Mutable reference to [addPreviewEvent].
      */
-    private val _addPreviewEvent by lazy { LiveEvent<Int>() }
+    private val _addPreviewEvent by lazy { LiveEvent<Unit>() }
 
     /**
      * Mutable reference to [updatePreviewEvent].
@@ -81,9 +81,9 @@ class CollectionViewModel @Inject constructor(
     private val _tierListCreatedEvent by lazy { LiveEvent<TierList>() }
 
     /**
-     * Live data that notifies observers about the position of the newly added preview.
+     * Live data that notifies observers about the newly added preview.
      */
-    val addPreviewEvent: LiveData<Int> get() = _addPreviewEvent
+    val addPreviewEvent: LiveData<Unit> get() = _addPreviewEvent
 
     /**
      * Live data that notifies observers about the position of the updated preview.
@@ -180,10 +180,10 @@ class CollectionViewModel @Inject constructor(
         viewModelScope.launch(dispatcherProvider.default) {
             val index = tierLists.indexOfFirst { it.id == tierList.id }
             if (index == -1) {
-                tierLists += tierList
-                tierListPreviews += tierList.preview
+                tierLists.add(0, tierList)
+                tierListPreviews.add(0, tierList.preview)
                 _listStateLiveData.postValue(ListState.Filled)
-                _addPreviewEvent.postValue(tierListPreviews.lastIndex)
+                _addPreviewEvent.postValue(Unit)
                 Timber.i("Added new tier list: $tierList")
             } else {
                 tierLists[index] = tierList

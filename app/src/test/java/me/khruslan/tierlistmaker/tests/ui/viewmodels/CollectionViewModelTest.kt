@@ -258,7 +258,7 @@ class CollectionViewModelTest {
         advanceUntilIdle()
 
         viewModel.listStateLiveData.awaitValue(ListState.Filled)
-        addPreviewObserver.awaitValue(tierLists.size)
+        addPreviewObserver.awaitValue(Unit)
     }
 
     @Test

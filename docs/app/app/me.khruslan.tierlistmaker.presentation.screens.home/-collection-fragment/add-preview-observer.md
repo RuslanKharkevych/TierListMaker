@@ -2,7 +2,7 @@
 
 # addPreviewObserver
 
-private val [addPreviewObserver](add-preview-observer.md): [Observer](https://developer.android.com/reference/kotlin/androidx/lifecycle/Observer.html)&lt;[Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)&gt;
+private val [addPreviewObserver](add-preview-observer.md): [Observer](https://developer.android.com/reference/kotlin/androidx/lifecycle/Observer.html)&lt;[Unit](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html)&gt;
 
 Observer of the added preview event.
 
