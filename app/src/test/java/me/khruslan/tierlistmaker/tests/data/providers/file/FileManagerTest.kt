@@ -51,17 +51,42 @@ class FileManagerTest {
     }
 
     @Test
-    fun `Doesn't create image if pictures directory is unavailable`() = runTest {
-        every { mockContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES) } returns null
-        assertNull(fileManager.createImageFileFromUri(mockUri))
+    fun `Successfully creates compressed image file in pictures directory`() = runTest {
+        val directory: File = mockk()
+        val path = "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures"
+        val expectedFile: File = mockk()
+        every { mockContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES) } returns directory
+        every { directory.path } returns path
+        fakeImageCompressor.fileResults[mockUri to path] = Result.success(expectedFile)
+
+        assertEquals(expectedFile, fileManager.createImageFileFromUri(mockUri))
     }
 
     @Test
-    fun `Doesn't create image if error occurs during reading pictures directory`() = runTest {
+    fun `Uses internal storage if pictures directory is unavailable`() = runTest {
+        val directory: File = mockk()
+        val path = "/data/data/me.khruslan.tierlistmaker/files"
+        val expectedFile: File = mockk()
+        every { mockContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES) } returns null
+        every { mockContext.filesDir } returns directory
+        every { directory.path } returns path
+        fakeImageCompressor.fileResults[mockUri to path] = Result.success(expectedFile)
+
+        assertEquals(expectedFile, fileManager.createImageFileFromUri(mockUri))
+    }
+
+    @Test
+    fun `Uses internal storage if error occurs during reading pictures directory`() = runTest {
+        val directory: File = mockk()
+        val path = "/data/data/me.khruslan.tierlistmaker/files"
+        val expectedFile: File = mockk()
         val exception = IOException("Unable to access external files directory")
         every { mockContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES) } throws exception
+        every { mockContext.filesDir } returns directory
+        every { directory.path } returns path
+        fakeImageCompressor.fileResults[mockUri to path] = Result.success(expectedFile)
 
-        assertNull(fileManager.createImageFileFromUri(mockUri))
+        assertEquals(expectedFile, fileManager.createImageFileFromUri(mockUri))
     }
 
     @Test
@@ -74,17 +99,5 @@ class FileManagerTest {
         fakeImageCompressor.fileResults[mockUri to path] = Result.failure(exception)
 
         assertNull(fileManager.createImageFileFromUri(mockUri))
-    }
-
-    @Test
-    fun `Successfully creates compressed image file`() = runTest {
-        val directory: File = mockk()
-        val path = "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures"
-        val expectedFile: File = mockk()
-        every { mockContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES) } returns directory
-        every { directory.path } returns path
-        fakeImageCompressor.fileResults[mockUri to path] = Result.success(expectedFile)
-
-        assertEquals(expectedFile, fileManager.createImageFileFromUri(mockUri))
     }
 }

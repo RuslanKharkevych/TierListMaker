@@ -104,19 +104,21 @@ class FileManagerImpl @Inject constructor(
     }
 
     /**
-     * Attempts to get external pictures directory.
+     * Returns directory for saving pictures.
      *
-     * @return External pictures directory or null in case of error.
+     * If shared storage is not available, falls back to internal storage.
+     *
+     * @return The absolute path to the directory on the filesystem where pictures can be saved.
      */
     private suspend fun getPicturesDirectory(): File {
         return withContext(dispatcherProvider.io) {
             val result = runCatching {
                 context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
             }
-            result.getOrNull() ?: throw FileManagerException(
-                "Unable to access pictures directory",
-                result.exceptionOrNull()
-            )
+            result.getOrNull() ?: run {
+                Timber.w(result.exceptionOrNull(), "Unable to access external pictures directory")
+                context.filesDir
+            }
         }
     }
 

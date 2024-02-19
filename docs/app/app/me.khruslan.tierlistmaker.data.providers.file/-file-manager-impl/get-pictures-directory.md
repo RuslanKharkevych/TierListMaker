@@ -4,8 +4,10 @@
 
 private suspend fun [getPicturesDirectory](get-pictures-directory.md)(): [File](https://developer.android.com/reference/kotlin/java/io/File.html)
 
-Attempts to get external pictures directory.
+Returns directory for saving pictures.
+
+If shared storage is not available, falls back to internal storage.
 
 #### Return
 
-External pictures directory or null in case of error.
+The absolute path to the directory on the filesystem where pictures can be saved.
