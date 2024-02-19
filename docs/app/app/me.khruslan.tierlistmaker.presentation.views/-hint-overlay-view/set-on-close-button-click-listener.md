@@ -2,7 +2,7 @@
 
 # setOnCloseButtonClickListener
 
-fun [setOnCloseButtonClickListener](set-on-close-button-click-listener.md)(listener: [View.OnClickListener](https://developer.android.com/reference/kotlin/android/view/View.OnClickListener.html))
+fun [setOnCloseButtonClickListener](set-on-close-button-click-listener.md)(onClick: () -&gt; [Unit](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html))
 
 Registers click listener for the &quot;Close&quot; button.
 
@@ -10,4 +10,4 @@ Registers click listener for the &quot;Close&quot; button.
 
 | | |
 |---|---|
-| listener | The listener to set. |
+| onClick | Invoked when &quot;Close&quot; button is clicked. |

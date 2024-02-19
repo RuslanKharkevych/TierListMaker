@@ -6,6 +6,7 @@ import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import me.khruslan.tierlistmaker.databinding.ViewHintOverlayBinding
 import me.khruslan.tierlistmaker.presentation.utils.hints.core.Hint
+import me.khruslan.tierlistmaker.presentation.utils.setOnThrottledClickListener
 
 /**
  * View of the [Hint] overlay.
@@ -54,27 +55,27 @@ class HintOverlayView(context: Context) : ConstraintLayout(context) {
     /**
      * Registers click listener for the "Previous" button.
      *
-     * @param listener The listener to set.
+     * @param onClick Invoked when "Previous" button is clicked.
      */
-    fun setOnPreviousButtonClickListener(listener: OnClickListener) {
-        binding.btnPrevious.setOnClickListener(listener)
+    fun setOnPreviousButtonClickListener(onClick: () -> Unit) {
+        binding.btnPrevious.setOnThrottledClickListener(onClick)
     }
 
     /**
      * Registers click listener for the "Next" button.
      *
-     * @param listener The listener to set.
+     * @param onClick Invoked when "Next" button is clicked.
      */
-    fun setOnNextButtonClickListener(listener: OnClickListener) {
-        binding.btnNext.setOnClickListener(listener)
+    fun setOnNextButtonClickListener(onClick: () -> Unit) {
+        binding.btnNext.setOnThrottledClickListener(onClick)
     }
 
     /**
      * Registers click listener for the "Close" button.
      *
-     * @param listener The listener to set.
+     * @param onClick Invoked when "Close" button is clicked.
      */
-    fun setOnCloseButtonClickListener(listener: OnClickListener) {
-        binding.btnClose.setOnClickListener(listener)
+    fun setOnCloseButtonClickListener(onClick: () -> Unit) {
+        binding.btnClose.setOnThrottledClickListener(onClick)
     }
 }

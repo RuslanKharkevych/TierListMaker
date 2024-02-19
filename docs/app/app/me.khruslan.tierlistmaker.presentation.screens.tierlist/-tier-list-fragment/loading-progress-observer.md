@@ -6,4 +6,4 @@ private val [loadingProgressObserver](loading-progress-observer.md): [Observer](
 
 Observer of the loading progress.
 
-Shows determinate progress of adding new images or indeterminate progress of creating a tier list image file.
+Shows determinate progress of adding new images or indeterminate progress of creating a tier list image file. Disables bottom bar buttons if loading is in progress.

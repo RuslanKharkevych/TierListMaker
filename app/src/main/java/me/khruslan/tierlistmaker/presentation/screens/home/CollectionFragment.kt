@@ -174,7 +174,7 @@ class CollectionFragment : Fragment() {
      * On click calls [FeedbackUtils.reportIssue].
      */
     private fun initReportIssueButton() {
-        binding.groupError.btnReport.setOnClickListener {
+        binding.groupError.btnReport.setOnThrottledClickListener {
             Timber.i("Report the issue button clicked")
             FeedbackUtils.reportIssue(requireActivity())
         }

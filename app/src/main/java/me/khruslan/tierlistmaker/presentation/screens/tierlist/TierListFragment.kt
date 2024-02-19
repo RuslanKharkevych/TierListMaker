@@ -52,6 +52,7 @@ import me.khruslan.tierlistmaker.presentation.utils.drag.TierListDragListener
 import me.khruslan.tierlistmaker.presentation.utils.navigation.TierListResultContract
 import me.khruslan.tierlistmaker.presentation.utils.recyclerview.reorderable.enableReordering
 import me.khruslan.tierlistmaker.presentation.utils.recyclerview.scroll.AutoScrollManager
+import me.khruslan.tierlistmaker.presentation.utils.setOnThrottledClickListener
 import me.khruslan.tierlistmaker.presentation.utils.tierlist.TierListBottomBarBinder
 import me.khruslan.tierlistmaker.presentation.viewmodels.TierListViewModel
 import me.khruslan.tierlistmaker.util.BACKLOG_TIER_POSITION
@@ -290,9 +291,10 @@ class TierListFragment : Fragment() {
      * Observer of the loading progress.
      *
      * Shows determinate progress of adding new images or indeterminate progress of creating a tier
-     * list image file.
+     * list image file. Disables bottom bar buttons if loading is in progress.
      */
     private val loadingProgressObserver = Observer<LoadingProgress?> { progress ->
+        bottomBarBinder.setIntentButtonsEnabled(progress == null)
         when (progress) {
             is LoadingProgress.Determinate -> showDeterminateLoadingProgress(progress)
             LoadingProgress.Indeterminate -> showIndeterminateLoadingProgress()
@@ -445,15 +447,15 @@ class TierListFragment : Fragment() {
                 Timber.i("Add new tier button clicked")
                 viewModel.addNewTier()
             }
-            btnAddNewImage.setOnClickListener {
+            btnAddNewImage.setOnThrottledClickListener {
                 Timber.i("Add new image button clicked")
                 launchImagePicker()
             }
-            btnView.setOnClickListener {
+            btnView.setOnThrottledClickListener {
                 Timber.i("View button clicked")
                 viewModel.viewTierList()
             }
-            btnShare.setOnClickListener {
+            btnShare.setOnThrottledClickListener {
                 Timber.i("Share button clicked")
                 viewModel.shareTierList()
             }

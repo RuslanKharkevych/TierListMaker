@@ -1,5 +1,7 @@
 package me.khruslan.tierlistmaker.presentation.utils.tierlist
 
+import android.os.Handler
+import android.os.Looper
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.databinding.GroupTierListBottomBarBinding
@@ -17,6 +19,19 @@ class TierListBottomBarBinder(
 ) {
 
     /**
+     * Constants for private use.
+     */
+    private companion object Constants {
+
+        /**
+         * The delay in milliseconds, after which "intent" buttons are re-enabled.
+         *
+         * This is necessary to prevent clicks while intent is launching.
+         */
+        private const val INTENT_BUTTONS_ENABLE_DELAY = 2000L
+    }
+
+    /**
      * Resources associated with the root view.
      */
     private val resources
@@ -25,6 +40,7 @@ class TierListBottomBarBinder(
     init {
         invalidateAddNewTierButton()
         invalidateZoomButtons()
+        setIntentButtonsEnabledInternal(true)
     }
 
     /**
@@ -46,5 +62,36 @@ class TierListBottomBarBinder(
             tierList.zoomValue > resources.getInteger(R.integer.min_zoom_value)
         binding.btnZoomOut.isEnabled =
             tierList.zoomValue < resources.getInteger(R.integer.max_zoom_value)
+    }
+
+    /**
+     * Requests enabling or disabling of "intent" buttons.
+     *
+     * "Intent" buttons are those that are supposed to launch intent on click. Note that buttons are
+     * disabled immediately, but enabled only after [INTENT_BUTTONS_ENABLE_DELAY].
+     *
+     * @param enabled Whether buttons should be enabled or disabled.
+     */
+    fun setIntentButtonsEnabled(enabled: Boolean) {
+        if (enabled) {
+            Handler(Looper.getMainLooper()).postDelayed({
+                setIntentButtonsEnabledInternal(true)
+            }, INTENT_BUTTONS_ENABLE_DELAY)
+        } else {
+            setIntentButtonsEnabledInternal(false)
+        }
+    }
+
+    /**
+     * Immediately enables / disables "intent" buttons.
+     *
+     * "Intent" buttons include "Add new image", "Share" and "View" buttons.
+     *
+     * @param enabled Whether buttons should be enabled or disabled.
+     */
+    private fun setIntentButtonsEnabledInternal(enabled: Boolean) {
+        binding.btnAddNewImage.isEnabled = enabled
+        binding.btnShare.isEnabled = enabled
+        binding.btnView.isEnabled = enabled
     }
 }

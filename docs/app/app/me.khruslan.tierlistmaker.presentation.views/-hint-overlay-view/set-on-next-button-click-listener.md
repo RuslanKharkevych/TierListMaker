@@ -2,7 +2,7 @@
 
 # setOnNextButtonClickListener
 
-fun [setOnNextButtonClickListener](set-on-next-button-click-listener.md)(listener: [View.OnClickListener](https://developer.android.com/reference/kotlin/android/view/View.OnClickListener.html))
+fun [setOnNextButtonClickListener](set-on-next-button-click-listener.md)(onClick: () -&gt; [Unit](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html))
 
 Registers click listener for the &quot;Next&quot; button.
 
@@ -10,4 +10,4 @@ Registers click listener for the &quot;Next&quot; button.
 
 | | |
 |---|---|
-| listener | The listener to set. |
+| onClick | Invoked when &quot;Next&quot; button is clicked. |

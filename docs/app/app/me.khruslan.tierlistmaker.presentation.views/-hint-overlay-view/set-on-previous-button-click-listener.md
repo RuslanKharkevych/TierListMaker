@@ -2,7 +2,7 @@
 
 # setOnPreviousButtonClickListener
 
-fun [setOnPreviousButtonClickListener](set-on-previous-button-click-listener.md)(listener: [View.OnClickListener](https://developer.android.com/reference/kotlin/android/view/View.OnClickListener.html))
+fun [setOnPreviousButtonClickListener](set-on-previous-button-click-listener.md)(onClick: () -&gt; [Unit](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html))
 
 Registers click listener for the &quot;Previous&quot; button.
 
@@ -10,4 +10,4 @@ Registers click listener for the &quot;Previous&quot; button.
 
 | | |
 |---|---|
-| listener | The listener to set. |
+| onClick | Invoked when &quot;Previous&quot; button is clicked. |
