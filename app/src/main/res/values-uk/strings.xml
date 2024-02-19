@@ -16,11 +16,11 @@
     <string name="app_language">uk</string>
     <string name="btn_yes">Так</string>
     <string name="btn_no">Ні</string>
-    <string name="remove_tier_list_confirmation_title">Ви впевнені, що бажаєте видалити список \"%s\"?</string>
+    <string name="remove_tier_list_confirmation_title">Ви впевнені, що бажаєте видалити список \“%s\”?</string>
     <string name="menu_item_rename_tier_list_title">Перейменувати список</string>
     <string name="menu_item_collection_title">Моя колекція</string>
     <string name="menu_item_settings_title">Налаштування</string>
-    <string name="menu_item_feedback_title">Звототній зв\'язок</string>
+    <string name="menu_item_feedback_title">Звототній зв\’язок</string>
     <string name="menu_item_about_title">Про програму</string>
     <string name="btn_change_theme_desc">Змінити тему</string>
     <string name="btn_view_desc">Переглянути</string>
@@ -46,10 +46,10 @@
     <string name="bug_report_info_os">ОС: Android %s</string>
     <string name="send_us_email_alert_title">Будь ласка, надішліть електронний лист на адресу %s</string>
     <string name="btn_copy_email">Скопіювати email</string>
-    <string name="toast_msg_text_copied">Скопійовано \"%s\"</string>
-    <string name="send_feedback_email_subject">Tier List Maker: Зворотній зв\'язок</string>
-    <string name="feedback_appbar_title">Звототній зв\'язок</string>
-    <string name="pref_contact_us_title">Зв\'язатися з нами</string>
+    <string name="toast_msg_text_copied">Скопійовано \“%s\”</string>
+    <string name="send_feedback_email_subject">Tier List Maker: Зворотній зв\’язок</string>
+    <string name="feedback_appbar_title">Звототній зв\’язок</string>
+    <string name="pref_contact_us_title">Зв\’язатися з нами</string>
     <string name="pref_contact_us_summary">Розкажіть про свій досвід, запропонуйте нові функції та допоможіть нам покращитися</string>
     <string name="pref_report_bug_title">Повідомити про помилку</string>
     <string name="pref_report_bug_summary">Повідомте про технічні неполадки, збої чи будь-які інші проблеми, з якими ви зіткнулися</string>
@@ -82,7 +82,7 @@
     <string name="btn_close_desc">Закрити</string>
     <string name="btn_previous_desc">Попередній</string>
     <string name="btn_next_desc">Наступний</string>
-    <string name="hint_add_new_tier_list">Натисніть на клавішу \"+\" в нижньому правому кутку екрану, щоб додати новий список</string>
+    <string name="hint_add_new_tier_list">Натисніть на клавішу \“+\” в нижньому правому кутку екрану, щоб додати новий список</string>
     <string name="hint_remove_tier_list">Проведіть пальцем зліва направо, щоб видалити список</string>
     <string name="hint_reorder_tier_lists">Натисніть і утримуйте список, потім перемістіть його вверх або вних, щоб змінити порядок</string>
 </resources>

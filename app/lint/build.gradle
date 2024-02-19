@@ -19,5 +19,6 @@ dependencies {
 }
 
 lint {
+    checkAllWarnings true
     warningsAsErrors true
 }

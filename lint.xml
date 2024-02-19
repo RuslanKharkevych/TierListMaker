@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
+    <issue id="ConvertToWebp" severity="ignore" />
+    <issue id="DuplicateStrings" severity="ignore" />
     <issue id="NotifyDataSetChanged" severity="ignore" />
+    <issue id="SelectableText" severity="ignore" />
+    <issue id="SyntheticAccessor" severity="ignore" />
+    <issue id="UnusedIds" severity="ignore" />
     <issue id="VectorPath" severity="ignore" />
 </lint>

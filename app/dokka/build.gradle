@@ -26,5 +26,6 @@ publishing {
 }
 
 lint {
+    checkAllWarnings true
     warningsAsErrors true
 }

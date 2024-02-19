@@ -16,7 +16,7 @@
     <string name="app_language">ru</string>
     <string name="btn_yes">Да</string>
     <string name="btn_no">Нет</string>
-    <string name="remove_tier_list_confirmation_title">Вы уверены, что хотите удалить список уровней \"%s\"?</string>
+    <string name="remove_tier_list_confirmation_title">Вы уверены, что хотите удалить список уровней \“%s\”?</string>
     <string name="menu_item_rename_tier_list_title">Переименовать список</string>
     <string name="menu_item_collection_title">Моя коллекция</string>
     <string name="menu_item_settings_title">Настройки</string>
@@ -46,7 +46,7 @@
     <string name="bug_report_info_os">ОС: Android %s</string>
     <string name="send_us_email_alert_title">Пожалуйста, отправьте письмо на %s</string>
     <string name="btn_copy_email">Скопировать email</string>
-    <string name="toast_msg_text_copied">Скопировано \"%s\"</string>
+    <string name="toast_msg_text_copied">Скопировано \“%s\”</string>
     <string name="send_feedback_email_subject">Tier List Maker: Обратная связь</string>
     <string name="feedback_appbar_title">Обратная связь</string>
     <string name="pref_contact_us_title">Связаться с нами</string>
@@ -82,7 +82,7 @@
     <string name="btn_close_desc">Закрыть</string>
     <string name="btn_previous_desc">Предыдущий</string>
     <string name="btn_next_desc">Следующий</string>
-    <string name="hint_add_new_tier_list">Чтобы добавить новый список, нажмите на кнопку \"+\" в правом нижнем углу экрана</string>
+    <string name="hint_add_new_tier_list">Чтобы добавить новый список, нажмите на кнопку \“+\” в правом нижнем углу экрана</string>
     <string name="hint_remove_tier_list">Проведите пальцем слева направо, чтобы удалить список</string>
     <string name="hint_reorder_tier_lists">Нажмите и удерживайте список, затем переместите его вверх или вниз, чтобы изменить порядок</string>
 </resources>
