@@ -138,7 +138,7 @@ class TierListFragment : Fragment() {
      * 1. On drag started - dismisses [imageRemovedSnackbar] and starts a new drag.
      * 2. On drag location changed - updates drag target and drag location in [autoScrollManager].
      * 3. On drop - drops image and stops auto-scrolling.
-     * 4. On drag ended - restores released image and stops auto-scrolling.
+     * 4. On drag ended - removes drag target, restores released image and stops auto-scrolling.
      */
     private val dragListener: TierListDragListener = object : TierListDragListener() {
         override fun onDragStarted(dragData: ImageDragData) {
@@ -161,6 +161,7 @@ class TierListFragment : Fragment() {
 
         override fun onDragEnded() {
             Timber.i("Invoked onDragEnded event")
+            viewModel.updateDragTarget(null)
             viewModel.restoreReleasedImage()
             autoScrollManager.stopScrolling()
         }
