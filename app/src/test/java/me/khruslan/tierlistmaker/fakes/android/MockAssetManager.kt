@@ -20,6 +20,8 @@ object MockAssetManager {
         "tier_list_images/sports" to arrayOf(),
         "tier_list_images/flowers" to arrayOf("rose.jpeg", "sunflower.jpeg"),
         "tier_list_images/fast_food" to arrayOf("hamburger.jpeg", "french_fries.jpeg"),
+        "tier_list_images/musical_instruments" to arrayOf("guitar.jpeg", "piano.jpeg"),
+        "tier_list_images/school_subjects" to arrayOf("math.jpeg"),
         "tier_list_images/zodiac_signs" to arrayOf("gemini.jpeg", "pisces.jpeg")
     )
 
