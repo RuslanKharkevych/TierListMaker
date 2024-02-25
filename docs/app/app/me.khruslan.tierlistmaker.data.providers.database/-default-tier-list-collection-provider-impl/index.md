@@ -2,7 +2,7 @@
 
 # DefaultTierListCollectionProviderImpl
 
-class [DefaultTierListCollectionProviderImpl](index.md)@Injectconstructor(val context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html), val preferencesHelper: [PreferencesHelper](../-preferences-helper/index.md), val performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md)) : [DefaultTierListCollectionProvider](../-default-tier-list-collection-provider/index.md)
+class [DefaultTierListCollectionProviderImpl](index.md) @Inject constructor(val context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html), val preferencesHelper: [PreferencesHelper](../-preferences-helper/index.md), val performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md)) : [DefaultTierListCollectionProvider](../-default-tier-list-collection-provider/index.md)
 
 [DefaultTierListCollectionProvider](../-default-tier-list-collection-provider/index.md) implementation.
 
@@ -12,7 +12,7 @@ Images for the collection are read from assets. The performance of the operation
 
 | | |
 |---|---|
-| [DefaultTierListCollectionProviderImpl](-default-tier-list-collection-provider-impl.md) | @Inject<br>constructor(context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html), preferencesHelper: [PreferencesHelper](../-preferences-helper/index.md), performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md))<br>Creates a new provider instance. |
+| [DefaultTierListCollectionProviderImpl](-default-tier-list-collection-provider-impl.md) | @Inject <br>constructor(context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html), preferencesHelper: [PreferencesHelper](../-preferences-helper/index.md), performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md))<br>Creates a new provider instance. |
 
 ## Types
 

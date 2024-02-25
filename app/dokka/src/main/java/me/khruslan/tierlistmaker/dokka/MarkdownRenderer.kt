@@ -11,7 +11,11 @@ import org.jetbrains.dokka.pages.ContentGroup
 import org.jetbrains.dokka.pages.ContentList
 import org.jetbrains.dokka.pages.ContentPage
 import org.jetbrains.dokka.pages.ContentTable
+import org.jetbrains.dokka.pages.ContentText
+import org.jetbrains.dokka.pages.HtmlContent
 import org.jetbrains.dokka.pages.PlatformHintedContent
+import org.jetbrains.dokka.pages.Style
+import org.jetbrains.dokka.pages.TextStyle
 import org.jetbrains.dokka.plugability.DokkaContext
 
 /**
@@ -186,6 +190,7 @@ class MarkdownRenderer(context: DokkaContext) : CommonmarkRenderer(context) {
         sourceSetRestriction: Set<DisplaySourceSet>?
     ) {
         val location = locationProvider.resolve(node.address, node.sourceSets, pageContext)
+
         when {
             location == null -> {
                 val isPartial = context.configuration.delayTemplateSubstitution
@@ -197,15 +202,94 @@ class MarkdownRenderer(context: DokkaContext) : CommonmarkRenderer(context) {
                     buildText(node.children, pageContext, sourceSetRestriction)
                 }
             }
+
             location.contains("generated") -> {
                 buildText(node.children, pageContext, sourceSetRestriction)
             }
+
             else -> {
                 buildLink(location) {
                     buildText(node.children, pageContext, sourceSetRestriction)
                 }
             }
         }
+    }
+
+    /**
+     * Builds text, making sure @Inject annotatoins are surrounded with leading and trailing spacer.
+     *
+     * Fixes the respective issue in [CommonmarkRenderer].
+     *
+     * @param textNode A text node to render.
+     * @receiver Current string builder.
+     */
+    override fun StringBuilder.buildText(textNode: ContentText) {
+        if (textNode.text == "@" && endsWith(")")) {
+            append(" ")
+            buildTextWithDecorators(textNode)
+        } else if (textNode.text == "Inject") {
+            buildTextWithDecorators(textNode)
+            append(" ")
+        } else {
+            buildTextWithDecorators(textNode)
+        }
+    }
+
+    /**
+     * Renders text with decorators.
+     *
+     * An exact copy of [CommonmarkRenderer.buildText]. Can't call super because of Kotlin language
+     * limitation (see [KT-11488](https://youtrack.jetbrains.com/issue/KT-11488)).
+     *
+     * @receiver Current string builder.
+     * @param textNode Text node to render.
+     */
+    private fun StringBuilder.buildTextWithDecorators(textNode: ContentText) {
+        if (textNode.extra[HtmlContent] != null) {
+            append(textNode.text)
+        } else if (textNode.text.isNotBlank()) {
+            val decorators = decorators(textNode.style)
+            append(textNode.text.takeWhile { it == ' ' })
+            append(decorators)
+            append(textNode.text.trim().htmlEscape())
+            append(decorators.reversed())
+            append(textNode.text.takeLastWhile { it == ' ' })
+        }
+    }
+
+    /**
+     * Renders text style decorators.
+     *
+     * Supported styles: bold, italic, strong and strikethrough.
+     *
+     * @param styles Text styles to render.
+     * @return Rendered decorators.
+     */
+    private fun decorators(styles: Set<Style>): String {
+        return buildString {
+            styles.forEach { style ->
+                when (style) {
+                    TextStyle.Bold -> append("**")
+                    TextStyle.Italic -> append("*")
+                    TextStyle.Strong -> append("**")
+                    TextStyle.Strikethrough -> append("~~")
+                    else -> Unit
+                }
+            }
+        }
+    }
+
+    /**
+     * Converts special characters to their corresponding HTML entities.
+     *
+     * @receiver Input string.
+     * @return Output string.
+     */
+    private fun String.htmlEscape(): String {
+        return replace("&", "&amp;")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
+            .replace("\"", "&quot;")
     }
 
     /**

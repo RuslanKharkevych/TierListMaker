@@ -2,7 +2,7 @@
 
 # AnalyticsServiceImpl
 
-class [AnalyticsServiceImpl](index.md)@Injectconstructor : [AnalyticsService](../-analytics-service/index.md)
+class [AnalyticsServiceImpl](index.md) @Inject constructor : [AnalyticsService](../-analytics-service/index.md)
 
 [AnalyticsService](../-analytics-service/index.md) implementation.
 
@@ -12,7 +12,7 @@ Logs analytics events to Firebase.
 
 | | |
 |---|---|
-| [AnalyticsServiceImpl](-analytics-service-impl.md) | @Inject<br>constructor()<br>Creates a new analytics service. |
+| [AnalyticsServiceImpl](-analytics-service-impl.md) | @Inject <br>constructor()<br>Creates a new analytics service. |
 
 ## Functions
 

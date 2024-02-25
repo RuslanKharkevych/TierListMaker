@@ -2,7 +2,7 @@
 
 # DispatcherProviderImpl
 
-class [DispatcherProviderImpl](index.md)@Injectconstructor : [DispatcherProvider](../-dispatcher-provider/index.md)
+class [DispatcherProviderImpl](index.md) @Inject constructor : [DispatcherProvider](../-dispatcher-provider/index.md)
 
 [DispatcherProvider](../-dispatcher-provider/index.md) implementation.
 
@@ -12,7 +12,7 @@ Can be injected in production code.
 
 | | |
 |---|---|
-| [DispatcherProviderImpl](-dispatcher-provider-impl.md) | @Inject<br>constructor()<br>Creates a new dispatcher provider instance. |
+| [DispatcherProviderImpl](-dispatcher-provider-impl.md) | @Inject <br>constructor()<br>Creates a new dispatcher provider instance. |
 
 ## Properties
 

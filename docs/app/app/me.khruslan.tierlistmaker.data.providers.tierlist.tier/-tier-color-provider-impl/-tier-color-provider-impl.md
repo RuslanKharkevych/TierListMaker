@@ -2,7 +2,7 @@
 
 # TierColorProviderImpl
 
-@Inject
+@Inject 
 
 constructor()
 

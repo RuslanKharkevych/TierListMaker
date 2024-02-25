@@ -2,7 +2,7 @@
 
 # themeManager
 
-@Inject
+@Inject 
 
 lateinit var [themeManager](theme-manager.md): [ThemeManager](../../me.khruslan.tierlistmaker.presentation.utils.theme/-theme-manager/index.md)
 

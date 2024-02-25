@@ -2,7 +2,7 @@
 
 # AnalyticsServiceImpl
 
-@Inject
+@Inject 
 
 constructor()
 

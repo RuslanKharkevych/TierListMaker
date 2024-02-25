@@ -2,7 +2,7 @@
 
 # TierListProcessorImpl
 
-@Inject
+@Inject 
 
 constructor()
 

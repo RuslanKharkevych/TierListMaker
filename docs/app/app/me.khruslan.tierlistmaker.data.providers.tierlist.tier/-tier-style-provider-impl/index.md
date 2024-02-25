@@ -2,7 +2,7 @@
 
 # TierStyleProviderImpl
 
-class [TierStyleProviderImpl](index.md)@Injectconstructor(val colorProvider: [TierColorProvider](../-tier-color-provider/index.md), val nameProvider: [TierNameProvider](../-tier-name-provider/index.md), val dispatchersProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md)) : [TierStyleProvider](../-tier-style-provider/index.md)
+class [TierStyleProviderImpl](index.md) @Inject constructor(val colorProvider: [TierColorProvider](../-tier-color-provider/index.md), val nameProvider: [TierNameProvider](../-tier-name-provider/index.md), val dispatchersProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md)) : [TierStyleProvider](../-tier-style-provider/index.md)
 
 [TierStyleProvider](../-tier-style-provider/index.md) implementation.
 
@@ -12,7 +12,7 @@ Moves tier styles generation to the background thread.
 
 | | |
 |---|---|
-| [TierStyleProviderImpl](-tier-style-provider-impl.md) | @Inject<br>constructor(colorProvider: [TierColorProvider](../-tier-color-provider/index.md), nameProvider: [TierNameProvider](../-tier-name-provider/index.md), dispatchersProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md))<br>Creates a new tier style provider instance. |
+| [TierStyleProviderImpl](-tier-style-provider-impl.md) | @Inject <br>constructor(colorProvider: [TierColorProvider](../-tier-color-provider/index.md), nameProvider: [TierNameProvider](../-tier-name-provider/index.md), dispatchersProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md))<br>Creates a new tier style provider instance. |
 
 ## Properties
 

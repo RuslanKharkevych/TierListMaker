@@ -2,7 +2,7 @@
 
 # DatabaseHelperImpl
 
-class [DatabaseHelperImpl](index.md)@Injectconstructor(val dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), val defaultTierListCollectionProvider: [DefaultTierListCollectionProvider](../-default-tier-list-collection-provider/index.md), val performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md)) : [DatabaseHelper](../-database-helper/index.md)
+class [DatabaseHelperImpl](index.md) @Inject constructor(val dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), val defaultTierListCollectionProvider: [DefaultTierListCollectionProvider](../-default-tier-list-collection-provider/index.md), val performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md)) : [DatabaseHelper](../-database-helper/index.md)
 
 [DatabaseHelper](../-database-helper/index.md) implementation.
 
@@ -12,7 +12,7 @@ Implemented with [Paper](https://github.com/pilgr/Paper) database. On the first 
 
 | | |
 |---|---|
-| [DatabaseHelperImpl](-database-helper-impl.md) | @Inject<br>constructor(dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), defaultTierListCollectionProvider: [DefaultTierListCollectionProvider](../-default-tier-list-collection-provider/index.md), performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md))<br>Creates a new database helper instance. |
+| [DatabaseHelperImpl](-database-helper-impl.md) | @Inject <br>constructor(dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), defaultTierListCollectionProvider: [DefaultTierListCollectionProvider](../-default-tier-list-collection-provider/index.md), performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md))<br>Creates a new database helper instance. |
 
 ## Types
 

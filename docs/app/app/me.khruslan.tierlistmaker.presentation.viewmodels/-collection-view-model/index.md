@@ -2,7 +2,7 @@
 
 # CollectionViewModel
 
-class [CollectionViewModel](index.md)@Injectconstructor(application: [Application](https://developer.android.com/reference/kotlin/android/app/Application.html), val databaseHelper: [DatabaseHelper](../../me.khruslan.tierlistmaker.data.providers.database/-database-helper/index.md), val dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), val tierListCreator: [TierListCreator](../../me.khruslan.tierlistmaker.data.providers.tierlist/-tier-list-creator/index.md)) : [AndroidViewModel](https://developer.android.com/reference/kotlin/androidx/lifecycle/AndroidViewModel.html)
+class [CollectionViewModel](index.md) @Inject constructor(application: [Application](https://developer.android.com/reference/kotlin/android/app/Application.html), val databaseHelper: [DatabaseHelper](../../me.khruslan.tierlistmaker.data.providers.database/-database-helper/index.md), val dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), val tierListCreator: [TierListCreator](../../me.khruslan.tierlistmaker.data.providers.tierlist/-tier-list-creator/index.md)) : [AndroidViewModel](https://developer.android.com/reference/kotlin/androidx/lifecycle/AndroidViewModel.html)
 
 View model for [CollectionFragment](../../me.khruslan.tierlistmaker.presentation.screens.home/-collection-fragment/index.md).
 
@@ -12,7 +12,7 @@ Manages tier list previews.
 
 | | |
 |---|---|
-| [CollectionViewModel](-collection-view-model.md) | @Inject<br>constructor(application: [Application](https://developer.android.com/reference/kotlin/android/app/Application.html), databaseHelper: [DatabaseHelper](../../me.khruslan.tierlistmaker.data.providers.database/-database-helper/index.md), dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), tierListCreator: [TierListCreator](../../me.khruslan.tierlistmaker.data.providers.tierlist/-tier-list-creator/index.md))<br>Creates view model with all dependencies. |
+| [CollectionViewModel](-collection-view-model.md) | @Inject <br>constructor(application: [Application](https://developer.android.com/reference/kotlin/android/app/Application.html), databaseHelper: [DatabaseHelper](../../me.khruslan.tierlistmaker.data.providers.database/-database-helper/index.md), dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), tierListCreator: [TierListCreator](../../me.khruslan.tierlistmaker.data.providers.tierlist/-tier-list-creator/index.md))<br>Creates view model with all dependencies. |
 
 ## Properties
 

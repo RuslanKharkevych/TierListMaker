@@ -2,7 +2,7 @@
 
 # TierListCreatorImpl
 
-@Inject
+@Inject 
 
 constructor(dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), preferencesHelper: [PreferencesHelper](../../me.khruslan.tierlistmaker.data.providers.database/-preferences-helper/index.md))
 

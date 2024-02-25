@@ -2,7 +2,7 @@
 
 # DefaultTierListCollectionProviderImpl
 
-@Inject
+@Inject 
 
 constructor(context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html), preferencesHelper: [PreferencesHelper](../-preferences-helper/index.md), performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md))
 

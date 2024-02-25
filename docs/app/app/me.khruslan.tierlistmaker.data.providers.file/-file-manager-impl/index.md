@@ -2,7 +2,7 @@
 
 # FileManagerImpl
 
-class [FileManagerImpl](index.md)@Injectconstructor(val context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html), val imageCompressor: [ImageCompressor](../-image-compressor/index.md), val dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), val performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md)) : [FileManager](../-file-manager/index.md)
+class [FileManagerImpl](index.md) @Inject constructor(val context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html), val imageCompressor: [ImageCompressor](../-image-compressor/index.md), val dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), val performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md)) : [FileManager](../-file-manager/index.md)
 
 [FileManager](../-file-manager/index.md) implementation.
 
@@ -12,7 +12,7 @@ Moves all operations to the background thread. Collects performance traces. No m
 
 | | |
 |---|---|
-| [FileManagerImpl](-file-manager-impl.md) | @Inject<br>constructor(context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html), imageCompressor: [ImageCompressor](../-image-compressor/index.md), dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md))<br>Creates a new file manager instance. |
+| [FileManagerImpl](-file-manager-impl.md) | @Inject <br>constructor(context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html), imageCompressor: [ImageCompressor](../-image-compressor/index.md), dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md))<br>Creates a new file manager instance. |
 
 ## Types
 

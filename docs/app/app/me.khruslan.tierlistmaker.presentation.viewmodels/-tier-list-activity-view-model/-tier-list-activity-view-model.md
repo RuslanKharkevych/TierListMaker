@@ -2,7 +2,7 @@
 
 # TierListActivityViewModel
 
-@Inject
+@Inject 
 
 constructor(savedStateHandle: [SavedStateHandle](https://developer.android.com/reference/kotlin/androidx/lifecycle/SavedStateHandle.html), databaseHelper: [DatabaseHelper](../../me.khruslan.tierlistmaker.data.providers.database/-database-helper/index.md))
 

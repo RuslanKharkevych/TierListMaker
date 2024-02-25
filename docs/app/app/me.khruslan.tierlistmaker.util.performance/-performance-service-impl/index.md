@@ -2,7 +2,7 @@
 
 # PerformanceServiceImpl
 
-class [PerformanceServiceImpl](index.md)@Injectconstructor : [PerformanceService](../-performance-service/index.md)
+class [PerformanceServiceImpl](index.md) @Inject constructor : [PerformanceService](../-performance-service/index.md)
 
 [PerformanceService](../-performance-service/index.md) implementation.
 
@@ -12,7 +12,7 @@ As a trace implementation [PerformanceTraceImpl](../-performance-trace-impl/inde
 
 | | |
 |---|---|
-| [PerformanceServiceImpl](-performance-service-impl.md) | @Inject<br>constructor()<br>Creates a new performance service instance. |
+| [PerformanceServiceImpl](-performance-service-impl.md) | @Inject <br>constructor()<br>Creates a new performance service instance. |
 
 ## Functions
 

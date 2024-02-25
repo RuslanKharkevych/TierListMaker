@@ -2,7 +2,7 @@
 
 # DragPocketImpl
 
-class [DragPocketImpl](index.md)@Injectconstructor : [DragPocket](../-drag-pocket/index.md)
+class [DragPocketImpl](index.md) @Inject constructor : [DragPocket](../-drag-pocket/index.md)
 
 [DragPocket](../-drag-pocket/index.md) implementations.
 
@@ -12,7 +12,7 @@ Catches and logs unexpected pocket states.
 
 | | |
 |---|---|
-| [DragPocketImpl](-drag-pocket-impl.md) | @Inject<br>constructor()<br>Creates a new drag pocket instance. |
+| [DragPocketImpl](-drag-pocket-impl.md) | @Inject <br>constructor()<br>Creates a new drag pocket instance. |
 
 ## Types
 

@@ -2,7 +2,7 @@
 
 # TierListActivityViewModel
 
-class [TierListActivityViewModel](index.md)@Injectconstructor(savedStateHandle: [SavedStateHandle](https://developer.android.com/reference/kotlin/androidx/lifecycle/SavedStateHandle.html), val databaseHelper: [DatabaseHelper](../../me.khruslan.tierlistmaker.data.providers.database/-database-helper/index.md)) : [ViewModel](https://developer.android.com/reference/kotlin/androidx/lifecycle/ViewModel.html)
+class [TierListActivityViewModel](index.md) @Inject constructor(savedStateHandle: [SavedStateHandle](https://developer.android.com/reference/kotlin/androidx/lifecycle/SavedStateHandle.html), val databaseHelper: [DatabaseHelper](../../me.khruslan.tierlistmaker.data.providers.database/-database-helper/index.md)) : [ViewModel](https://developer.android.com/reference/kotlin/androidx/lifecycle/ViewModel.html)
 
 View model for [TierListActivity](../../me.khruslan.tierlistmaker.presentation.screens.tierlist/-tier-list-activity/index.md).
 
@@ -18,7 +18,7 @@ Obtains tier list from the navigation arguments and saves it in the database on 
 
 | | |
 |---|---|
-| [TierListActivityViewModel](-tier-list-activity-view-model.md) | @Inject<br>constructor(savedStateHandle: [SavedStateHandle](https://developer.android.com/reference/kotlin/androidx/lifecycle/SavedStateHandle.html), databaseHelper: [DatabaseHelper](../../me.khruslan.tierlistmaker.data.providers.database/-database-helper/index.md))<br>Creates view model with all dependencies. |
+| [TierListActivityViewModel](-tier-list-activity-view-model.md) | @Inject <br>constructor(savedStateHandle: [SavedStateHandle](https://developer.android.com/reference/kotlin/androidx/lifecycle/SavedStateHandle.html), databaseHelper: [DatabaseHelper](../../me.khruslan.tierlistmaker.data.providers.database/-database-helper/index.md))<br>Creates view model with all dependencies. |
 
 ## Types
 

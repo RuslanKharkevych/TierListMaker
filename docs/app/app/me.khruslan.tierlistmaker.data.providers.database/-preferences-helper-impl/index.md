@@ -2,7 +2,7 @@
 
 # PreferencesHelperImpl
 
-class [PreferencesHelperImpl](index.md)@Injectconstructor(val context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html)) : [PreferencesHelper](../-preferences-helper/index.md)
+class [PreferencesHelperImpl](index.md) @Inject constructor(val context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html)) : [PreferencesHelper](../-preferences-helper/index.md)
 
 [PreferencesHelper](../-preferences-helper/index.md) implementation.
 
@@ -12,7 +12,7 @@ Implemented with [SharedPreferences](https://developer.android.com/reference/kot
 
 | | |
 |---|---|
-| [PreferencesHelperImpl](-preferences-helper-impl.md) | @Inject<br>constructor(context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html))<br>Creates a new preferences helper instance. |
+| [PreferencesHelperImpl](-preferences-helper-impl.md) | @Inject <br>constructor(context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html))<br>Creates a new preferences helper instance. |
 
 ## Types
 

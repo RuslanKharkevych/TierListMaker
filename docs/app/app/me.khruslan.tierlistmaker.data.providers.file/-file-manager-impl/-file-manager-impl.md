@@ -2,7 +2,7 @@
 
 # FileManagerImpl
 
-@Inject
+@Inject 
 
 constructor(context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html), imageCompressor: [ImageCompressor](../-image-compressor/index.md), dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md))
 

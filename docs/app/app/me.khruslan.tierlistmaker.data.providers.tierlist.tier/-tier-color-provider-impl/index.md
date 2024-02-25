@@ -2,7 +2,7 @@
 
 # TierColorProviderImpl
 
-class [TierColorProviderImpl](index.md)@Injectconstructor : [TierColorProvider](../-tier-color-provider/index.md)
+class [TierColorProviderImpl](index.md) @Inject constructor : [TierColorProvider](../-tier-color-provider/index.md)
 
 [TierColorProvider](../-tier-color-provider/index.md) implementation.
 
@@ -12,7 +12,7 @@ Uses HSV color model for calculations.
 
 | | |
 |---|---|
-| [TierColorProviderImpl](-tier-color-provider-impl.md) | @Inject<br>constructor()<br>Creates a new tier color provider instance. |
+| [TierColorProviderImpl](-tier-color-provider-impl.md) | @Inject <br>constructor()<br>Creates a new tier color provider instance. |
 
 ## Types
 

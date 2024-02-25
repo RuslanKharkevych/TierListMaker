@@ -2,7 +2,7 @@
 
 # HomeActivityViewModel
 
-@Inject
+@Inject 
 
 constructor(themeManager: [ThemeManager](../../me.khruslan.tierlistmaker.presentation.utils.theme/-theme-manager/index.md))
 
