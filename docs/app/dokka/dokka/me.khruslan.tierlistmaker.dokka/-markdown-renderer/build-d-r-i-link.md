@@ -6,7 +6,7 @@ open override fun [StringBuilder](https://kotlinlang.org/api/latest/jvm/stdlib/k
 
 Builds DRI link, excluding generated code.
 
-View binding classes are generated and should not be documented.
+View binding and safe args classes are generated and should not be documented.
 
 #### Receiver
 

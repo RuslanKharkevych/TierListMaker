@@ -177,7 +177,7 @@ class MarkdownRenderer(context: DokkaContext) : CommonmarkRenderer(context) {
     /**
      * Builds DRI link, excluding generated code.
      *
-     * View binding classes are generated and should not be documented.
+     * View binding and safe args classes are generated and should not be documented.
      *
      * @param node DRI link node to render.
      * @param pageContext Context of the page.
@@ -190,8 +190,14 @@ class MarkdownRenderer(context: DokkaContext) : CommonmarkRenderer(context) {
         sourceSetRestriction: Set<DisplaySourceSet>?
     ) {
         val location = locationProvider.resolve(node.address, node.sourceSets, pageContext)
+        val fromGeneratedLocation = location?.contains("generated") == true
+        val isSafeArgsClass = node.address.classNames?.endsWith("FragmentArgs") == true
 
         when {
+            fromGeneratedLocation || isSafeArgsClass -> {
+                buildText(node.children, pageContext, sourceSetRestriction)
+            }
+
             location == null -> {
                 val isPartial = context.configuration.delayTemplateSubstitution
                 if (isPartial) {
@@ -201,10 +207,6 @@ class MarkdownRenderer(context: DokkaContext) : CommonmarkRenderer(context) {
                 } else {
                     buildText(node.children, pageContext, sourceSetRestriction)
                 }
-            }
-
-            location.contains("generated") -> {
-                buildText(node.children, pageContext, sourceSetRestriction)
             }
 
             else -> {

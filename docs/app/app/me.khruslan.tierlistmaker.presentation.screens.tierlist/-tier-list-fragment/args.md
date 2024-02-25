@@ -2,7 +2,7 @@
 
 # args
 
-private val [args](args.md): [TierListFragmentArgs](../../../../app/me.khruslan.tierlistmaker.presentation.screens.tierlist/-tier-list-fragment-args/index.md)
+private val [args](args.md): TierListFragmentArgs
 
 Navigation arguments of the fragment.
 

@@ -19,7 +19,7 @@ It is a start destination for the tier list navigation graph.
 | Name | Summary |
 |---|---|
 | [_binding](_binding.md) | private var [_binding](_binding.md): FragmentTierListBinding?<br>Nullable reference of [binding](binding.md). |
-| [args](args.md) | private val [args](args.md): [TierListFragmentArgs](../../../../app/me.khruslan.tierlistmaker.presentation.screens.tierlist/-tier-list-fragment-args/index.md)<br>Navigation arguments of the fragment. |
+| [args](args.md) | private val [args](args.md): TierListFragmentArgs<br>Navigation arguments of the fragment. |
 | [autoScrollManager](auto-scroll-manager.md) | private lateinit var [autoScrollManager](auto-scroll-manager.md): [AutoScrollManager](../../me.khruslan.tierlistmaker.presentation.utils.recyclerview.scroll/-auto-scroll-manager/index.md)<br>Manager that performs automatic scrolling withing the tiers recycler view. |
 | [backlogAdapter](backlog-adapter.md) | private lateinit var [backlogAdapter](backlog-adapter.md): [TierListImageAdapter](../../me.khruslan.tierlistmaker.presentation.adapters/-tier-list-image-adapter/index.md)<br>Recycler view adapter for the backlog images. |
 | [binding](binding.md) | private val [binding](binding.md): FragmentTierListBinding<br>View binding of the fragment. |
