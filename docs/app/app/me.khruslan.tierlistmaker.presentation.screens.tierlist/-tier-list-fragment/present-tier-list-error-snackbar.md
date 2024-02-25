@@ -2,7 +2,7 @@
 
 # presentTierListErrorSnackbar
 
-private fun [presentTierListErrorSnackbar](present-tier-list-error-snackbar.md)(@[StringRes](https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html)errorMessageResId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html))
+private fun [presentTierListErrorSnackbar](present-tier-list-error-snackbar.md)(@[StringRes ](https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html)errorMessageResId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html))
 
 Presents Snackbar to inform user that an error has occurred.
 

@@ -396,6 +396,7 @@ $dokka.location:me.khruslan.tierlistmaker.dokka/MarkdownRenderer/documentables/o
 $dokka.location:me.khruslan.tierlistmaker.dokka/MarkdownRenderer/getInstanceAndSourceSets/kotlin.collections.List[kotlin.Pair[org.jetbrains.dokka.pages.ContentDivergentInstance,org.jetbrains.dokka.model.DisplaySourceSet]]#/PointingToDeclaration/dokka/dokka/me.khruslan.tierlistmaker.dokka/-markdown-renderer/get-instance-and-source-sets.md
 $dokka.location:me.khruslan.tierlistmaker.dokka/MarkdownRenderer/htmlEscape/kotlin.String#/PointingToDeclaration/dokka/dokka/me.khruslan.tierlistmaker.dokka/-markdown-renderer/html-escape.md
 $dokka.location:me.khruslan.tierlistmaker.dokka/MarkdownRenderer/insertBreakBetweenOverloads/kotlin.String#/PointingToDeclaration/dokka/dokka/me.khruslan.tierlistmaker.dokka/-markdown-renderer/insert-break-between-overloads.md
+$dokka.location:me.khruslan.tierlistmaker.dokka/MarkdownRenderer/isAnnotation/org.jetbrains.dokka.pages.ContentText#/PointingToDeclaration/dokka/dokka/me.khruslan.tierlistmaker.dokka/-markdown-renderer/is-annotation.md
 $dokka.location:me.khruslan.tierlistmaker.injection////PointingToDeclaration/app/app/me.khruslan.tierlistmaker.injection/index.md
 $dokka.location:me.khruslan.tierlistmaker.injection/ApplicationModule///PointingToDeclaration/app/app/me.khruslan.tierlistmaker.injection/-application-module/index.md
 $dokka.location:me.khruslan.tierlistmaker.injection/ApplicationModule/ApplicationModule/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker.injection/-application-module/-application-module.md

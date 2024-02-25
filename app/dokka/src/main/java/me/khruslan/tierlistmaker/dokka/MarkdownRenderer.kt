@@ -229,7 +229,7 @@ class MarkdownRenderer(context: DokkaContext) : CommonmarkRenderer(context) {
     }
 
     /**
-     * Builds text, making sure @Inject annotatoins are surrounded with leading and trailing spacer.
+     * Builds text, making sure annotations are surrounded with leading and trailing spacer.
      *
      * Fixes the respective issue in [CommonmarkRenderer].
      *
@@ -240,7 +240,7 @@ class MarkdownRenderer(context: DokkaContext) : CommonmarkRenderer(context) {
         if (textNode.text == "@" && endsWith(")")) {
             append(" ")
             buildTextWithDecorators(textNode)
-        } else if (textNode.text == "Inject") {
+        } else if (textNode.isAnnotation()) {
             buildTextWithDecorators(textNode)
             append(" ")
         } else {
@@ -393,6 +393,19 @@ class MarkdownRenderer(context: DokkaContext) : CommonmarkRenderer(context) {
                 line
             }
         }.removeSuffix("<br>")
+    }
+
+    /**
+     * Checks whether this text node is an annotation.
+     *
+     * Compares node text for the exact matching. The list of annotations to compare is hardcoded.
+     * To support correct rendering of new annotations, they must be listed here.
+     *
+     * @receiver Text node.
+     * @return Whether this text node is among supported annotations.
+     */
+    private fun ContentText.isAnnotation(): Boolean {
+        return text in listOf("AttrRes", "ColorInt", "DrawableRes", "IdRes", "Inject", "StringRes")
     }
 
     /**

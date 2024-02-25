@@ -2,7 +2,7 @@
 
 # TierListParams
 
-private data class [TierListParams](index.md)(@[StringRes](https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html)val titleResId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), val folderName: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), val zoomValue: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html))
+private data class [TierListParams](index.md)(@[StringRes ](https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html)val titleResId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), val folderName: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), val zoomValue: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html))
 
 Parameters for creating a tier list.
 
@@ -12,7 +12,7 @@ Note that this class is immutable.
 
 | | |
 |---|---|
-| [TierListParams](-tier-list-params.md) | constructor(@[StringRes](https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html)titleResId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), folderName: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), zoomValue: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html))<br>Creates new tier list params. |
+| [TierListParams](-tier-list-params.md) | constructor(@[StringRes ](https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html)titleResId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), folderName: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), zoomValue: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html))<br>Creates new tier list params. |
 
 ## Properties
 

@@ -2,7 +2,7 @@
 
 # setDialogTitle
 
-fun [setDialogTitle](set-dialog-title.md)(@[StringRes](https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html)titleResId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)): [EnterTierListTitleDialog.Builder](index.md)
+fun [setDialogTitle](set-dialog-title.md)(@[StringRes ](https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html)titleResId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)): [EnterTierListTitleDialog.Builder](index.md)
 
 Set the dialog title to display using the given resource id.
 

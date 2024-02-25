@@ -20,7 +20,7 @@ Images for the collection are read from assets. The performance of the operation
 |---|---|
 | [AssetsNotFoundException](-assets-not-found-exception/index.md) | private class [AssetsNotFoundException](-assets-not-found-exception/index.md) : [IOException](https://developer.android.com/reference/kotlin/java/io/IOException.html)<br>Thrown when assets are expected but not found in certain location. |
 | [Constants](-constants/index.md) | private object [Constants](-constants/index.md)<br>Assets path constants for internal usage. |
-| [TierListParams](-tier-list-params/index.md) | private data class [TierListParams](-tier-list-params/index.md)(@[StringRes](https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html)val titleResId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), val folderName: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), val zoomValue: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html))<br>Parameters for creating a tier list. |
+| [TierListParams](-tier-list-params/index.md) | private data class [TierListParams](-tier-list-params/index.md)(@[StringRes ](https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html)val titleResId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), val folderName: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), val zoomValue: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html))<br>Parameters for creating a tier list. |
 
 ## Properties
 

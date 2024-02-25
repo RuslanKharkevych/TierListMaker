@@ -2,7 +2,7 @@
 
 # setPreferenceSummary
 
-fun [PreferenceFragmentCompat](https://developer.android.com/reference/kotlin/androidx/preference/PreferenceFragmentCompat.html).[setPreferenceSummary](set-preference-summary.md)(@[StringRes](https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html)keyResId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), summary: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html))
+fun [PreferenceFragmentCompat](https://developer.android.com/reference/kotlin/androidx/preference/PreferenceFragmentCompat.html).[setPreferenceSummary](set-preference-summary.md)(@[StringRes ](https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html)keyResId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), summary: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html))
 
 Sets summary for the preference found by the key resolved from [keyResId](set-preference-summary.md).
 

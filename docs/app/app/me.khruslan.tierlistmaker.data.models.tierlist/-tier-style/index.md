@@ -2,7 +2,7 @@
 
 # TierStyle
 
-data class [TierStyle](index.md)(val title: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) = &quot;&quot;, @[ColorInt](https://developer.android.com/reference/kotlin/androidx/annotation/ColorInt.html)val color: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html) = Color.TRANSPARENT) : [Parcelable](https://developer.android.com/reference/kotlin/android/os/Parcelable.html)
+data class [TierStyle](index.md)(val title: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) = &quot;&quot;, @[ColorInt ](https://developer.android.com/reference/kotlin/androidx/annotation/ColorInt.html)val color: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html) = Color.TRANSPARENT) : [Parcelable](https://developer.android.com/reference/kotlin/android/os/Parcelable.html)
 
 Style of the [Tier](../-tier/index.md) includes its title and color.
 
@@ -12,7 +12,7 @@ The style is applied to the tier header only and does not affect images inside t
 
 | | |
 |---|---|
-| [TierStyle](-tier-style.md) | constructor(title: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) = &quot;&quot;, @[ColorInt](https://developer.android.com/reference/kotlin/androidx/annotation/ColorInt.html)color: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html) = Color.TRANSPARENT)<br>Creates the tier style with provided title and color. |
+| [TierStyle](-tier-style.md) | constructor(title: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) = &quot;&quot;, @[ColorInt ](https://developer.android.com/reference/kotlin/androidx/annotation/ColorInt.html)color: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html) = Color.TRANSPARENT)<br>Creates the tier style with provided title and color. |
 
 ## Properties
 

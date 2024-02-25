@@ -2,7 +2,7 @@
 
 # findNavHostFragmentById
 
-fun [FragmentActivity](https://developer.android.com/reference/kotlin/androidx/fragment/app/FragmentActivity.html).[findNavHostFragmentById](find-nav-host-fragment-by-id.md)(@[IdRes](https://developer.android.com/reference/kotlin/androidx/annotation/IdRes.html)id: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)): [NavHostFragment](https://developer.android.com/reference/kotlin/androidx/navigation/fragment/NavHostFragment.html)
+fun [FragmentActivity](https://developer.android.com/reference/kotlin/androidx/fragment/app/FragmentActivity.html).[findNavHostFragmentById](find-nav-host-fragment-by-id.md)(@[IdRes ](https://developer.android.com/reference/kotlin/androidx/annotation/IdRes.html)id: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)): [NavHostFragment](https://developer.android.com/reference/kotlin/androidx/navigation/fragment/NavHostFragment.html)
 
 Finds NavHostFragment by id.
 
