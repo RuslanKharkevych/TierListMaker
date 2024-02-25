@@ -11,6 +11,9 @@ Creates card shape from the card view.
 | | |
 |---|---|
 | card | Card view of the target. |
+<br>
+---
+<br>
 
 private constructor(delegate: RoundedRectangle)
 

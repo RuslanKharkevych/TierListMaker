@@ -6,6 +6,8 @@ private fun [StringBuilder](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.
 
 Renders table cells.
 
+For better readability, splits overloaded entries with an extra line break.
+
 #### Receiver
 
 Current string builder.

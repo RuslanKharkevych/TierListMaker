@@ -12,6 +12,9 @@ Creates a circular ripple effect for the target view with provided radius and co
 |---|---|
 | radius | Radius of the target view. |
 | color | Color of the ripple. |
+<br>
+---
+<br>
 
 private constructor(delegate: RippleEffect)
 

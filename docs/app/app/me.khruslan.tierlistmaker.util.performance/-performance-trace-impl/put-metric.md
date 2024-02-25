@@ -14,6 +14,9 @@ Calls Trace.putMetric on the wrapped [trace](trace.md) with [value](put-metric.m
 |---|---|
 | name | Name of the metric to set. |
 | value | The value to which the metric should be set to. |
+<br>
+---
+<br>
 
 open override fun [putMetric](put-metric.md)(name: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), value: [Long](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html))
 

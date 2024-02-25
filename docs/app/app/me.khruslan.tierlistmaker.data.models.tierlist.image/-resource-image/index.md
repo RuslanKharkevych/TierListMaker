@@ -18,7 +18,7 @@ Used for highlighting drag targets or when image can't be saved to a file due to
 
 | | |
 |---|---|
-| [ResourceImage](-resource-image.md) | constructor(parcel: [Parcel](https://developer.android.com/reference/kotlin/android/os/Parcel.html))<br>Restores resource image from the parcel.<br>constructor(id: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) = UUID.randomUUID().toString(), @[DrawableRes](https://developer.android.com/reference/kotlin/androidx/annotation/DrawableRes.html)resId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)) |
+| [ResourceImage](-resource-image.md) | constructor(parcel: [Parcel](https://developer.android.com/reference/kotlin/android/os/Parcel.html))<br>Restores resource image from the parcel.<br><br>constructor(id: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) = UUID.randomUUID().toString(), @[DrawableRes](https://developer.android.com/reference/kotlin/androidx/annotation/DrawableRes.html)resId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html))<br>Creates resource image with ID and resouce drawable. |
 
 ## Types
 

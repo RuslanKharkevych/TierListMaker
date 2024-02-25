@@ -14,6 +14,7 @@ import java.util.*
  *
  * @param id Unique identifier of the image.
  * @property filePath Full path to the image file.
+ * @constructor Creates storage image with ID and file path.
  */
 class StorageImage(id: String, val filePath: String) : Image(id, filePath), Parcelable {
 

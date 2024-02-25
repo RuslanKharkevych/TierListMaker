@@ -11,6 +11,9 @@ Instantiates tooltip image button from code.
 | | |
 |---|---|
 | context | Activity context. |
+<br>
+---
+<br>
 
 constructor(context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html), attrs: [AttributeSet](https://developer.android.com/reference/kotlin/android/util/AttributeSet.html))
 
@@ -22,6 +25,9 @@ Instantiates tooltip image button from XML.
 |---|---|
 | context | Activity context. |
 | attrs | Attribute values provided via XML. |
+<br>
+---
+<br>
 
 constructor(context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html), attrs: [AttributeSet](https://developer.android.com/reference/kotlin/android/util/AttributeSet.html), defStyleAttrs: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html))
 

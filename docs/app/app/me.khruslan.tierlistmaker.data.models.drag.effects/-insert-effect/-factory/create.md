@@ -17,6 +17,9 @@ Created insert effect.
 | | |
 |---|---|
 | data | Image data to restore. |
+<br>
+---
+<br>
 
 fun [create](create.md)(shadow: [ImageDragData](../../../me.khruslan.tierlistmaker.data.models.drag/-image-drag-data/index.md), target: [DragData](../../../me.khruslan.tierlistmaker.data.models.drag/-drag-data/index.md)): [InsertEffect](../index.md)
 

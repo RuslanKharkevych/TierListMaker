@@ -18,4 +18,4 @@ It's a helper for creating RoundedRectangle shape for the MaterialCardView.
 
 | | |
 |---|---|
-| [CardShape](-card-shape.md) | constructor(card: MaterialCardView)<br>Creates card shape from the card view.<br>private constructor(delegate: RoundedRectangle)<br>Creates a card shape from the delegate. |
+| [CardShape](-card-shape.md) | constructor(card: MaterialCardView)<br>Creates card shape from the card view.<br><br>private constructor(delegate: RoundedRectangle)<br><br>Creates a card shape from the delegate. |

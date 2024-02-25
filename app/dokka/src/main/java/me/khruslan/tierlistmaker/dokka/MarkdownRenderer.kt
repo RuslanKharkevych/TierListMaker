@@ -4,18 +4,22 @@ import org.jetbrains.dokka.gfm.GfmCommand.Companion.templateCommand
 import org.jetbrains.dokka.gfm.ResolveLinkGfmCommand
 import org.jetbrains.dokka.gfm.renderer.CommonmarkRenderer
 import org.jetbrains.dokka.model.DisplaySourceSet
+import org.jetbrains.dokka.model.Documentable
 import org.jetbrains.dokka.pages.ContentDRILink
 import org.jetbrains.dokka.pages.ContentDivergentGroup
 import org.jetbrains.dokka.pages.ContentDivergentInstance
 import org.jetbrains.dokka.pages.ContentGroup
+import org.jetbrains.dokka.pages.ContentKind
 import org.jetbrains.dokka.pages.ContentList
 import org.jetbrains.dokka.pages.ContentPage
 import org.jetbrains.dokka.pages.ContentTable
 import org.jetbrains.dokka.pages.ContentText
 import org.jetbrains.dokka.pages.HtmlContent
+import org.jetbrains.dokka.pages.MemberPage
 import org.jetbrains.dokka.pages.PlatformHintedContent
 import org.jetbrains.dokka.pages.Style
 import org.jetbrains.dokka.pages.TextStyle
+import org.jetbrains.dokka.pages.WithDocumentables
 import org.jetbrains.dokka.plugability.DokkaContext
 
 /**
@@ -67,6 +71,7 @@ class MarkdownRenderer(context: DokkaContext) : CommonmarkRenderer(context) {
      * Builds divergent without source set tags.
      *
      * Source set tags are not necessary because all code is written for the same platform.
+     * Additionally, this function inserts divider between overloaded etries.
      *
      * @param node A node to render.
      * @param pageContext Context of the page.
@@ -90,7 +95,7 @@ class MarkdownRenderer(context: DokkaContext) : CommonmarkRenderer(context) {
             }
         )
 
-        distinct.values.forEach { entry ->
+        distinct.values.forEachIndexed { index, entry ->
             val (instance, sourceSets) = entry.getInstanceAndSourceSets()
             buildParagraph()
 
@@ -117,7 +122,13 @@ class MarkdownRenderer(context: DokkaContext) : CommonmarkRenderer(context) {
                 buildContentNode(it, pageContext, sourceSets.first())
             }
 
-            buildParagraph()
+            if (node.dci.kind == ContentKind.Main && index != distinct.size - 1) {
+                if (pageContext is MemberPage && pageContext.documentables().size > 1) {
+                    buildDivider()
+                } else {
+                    buildParagraph()
+                }
+            }
         }
     }
 
@@ -330,6 +341,8 @@ class MarkdownRenderer(context: DokkaContext) : CommonmarkRenderer(context) {
     /**
      * Renders table cells.
      *
+     * For better readability, splits overloaded entries with an extra line break.
+     *
      * @param table Table to render.
      * @param context Context of the page.
      * @receiver Current string builder.
@@ -344,12 +357,42 @@ class MarkdownRenderer(context: DokkaContext) : CommonmarkRenderer(context) {
                     .replace("\\\n", "\n\n")
                     .replace("\n\n+".toRegex(), "<br>")
                     .replace("\n", " ")
+                    .insertBreakBetweenOverloads()
                 )
                 append(" ")
             }
             append("|")
             appendLine()
         }
+    }
+
+    /**
+     * Inserts an extra line break between overloaded entries.
+     *
+     * The algorithm steps:
+     * 1. Split the input string into lines.
+     * 2. Exclude lines with annotations.
+     * 3. If there are less than 4 lines, return input string.
+     * 4. Add an extra break after each description.
+     * 5. Remove the trailing break.
+     *
+     * @receiver Input string containing method (constructor) signatures and descriptions.
+     * @return Output string with divided overloaded entries.
+     */
+    private fun String.insertBreakBetweenOverloads(): String {
+        val lines = split("<br>").filter { !it.startsWith("@") }
+        if (lines.count() < 4) return this
+
+        return lines.joinToString("<br>") { line ->
+            val isConstructor = line.startsWith("constructor(")
+            val isMethod = line.contains("fun [")
+
+            if (!isConstructor && !isMethod) {
+                "$line<br>"
+            } else {
+                line
+            }
+        }.removeSuffix("<br>")
     }
 
     /**
@@ -360,6 +403,27 @@ class MarkdownRenderer(context: DokkaContext) : CommonmarkRenderer(context) {
     private fun StringBuilder.buildParagraph() {
         appendLine()
         appendLine()
+    }
+
+    /**
+     * Builds a divider surrounded by line breaks.
+     *
+     * @receiver Current string builder.
+     */
+    private fun StringBuilder.buildDivider() {
+        append("<br>\n---\n<br>")
+    }
+
+    /**
+     * Returns documentables of this page.
+     *
+     * Documentables represent data that is parsed from sources.
+     *
+     * @receiver Context of the page.
+     * @return The list of documentables. Can be empty if page doesn't contain any documentables.
+     */
+    private fun ContentPage.documentables(): List<Documentable> {
+        return (this as? WithDocumentables)?.documentables ?: emptyList()
     }
 
     /**

@@ -15,6 +15,9 @@ Whether tier lists were updated successfully.
 | | |
 |---|---|
 | tierLists | Tier lists to save. |
+<br>
+---
+<br>
 
 private fun [updateTierLists](update-tier-lists.md)(tierLists: [MutableList](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html)&lt;[TierList](../../me.khruslan.tierlistmaker.data.models.tierlist/-tier-list/index.md)&gt;, transactionTag: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)): [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html)
 

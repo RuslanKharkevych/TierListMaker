@@ -18,7 +18,7 @@ Used for regular tier list images. The image file can be stored either in device
 
 | | |
 |---|---|
-| [StorageImage](-storage-image.md) | constructor(filePath: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html))<br>Creates storage image from the file path with a random ID.<br>constructor(file: [File](https://developer.android.com/reference/kotlin/java/io/File.html))<br>Creates storage image from the file with a random ID.<br>constructor(parcel: [Parcel](https://developer.android.com/reference/kotlin/android/os/Parcel.html))<br>Restores storage image from parcel.<br>constructor(id: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), filePath: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)) |
+| [StorageImage](-storage-image.md) | constructor(filePath: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html))<br>Creates storage image from the file path with a random ID.<br><br>constructor(file: [File](https://developer.android.com/reference/kotlin/java/io/File.html))<br>Creates storage image from the file with a random ID.<br><br>constructor(parcel: [Parcel](https://developer.android.com/reference/kotlin/android/os/Parcel.html))<br>Restores storage image from parcel.<br><br>constructor(id: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), filePath: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html))<br>Creates storage image with ID and file path. |
 
 ## Types
 

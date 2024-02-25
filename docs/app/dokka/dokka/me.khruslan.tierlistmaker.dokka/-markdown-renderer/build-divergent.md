@@ -6,7 +6,7 @@ open override fun [StringBuilder](https://kotlinlang.org/api/latest/jvm/stdlib/k
 
 Builds divergent without source set tags.
 
-Source set tags are not necessary because all code is written for the same platform.
+Source set tags are not necessary because all code is written for the same platform. Additionally, this function inserts divider between overloaded etries.
 
 #### Receiver
 

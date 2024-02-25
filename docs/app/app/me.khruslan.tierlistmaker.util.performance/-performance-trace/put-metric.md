@@ -14,6 +14,9 @@ Metrics are useful for measuring additional parameters of the event.
 |---|---|
 | name | Name of the metric to set. |
 | value | The value to which the metric should be set to. |
+<br>
+---
+<br>
 
 abstract fun [putMetric](put-metric.md)(name: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), value: [Long](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html))
 

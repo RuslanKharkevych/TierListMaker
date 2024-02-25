@@ -15,6 +15,7 @@ import java.util.UUID
  *
  * @param id Unique identifier of the image.
  * @property resId Drawable resource id.
+ * @constructor Creates resource image with ID and resouce drawable.
  */
 class ResourceImage(
     id: String = UUID.randomUUID().toString(),
