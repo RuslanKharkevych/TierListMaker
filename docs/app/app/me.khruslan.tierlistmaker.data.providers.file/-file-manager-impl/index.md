@@ -2,7 +2,7 @@
 
 # FileManagerImpl
 
-class [FileManagerImpl](index.md) @Inject constructor(val context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html), val imageCompressor: [ImageCompressor](../-image-compressor/index.md), val dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), val performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md)) : [FileManager](../-file-manager/index.md)
+class [FileManagerImpl](index.md) @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) constructor(val context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html), val imageCompressor: [ImageCompressor](../-image-compressor/index.md), val dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), val performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md)) : [FileManager](../-file-manager/index.md)
 
 [FileManager](../-file-manager/index.md) implementation.
 
@@ -12,7 +12,7 @@ Moves all operations to the background thread. Collects performance traces. No m
 
 | | |
 |---|---|
-| [FileManagerImpl](-file-manager-impl.md) | @Inject <br>constructor(context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html), imageCompressor: [ImageCompressor](../-image-compressor/index.md), dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md))<br>Creates a new file manager instance. |
+| [FileManagerImpl](-file-manager-impl.md) | @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) <br>constructor(context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html), imageCompressor: [ImageCompressor](../-image-compressor/index.md), dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md))<br>Creates a new file manager instance. |
 
 ## Types
 
@@ -26,7 +26,7 @@ Moves all operations to the background thread. Collects performance traces. No m
 | Name | Summary |
 |---|---|
 | [context](context.md) | private val [context](context.md): [Context](https://developer.android.com/reference/kotlin/android/content/Context.html)<br>Application context. |
-| [dispatcherProvider](dispatcher-provider.md) | private val [dispatcherProvider](dispatcher-provider.md): [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md)<br>Provides Dispatchers.IO context. |
+| [dispatcherProvider](dispatcher-provider.md) | private val [dispatcherProvider](dispatcher-provider.md): [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md)<br>Provides [Dispatchers.IO](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-i-o.html) context. |
 | [imageCompressor](image-compressor.md) | private val [imageCompressor](image-compressor.md): [ImageCompressor](../-image-compressor/index.md)<br>Compresses image files. |
 | [performanceService](performance-service.md) | private val [performanceService](performance-service.md): [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md)<br>Traces performance of the operations. |
 

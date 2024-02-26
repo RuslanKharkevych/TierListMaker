@@ -4,7 +4,7 @@
 
 @Binds
 
-@Singleton
+@[Singleton](https://javax-inject.github.io/javax-inject/api/javax/inject/Singleton.html)
 
 abstract fun [bindAnalyticsService](bind-analytics-service.md)(analyticsServiceImpl: [AnalyticsServiceImpl](../../me.khruslan.tierlistmaker.util.analytics/-analytics-service-impl/index.md)): [AnalyticsService](../../me.khruslan.tierlistmaker.util.analytics/-analytics-service/index.md)
 

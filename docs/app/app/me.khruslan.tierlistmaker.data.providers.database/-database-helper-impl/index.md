@@ -2,7 +2,7 @@
 
 # DatabaseHelperImpl
 
-class [DatabaseHelperImpl](index.md) @Inject constructor(val dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), val defaultTierListCollectionProvider: [DefaultTierListCollectionProvider](../-default-tier-list-collection-provider/index.md), val performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md)) : [DatabaseHelper](../-database-helper/index.md)
+class [DatabaseHelperImpl](index.md) @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) constructor(val dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), val defaultTierListCollectionProvider: [DefaultTierListCollectionProvider](../-default-tier-list-collection-provider/index.md), val performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md)) : [DatabaseHelper](../-database-helper/index.md)
 
 [DatabaseHelper](../-database-helper/index.md) implementation.
 
@@ -12,7 +12,7 @@ Implemented with [Paper](https://github.com/pilgr/Paper) database. On the first 
 
 | | |
 |---|---|
-| [DatabaseHelperImpl](-database-helper-impl.md) | @Inject <br>constructor(dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), defaultTierListCollectionProvider: [DefaultTierListCollectionProvider](../-default-tier-list-collection-provider/index.md), performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md))<br>Creates a new database helper instance. |
+| [DatabaseHelperImpl](-database-helper-impl.md) | @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) <br>constructor(dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), defaultTierListCollectionProvider: [DefaultTierListCollectionProvider](../-default-tier-list-collection-provider/index.md), performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md))<br>Creates a new database helper instance. |
 
 ## Types
 
@@ -27,7 +27,7 @@ Implemented with [Paper](https://github.com/pilgr/Paper) database. On the first 
 |---|---|
 | [defaultTierListCollectionProvided](default-tier-list-collection-provided.md) | private val [defaultTierListCollectionProvided](default-tier-list-collection-provided.md): [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html)<br>Whether the default tier list collection has already been provided. |
 | [defaultTierListCollectionProvider](default-tier-list-collection-provider.md) | private val [defaultTierListCollectionProvider](default-tier-list-collection-provider.md): [DefaultTierListCollectionProvider](../-default-tier-list-collection-provider/index.md)<br>Provides the default tier list collection. |
-| [dispatcherProvider](dispatcher-provider.md) | private val [dispatcherProvider](dispatcher-provider.md): [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md)<br>Provides Dispatchers.IO context. |
+| [dispatcherProvider](dispatcher-provider.md) | private val [dispatcherProvider](dispatcher-provider.md): [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md)<br>Provides [Dispatchers.IO](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-i-o.html) context. |
 | [performanceService](performance-service.md) | private val [performanceService](performance-service.md): [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md)<br>Traces database transactions. |
 
 ## Functions

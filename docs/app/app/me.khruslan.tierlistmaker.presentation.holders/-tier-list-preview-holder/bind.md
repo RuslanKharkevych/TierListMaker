@@ -4,7 +4,7 @@
 
 fun [bind](bind.md)(preview: [TierList.Preview](../../me.khruslan.tierlistmaker.data.models.tierlist/-tier-list/-preview/index.md))
 
-Binds tier list preview to the [itemView](../../../../app/me.khruslan.tierlistmaker.presentation.holders/-tier-list-preview-holder/item-view.md).
+Binds tier list preview to the item view.
 
 Updates title and loads images.
 

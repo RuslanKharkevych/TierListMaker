@@ -2,7 +2,7 @@
 
 # PreferencesHelperImpl
 
-@Inject 
+@[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) 
 
 constructor(context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html))
 

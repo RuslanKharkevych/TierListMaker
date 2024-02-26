@@ -2,7 +2,7 @@
 
 # APPLICATION_ID
 
-private const val [APPLICATION_ID](-a-p-p-l-i-c-a-t-i-o-n_-i-d.md): <!---  GfmCommand {"@class":"org.jetbrains.dokka.gfm.ResolveLinkGfmCommand","dri":{"packageName":"","classNames":"<Error class: unknown class>","callable":null,"target":{"@class":"org.jetbrains.dokka.links.PointingToDeclaration"},"extra":null}} --->&lt;Error class: unknown class&gt;<!--- --->
+private const val [APPLICATION_ID](-a-p-p-l-i-c-a-t-i-o-n_-i-d.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)
 
 Application ID read from the build configuration.
 

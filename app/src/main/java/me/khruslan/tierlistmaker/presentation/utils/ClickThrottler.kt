@@ -63,14 +63,14 @@ private abstract class ClickThrottler {
 /**
  * Extension of [View.OnClickListener] that prevents duplicate clicks.
  *
- * Clients must override [onThrottledClick] instead of [onClick].
+ * Clients must override [ClickThrottler.onThrottledClick] instead of [onClick].
  *
  * @constructor Default no-arg constructor.
  */
 private abstract class OnThrottledClickListener : ClickThrottler(), View.OnClickListener {
 
     /**
-     * Invokes [onThrottledClick] if click is not duplicated.
+     * Invokes [ClickThrottler.onThrottledClick] if click is not duplicated.
      *
      * Called when a view was clicked.
      *
@@ -84,7 +84,7 @@ private abstract class OnThrottledClickListener : ClickThrottler(), View.OnClick
 /**
  * Extension of [Preference.OnPreferenceClickListener] that prevents multiple clicks.
  *
- * Clients must override [onThrottledClick] instead of [onPreferenceClick].
+ * Clients must override [ClickThrottler.onThrottledClick] instead of [onPreferenceClick].
  *
  * @constructor Default no-arg constructor.
  */
@@ -92,7 +92,7 @@ private abstract class OnThrottledPreferenceClickListener : ClickThrottler(),
     Preference.OnPreferenceClickListener {
 
     /**
-     * Invokes [onThrottledClick] if click is not duplicated.
+     * Invokes [ClickThrottler.onThrottledClick] if click is not duplicated.
      *
      * Called when a preference has been clicked.
      *

@@ -6,7 +6,7 @@ class [TooltipImageButton](index.md) : [AppCompatImageButton](https://developer.
 
 Extended image button that shows tooltip on long click.
 
-Works on all Android versions. Text of the tooltip is taken from [getContentDescription](../../../../app/me.khruslan.tierlistmaker.presentation.views/-tooltip-image-button/get-content-description.md) function.
+Works on all Android versions. Text of the tooltip is taken from [AppCompatImageButton.getContentDescription](https://developer.android.com/reference/kotlin/androidx/appcompat/widget/AppCompatImageButton.html#getcontentdescription) function.
 
 ## Constructors
 

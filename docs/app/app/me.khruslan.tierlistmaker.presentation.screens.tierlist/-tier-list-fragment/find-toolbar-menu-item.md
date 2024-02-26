@@ -2,7 +2,7 @@
 
 # findToolbarMenuItem
 
-private fun [findToolbarMenuItem](find-toolbar-menu-item.md)(@[IdRes ](https://developer.android.com/reference/kotlin/androidx/annotation/IdRes.html)itemId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)): [MenuItem](https://developer.android.com/reference/kotlin/android/view/MenuItem.html)
+private fun [findToolbarMenuItem](find-toolbar-menu-item.md)(@[IdRes](https://developer.android.com/reference/kotlin/androidx/annotation/IdRes.html) itemId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)): [MenuItem](https://developer.android.com/reference/kotlin/android/view/MenuItem.html)
 
 Returns the toolbar menu item with a particular identifier.
 

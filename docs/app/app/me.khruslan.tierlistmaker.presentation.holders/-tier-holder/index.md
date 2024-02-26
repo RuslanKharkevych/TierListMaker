@@ -25,5 +25,5 @@ The tier view includes header and nested recycler view with images.
 
 | Name | Summary |
 |---|---|
-| [bind](bind.md) | fun [bind](bind.md)(tier: [Tier](../../me.khruslan.tierlistmaker.data.models.tierlist/-tier/index.md), imageSize: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), tag: [TierDragData](../../me.khruslan.tierlistmaker.data.models.drag/-tier-drag-data/index.md))<br>Binds tier data to the [itemView](../../../../app/me.khruslan.tierlistmaker.presentation.holders/-tier-holder/item-view.md). |
+| [bind](bind.md) | fun [bind](bind.md)(tier: [Tier](../../me.khruslan.tierlistmaker.data.models.tierlist/-tier/index.md), imageSize: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), tag: [TierDragData](../../me.khruslan.tierlistmaker.data.models.drag/-tier-drag-data/index.md))<br>Binds tier data to the item view. |
 | [setOnDragListener](set-on-drag-listener.md) | private fun [setOnDragListener](set-on-drag-listener.md)()<br>Registers a drag event listener callback object for the tier images view. |

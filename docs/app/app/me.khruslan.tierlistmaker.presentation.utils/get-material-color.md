@@ -2,9 +2,9 @@
 
 # getMaterialColor
 
-@[ColorInt ](https://developer.android.com/reference/kotlin/androidx/annotation/ColorInt.html)
+@[ColorInt](https://developer.android.com/reference/kotlin/androidx/annotation/ColorInt.html) 
 
-fun [Context](https://developer.android.com/reference/kotlin/android/content/Context.html).[getMaterialColor](get-material-color.md)(@[AttrRes ](https://developer.android.com/reference/kotlin/androidx/annotation/AttrRes.html)colorAttrRes: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)): [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)
+fun [Context](https://developer.android.com/reference/kotlin/android/content/Context.html).[getMaterialColor](get-material-color.md)(@[AttrRes](https://developer.android.com/reference/kotlin/androidx/annotation/AttrRes.html) colorAttrRes: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)): [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)
 
 Returns the color int for the provided theme color attribute.
 

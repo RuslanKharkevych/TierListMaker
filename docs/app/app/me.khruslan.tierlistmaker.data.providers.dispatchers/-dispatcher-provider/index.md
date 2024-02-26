@@ -18,7 +18,7 @@ Used for injecting test dispatcher in unit tests.
 
 | Name | Summary |
 |---|---|
-| [default](default.md) | abstract val [default](default.md): CoroutineDispatcher<br>Returns Dispatchers.Default in production code. |
-| [io](io.md) | abstract val [io](io.md): CoroutineDispatcher<br>Returns Dispatchers.IO in production code. |
-| [main](main.md) | abstract val [main](main.md): CoroutineDispatcher<br>Returns Dispatchers.Main in production code. |
-| [unconfined](unconfined.md) | abstract val [unconfined](unconfined.md): CoroutineDispatcher<br>Returns Dispatchers.Unconfined in production code. |
+| [default](default.md) | abstract val [default](default.md): [CoroutineDispatcher](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-dispatcher/index.html)<br>Returns [Dispatchers.Default](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-default.html) in production code. |
+| [io](io.md) | abstract val [io](io.md): [CoroutineDispatcher](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-dispatcher/index.html)<br>Returns [Dispatchers.IO](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-i-o.html) in production code. |
+| [main](main.md) | abstract val [main](main.md): [CoroutineDispatcher](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-dispatcher/index.html)<br>Returns [Dispatchers.Main](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-main.html) in production code. |
+| [unconfined](unconfined.md) | abstract val [unconfined](unconfined.md): [CoroutineDispatcher](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-dispatcher/index.html)<br>Returns [Dispatchers.Unconfined](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-unconfined.html) in production code. |

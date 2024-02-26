@@ -8,7 +8,7 @@ import me.khruslan.tierlistmaker.lint.detectors.FlexboxLayoutManagerUsageDetecto
 import me.khruslan.tierlistmaker.lint.detectors.AlertDialogMissingLogTagDetector
 
 /**
- * Registry of the custom lint checks.
+ * Registry of the custom [Lint](https://developer.android.com/studio/write/lint) checks.
  *
  * Make sure to add a com.android.tools.lint.client.api.IssueRegistry file in resources > META-INF >
  * services. The file should contain a single line that has the name of this class with the full

@@ -2,7 +2,7 @@
 
 # presentErrorSnackbar
 
-private fun [presentErrorSnackbar](present-error-snackbar.md)(@[StringRes ](https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html)textResId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html))
+private fun [presentErrorSnackbar](present-error-snackbar.md)(@[StringRes](https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html) textResId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html))
 
 Shows Snackbar with error message and &quot;Refresh&quot; action.
 

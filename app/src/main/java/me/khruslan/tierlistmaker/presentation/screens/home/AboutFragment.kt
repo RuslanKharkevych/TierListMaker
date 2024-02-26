@@ -19,7 +19,8 @@ class AboutFragment : PreferenceFragmentCompat() {
     /**
      * Inflates preferences XML and populates app version value.
      *
-     * Called during [onCreate] to supply the preferences for this fragment.
+     * Called during [PreferenceFragmentCompat.onCreate] to supply the preferences for this
+     * fragment.
      *
      * @param savedInstanceState If the fragment is being re-created from a previous saved state,
      * this is the state.

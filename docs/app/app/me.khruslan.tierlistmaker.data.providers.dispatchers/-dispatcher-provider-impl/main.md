@@ -2,6 +2,6 @@
 
 # main
 
-open override val [main](main.md): MainCoroutineDispatcher
+open override val [main](main.md): [MainCoroutineDispatcher](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-main-coroutine-dispatcher/index.html)
 
-Returns Dispatchers.Main.
+Returns [Dispatchers.Main](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-main.html).

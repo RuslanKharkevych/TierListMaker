@@ -6,7 +6,7 @@ protected open override fun [onRestoreInstanceState](on-restore-instance-state.m
 
 Restores navigation drawer open/closed state and opens drawer if needed.
 
-This method is called after [onStart](../../../../app/me.khruslan.tierlistmaker.presentation.screens.home/-home-activity/on-start.md) when the activity is being re-initialized from a previously saved state.
+This method is called after [AppCompatActivity.onStart](https://developer.android.com/reference/kotlin/androidx/appcompat/app/AppCompatActivity.html#onstart) when the activity is being re-initialized from a previously saved state.
 
 #### Parameters
 

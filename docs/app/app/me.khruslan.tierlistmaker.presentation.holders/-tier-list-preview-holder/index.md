@@ -25,6 +25,6 @@ Tier list preview is a card with a title and three images.
 
 | Name | Summary |
 |---|---|
-| [bind](bind.md) | fun [bind](bind.md)(preview: [TierList.Preview](../../me.khruslan.tierlistmaker.data.models.tierlist/-tier-list/-preview/index.md))<br>Binds tier list preview to the [itemView](../../../../app/me.khruslan.tierlistmaker.presentation.holders/-tier-list-preview-holder/item-view.md). |
+| [bind](bind.md) | fun [bind](bind.md)(preview: [TierList.Preview](../../me.khruslan.tierlistmaker.data.models.tierlist/-tier-list/-preview/index.md))<br>Binds tier list preview to the item view. |
 | [bindImage](bind-image.md) | private fun [ImageView](https://developer.android.com/reference/kotlin/android/widget/ImageView.html).[bindImage](bind-image.md)(image: [Image](../../me.khruslan.tierlistmaker.data.models.tierlist.image/-image/index.md)?)<br>Binds image to the image view. |
 | [setOnClickListener](set-on-click-listener.md) | private fun [setOnClickListener](set-on-click-listener.md)()<br>Initializes the item click listener. |

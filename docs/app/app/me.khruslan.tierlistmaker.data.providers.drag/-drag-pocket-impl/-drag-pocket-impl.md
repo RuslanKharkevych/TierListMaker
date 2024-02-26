@@ -2,7 +2,7 @@
 
 # DragPocketImpl
 
-@Inject 
+@[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) 
 
 constructor()
 

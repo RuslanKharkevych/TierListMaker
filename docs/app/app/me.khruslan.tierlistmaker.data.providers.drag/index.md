@@ -9,4 +9,4 @@ Data providers for managing drag data.
 | Name | Summary |
 |---|---|
 | [DragPocket](-drag-pocket/index.md) | interface [DragPocket](-drag-pocket/index.md)<br>A &quot;pocket&quot; for the drag data that needs to be temporarily kept in memory. |
-| [DragPocketImpl](-drag-pocket-impl/index.md) | class [DragPocketImpl](-drag-pocket-impl/index.md) @Inject constructor : [DragPocket](-drag-pocket/index.md)<br>[DragPocket](-drag-pocket/index.md) implementations. |
+| [DragPocketImpl](-drag-pocket-impl/index.md) | class [DragPocketImpl](-drag-pocket-impl/index.md) @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) constructor : [DragPocket](-drag-pocket/index.md)<br>[DragPocket](-drag-pocket/index.md) implementations. |

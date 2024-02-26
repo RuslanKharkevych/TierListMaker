@@ -2,7 +2,7 @@
 
 # HomeActivityViewModel
 
-class [HomeActivityViewModel](index.md) @Inject constructor(val themeManager: [ThemeManager](../../me.khruslan.tierlistmaker.presentation.utils.theme/-theme-manager/index.md)) : [ViewModel](https://developer.android.com/reference/kotlin/androidx/lifecycle/ViewModel.html)
+class [HomeActivityViewModel](index.md) @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) constructor(val themeManager: [ThemeManager](../../me.khruslan.tierlistmaker.presentation.utils.theme/-theme-manager/index.md)) : [ViewModel](https://developer.android.com/reference/kotlin/androidx/lifecycle/ViewModel.html)
 
 View model for [HomeActivity](../../me.khruslan.tierlistmaker.presentation.screens.home/-home-activity/index.md).
 
@@ -12,7 +12,7 @@ Responsible for changing theme and showing hints.
 
 | | |
 |---|---|
-| [HomeActivityViewModel](-home-activity-view-model.md) | @Inject <br>constructor(themeManager: [ThemeManager](../../me.khruslan.tierlistmaker.presentation.utils.theme/-theme-manager/index.md))<br>Creates view model with all dependencies. |
+| [HomeActivityViewModel](-home-activity-view-model.md) | @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) <br>constructor(themeManager: [ThemeManager](../../me.khruslan.tierlistmaker.presentation.utils.theme/-theme-manager/index.md))<br>Creates view model with all dependencies. |
 
 ## Properties
 

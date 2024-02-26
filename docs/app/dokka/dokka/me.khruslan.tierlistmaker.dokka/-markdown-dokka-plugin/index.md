@@ -4,7 +4,7 @@
 
 class [MarkdownDokkaPlugin](index.md) : DokkaPlugin
 
-Customized Dokka plugin for rendering docs in markdown format.
+Customized [Dokka](https://kotlinlang.org/docs/dokka-introduction.html) plugin for rendering docs in markdown format.
 
 The motivation behind this plugin is to improve quality of the documentation in GFM markdown format and customize it to the project needs.
 

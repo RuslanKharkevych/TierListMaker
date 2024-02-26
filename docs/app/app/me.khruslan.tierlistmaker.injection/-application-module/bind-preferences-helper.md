@@ -4,7 +4,7 @@
 
 @Binds
 
-@Singleton
+@[Singleton](https://javax-inject.github.io/javax-inject/api/javax/inject/Singleton.html)
 
 abstract fun [bindPreferencesHelper](bind-preferences-helper.md)(preferencesHelperImpl: [PreferencesHelperImpl](../../me.khruslan.tierlistmaker.data.providers.database/-preferences-helper-impl/index.md)): [PreferencesHelper](../../me.khruslan.tierlistmaker.data.providers.database/-preferences-helper/index.md)
 

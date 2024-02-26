@@ -207,7 +207,7 @@ class TierListFragment : Fragment() {
     /**
      * Adds on back pressed callback.
      *
-     * Called after [onAttach] and before [onCreateView].
+     * Called after [Fragment.onAttach] and before [Fragment.onCreateView].
      *
      * @param savedInstanceState If the fragment is being re-created from a previous saved state,
      * this is the state.

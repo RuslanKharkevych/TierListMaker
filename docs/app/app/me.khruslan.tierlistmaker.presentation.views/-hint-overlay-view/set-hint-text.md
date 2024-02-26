@@ -2,7 +2,7 @@
 
 # setHintText
 
-fun [setHintText](set-hint-text.md)(@[StringRes ](https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html)resId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html))
+fun [setHintText](set-hint-text.md)(@[StringRes](https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html) resId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html))
 
 Updates the hint text.
 

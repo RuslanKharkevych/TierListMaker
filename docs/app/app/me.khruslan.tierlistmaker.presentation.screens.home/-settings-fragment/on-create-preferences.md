@@ -6,7 +6,7 @@ open override fun [onCreatePreferences](on-create-preferences.md)(savedInstanceS
 
 Inflates preferences XML.
 
-Called during [onCreate](../../../../app/me.khruslan.tierlistmaker.presentation.screens.home/-settings-fragment/on-create.md) to supply the preferences for this fragment.
+Called during [PreferenceFragmentCompat.onCreate](https://developer.android.com/reference/kotlin/androidx/preference/PreferenceFragmentCompat.html#oncreate) to supply the preferences for this fragment.
 
 #### Parameters
 

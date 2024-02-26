@@ -2,7 +2,7 @@
 
 # TierListCreatorImpl
 
-class [TierListCreatorImpl](index.md) @Inject constructor(val dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), val preferencesHelper: [PreferencesHelper](../../me.khruslan.tierlistmaker.data.providers.database/-preferences-helper/index.md)) : [TierListCreator](../-tier-list-creator/index.md)
+class [TierListCreatorImpl](index.md) @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) constructor(val dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), val preferencesHelper: [PreferencesHelper](../../me.khruslan.tierlistmaker.data.providers.database/-preferences-helper/index.md)) : [TierListCreator](../-tier-list-creator/index.md)
 
 [TierListCreator](../-tier-list-creator/index.md) implementation.
 
@@ -12,7 +12,7 @@ Moves tier list creation to the background thread.
 
 | | |
 |---|---|
-| [TierListCreatorImpl](-tier-list-creator-impl.md) | @Inject <br>constructor(dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), preferencesHelper: [PreferencesHelper](../../me.khruslan.tierlistmaker.data.providers.database/-preferences-helper/index.md))<br>Creates a new tier list creator instance. |
+| [TierListCreatorImpl](-tier-list-creator-impl.md) | @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) <br>constructor(dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), preferencesHelper: [PreferencesHelper](../../me.khruslan.tierlistmaker.data.providers.database/-preferences-helper/index.md))<br>Creates a new tier list creator instance. |
 
 ## Properties
 

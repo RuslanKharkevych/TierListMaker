@@ -2,16 +2,16 @@
 
 # isAnnotation
 
-private fun ContentText.[isAnnotation](is-annotation.md)(): [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html)
+private fun ContentDRILink.[isAnnotation](is-annotation.md)(): [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html)
 
-Checks whether this text node is an annotation.
+Checks whether this node links to an annotation.
 
-Compares node text for the exact matching. The list of annotations to compare is hardcoded. To support correct rendering of new annotations, they must be listed here.
+Compares node's fully-qualified class name for the exact match. The list of annotations to compare with is hardcoded. To support correct rendering of new annotations, they must be listed here.
 
 #### Receiver
 
-Text node.
+Link node.
 
 #### Return
 
-Whether this text node is among supported annotations.
+Whether this node links to a supported annotation.

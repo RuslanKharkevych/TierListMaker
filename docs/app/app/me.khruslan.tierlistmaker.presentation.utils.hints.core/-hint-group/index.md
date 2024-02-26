@@ -6,7 +6,7 @@ abstract class [HintGroup](index.md)&lt;[T](index.md) : [Indexable](../-indexabl
 
 An ordered group of hints.
 
-Implemented with Spotlight. User can navigate back and forwards through hints.
+Implemented with [Spotlight](https://github.com/TakuSemba/Spotlight). User can navigate back and forwards through hints.
 
 #### Parameters
 

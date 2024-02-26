@@ -33,7 +33,7 @@ class TierListImageHolder(
     }
 
     /**
-     * Binds image to the [itemView].
+     * Binds image to the item view.
      *
      * Loads image and updates its size.
      *

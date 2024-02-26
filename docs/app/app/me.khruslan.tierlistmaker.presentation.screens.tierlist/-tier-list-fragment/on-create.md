@@ -6,7 +6,7 @@ open override fun [onCreate](on-create.md)(savedInstanceState: [Bundle](https://
 
 Adds on back pressed callback.
 
-Called after [onAttach](../../../../app/me.khruslan.tierlistmaker.presentation.screens.tierlist/-tier-list-fragment/on-attach.md) and before [onCreateView](on-create-view.md).
+Called after [Fragment.onAttach](https://developer.android.com/reference/kotlin/androidx/fragment/app/Fragment.html#onattach) and before [Fragment.onCreateView](https://developer.android.com/reference/kotlin/androidx/fragment/app/Fragment.html#oncreateview).
 
 #### Parameters
 

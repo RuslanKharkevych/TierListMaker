@@ -69,6 +69,12 @@ subprojects {
                 url.set(new URL('https://jakewharton.github.io/timber/docs/5.x/'))
                 packageListUrl.set(new URL('https://jakewharton.github.io/timber/docs/5.x/timber/package-list'))
             }
+            externalDocumentationLink {
+                url.set(new URL('https://javax-inject.github.io/javax-inject/api/'))
+            }
+            externalDocumentationLink {
+                url.set(new URL('https://kotlinlang.org/api/kotlinx.coroutines/'))
+            }
         }
     }
 }

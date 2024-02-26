@@ -2,6 +2,6 @@
 
 # main
 
-abstract val [main](main.md): CoroutineDispatcher
+abstract val [main](main.md): [CoroutineDispatcher](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-dispatcher/index.html)
 
-Returns Dispatchers.Main in production code.
+Returns [Dispatchers.Main](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-main.html) in production code.

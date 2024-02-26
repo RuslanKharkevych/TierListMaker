@@ -98,8 +98,8 @@ class HomeActivity : AppCompatActivity() {
     /**
      * Restores navigation drawer open/closed state and opens drawer if needed.
      *
-     * This method is called after [onStart] when the activity is being re-initialized from a
-     * previously saved state.
+     * This method is called after [AppCompatActivity.onStart] when the activity is being
+     * re-initialized from a previously saved state.
      *
      * @param savedInstanceState The data most recently supplied in [onSaveInstanceState].
      */

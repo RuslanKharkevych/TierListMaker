@@ -2,6 +2,6 @@
 
 # default
 
-open override val [default](default.md): CoroutineDispatcher
+open override val [default](default.md): [CoroutineDispatcher](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-dispatcher/index.html)
 
-Returns Dispatchers.Default.
+Returns [Dispatchers.Default](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-default.html).

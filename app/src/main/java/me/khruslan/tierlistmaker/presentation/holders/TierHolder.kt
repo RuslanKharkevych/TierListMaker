@@ -29,7 +29,7 @@ class TierHolder(
     }
 
     /**
-     * Binds tier data to the [itemView].
+     * Binds tier data to the item view.
      *
      * Updates tier style and populates images list view.
      *

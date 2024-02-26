@@ -6,7 +6,7 @@ private abstract class [OnThrottledPreferenceClickListener](index.md) : [ClickTh
 
 Extension of [Preference.OnPreferenceClickListener](https://developer.android.com/reference/kotlin/androidx/preference/Preference.OnPreferenceClickListener.html) that prevents multiple clicks.
 
-Clients must override [onThrottledClick](../../../../app/me.khruslan.tierlistmaker.presentation.utils/-on-throttled-preference-click-listener/on-throttled-click.md) instead of [onPreferenceClick](on-preference-click.md).
+Clients must override [ClickThrottler.onThrottledClick](../-click-throttler/on-throttled-click.md) instead of [onPreferenceClick](on-preference-click.md).
 
 ## Constructors
 
@@ -18,4 +18,4 @@ Clients must override [onThrottledClick](../../../../app/me.khruslan.tierlistmak
 
 | Name | Summary |
 |---|---|
-| [onPreferenceClick](on-preference-click.md) | override fun [onPreferenceClick](on-preference-click.md)(preference: [Preference](https://developer.android.com/reference/kotlin/androidx/preference/Preference.html)): [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html)<br>Invokes [onThrottledClick](../../../../app/me.khruslan.tierlistmaker.presentation.utils/-on-throttled-preference-click-listener/on-throttled-click.md) if click is not duplicated. |
+| [onPreferenceClick](on-preference-click.md) | override fun [onPreferenceClick](on-preference-click.md)(preference: [Preference](https://developer.android.com/reference/kotlin/androidx/preference/Preference.html)): [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html)<br>Invokes [ClickThrottler.onThrottledClick](../-click-throttler/on-throttled-click.md) if click is not duplicated. |

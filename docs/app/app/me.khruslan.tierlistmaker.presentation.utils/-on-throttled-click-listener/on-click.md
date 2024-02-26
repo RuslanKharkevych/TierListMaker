@@ -4,7 +4,7 @@
 
 override fun [onClick](on-click.md)(v: [View](https://developer.android.com/reference/kotlin/android/view/View.html)?)
 
-Invokes [onThrottledClick](../../../../app/me.khruslan.tierlistmaker.presentation.utils/-on-throttled-click-listener/on-throttled-click.md) if click is not duplicated.
+Invokes [ClickThrottler.onThrottledClick](../-click-throttler/on-throttled-click.md) if click is not duplicated.
 
 Called when a view was clicked.
 

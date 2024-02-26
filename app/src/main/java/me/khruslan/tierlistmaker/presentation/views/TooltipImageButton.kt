@@ -8,8 +8,8 @@ import androidx.appcompat.widget.TooltipCompat
 /**
  * Extended image button that shows tooltip on long click.
  *
- * Works on all Android versions. Text of the tooltip is taken from [getContentDescription]
- * function.
+ * Works on all Android versions. Text of the tooltip is taken from
+ * [AppCompatImageButton.getContentDescription] function.
  */
 class TooltipImageButton : AppCompatImageButton {
 

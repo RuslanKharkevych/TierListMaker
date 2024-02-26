@@ -2,6 +2,6 @@
 
 # io
 
-abstract val [io](io.md): CoroutineDispatcher
+abstract val [io](io.md): [CoroutineDispatcher](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-dispatcher/index.html)
 
-Returns Dispatchers.IO in production code.
+Returns [Dispatchers.IO](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-i-o.html) in production code.

@@ -2,6 +2,6 @@
 
 # unconfined
 
-open override val [unconfined](unconfined.md): CoroutineDispatcher
+open override val [unconfined](unconfined.md): [CoroutineDispatcher](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-dispatcher/index.html)
 
-Returns Dispatchers.Unconfined.
+Returns [Dispatchers.Unconfined](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-unconfined.html).

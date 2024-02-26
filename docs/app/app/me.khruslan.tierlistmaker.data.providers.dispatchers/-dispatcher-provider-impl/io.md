@@ -2,6 +2,6 @@
 
 # io
 
-open override val [io](io.md): CoroutineDispatcher
+open override val [io](io.md): [CoroutineDispatcher](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-dispatcher/index.html)
 
-Returns Dispatchers.IO.
+Returns [Dispatchers.IO](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-i-o.html).

@@ -8,4 +8,4 @@ Root package. Contains only the issue registry.
 
 | Name | Summary |
 |---|---|
-| [LintIssueRegistry](-lint-issue-registry/index.md) | class [LintIssueRegistry](-lint-issue-registry/index.md) : IssueRegistry<br>Registry of the custom lint checks. |
+| [LintIssueRegistry](-lint-issue-registry/index.md) | class [LintIssueRegistry](-lint-issue-registry/index.md) : IssueRegistry<br>Registry of the custom [Lint](https://developer.android.com/studio/write/lint) checks. |

@@ -2,7 +2,7 @@
 
 # themeManager
 
-@Inject 
+@[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) 
 
 lateinit var [themeManager](theme-manager.md): [ThemeManager](../../me.khruslan.tierlistmaker.presentation.utils.theme/-theme-manager/index.md)
 

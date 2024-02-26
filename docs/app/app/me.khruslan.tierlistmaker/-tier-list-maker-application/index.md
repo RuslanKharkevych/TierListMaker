@@ -18,7 +18,7 @@ Custom application class is also required by [Hilt](https://dagger.dev/hilt) for
 
 | Name | Summary |
 |---|---|
-| [themeManager](theme-manager.md) | @Inject <br>lateinit var [themeManager](theme-manager.md): [ThemeManager](../../me.khruslan.tierlistmaker.presentation.utils.theme/-theme-manager/index.md)<br>Manager used to set the application theme. |
+| [themeManager](theme-manager.md) | @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) <br>lateinit var [themeManager](theme-manager.md): [ThemeManager](../../me.khruslan.tierlistmaker.presentation.utils.theme/-theme-manager/index.md)<br>Manager used to set the application theme. |
 
 ## Functions
 

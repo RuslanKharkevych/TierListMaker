@@ -2,7 +2,7 @@
 
 # updateTierListStylesJob
 
-private var [updateTierListStylesJob](update-tier-list-styles-job.md): Job?
+private var [updateTierListStylesJob](update-tier-list-styles-job.md): [Job](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-job/index.html)?
 
 Updates styles of all tiers in the tier list.
 

@@ -30,7 +30,7 @@ class TierListPreviewHolder(
     }
 
     /**
-     * Binds tier list preview to the [itemView].
+     * Binds tier list preview to the item view.
      *
      * Updates title and loads images.
      *

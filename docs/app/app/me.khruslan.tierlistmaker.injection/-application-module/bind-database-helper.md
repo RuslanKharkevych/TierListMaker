@@ -4,7 +4,7 @@
 
 @Binds
 
-@Singleton
+@[Singleton](https://javax-inject.github.io/javax-inject/api/javax/inject/Singleton.html)
 
 abstract fun [bindDatabaseHelper](bind-database-helper.md)(databaseHelperImpl: [DatabaseHelperImpl](../../me.khruslan.tierlistmaker.data.providers.database/-database-helper-impl/index.md)): [DatabaseHelper](../../me.khruslan.tierlistmaker.data.providers.database/-database-helper/index.md)
 

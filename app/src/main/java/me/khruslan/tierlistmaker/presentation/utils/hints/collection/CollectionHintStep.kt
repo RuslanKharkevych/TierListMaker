@@ -25,7 +25,7 @@ enum class CollectionHintStep : Indexable {
     RemoveTierList;
 
     /**
-     * Hint step position determined by [ordinal].
+     * Hint step position determined by [Enum.ordinal].
      */
     override val index = ordinal
 }

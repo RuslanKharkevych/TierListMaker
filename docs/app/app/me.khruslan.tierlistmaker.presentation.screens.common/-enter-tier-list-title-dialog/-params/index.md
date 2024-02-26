@@ -2,7 +2,7 @@
 
 # Params
 
-private data class [Params](index.md)(@[StringRes ](https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html)var dialogTitleResId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)? = null, var tierListTitle: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)? = null, var onConfirmListener: [EnterTierListTitleDialog.OnConfirmListener](../-on-confirm-listener/index.md)? = null)
+private data class [Params](index.md)(@[StringRes](https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html) var dialogTitleResId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)? = null, var tierListTitle: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)? = null, var onConfirmListener: [EnterTierListTitleDialog.OnConfirmListener](../-on-confirm-listener/index.md)? = null)
 
 [EnterTierListTitleDialog](../index.md) parameters.
 
@@ -12,7 +12,7 @@ This class is mutable. Configured by [EnterTierListTitleDialog.Builder](../-buil
 
 | | |
 |---|---|
-| [Params](-params.md) | constructor(@[StringRes ](https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html)dialogTitleResId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)? = null, tierListTitle: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)? = null, onConfirmListener: [EnterTierListTitleDialog.OnConfirmListener](../-on-confirm-listener/index.md)? = null)<br>Creates new params. |
+| [Params](-params.md) | constructor(@[StringRes](https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html) dialogTitleResId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)? = null, tierListTitle: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)? = null, onConfirmListener: [EnterTierListTitleDialog.OnConfirmListener](../-on-confirm-listener/index.md)? = null)<br>Creates new params. |
 
 ## Properties
 
@@ -27,4 +27,4 @@ This class is mutable. Configured by [EnterTierListTitleDialog.Builder](../-buil
 | Name | Summary |
 |---|---|
 | [getDialogTitle](get-dialog-title.md) | fun [getDialogTitle](get-dialog-title.md)(context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html)): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)?<br>Resolves localized dialog title. |
-| [setDialogTitle](set-dialog-title.md) | fun [setDialogTitle](set-dialog-title.md)(@[StringRes ](https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html)titleResId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html))<br>Setter of [dialogTitleResId](dialog-title-res-id.md). |
+| [setDialogTitle](set-dialog-title.md) | fun [setDialogTitle](set-dialog-title.md)(@[StringRes](https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html) titleResId: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html))<br>Setter of [dialogTitleResId](dialog-title-res-id.md). |

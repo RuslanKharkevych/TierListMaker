@@ -2,7 +2,7 @@
 
 # TierNameProviderImpl
 
-class [TierNameProviderImpl](index.md) @Inject constructor : [TierNameProvider](../-tier-name-provider/index.md)
+class [TierNameProviderImpl](index.md) @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) constructor : [TierNameProvider](../-tier-name-provider/index.md)
 
 [TierNameProvider](../-tier-name-provider/index.md) implementation.
 
@@ -12,7 +12,7 @@ Letters of the English alphabet are used as tier names.
 
 | | |
 |---|---|
-| [TierNameProviderImpl](-tier-name-provider-impl.md) | @Inject <br>constructor()<br>Creates a new tier name provider instance. |
+| [TierNameProviderImpl](-tier-name-provider-impl.md) | @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) <br>constructor()<br>Creates a new tier name provider instance. |
 
 ## Types
 

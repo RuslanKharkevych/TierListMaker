@@ -2,7 +2,7 @@
 
 # CardRippleEffect
 
-class [CardRippleEffect](index.md)(val card: MaterialCardView, @[ColorInt ](https://developer.android.com/reference/kotlin/androidx/annotation/ColorInt.html)val color: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)) : Effect
+class [CardRippleEffect](index.md)(val card: MaterialCardView, @[ColorInt](https://developer.android.com/reference/kotlin/androidx/annotation/ColorInt.html) val color: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)) : Effect
 
 Draws a card ripple effect.
 
@@ -12,7 +12,7 @@ An offset of the ripple is equal to the doubled target view padding.
 
 | | |
 |---|---|
-| [CardRippleEffect](-card-ripple-effect.md) | constructor(card: MaterialCardView, @[ColorInt ](https://developer.android.com/reference/kotlin/androidx/annotation/ColorInt.html)color: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html))<br>Creates a new card ripple effect with provided color. |
+| [CardRippleEffect](-card-ripple-effect.md) | constructor(card: MaterialCardView, @[ColorInt](https://developer.android.com/reference/kotlin/androidx/annotation/ColorInt.html) color: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html))<br>Creates a new card ripple effect with provided color. |
 
 ## Types
 

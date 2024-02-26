@@ -8,5 +8,5 @@ Contains plugin and markdown renderer.
 
 | Name | Summary |
 |---|---|
-| [MarkdownDokkaPlugin](-markdown-dokka-plugin/index.md) | class [MarkdownDokkaPlugin](-markdown-dokka-plugin/index.md) : DokkaPlugin<br>Customized Dokka plugin for rendering docs in markdown format. |
+| [MarkdownDokkaPlugin](-markdown-dokka-plugin/index.md) | class [MarkdownDokkaPlugin](-markdown-dokka-plugin/index.md) : DokkaPlugin<br>Customized [Dokka](https://kotlinlang.org/docs/dokka-introduction.html) plugin for rendering docs in markdown format. |
 | [MarkdownRenderer](-markdown-renderer/index.md) | class [MarkdownRenderer](-markdown-renderer/index.md)(context: DokkaContext) : CommonmarkRenderer<br>Renders documentation in markdown format. |

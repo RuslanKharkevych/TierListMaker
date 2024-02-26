@@ -2,7 +2,7 @@
 
 # DatabaseHelperImpl
 
-@Inject 
+@[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) 
 
 constructor(dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), defaultTierListCollectionProvider: [DefaultTierListCollectionProvider](../-default-tier-list-collection-provider/index.md), performanceService: [PerformanceService](../../me.khruslan.tierlistmaker.util.performance/-performance-service/index.md))
 

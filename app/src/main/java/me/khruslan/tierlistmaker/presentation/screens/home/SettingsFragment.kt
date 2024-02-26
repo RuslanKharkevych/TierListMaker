@@ -18,7 +18,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
     /**
      * Inflates preferences XML.
      *
-     * Called during [onCreate] to supply the preferences for this fragment.
+     * Called during [PreferenceFragmentCompat.onCreate] to supply the preferences for this
+     * fragment.
      *
      * @param savedInstanceState If the fragment is being re-created from a previous saved state,
      * this is the state.

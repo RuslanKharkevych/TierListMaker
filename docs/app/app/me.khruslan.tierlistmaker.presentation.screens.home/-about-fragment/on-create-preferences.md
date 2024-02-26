@@ -6,7 +6,7 @@ open override fun [onCreatePreferences](on-create-preferences.md)(savedInstanceS
 
 Inflates preferences XML and populates app version value.
 
-Called during [onCreate](../../../../app/me.khruslan.tierlistmaker.presentation.screens.home/-about-fragment/on-create.md) to supply the preferences for this fragment.
+Called during [PreferenceFragmentCompat.onCreate](https://developer.android.com/reference/kotlin/androidx/preference/PreferenceFragmentCompat.html#oncreate) to supply the preferences for this fragment.
 
 #### Parameters
 

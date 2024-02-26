@@ -188,7 +188,8 @@ class MarkdownRenderer(context: DokkaContext) : CommonmarkRenderer(context) {
     /**
      * Builds DRI link, excluding generated code.
      *
-     * View binding and safe args classes are generated and should not be documented.
+     * View binding and safe args classes are generated and should not be documented. Fixes issue
+     * in [CommonmarkRenderer] where no trailing space is added after an annotation.
      *
      * @param node DRI link node to render.
      * @param pageContext Context of the page.
@@ -224,12 +225,13 @@ class MarkdownRenderer(context: DokkaContext) : CommonmarkRenderer(context) {
                 buildLink(location) {
                     buildText(node.children, pageContext, sourceSetRestriction)
                 }
+                if (node.isAnnotation()) append(" ")
             }
         }
     }
 
     /**
-     * Builds text, making sure annotations are surrounded with leading and trailing spacer.
+     * Builds text, making sure annotations are rendered with leading space when necessary.
      *
      * Fixes the respective issue in [CommonmarkRenderer].
      *
@@ -237,15 +239,8 @@ class MarkdownRenderer(context: DokkaContext) : CommonmarkRenderer(context) {
      * @receiver Current string builder.
      */
     override fun StringBuilder.buildText(textNode: ContentText) {
-        if (textNode.text == "@" && endsWith(")")) {
-            append(" ")
-            buildTextWithDecorators(textNode)
-        } else if (textNode.isAnnotation()) {
-            buildTextWithDecorators(textNode)
-            append(" ")
-        } else {
-            buildTextWithDecorators(textNode)
-        }
+        if (textNode.text == "@" && endsWith(")")) append(" ")
+        buildTextWithDecorators(textNode)
     }
 
     /**
@@ -396,16 +391,26 @@ class MarkdownRenderer(context: DokkaContext) : CommonmarkRenderer(context) {
     }
 
     /**
-     * Checks whether this text node is an annotation.
+     * Checks whether this node links to an annotation.
      *
-     * Compares node text for the exact matching. The list of annotations to compare is hardcoded.
-     * To support correct rendering of new annotations, they must be listed here.
+     * Compares node's fully-qualified class name for the exact match. The list of annotations to
+     * compare with is hardcoded. To support correct rendering of new annotations, they must be
+     * listed here.
      *
-     * @receiver Text node.
-     * @return Whether this text node is among supported annotations.
+     * @receiver Link node.
+     * @return Whether this node links to a supported annotation.
      */
-    private fun ContentText.isAnnotation(): Boolean {
-        return text in listOf("AttrRes", "ColorInt", "DrawableRes", "IdRes", "Inject", "StringRes")
+    private fun ContentDRILink.isAnnotation(): Boolean {
+        val className = "${address.packageName}.${address.classNames}"
+        val annotationClasses = listOf(
+            "androidx.annotation.AttrRes",
+            "androidx.annotation.ColorInt",
+            "androidx.annotation.DrawableRes",
+            "androidx.annotation.IdRes",
+            "androidx.annotation.StringRes",
+            "javax.inject.Inject",
+        )
+        return className in annotationClasses
     }
 
     /**

@@ -2,6 +2,6 @@
 
 # unconfined
 
-abstract val [unconfined](unconfined.md): CoroutineDispatcher
+abstract val [unconfined](unconfined.md): [CoroutineDispatcher](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-dispatcher/index.html)
 
-Returns Dispatchers.Unconfined in production code.
+Returns [Dispatchers.Unconfined](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-unconfined.html) in production code.

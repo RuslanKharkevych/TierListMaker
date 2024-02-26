@@ -2,7 +2,7 @@
 
 # TierListProcessorImpl
 
-class [TierListProcessorImpl](index.md) @Inject constructor : [TierListProcessor](../-tier-list-processor/index.md)
+class [TierListProcessorImpl](index.md) @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) constructor : [TierListProcessor](../-tier-list-processor/index.md)
 
 [TierListProcessor](../-tier-list-processor/index.md) implementation.
 
@@ -10,7 +10,7 @@ class [TierListProcessorImpl](index.md) @Inject constructor : [TierListProcessor
 
 | | |
 |---|---|
-| [TierListProcessorImpl](-tier-list-processor-impl.md) | @Inject <br>constructor()<br>Creates a new tier list processor instance. |
+| [TierListProcessorImpl](-tier-list-processor-impl.md) | @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) <br>constructor()<br>Creates a new tier list processor instance. |
 
 ## Properties
 

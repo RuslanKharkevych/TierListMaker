@@ -25,7 +25,7 @@ Hint steps of the [CollectionHintGroup](../-collection-hint-group/index.md).
 | Name | Summary |
 |---|---|
 | [entries](entries.md) | val [entries](entries.md): [EnumEntries](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.enums/-enum-entries/index.html)&lt;[CollectionHintStep](index.md)&gt;<br>Returns a representation of an immutable list of all enum entries, in the order they're declared. |
-| [index](--index--.md) | open override val [index](--index--.md): [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)<br>Hint step position determined by [ordinal](../../../../app/me.khruslan.tierlistmaker.presentation.utils.hints.collection/-collection-hint-step/ordinal.md). |
+| [index](--index--.md) | open override val [index](--index--.md): [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)<br>Hint step position determined by [Enum.ordinal](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/ordinal.html). |
 
 ## Functions
 

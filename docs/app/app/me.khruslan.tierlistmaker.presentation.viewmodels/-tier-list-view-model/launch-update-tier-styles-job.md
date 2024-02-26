@@ -2,7 +2,7 @@
 
 # launchUpdateTierStylesJob
 
-private fun [launchUpdateTierStylesJob](launch-update-tier-styles-job.md)(): Job
+private fun [launchUpdateTierStylesJob](launch-update-tier-styles-job.md)(): [Job](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-job/index.html)
 
 Creates and starts a job that updates styles of all tiers.
 
