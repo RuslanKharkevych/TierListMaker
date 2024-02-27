@@ -123,6 +123,7 @@
     <string name="tier_list_musical_instruments">Musical instruments</string>
     <string name="tier_list_school_subjects">School subjects</string>
     <string name="tier_list_sports">Sports</string>
+    <string name="tier_list_vehicles">Vehicles</string>
     <string name="tier_list_zodiac_signs">Zodiac signs</string>
     <!-- endregion DefaultTierListCollectionProvider -->
 

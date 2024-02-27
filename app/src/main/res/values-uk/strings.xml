@@ -87,4 +87,5 @@
     <string name="hint_remove_tier_list">Проведіть пальцем зліва направо, щоб видалити список</string>
     <string name="hint_reorder_tier_lists">Натисніть і утримуйте список, потім перемістіть його вверх або вних, щоб змінити порядок</string>
     <string name="tier_list_school_subjects">Шкільні предмети</string>
+    <string name="tier_list_vehicles">Транспортні засоби</string>
 </resources>
