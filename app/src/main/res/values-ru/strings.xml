@@ -86,6 +86,7 @@
     <string name="hint_add_new_tier_list">Чтобы добавить новый список, нажмите на кнопку \“+\” в правом нижнем углу экрана</string>
     <string name="hint_remove_tier_list">Проведите пальцем слева направо, чтобы удалить список</string>
     <string name="hint_reorder_tier_lists">Нажмите и удерживайте список, затем переместите его вверх или вниз, чтобы изменить порядок</string>
+    <string name="tier_list_mythical_creatures">Мифические существа</string>
     <string name="tier_list_school_subjects">Школьные предметы</string>
     <string name="tier_list_vehicles">Транспортные средства</string>
 </resources>

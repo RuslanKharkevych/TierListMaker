@@ -59,6 +59,7 @@ class DefaultTierListCollectionProviderImpl @Inject constructor(
             TierListParams(R.string.tier_list_musical_instruments, "musical_instruments", 4),
             TierListParams(R.string.tier_list_vehicles, "vehicles", 4),
             TierListParams(R.string.tier_list_school_subjects, "school_subjects", 3),
+            TierListParams(R.string.tier_list_mythical_creatures, "mythical_creatures", 3),
             TierListParams(R.string.tier_list_zodiac_signs, "zodiac_signs", 3)
         )
 
