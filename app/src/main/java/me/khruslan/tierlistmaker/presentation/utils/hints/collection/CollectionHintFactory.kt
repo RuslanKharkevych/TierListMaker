@@ -91,7 +91,7 @@ class CollectionHintFactory(
     /**
      * Creates a hint that shows how to reorder tier lists.
      *
-     * Anchored to the tier list card. This is the first hint, that's why the next button is
+     * Anchored to the tier list card. This is the first hint, that's why the previous button is
      * disabled.
      *
      * @return Created hint.

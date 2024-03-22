@@ -10,7 +10,7 @@ java {
 }
 
 dependencies {
-    def lint_version = '31.2.2'
+    def lint_version = '31.3.1'
     compileOnly "com.android.tools.lint:lint-api:$lint_version"
     compileOnly "com.android.tools.lint:lint-checks:$lint_version"
     testImplementation "com.android.tools.lint:lint:$lint_version"

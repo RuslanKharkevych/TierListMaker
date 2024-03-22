@@ -42,6 +42,7 @@ It includes the highlighted spot as well as the overlay.
 | Name | Summary |
 |---|---|
 | [callOnCloseGroup](call-on-close-group.md) | private fun [callOnCloseGroup](call-on-close-group.md)()<br>Invokes [OnHintListener.onCloseGroup](../-on-hint-listener/on-close-group.md) event. |
+| [getAnchorPointF](get-anchor-point-f.md) | private fun [getAnchorPointF](get-anchor-point-f.md)(anchor: [View](https://developer.android.com/reference/kotlin/android/view/View.html)?): [PointF](https://developer.android.com/reference/kotlin/android/graphics/PointF.html)<br>Calculates anchor point of the view. |
 | [initButtonListeners](init-button-listeners.md) | private fun [initButtonListeners](init-button-listeners.md)(overlay: [HintOverlayView](../../me.khruslan.tierlistmaker.presentation.views/-hint-overlay-view/index.md))<br>Initializes listeners of the buttons in the overlay view. |
 | [initTouchListener](init-touch-listener.md) | private fun [initTouchListener](init-touch-listener.md)(overlay: [HintOverlayView](../../me.khruslan.tierlistmaker.presentation.views/-hint-overlay-view/index.md), anchor: [View](https://developer.android.com/reference/kotlin/android/view/View.html)?)<br>Initializes the touch listener of the overlay view. |
 | [setOnHintListener](set-on-hint-listener.md) | fun [setOnHintListener](set-on-hint-listener.md)(listener: [OnHintListener](../-on-hint-listener/index.md))<br>Registers [onHintListener](on-hint-listener.md). |

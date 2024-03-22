@@ -2,7 +2,7 @@
 
 # createIntent
 
-open override fun [createIntent](create-intent.md)(context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html), input: [TierList](../../me.khruslan.tierlistmaker.data.models.tierlist/-tier-list/index.md)): [Intent](https://developer.android.com/reference/kotlin/android/content/Intent.html)
+open override fun [createIntent](create-intent.md)(context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html), input: [TierListNavArgs](../-tier-list-nav-args/index.md)): [Intent](https://developer.android.com/reference/kotlin/android/content/Intent.html)
 
 Creates an intent that can be used for [Activity.onActivityResult](https://developer.android.com/reference/kotlin/android/app/Activity.html#onactivityresult).
 
@@ -15,4 +15,4 @@ Created intent.
 | | |
 |---|---|
 | context | Activity context. |
-| input | Passed tier list. |
+| input | Tier list navigation arguments. |

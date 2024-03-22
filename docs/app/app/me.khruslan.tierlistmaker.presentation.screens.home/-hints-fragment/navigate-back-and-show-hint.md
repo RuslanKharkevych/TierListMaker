@@ -2,7 +2,7 @@
 
 # navigateBackAndShowHint
 
-private fun [navigateBackAndShowHint](navigate-back-and-show-hint.md)(step: [CollectionHintStep](../../me.khruslan.tierlistmaker.presentation.utils.hints.collection/-collection-hint-step/index.md))
+private fun [navigateBackAndShowHint](navigate-back-and-show-hint.md)(step: [HintStep](../../me.khruslan.tierlistmaker.presentation.utils.hints.core/-hint-step/index.md))
 
 Navigates back and notifies [activityViewModel](activity-view-model.md) observers that hint needs to be shown.
 

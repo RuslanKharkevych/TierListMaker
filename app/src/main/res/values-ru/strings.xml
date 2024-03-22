@@ -17,6 +17,7 @@
     <string name="btn_yes">Да</string>
     <string name="btn_no">Нет</string>
     <string name="remove_tier_list_confirmation_title">Вы уверены, что хотите удалить список уровней \“%s\”?</string>
+    <string name="no_tier_lists_found_message">Списки не найдены. Создайте свой первый список, чтобы разблокировать подсказки</string>
     <string name="menu_item_rename_tier_list_title">Переименовать список</string>
     <string name="menu_item_collection_title">Моя коллекция</string>
     <string name="menu_item_settings_title">Настройки</string>
@@ -69,10 +70,14 @@
     <string name="pref_app_version_title">Версия приложения</string>
     <string name="tier_list_musical_instruments">Музыкальные инструменты</string>
     <string name="tier_list_sports">Виды спорта</string>
-    <string name="pref_collection_hints_category_title">Подсказки по спискам</string>
+    <string name="pref_collection_hints_category_title">Подсказки по коллекции</string>
     <string name="pref_reorder_tier_lists_hint_title">Как изменить порядок списков?</string>
     <string name="pref_add_new_tier_list_hint_title">Как добавить новый список?</string>
     <string name="pref_remove_tier_list_hint_title">Как удалить список?</string>
+    <string name="pref_tier_list_hints_category_title">Подсказки по списку</string>
+    <string name="pref_reorder_tiers_hint_title">Как изменить порядок уровней?</string>
+    <string name="pref_remove_tier_list_image_hint_title">Как удалить изображение?</string>
+    <string name="pref_remove_tier_hint_title">Как удалить уровень?</string>
     <string name="tier_list_animals">Животные</string>
     <string name="tier_list_fast_food">Фастфуд</string>
     <string name="tier_list_fruits">Фрукты</string>
@@ -89,4 +94,7 @@
     <string name="tier_list_mythical_creatures">Мифические существа</string>
     <string name="tier_list_school_subjects">Школьные предметы</string>
     <string name="tier_list_vehicles">Транспортные средства</string>
+    <string name="hint_remove_image">Перетащите изображение на значок мусорной корзины в правом верхнем углу экрана, чтобы удалить его</string>
+    <string name="hint_remove_tier">Проведите пальцем слева направо, чтобы удалить уровень</string>
+    <string name="hint_reorder_tiers">Нажмите и удерживайте заголовок уровня, затем переместите его вверх или вниз, чтобы изменить порядок</string>
 </resources>

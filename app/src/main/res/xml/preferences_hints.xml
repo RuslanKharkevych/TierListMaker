@@ -22,4 +22,26 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        app:allowDividerAbove="false"
+        app:iconSpaceReserved="false"
+        app:title="@string/pref_tier_list_hints_category_title">
+
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="@string/pref_reorder_tiers_hint_key"
+            app:title="@string/pref_reorder_tiers_hint_title" />
+
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="@string/pref_remove_tier_list_image_hint_key"
+            app:title="@string/pref_remove_tier_list_image_hint_title" />
+
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="@string/pref_remove_tier_hint_key"
+            app:title="@string/pref_remove_tier_hint_title" />
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

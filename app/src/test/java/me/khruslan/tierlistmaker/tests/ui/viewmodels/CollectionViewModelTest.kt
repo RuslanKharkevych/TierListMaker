@@ -23,6 +23,7 @@ import me.khruslan.tierlistmaker.presentation.viewmodels.CollectionViewModel
 import me.khruslan.tierlistmaker.utils.awaitValue
 import me.khruslan.tierlistmaker.util.swap
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -233,7 +234,7 @@ class CollectionViewModelTest {
         initViewModel()
         val position = 0
         val expectedTierList = tierLists[position]
-        val actualTierList = viewModel.getTierListByPosition(position)
+        val actualTierList = viewModel.getTierListAtPosition(position)
 
         assertEquals(expectedTierList, actualTierList)
     }
@@ -244,8 +245,26 @@ class CollectionViewModelTest {
         initViewModel()
 
         assertThrows(IndexOutOfBoundsException::class.java) {
-            viewModel.getTierListByPosition(tierLists.size)
+            viewModel.getTierListAtPosition(tierLists.size)
         }
+    }
+
+    @Test
+    fun `Returns first tier list`() = runTest {
+        fakeDatabaseHelper.tierLists = tierLists
+        initViewModel()
+        val expectedTierList = tierLists.first()
+        val actualTierList = viewModel.getFirstTierListOrNull()
+
+        assertEquals(expectedTierList, actualTierList)
+    }
+
+    @Test
+    fun `Returns null if tier list does not exist`() = runTest {
+        fakeDatabaseHelper.tierLists = mutableListOf()
+        initViewModel()
+
+        assertNull(viewModel.getFirstTierListOrNull())
     }
 
     @Test
@@ -325,8 +344,8 @@ class CollectionViewModelTest {
         val expectedTierLists = tierLists.apply { swap(0, 1) }
         val actualTierLists = checkNotNull(fakeDatabaseHelper.tierLists)
         assertEquals(expectedTierLists, actualTierLists)
-        assertEquals(tierLists[0], viewModel.getTierListByPosition(1))
-        assertEquals(tierLists[1], viewModel.getTierListByPosition(0))
+        assertEquals(tierLists[0], viewModel.getTierListAtPosition(1))
+        assertEquals(tierLists[1], viewModel.getTierListAtPosition(0))
         errorObserver.assertNoValue()
     }
 
@@ -343,8 +362,8 @@ class CollectionViewModelTest {
         val expectedTierLists = tierLists
         val actualTierLists = checkNotNull(fakeDatabaseHelper.tierLists)
         assertEquals(expectedTierLists, actualTierLists)
-        assertEquals(tierLists[0], viewModel.getTierListByPosition(1))
-        assertEquals(tierLists[1], viewModel.getTierListByPosition(0))
+        assertEquals(tierLists[0], viewModel.getTierListAtPosition(1))
+        assertEquals(tierLists[1], viewModel.getTierListAtPosition(0))
         errorObserver.awaitValue(R.string.update_tier_lists_error_message)
     }
 

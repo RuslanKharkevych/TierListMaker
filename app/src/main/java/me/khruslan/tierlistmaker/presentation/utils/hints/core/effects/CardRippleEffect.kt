@@ -6,8 +6,6 @@ import android.graphics.Paint
 import android.graphics.PointF
 import androidx.annotation.ColorInt
 import com.google.android.material.card.MaterialCardView
-import com.takusemba.spotlight.effet.Effect
-import com.takusemba.spotlight.effet.RippleEffect
 import kotlin.math.min
 
 /**
@@ -22,35 +20,7 @@ import kotlin.math.min
 class CardRippleEffect(
     private val card: MaterialCardView,
     @ColorInt private val color: Int
-) : Effect {
-
-    /**
-     * Constants for internal use.
-     */
-    private companion object Constants {
-
-        /**
-         * Maximum alpha value (fully opaque) in [0..255] range.
-         *
-         * This format for alpha is used in some places in Android SDK, such as [Paint.setAlpha].
-         */
-        private const val MAX_ALPHA = 255f
-    }
-
-    /**
-     * Default ripple effect duration.
-     */
-    override val duration = RippleEffect.DEFAULT_DURATION
-
-    /**
-     * Default ripple effect interpolator.
-     */
-    override val interpolator = RippleEffect.DEFAULT_INTERPOLATOR
-
-    /**
-     * Default ripple effect repeat mode.
-     */
-    override val repeatMode = RippleEffect.DEFAULT_REPEAT_MODE
+) : BaseRectangularRippleEffect() {
 
     /**
      * Draws card ripple effect.

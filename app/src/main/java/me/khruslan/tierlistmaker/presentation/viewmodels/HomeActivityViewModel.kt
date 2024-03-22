@@ -8,7 +8,7 @@ import com.hadilq.liveevent.LiveEventConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import me.khruslan.tierlistmaker.presentation.screens.home.HomeActivity
-import me.khruslan.tierlistmaker.presentation.utils.hints.collection.CollectionHintStep
+import me.khruslan.tierlistmaker.presentation.utils.hints.core.HintStep
 import me.khruslan.tierlistmaker.presentation.utils.theme.ThemeManager
 import timber.log.Timber
 import javax.inject.Inject
@@ -30,7 +30,7 @@ class HomeActivityViewModel @Inject constructor(
      * Mutable reference to [hintEvent].
      */
     private val _hintEvent by lazy {
-        LiveEvent<CollectionHintStep>(LiveEventConfig.PreferFirstObserver)
+        LiveEvent<HintStep>(LiveEventConfig.PreferFirstObserver)
     }
 
     /**
@@ -38,7 +38,7 @@ class HomeActivityViewModel @Inject constructor(
      *
      * The value corresponds to the step of the hint within its group.
      */
-    val hintEvent: LiveData<CollectionHintStep> get() = _hintEvent
+    val hintEvent: LiveData<HintStep> get() = _hintEvent
 
     init {
         Timber.i("HomeActivityViewModel initialized")
@@ -69,7 +69,7 @@ class HomeActivityViewModel @Inject constructor(
      *
      * @param step The step of the hint within its group.
      */
-    fun showHint(step: CollectionHintStep) {
+    fun showHint(step: HintStep) {
         _hintEvent.value = step
     }
 }

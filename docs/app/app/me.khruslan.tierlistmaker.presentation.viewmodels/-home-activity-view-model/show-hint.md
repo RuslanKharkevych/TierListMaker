@@ -2,7 +2,7 @@
 
 # showHint
 
-fun [showHint](show-hint.md)(step: [CollectionHintStep](../../me.khruslan.tierlistmaker.presentation.utils.hints.collection/-collection-hint-step/index.md))
+fun [showHint](show-hint.md)(step: [HintStep](../../me.khruslan.tierlistmaker.presentation.utils.hints.core/-hint-step/index.md))
 
 Notifies the observers that hint needs to be shown.
 

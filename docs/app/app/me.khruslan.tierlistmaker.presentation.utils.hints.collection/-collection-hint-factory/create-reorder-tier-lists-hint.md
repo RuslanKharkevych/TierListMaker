@@ -6,7 +6,7 @@ private fun [createReorderTierListsHint](create-reorder-tier-lists-hint.md)(): [
 
 Creates a hint that shows how to reorder tier lists.
 
-Anchored to the tier list card. This is the first hint, that's why the next button is disabled.
+Anchored to the tier list card. This is the first hint, that's why the previous button is disabled.
 
 #### Return
 

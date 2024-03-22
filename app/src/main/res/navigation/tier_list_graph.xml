@@ -10,10 +10,14 @@
         android:name="me.khruslan.tierlistmaker.presentation.screens.tierlist.TierListFragment"
         tools:layout="@layout/fragment_tier_list">
 
-        <!--suppress NavigationFile https://issuetracker.google.com/issues/293665984 -->
         <argument
             android:name="tierList"
             app:argType="me.khruslan.tierlistmaker.data.models.tierlist.TierList" />
+
+        <argument
+            android:name="hintStepName"
+            app:argType="string"
+            app:nullable="true" />
 
     </fragment>
 

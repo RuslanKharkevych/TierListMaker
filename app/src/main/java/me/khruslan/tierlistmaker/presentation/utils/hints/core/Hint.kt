@@ -1,7 +1,9 @@
 package me.khruslan.tierlistmaker.presentation.utils.hints.core
 
 import android.annotation.SuppressLint
+import android.graphics.PointF
 import android.graphics.Rect
+import android.graphics.RectF
 import android.view.View
 import com.takusemba.spotlight.OnTargetListener
 import com.takusemba.spotlight.Target
@@ -40,12 +42,12 @@ class Hint(
     /**
      * Target of the current hint built from the [Hint] params.
      *
-     * If anchor is missing - the entire overlay is used as an anchor. If shape is missing -
-     * [EmptyShape] is used. If effect is missing - [EmptyEffect] is used.
+     * If anchor view is missing a (0,0) point is used. If shape is missing [EmptyShape] is used. If
+     * effect is missing [EmptyEffect] is used.
      */
     val target = Target.Builder()
         .setOverlay(overlay)
-        .setAnchor(anchor ?: overlay)
+        .setAnchor(getAnchorPointF(anchor))
         .setShape(shape ?: EmptyShape())
         .setEffect(effect ?: EmptyEffect())
         .setOnTargetListener(TargetListener(name))
@@ -77,9 +79,19 @@ class Hint(
     @SuppressLint("ClickableViewAccessibility")
     private fun initTouchListener(overlay: HintOverlayView, anchor: View?) {
         overlay.setOnTouchListener { _, event ->
-            val anchorRect = Rect()
-            anchor?.getGlobalVisibleRect(anchorRect)
-            val isAnchorTouched = anchorRect.contains(event.x.toInt(), event.y.toInt())
+            if (anchor == null) {
+                onHintListener?.onCloseGroup()
+                return@setOnTouchListener true
+            }
+
+            val anchorRect = RectF(
+                target.anchor.x - anchor.width / 2f,
+                target.anchor.y - anchor.height / 2f,
+                target.anchor.x + anchor.width / 2f,
+                target.anchor.y + anchor.height / 2
+            )
+
+            val isAnchorTouched = anchorRect.contains(event.x, event.y)
             if (isAnchorTouched) onHintListener?.onCloseGroup()
             !isAnchorTouched
         }
@@ -108,6 +120,21 @@ class Hint(
     private fun callOnCloseGroup() {
         target.listener?.onEnded()
         onHintListener?.onCloseGroup()
+    }
+
+    /**
+     * Calculates anchor point of the view.
+     *
+     * An anchor point is a center of the visible portion of the view. If anchor is null, a (0,0)
+     * point is returned.
+     *
+     * @param anchor Anchor view.
+     * @return Calculated anchor point.
+     */
+    private fun getAnchorPointF(anchor: View?): PointF {
+        val rect = Rect()
+        anchor?.getGlobalVisibleRect(rect)
+        return PointF(rect.exactCenterX(), rect.exactCenterY())
     }
 
     /**

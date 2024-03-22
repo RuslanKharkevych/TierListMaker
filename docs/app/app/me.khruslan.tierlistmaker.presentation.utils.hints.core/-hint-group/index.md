@@ -2,7 +2,7 @@
 
 # HintGroup
 
-abstract class [HintGroup](index.md)&lt;[T](index.md) : [Indexable](../-indexable/index.md)&gt;(val name: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), val activity: [Activity](https://developer.android.com/reference/kotlin/android/app/Activity.html), val steps: [List](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html)&lt;[T](index.md)&gt;)
+abstract class [HintGroup](index.md)&lt;[T](index.md) : [HintStep](../-hint-step/index.md)&gt;(val name: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), val activity: [Activity](https://developer.android.com/reference/kotlin/android/app/Activity.html), val steps: [List](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html)&lt;[T](index.md)&gt;)
 
 An ordered group of hints.
 
@@ -19,6 +19,7 @@ Implemented with [Spotlight](https://github.com/TakuSemba/Spotlight). User can n
 | |
 |---|
 | [CollectionHintGroup](../../me.khruslan.tierlistmaker.presentation.utils.hints.collection/-collection-hint-group/index.md) |
+| [TierListHintGroup](../../me.khruslan.tierlistmaker.presentation.utils.hints.tierlist/-tier-list-hint-group/index.md) |
 
 ## Constructors
 

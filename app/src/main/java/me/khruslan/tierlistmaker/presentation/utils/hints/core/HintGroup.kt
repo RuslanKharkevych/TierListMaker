@@ -20,7 +20,7 @@ import timber.log.Timber
  * @property steps The list of hint steps.
  * @constructor Creates a new hint group.
  */
-abstract class HintGroup<T: Indexable>(
+abstract class HintGroup<T: HintStep>(
     private val name: String,
     private val activity: Activity,
     private val steps: List<T>

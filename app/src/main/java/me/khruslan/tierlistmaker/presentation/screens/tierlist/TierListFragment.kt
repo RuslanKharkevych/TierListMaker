@@ -49,6 +49,8 @@ import me.khruslan.tierlistmaker.presentation.models.LoadingProgress
 import me.khruslan.tierlistmaker.presentation.models.drag.DragLocation
 import me.khruslan.tierlistmaker.presentation.screens.common.EnterTierListTitleDialog
 import me.khruslan.tierlistmaker.presentation.utils.drag.TierListDragListener
+import me.khruslan.tierlistmaker.presentation.utils.hints.tierlist.TierListHintGroup
+import me.khruslan.tierlistmaker.presentation.utils.hints.tierlist.TierListHintStep
 import me.khruslan.tierlistmaker.presentation.utils.navigation.TierListResultContract
 import me.khruslan.tierlistmaker.presentation.utils.recyclerview.reorderable.enableReordering
 import me.khruslan.tierlistmaker.presentation.utils.recyclerview.scroll.AutoScrollManager
@@ -276,6 +278,7 @@ class TierListFragment : Fragment() {
      */
     private fun initObservers() {
         viewModel.tierListEvent.observe(viewLifecycleOwner, tierListEventObserver)
+        viewModel.hintEvent.observe(viewLifecycleOwner, hintObserver)
         viewModel.loadingProgressLiveData.observe(viewLifecycleOwner, loadingProgressObserver)
     }
 
@@ -332,6 +335,15 @@ class TierListFragment : Fragment() {
             is TierListReadyToView -> viewTierList(event.uri)
             is TierListExportError -> presentTierListErrorSnackbar(event.errorMessageResId)
         }
+    }
+
+    /**
+     * Observer of the hint events.
+     *
+     * Shows a hint from [TierListHintGroup].
+     */
+    private val hintObserver = Observer<TierListHintStep> { step ->
+        TierListHintGroup(requireActivity(), binding).show(step)
     }
 
     /**

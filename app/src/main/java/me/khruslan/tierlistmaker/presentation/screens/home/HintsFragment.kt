@@ -7,13 +7,15 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceScreen
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.presentation.utils.hints.collection.CollectionHintStep
+import me.khruslan.tierlistmaker.presentation.utils.hints.core.HintStep
+import me.khruslan.tierlistmaker.presentation.utils.hints.tierlist.TierListHintStep
 import me.khruslan.tierlistmaker.presentation.utils.setOnPreferenceClickListener
 import me.khruslan.tierlistmaker.presentation.viewmodels.HomeActivityViewModel
 
 /**
  * Preference fragment that represents "Hints" option in the navigation drawer.
  *
- * Contains "Collection hints" section.
+ * Contains "Collection hints" and "Tier list hints" sections.
  *
  * @constructor Default no-arg constructor.
  */
@@ -48,6 +50,16 @@ class HintsFragment : PreferenceFragmentCompat() {
      * On preference click navigates back and shows hint.
      */
     private fun initClickListeners() {
+        initCollectionHintListeners()
+        initTierListHintListeners()
+    }
+
+    /**
+     * Initializes click listeners for collection hints.
+     *
+     * On preference click navigates back and shows hint.
+     */
+    private fun initCollectionHintListeners() {
         setOnPreferenceClickListener(R.string.pref_reorder_tier_lists_hint_key) {
             navigateBackAndShowHint(CollectionHintStep.ReorderTierLists)
         }
@@ -60,11 +72,28 @@ class HintsFragment : PreferenceFragmentCompat() {
     }
 
     /**
+     * Initializes click listeners for tier list hints.
+     *
+     * On preference click navigates back and shows hint.
+     */
+    private fun initTierListHintListeners() {
+        setOnPreferenceClickListener(R.string.pref_reorder_tiers_hint_key) {
+            navigateBackAndShowHint(TierListHintStep.ReorderTiers)
+        }
+        setOnPreferenceClickListener(R.string.pref_remove_tier_list_image_hint_key) {
+            navigateBackAndShowHint(TierListHintStep.RemoveImage)
+        }
+        setOnPreferenceClickListener(R.string.pref_remove_tier_hint_key) {
+            navigateBackAndShowHint(TierListHintStep.RemoveTier)
+        }
+    }
+
+    /**
      * Navigates back and notifies [activityViewModel] observers that hint needs to be shown.
      *
      * @param step Selected hint step.
      */
-    private fun navigateBackAndShowHint(step: CollectionHintStep) {
+    private fun navigateBackAndShowHint(step: HintStep) {
         activityViewModel.showHint(step)
         findNavController().popBackStack()
     }

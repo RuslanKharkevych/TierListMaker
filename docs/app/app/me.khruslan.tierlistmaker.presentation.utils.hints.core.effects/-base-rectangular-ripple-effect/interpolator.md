@@ -1,4 +1,4 @@
-//[app](../../../index.md)/[me.khruslan.tierlistmaker.presentation.utils.hints.core.effects](../index.md)/[CardRippleEffect](index.md)/[interpolator](interpolator.md)
+//[app](../../../index.md)/[me.khruslan.tierlistmaker.presentation.utils.hints.core.effects](../index.md)/[BaseRectangularRippleEffect](index.md)/[interpolator](interpolator.md)
 
 # interpolator
 

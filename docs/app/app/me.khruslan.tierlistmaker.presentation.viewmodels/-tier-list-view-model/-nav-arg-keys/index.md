@@ -12,4 +12,5 @@ These keys must be passed as arguments when navigating to the [TierListFragment]
 
 | Name | Summary |
 |---|---|
-| [KEY_TIER_LIST](-k-e-y_-t-i-e-r_-l-i-s-t.md) | private const val [KEY_TIER_LIST](-k-e-y_-t-i-e-r_-l-i-s-t.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) |
+| [KEY_HINT_STEP_NAME](-k-e-y_-h-i-n-t_-s-t-e-p_-n-a-m-e.md) | private const val [KEY_HINT_STEP_NAME](-k-e-y_-h-i-n-t_-s-t-e-p_-n-a-m-e.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>Key of the [TierListHintStep.name](../../../../../app/me.khruslan.tierlistmaker.presentation.utils.hints.tierlist/-tier-list-hint-step/name.md) argument. |
+| [KEY_TIER_LIST](-k-e-y_-t-i-e-r_-l-i-s-t.md) | private const val [KEY_TIER_LIST](-k-e-y_-t-i-e-r_-l-i-s-t.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>Key of the [TierList](../../../me.khruslan.tierlistmaker.data.models.tierlist/-tier-list/index.md) argument. |

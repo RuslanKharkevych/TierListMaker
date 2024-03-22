@@ -49,6 +49,7 @@ import me.khruslan.tierlistmaker.fakes.data.providers.drag.FakeDragPocket
 import me.khruslan.tierlistmaker.fakes.utils.performance.NoOpPerformanceService
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
 import me.khruslan.tierlistmaker.presentation.models.LoadingProgress
+import me.khruslan.tierlistmaker.presentation.utils.hints.tierlist.TierListHintStep
 import me.khruslan.tierlistmaker.presentation.viewmodels.TierListViewModel
 import me.khruslan.tierlistmaker.util.BACKLOG_TIER_POSITION
 import me.khruslan.tierlistmaker.utils.awaitValue
@@ -67,6 +68,7 @@ class TierListViewModelTest {
 
     private companion object {
         private const val KEY_TIER_LIST = "tierList"
+        private const val KEY_HINT_STEP_NAME = "hintStepName"
         private const val EXTENSIONS_PACKAGE = "me.khruslan.tierlistmaker.util.ExtensionsKt"
     }
 
@@ -187,6 +189,21 @@ class TierListViewModelTest {
 
         assertEquals(tierList, viewModel.tierList)
         assertEquals(tierList, fakeTierListProcessor.initializedTierList)
+    }
+
+    @Test
+    fun `Produces hint event with step from SavedDateHandle on init`() {
+        val hintStep = TierListHintStep.RemoveTier
+        savedStateHandle[KEY_HINT_STEP_NAME] = hintStep.name
+        initViewModelWithTierList()
+
+        assertEquals(hintStep, viewModel.hintEvent.value)
+    }
+
+    @Test
+    fun `Doesn't produce hint event if step is not found in SavedDateHandle on init`() {
+        initViewModelWithTierList()
+        assertNull(viewModel.hintEvent.value)
     }
 
     @Test

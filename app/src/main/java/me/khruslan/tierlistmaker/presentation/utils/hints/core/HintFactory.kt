@@ -6,7 +6,7 @@ package me.khruslan.tierlistmaker.presentation.utils.hints.core
  * @param T Type of the hint step.
  * @constructor Default no-arg constructor.
  */
-abstract class HintFactory<T: Indexable> {
+abstract class HintFactory<T: HintStep> {
 
     /**
      * Creates a hint for the provided step.

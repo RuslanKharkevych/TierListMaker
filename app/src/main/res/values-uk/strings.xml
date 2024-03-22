@@ -17,6 +17,7 @@
     <string name="btn_yes">Так</string>
     <string name="btn_no">Ні</string>
     <string name="remove_tier_list_confirmation_title">Ви впевнені, що бажаєте видалити список \“%s\”?</string>
+    <string name="no_tier_lists_found_message">Списків не знайдено. Створіть свій перший список, щоб розблокувати підказки</string>
     <string name="menu_item_rename_tier_list_title">Перейменувати список</string>
     <string name="menu_item_collection_title">Моя колекція</string>
     <string name="menu_item_settings_title">Налаштування</string>
@@ -73,6 +74,10 @@
     <string name="pref_reorder_tier_lists_hint_title">Як змінити порядок списків?</string>
     <string name="pref_add_new_tier_list_hint_title">Як додати новий список?</string>
     <string name="pref_remove_tier_list_hint_title">Як видалити список?</string>
+    <string name="pref_tier_list_hints_category_title">Підказки щодо списку</string>
+    <string name="pref_reorder_tiers_hint_title">Як змінити порядок рівнів?</string>
+    <string name="pref_remove_tier_list_image_hint_title">Як видалити зображення?</string>
+    <string name="pref_remove_tier_hint_title">Як видалити рівень?</string>
     <string name="tier_list_animals">Тварини</string>
     <string name="tier_list_fast_food">Фаст-фуд</string>
     <string name="tier_list_fruits">Фрукти</string>
@@ -83,10 +88,13 @@
     <string name="btn_close_desc">Закрити</string>
     <string name="btn_previous_desc">Попередній</string>
     <string name="btn_next_desc">Наступний</string>
-    <string name="hint_add_new_tier_list">Натисніть на клавішу \“+\” в нижньому правому кутку екрану, щоб додати новий список</string>
+    <string name="hint_add_new_tier_list">Натисніть на клавішу \“+\” в нижньому правому куті екрану, щоб додати новий список</string>
     <string name="hint_remove_tier_list">Проведіть пальцем зліва направо, щоб видалити список</string>
     <string name="hint_reorder_tier_lists">Натисніть і утримуйте список, потім перемістіть його вверх або вних, щоб змінити порядок</string>
     <string name="tier_list_mythical_creatures">Міфічні істоти</string>
     <string name="tier_list_school_subjects">Шкільні предмети</string>
     <string name="tier_list_vehicles">Транспортні засоби</string>
+    <string name="hint_remove_image">Перетягніть зображення на значок кошика у верхньому правому куті екрану, щоб видалити його</string>
+    <string name="hint_remove_tier">Проведіть пальцем зліва направо, щоб видалити рівень</string>
+    <string name="hint_reorder_tiers">Натисніть і утримуйте заголовок рівня, потім перемістіть його вверх або вниз, щоб змінити порядок</string>
 </resources>

@@ -2,7 +2,7 @@
 
 # CollectionHintStep
 
-enum [CollectionHintStep](index.md) : [Enum](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html)&lt;[CollectionHintStep](index.md)&gt; , [Indexable](../../me.khruslan.tierlistmaker.presentation.utils.hints.core/-indexable/index.md)
+enum [CollectionHintStep](index.md) : [Enum](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html)&lt;[CollectionHintStep](index.md)&gt; , [HintStep](../../me.khruslan.tierlistmaker.presentation.utils.hints.core/-hint-step/index.md)
 
 Hint steps of the [CollectionHintGroup](../-collection-hint-group/index.md).
 

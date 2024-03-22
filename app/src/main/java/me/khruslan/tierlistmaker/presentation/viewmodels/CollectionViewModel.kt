@@ -211,13 +211,22 @@ class CollectionViewModel @Inject constructor(
     }
 
     /**
-     * Obtains tier list by position.
+     * Obtains tier list at position.
      *
      * @param position Position of the tier list.
      * @return Obtained tier list.
      */
-    fun getTierListByPosition(position: Int): TierList {
+    fun getTierListAtPosition(position: Int): TierList {
         return tierLists[position]
+    }
+
+    /**
+     * Obtains the first tier list if exists.
+     *
+     * @return The first tier list or null if tier lists are empty.
+     */
+    fun getFirstTierListOrNull(): TierList? {
+        return tierLists.firstOrNull()
     }
 
     /**

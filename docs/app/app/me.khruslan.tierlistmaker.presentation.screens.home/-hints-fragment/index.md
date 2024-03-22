@@ -6,7 +6,7 @@ class [HintsFragment](index.md) : [PreferenceFragmentCompat](https://developer.a
 
 Preference fragment that represents &quot;Hints&quot; option in the navigation drawer.
 
-Contains &quot;Collection hints&quot; section.
+Contains &quot;Collection hints&quot; and &quot;Tier list hints&quot; sections.
 
 ## Constructors
 
@@ -25,5 +25,7 @@ Contains &quot;Collection hints&quot; section.
 | Name | Summary |
 |---|---|
 | [initClickListeners](init-click-listeners.md) | private fun [initClickListeners](init-click-listeners.md)()<br>Initializes click listeners for all hint preferences. |
-| [navigateBackAndShowHint](navigate-back-and-show-hint.md) | private fun [navigateBackAndShowHint](navigate-back-and-show-hint.md)(step: [CollectionHintStep](../../me.khruslan.tierlistmaker.presentation.utils.hints.collection/-collection-hint-step/index.md))<br>Navigates back and notifies [activityViewModel](activity-view-model.md) observers that hint needs to be shown. |
+| [initCollectionHintListeners](init-collection-hint-listeners.md) | private fun [initCollectionHintListeners](init-collection-hint-listeners.md)()<br>Initializes click listeners for collection hints. |
+| [initTierListHintListeners](init-tier-list-hint-listeners.md) | private fun [initTierListHintListeners](init-tier-list-hint-listeners.md)()<br>Initializes click listeners for tier list hints. |
+| [navigateBackAndShowHint](navigate-back-and-show-hint.md) | private fun [navigateBackAndShowHint](navigate-back-and-show-hint.md)(step: [HintStep](../../me.khruslan.tierlistmaker.presentation.utils.hints.core/-hint-step/index.md))<br>Navigates back and notifies [activityViewModel](activity-view-model.md) observers that hint needs to be shown. |
 | [onCreatePreferences](on-create-preferences.md) | open override fun [onCreatePreferences](on-create-preferences.md)(savedInstanceState: [Bundle](https://developer.android.com/reference/kotlin/android/os/Bundle.html)?, rootKey: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)?)<br>Inflates preferences XML and initializes click listeners. |

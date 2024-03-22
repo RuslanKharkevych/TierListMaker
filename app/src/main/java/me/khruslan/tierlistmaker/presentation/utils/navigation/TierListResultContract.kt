@@ -12,10 +12,11 @@ import timber.log.Timber
 /**
  * Activity result contract used for getting tier list result from an activity.
  *
- * Tier list is used as both input and output of this contract. No modifications are done to the
- * input. Output is nullable in case parsing fails due to unexpected error.
+ * Receives tier list navigation arguments as an input, which includes a tier list and optionally
+ * a hint step. Produces tier list as an output, the same that was provided as an input. Note that
+ * output is nullable in case parsing fails due to unexpected error.
  */
-class TierListResultContract : ActivityResultContract<TierList, TierList?>() {
+class TierListResultContract : ActivityResultContract<TierListNavArgs, TierList?>() {
 
     /**
      * Creator of the data [Intent].
@@ -47,11 +48,16 @@ class TierListResultContract : ActivityResultContract<TierList, TierList?>() {
      * Creates an intent that can be used for [Activity.onActivityResult].
      *
      * @param context Activity context.
-     * @param input Passed tier list.
+     * @param input Tier list navigation arguments.
      * @return Created intent.
      */
-    override fun createIntent(context: Context, input: TierList) =
-        TierListActivity.newIntent(context, input)
+    override fun createIntent(context: Context, input: TierListNavArgs): Intent {
+        return TierListActivity.newIntent(
+            context = context,
+            tierList = input.tierList,
+            hintStep = input.hintStep
+        )
+    }
 
     /**
      * Converts result obtained from [Activity.onActivityResult] to the tier list.

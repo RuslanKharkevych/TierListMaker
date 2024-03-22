@@ -18,6 +18,10 @@
     <!-- Image -->
     <dimen name="img_error_size">56dp</dimen>
 
+    <!-- Ripple -->
+    <dimen name="tier_list_header_ripple_offset">4dp</dimen>
+    <dimen name="tier_list_image_ripple_offset">6dp</dimen>
+
     <!-- Bias -->
     <item name="bias_info_content" format="float" type="dimen">0.4</item>
 

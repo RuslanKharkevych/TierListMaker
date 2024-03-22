@@ -27,6 +27,7 @@
     <string name="btn_yes">Yes</string>
     <string name="btn_no">No</string>
     <string name="remove_tier_list_confirmation_title">Are you sure you want to remove tier list \“%s\”?</string>
+    <string name="no_tier_lists_found_message">No tier lists found. Create your first tier list to unlock hints</string>
     <!-- endregion CollectionFragment -->
 
     <!-- region TierListFragment -->
@@ -113,6 +114,13 @@
     <string name="pref_add_new_tier_list_hint_title">How to add a new tier list?</string>
     <string name="pref_remove_tier_lists_hint_key" translatable="false">remove_tier_lists_hint</string>
     <string name="pref_remove_tier_list_hint_title">How to remove a tier list?</string>
+    <string name="pref_tier_list_hints_category_title">Tier list hints</string>
+    <string name="pref_reorder_tiers_hint_key" translatable="false">reorder_tiers_hint</string>
+    <string name="pref_reorder_tiers_hint_title">How to reorder tiers?</string>
+    <string name="pref_remove_tier_list_image_hint_key" translatable="false">remove_tier_list_image_hint</string>
+    <string name="pref_remove_tier_list_image_hint_title">How to remove an image?</string>
+    <string name="pref_remove_tier_hint_key" translatable="false">remove_tier_hint</string>
+    <string name="pref_remove_tier_hint_title">How to remove a tier?</string>
     <!-- endregion HintsFragment -->
 
     <!-- region DefaultTierListCollectionProvider -->
@@ -128,12 +136,21 @@
     <string name="tier_list_zodiac_signs">Zodiac signs</string>
     <!-- endregion DefaultTierListCollectionProvider -->
 
-    <!-- region CollectionHintGroup -->
+    <!-- region HintOverlayView -->
     <string name="btn_close_desc">Close</string>
     <string name="btn_previous_desc">Previous</string>
     <string name="btn_next_desc">Next</string>
+    <!-- endregion HintOverlayView -->
+
+    <!-- region CollectionHintGroup -->
     <string name="hint_add_new_tier_list">Click on the \“+\” button in the bottom-right corner in order to add a new tier list</string>
     <string name="hint_remove_tier_list">Swipe the card from left to right in order to remove the tier list</string>
     <string name="hint_reorder_tier_lists">Long press on the card, then move it up or down in order to reorder tier lists</string>
     <!-- endregion CollectionHintGroup -->
+
+    <!-- region TierListHintGroup -->
+    <string name="hint_remove_image">Drag the image onto the trash bin icon in the top-right corner in order to remove it</string>
+    <string name="hint_remove_tier">Swipe the tier header from left to right in order to remove the tier</string>
+    <string name="hint_reorder_tiers">Long press on the tier header, then move it up or down in order to reorder tiers</string>
+    <!-- endregion TierListHintGroup -->
 </resources>

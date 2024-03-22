@@ -3,3 +3,5 @@
 # KEY_TIER_LIST
 
 private const val [KEY_TIER_LIST](-k-e-y_-t-i-e-r_-l-i-s-t.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)
+
+Key of the [TierList](../../../me.khruslan.tierlistmaker.data.models.tierlist/-tier-list/index.md) argument.

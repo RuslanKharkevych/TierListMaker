@@ -10,3 +10,4 @@ UI utilities for customizing hint shapes.
 |---|---|
 | [CardShape](-card-shape/index.md) | class [CardShape](-card-shape/index.md)(delegate: RoundedRectangle) : Shape<br>Shape of a card. |
 | [EmptyShape](-empty-shape/index.md) | class [EmptyShape](-empty-shape/index.md) : Shape<br>No-op shape. |
+| [SquareShape](-square-shape/index.md) | class [SquareShape](-square-shape/index.md)(delegate: RoundedRectangle) : Shape<br>Shape of a square. |

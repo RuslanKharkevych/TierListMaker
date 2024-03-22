@@ -6,4 +6,4 @@ private const val [EXTRA_TIER_LIST](-e-x-t-r-a_-t-i-e-r_-l-i-s-t.md): [String](h
 
 Name of the intent extra for tier list.
 
-The extra must with this key must be passed to the intent when starting this activity.
+The extra with this key must be passed to the intent when starting this activity.

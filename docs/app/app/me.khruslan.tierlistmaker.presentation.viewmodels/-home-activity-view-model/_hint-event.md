@@ -2,6 +2,6 @@
 
 # _hintEvent
 
-private val [_hintEvent](_hint-event.md): LiveEvent&lt;[CollectionHintStep](../../me.khruslan.tierlistmaker.presentation.utils.hints.collection/-collection-hint-step/index.md)&gt;
+private val [_hintEvent](_hint-event.md): LiveEvent&lt;[HintStep](../../me.khruslan.tierlistmaker.presentation.utils.hints.core/-hint-step/index.md)&gt;
 
 Mutable reference to [hintEvent](hint-event.md).

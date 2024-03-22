@@ -10,9 +10,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.databinding.ActivityTierListBinding
+import me.khruslan.tierlistmaker.presentation.utils.hints.tierlist.TierListHintStep
 import me.khruslan.tierlistmaker.presentation.viewmodels.TierListActivityViewModel
 import me.khruslan.tierlistmaker.util.findNavHostFragmentById
 import me.khruslan.tierlistmaker.util.getParcelableExtraCompat
+import me.khruslan.tierlistmaker.util.getSerializableExtraCompat
 import me.khruslan.tierlistmaker.util.log.navigation.FragmentNavigationLogger
 
 /**
@@ -35,9 +37,17 @@ class TierListActivity : AppCompatActivity() {
         /**
          * Name of the intent extra for tier list.
          *
-         * The extra must with this key must be passed to the intent when starting this activity.
+         * The extra with this key must be passed to the intent when starting this activity.
          */
         private const val EXTRA_TIER_LIST = "me.khruslan.tierlistmaker.TIER_LIST"
+
+        /**
+         * Name of the intent extra for hint step.
+         *
+         * The extra with this key can be optionally passed to the intent when starting this
+         * activity.
+         */
+        private const val EXTRA_HINT_STEP = "me.khruslan.tierlistmaker.HINT_STEP"
 
         /**
          * Key of the fragment argument for the tier list.
@@ -48,17 +58,32 @@ class TierListActivity : AppCompatActivity() {
         private const val KEY_TIER_LIST = "tierList"
 
         /**
+         * Key of the fragment argument for the hint step name.
+         *
+         * Argument with the same name must be declared in the start destination of the navigation
+         * graph.
+         */
+        private const val KEY_HINT_STEP_NAME = "hintStepName"
+
+        /**
          * Creates the intent for launching [TierListActivity].
          *
          * Always prefer this function over manually constructing the intent.
          *
          * @param context Activity context.
          * @param tierList Required tier list argument.
+         * @param hintStep Optional hint step argument.
          * @return Created intent that can be used to start activity.
          */
-        fun newIntent(context: Context, tierList: TierList) =
-            Intent(context, TierListActivity::class.java)
+        fun newIntent(
+            context: Context,
+            tierList: TierList,
+            hintStep: TierListHintStep? = null
+        ): Intent {
+            return Intent(context, TierListActivity::class.java)
                 .putExtra(EXTRA_TIER_LIST, tierList)
+                .putExtra(EXTRA_HINT_STEP, hintStep)
+        }
     }
 
     /**
@@ -73,12 +98,15 @@ class TierListActivity : AppCompatActivity() {
      * Bundle to set in navigation graph.
      *
      * Created from intent extras. The arguments from this bundle can be accessed in the fragment,
-     * which is a start destination of the tier list navigation graph.
+     * which is a start destination of the tier list navigation graph. Note that [EXTRA_HINT_STEP]
+     * is mapped to [KEY_HINT_STEP_NAME] because nullable enums are not supported by the Safe Args
+     * plugin.
      */
     private val navGraphBundle: Bundle
         get() {
             val tierList = intent.getParcelableExtraCompat<TierList>(EXTRA_TIER_LIST)
-            return bundleOf(KEY_TIER_LIST to tierList)
+            val hintStep = intent.getSerializableExtraCompat<TierListHintStep>(EXTRA_HINT_STEP)
+            return bundleOf(KEY_TIER_LIST to tierList, KEY_HINT_STEP_NAME to hintStep?.name)
         }
 
     /**

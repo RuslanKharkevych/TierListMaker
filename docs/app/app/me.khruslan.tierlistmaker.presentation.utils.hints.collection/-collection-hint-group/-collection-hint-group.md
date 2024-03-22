@@ -5,9 +5,3 @@
 constructor(activity: [Activity](https://developer.android.com/reference/kotlin/android/app/Activity.html), binding: FragmentCollectionBinding)
 
 Creates a new hint group.
-
-#### Parameters
-
-| | |
-|---|---|
-| activity | An activity that hosts the fragment. |

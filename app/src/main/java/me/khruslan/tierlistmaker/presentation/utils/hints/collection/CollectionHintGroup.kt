@@ -12,8 +12,8 @@ import me.khruslan.tierlistmaker.presentation.utils.hints.core.HintGroup
 /**
  * A group of hints for [CollectionFragment].
  *
+ * @property activity An activity that hosts the fragment.
  * @property binding Binding of the fragment.
- * @param activity An activity that hosts the fragment.
  * @constructor Creates a new hint group.
  */
 class CollectionHintGroup(
@@ -37,7 +37,7 @@ class CollectionHintGroup(
     }
 
     /**
-     * Provides collection hint factory factory.
+     * Provides collection hint factory.
      *
      * @return Provided factory.
      */

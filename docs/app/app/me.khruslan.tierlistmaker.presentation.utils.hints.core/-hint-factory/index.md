@@ -2,7 +2,7 @@
 
 # HintFactory
 
-abstract class [HintFactory](index.md)&lt;[T](index.md) : [Indexable](../-indexable/index.md)&gt;
+abstract class [HintFactory](index.md)&lt;[T](index.md) : [HintStep](../-hint-step/index.md)&gt;
 
 Abstract factory that allows to create hints for various hint step types.
 
@@ -17,6 +17,7 @@ Abstract factory that allows to create hints for various hint step types.
 | |
 |---|
 | [CollectionHintFactory](../../me.khruslan.tierlistmaker.presentation.utils.hints.collection/-collection-hint-factory/index.md) |
+| [TierListHintFactory](../../me.khruslan.tierlistmaker.presentation.utils.hints.tierlist/-tier-list-hint-factory/index.md) |
 
 ## Constructors
 

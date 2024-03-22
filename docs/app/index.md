@@ -34,6 +34,7 @@ Tier List Maker application module. This is the only Android module in the proje
 | [me.khruslan.tierlistmaker.presentation.utils.hints.core](app/me.khruslan.tierlistmaker.presentation.utils.hints.core/index.md) | UI utilities for core hint functionality. |
 | [me.khruslan.tierlistmaker.presentation.utils.hints.core.effects](app/me.khruslan.tierlistmaker.presentation.utils.hints.core.effects/index.md) | UI utilities for customizing hint effects. |
 | [me.khruslan.tierlistmaker.presentation.utils.hints.core.shapes](app/me.khruslan.tierlistmaker.presentation.utils.hints.core.shapes/index.md) | UI utilities for customizing hint shapes. |
+| [me.khruslan.tierlistmaker.presentation.utils.hints.tierlist](app/me.khruslan.tierlistmaker.presentation.utils.hints.tierlist/index.md) |
 | [me.khruslan.tierlistmaker.presentation.utils.navigation](app/me.khruslan.tierlistmaker.presentation.utils.navigation/index.md) | UI utilities for navigation. |
 | [me.khruslan.tierlistmaker.presentation.utils.recyclerview](app/me.khruslan.tierlistmaker.presentation.utils.recyclerview/index.md) | UI utilities for recycler view. |
 | [me.khruslan.tierlistmaker.presentation.utils.recyclerview.reorderable](app/me.khruslan.tierlistmaker.presentation.utils.recyclerview.reorderable/index.md) | UI utilities for reordering items in recycler view. |

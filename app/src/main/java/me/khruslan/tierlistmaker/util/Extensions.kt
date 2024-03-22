@@ -9,6 +9,7 @@ import android.util.TypedValue
 import androidx.annotation.IdRes
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.NavHostFragment
+import java.io.Serializable
 import java.util.Locale
 
 /**
@@ -56,6 +57,24 @@ inline fun <reified T : Parcelable> Intent.getParcelableExtraCompat(name: String
     } else {
         @Suppress("DEPRECATION")
         getParcelableExtra(name)
+    }
+}
+
+/**
+ * A helper to get serializable extra from intent that supports all versions.
+ *
+ * Starting from Android 13 uses type-safe overload of the [Intent.getSerializableExtra] function.
+ *
+ * @param T Type of the serializable.
+ * @param name Name of the extra.
+ * @return The value of the resolved item.
+ */
+inline fun <reified T : Serializable> Intent.getSerializableExtraCompat(name: String): T? {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        getSerializableExtra(name, T::class.java)
+    } else {
+        @Suppress("DEPRECATION")
+        getSerializableExtra(name) as? T
     }
 }
 

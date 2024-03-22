@@ -2,7 +2,7 @@
 
 # tierListLauncher
 
-private val [tierListLauncher](tier-list-launcher.md): [ActivityResultLauncher](https://developer.android.com/reference/kotlin/androidx/activity/result/ActivityResultLauncher.html)&lt;[TierList](../../me.khruslan.tierlistmaker.data.models.tierlist/-tier-list/index.md)&gt;
+private val [tierListLauncher](tier-list-launcher.md): [ActivityResultLauncher](https://developer.android.com/reference/kotlin/androidx/activity/result/ActivityResultLauncher.html)&lt;[TierListNavArgs](../../me.khruslan.tierlistmaker.presentation.utils.navigation/-tier-list-nav-args/index.md)&gt;
 
 Activity result launcher of the [TierListResultContract](../../me.khruslan.tierlistmaker.presentation.utils.navigation/-tier-list-result-contract/index.md).
 

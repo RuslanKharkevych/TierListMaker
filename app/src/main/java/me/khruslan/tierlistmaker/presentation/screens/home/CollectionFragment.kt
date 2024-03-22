@@ -25,6 +25,9 @@ import me.khruslan.tierlistmaker.presentation.screens.tierlist.TierListActivity
 import me.khruslan.tierlistmaker.presentation.utils.FeedbackUtils
 import me.khruslan.tierlistmaker.presentation.utils.hints.collection.CollectionHintGroup
 import me.khruslan.tierlistmaker.presentation.utils.hints.collection.CollectionHintStep
+import me.khruslan.tierlistmaker.presentation.utils.hints.core.HintStep
+import me.khruslan.tierlistmaker.presentation.utils.hints.tierlist.TierListHintStep
+import me.khruslan.tierlistmaker.presentation.utils.navigation.TierListNavArgs
 import me.khruslan.tierlistmaker.presentation.utils.navigation.TierListResultContract
 import me.khruslan.tierlistmaker.presentation.utils.navigation.TierListResultException
 import me.khruslan.tierlistmaker.presentation.utils.recyclerview.reorderable.enableReordering
@@ -206,7 +209,8 @@ class CollectionFragment : Fragment() {
             tierListPreviews = previews,
             onClick = { position ->
                 Timber.i("Clicked on tier list at position $position")
-                tierListLauncher.launch(viewModel.getTierListByPosition(position))
+                val tierList = viewModel.getTierListAtPosition(position)
+                navigateToTierList(tierList)
             },
             onPreviewMoved = { from, to ->
                 Timber.i("Moved tier list from position $from to $to")
@@ -278,16 +282,24 @@ class CollectionFragment : Fragment() {
      */
     private val tierListCreatedObserver = Observer<TierList> { tierList ->
         Timber.i("Starting tier list activity for result. Tier list: $tierList")
-        tierListLauncher.launch(tierList)
+        navigateToTierList(tierList)
     }
 
     /**
      * Observer of the hint events.
      *
-     * Shows a hint from [CollectionHintGroup].
+     * Depending on the hint type, either shows a hint from [CollectionHintGroup] or navigates to
+     * [TierListActivity] to show [TierListHintStep].
+     *
+     * @throws IllegalArgumentException If observed step is neither [CollectionHintStep] nor
+     * [TierListHintStep].
      */
-    private val hintObserver = Observer<CollectionHintStep> { step ->
-        CollectionHintGroup(requireActivity(), binding).show(step)
+    private val hintObserver = Observer<HintStep> { step ->
+        when (step) {
+            is CollectionHintStep -> CollectionHintGroup(requireActivity(), binding).show(step)
+            is TierListHintStep -> handleTierListHint(step)
+            else -> throw IllegalArgumentException("Unknown hint step: $step")
+        }
     }
 
     /**
@@ -318,7 +330,7 @@ class CollectionFragment : Fragment() {
      * @param tierListIndex Position of the tier list to remove.
      */
     private fun showRemoveTierListConfirmationAlert(tierListIndex: Int) {
-        val tierListTitle = viewModel.getTierListByPosition(tierListIndex).title
+        val tierListTitle = viewModel.getTierListAtPosition(tierListIndex).title
         val alertTitle = getString(R.string.remove_tier_list_confirmation_title, tierListTitle)
 
         MaterialAlertDialogBuilder(requireActivity())
@@ -352,5 +364,46 @@ class CollectionFragment : Fragment() {
             .setOnConfirmListener { title -> viewModel.createNewTierList(title) }
             .build()
             .show(requireActivity())
+    }
+
+    /**
+     * Launches [tierListLauncher].
+     *
+     * Navigates to [TierListActivity] and optionally shows tier list hint.
+     *
+     * @param tierList Tier list to show.
+     * @param hintStep Hint step to show (optional).
+     */
+    private fun navigateToTierList(tierList: TierList, hintStep: TierListHintStep? = null) {
+        val args = TierListNavArgs(tierList, hintStep)
+        tierListLauncher.launch(args)
+    }
+
+    /**
+     * Attempts to show tier list hint.
+     *
+     * Navigates to the first tier list and shows provided hint step. In case no tier lists found,
+     * presents "No tier lists found" snackbar.
+     *
+     * @param step Hint step to show.
+     */
+    private fun handleTierListHint(step: TierListHintStep) {
+        val tierList = viewModel.getFirstTierListOrNull()
+
+        if (tierList != null) {
+            navigateToTierList(tierList, step)
+        } else {
+            presentNoTierListsFoundSnackbar()
+        }
+    }
+
+    /**
+     * Shows [Snackbar] with "No tier lists found" message and no actions.
+     */
+    private fun presentNoTierListsFoundSnackbar() {
+        Snackbar
+            .make(binding.root, R.string.no_tier_lists_found_message, Snackbar.LENGTH_LONG)
+            .setAnchorView(binding.btnAddNewList)
+            .show()
     }
 }

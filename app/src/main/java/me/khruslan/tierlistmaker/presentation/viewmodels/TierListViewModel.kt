@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.hadilq.liveevent.LiveEvent
+import com.hadilq.liveevent.LiveEventConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -40,6 +41,7 @@ import me.khruslan.tierlistmaker.presentation.models.LoadingProgress
 import me.khruslan.tierlistmaker.presentation.screens.tierlist.TierListFragment
 import me.khruslan.tierlistmaker.util.displayWidthPixels
 import me.khruslan.tierlistmaker.data.providers.drag.DragPocket
+import me.khruslan.tierlistmaker.presentation.utils.hints.tierlist.TierListHintStep
 import me.khruslan.tierlistmaker.util.performance.PerformanceService
 import me.khruslan.tierlistmaker.util.performance.SaveImagesTrace
 import timber.log.Timber
@@ -80,7 +82,16 @@ class TierListViewModel @Inject constructor(
      * view model, the arguments can be obtained from [savedStateHandle].
      */
     private companion object NavArgKeys {
+
+        /**
+         * Key of the [TierList] argument.
+         */
         private const val KEY_TIER_LIST = "tierList"
+
+        /**
+         * Key of the [TierListHintStep.name] argument.
+         */
+        private const val KEY_HINT_STEP_NAME = "hintStepName"
     }
 
     /**
@@ -105,6 +116,13 @@ class TierListViewModel @Inject constructor(
     private val _tierListEvent by lazy { LiveEvent<TierListEvent>() }
 
     /**
+     * A mutable reference to [hintEvent].
+     */
+    private val _hintEvent by lazy {
+        LiveEvent<TierListHintStep>(LiveEventConfig.PreferFirstObserver)
+    }
+
+    /**
      * A mutable reference to [loadingProgressLiveData].
      */
     private val _loadingProgressLiveData by lazy { MutableLiveData<LoadingProgress?>() }
@@ -113,6 +131,11 @@ class TierListViewModel @Inject constructor(
      * Live data that notifies observers about the tier list events.
      */
     val tierListEvent: LiveData<TierListEvent> get() = _tierListEvent
+
+    /**
+     * Live data that notifies observers about the tier list hint step to show.
+     */
+    val hintEvent: LiveData<TierListHintStep> get() = _hintEvent
 
     /**
      * Live data that notifies observers about the progress of loading image files or creating an
@@ -141,6 +164,7 @@ class TierListViewModel @Inject constructor(
     init {
         Timber.i("TierListViewModel initialized")
         initTierList()
+        handleHint()
     }
 
     /**
@@ -298,6 +322,14 @@ class TierListViewModel @Inject constructor(
     private fun initTierList() {
         tierListProcessor.setTierList(tierList)
         updateTierStyles()
+    }
+
+    /**
+     * Produces [hintEvent] if [KEY_HINT_STEP_NAME] is found in navigation arguments.
+     */
+    private fun handleHint() {
+        val hintStepName: String = savedStateHandle[KEY_HINT_STEP_NAME] ?: return
+        _hintEvent.value = TierListHintStep.valueOf(hintStepName)
     }
 
     /**
