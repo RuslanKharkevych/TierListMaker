@@ -3,11 +3,11 @@ import org.jetbrains.dokka.gradle.DokkaTaskPartial
 
 buildscript {
     ext {
-        kotlin_version = '1.9.22'
+        kotlin_version = '1.9.23'
         nav_version = '2.7.7'
         hilt_version = '2.51'
         junit_version = '4.13.2'
-        dokka_version = '1.9.10'
+        dokka_version = '1.9.20'
     }
 
     repositories {
@@ -28,7 +28,7 @@ buildscript {
 
 plugins {
     id "org.jetbrains.dokka" version "$dokka_version"
-    id 'org.jetbrains.kotlin.jvm' version '1.9.22' apply false
+    id 'org.jetbrains.kotlin.jvm' version "$kotlin_version" apply false
 }
 
 dependencies {
