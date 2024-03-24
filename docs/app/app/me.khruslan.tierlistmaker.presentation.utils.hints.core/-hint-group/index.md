@@ -40,7 +40,7 @@ Implemented with [Spotlight](https://github.com/TakuSemba/Spotlight). User can n
 | Name | Summary |
 |---|---|
 | [activity](activity.md) | private val [activity](activity.md): [Activity](https://developer.android.com/reference/kotlin/android/app/Activity.html)<br>Hosting activity. |
-| [name](name.md) | private val [name](name.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>The name of the hint group. |
+| [name](name.md) | val [name](name.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>The name of the hint group. |
 | [steps](steps.md) | private val [steps](steps.md): [List](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html)&lt;[T](index.md)&gt;<br>The list of hint steps. |
 
 ## Functions

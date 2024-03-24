@@ -34,8 +34,11 @@ import me.khruslan.tierlistmaker.presentation.utils.recyclerview.reorderable.ena
 import me.khruslan.tierlistmaker.presentation.utils.setOnThrottledClickListener
 import me.khruslan.tierlistmaker.presentation.viewmodels.CollectionViewModel
 import me.khruslan.tierlistmaker.presentation.viewmodels.HomeActivityViewModel
+import me.khruslan.tierlistmaker.util.analytics.AnalyticsService
+import me.khruslan.tierlistmaker.util.analytics.HintShown
 import me.khruslan.tierlistmaker.util.log.navigation.setLogTag
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * Fragment that represents tier list collection screen.
@@ -75,6 +78,14 @@ class CollectionFragment : Fragment() {
      * Used for handling events sent by other fragments.
      */
     private val activityViewModel: HomeActivityViewModel by activityViewModels()
+
+    /**
+     * Service for logging analytic events.
+     *
+     * Used for logging analytics for showing hints.
+     */
+    @Inject
+    lateinit var analyticsService: AnalyticsService
 
     /**
      * Recycler view adapter for the tier list previews.
@@ -296,7 +307,7 @@ class CollectionFragment : Fragment() {
      */
     private val hintObserver = Observer<HintStep> { step ->
         when (step) {
-            is CollectionHintStep -> CollectionHintGroup(requireActivity(), binding).show(step)
+            is CollectionHintStep -> showCollectionHint(step)
             is TierListHintStep -> handleTierListHint(step)
             else -> throw IllegalArgumentException("Unknown hint step: $step")
         }
@@ -377,6 +388,19 @@ class CollectionFragment : Fragment() {
     private fun navigateToTierList(tierList: TierList, hintStep: TierListHintStep? = null) {
         val args = TierListNavArgs(tierList, hintStep)
         tierListLauncher.launch(args)
+    }
+
+    /**
+     * Shows collection hint at given step.
+     *
+     * Logs [HintShown] analytic event.
+     *
+     * @param step Hint step to show.
+     */
+    private fun showCollectionHint(step: CollectionHintStep) {
+        val hintGroup = CollectionHintGroup(requireActivity(), binding)
+        hintGroup.show(step)
+        analyticsService.logEvent(HintShown(hintGroup.name, step.name))
     }
 
     /**

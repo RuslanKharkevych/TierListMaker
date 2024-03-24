@@ -6,4 +6,4 @@ private fun [initTierList](init-tier-list.md)()
 
 Runs initial configurations of the tier list.
 
-Initializes [tierList](tier-list.md) in [tierListProcessor](tier-list-processor.md) and updates tier styles. This function must be called from the view model's initialization block.
+Initializes [tierList](tier-list.md) in [tierListProcessor](tier-list-processor.md), updates tier styles and logs [TierListOpened](../../me.khruslan.tierlistmaker.util.analytics/-tier-list-opened/index.md) event. This function must be called from the view model's initialization block.

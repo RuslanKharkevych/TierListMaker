@@ -42,6 +42,15 @@ import me.khruslan.tierlistmaker.presentation.screens.tierlist.TierListFragment
 import me.khruslan.tierlistmaker.util.displayWidthPixels
 import me.khruslan.tierlistmaker.data.providers.drag.DragPocket
 import me.khruslan.tierlistmaker.presentation.utils.hints.tierlist.TierListHintStep
+import me.khruslan.tierlistmaker.util.analytics.AnalyticsService
+import me.khruslan.tierlistmaker.util.analytics.ImagesAdded
+import me.khruslan.tierlistmaker.util.analytics.TierAdded
+import me.khruslan.tierlistmaker.util.analytics.TierListOpened
+import me.khruslan.tierlistmaker.util.analytics.TierListRenamed
+import me.khruslan.tierlistmaker.util.analytics.TierListShared
+import me.khruslan.tierlistmaker.util.analytics.TierListViewed
+import me.khruslan.tierlistmaker.util.analytics.ZoomedIn
+import me.khruslan.tierlistmaker.util.analytics.ZoomedOut
 import me.khruslan.tierlistmaker.util.performance.PerformanceService
 import me.khruslan.tierlistmaker.util.performance.SaveImagesTrace
 import timber.log.Timber
@@ -60,6 +69,7 @@ import javax.inject.Inject
  * @property tierListProcessor Processes drag effects.
  * @property tierStyleProvider Provides tier styles.
  * @property performanceService Tracks performance traces.
+ * @property analyticsService Logs analytic events.
  * @param application Provides access to global resources.
  * @constructor Creates view model with all dependencies.
  */
@@ -72,7 +82,8 @@ class TierListViewModel @Inject constructor(
     private val tierListProcessor: TierListProcessor,
     private val tierStyleProvider: TierStyleProvider,
     private val tierListBitmapGenerator: TierListBitmapGenerator,
-    private val performanceService: PerformanceService
+    private val performanceService: PerformanceService,
+    private val analyticsService: AnalyticsService
 ) : AndroidViewModel(application) {
 
     /**
@@ -179,16 +190,21 @@ class TierListViewModel @Inject constructor(
     /**
      * Decrements [TierList.zoomValue].
      *
+     * Logs [ZoomedIn] analytic event.
+     *
      * Updates [tierListEvent] with [ImageSizeUpdated].
      */
     fun zoomIn() {
         tierList.zoomValue--
         _tierListEvent.value = ImageSizeUpdated(imageSize)
         Timber.i("Zoom value decreased to ${tierList.zoomValue}")
+        analyticsService.logEvent(ZoomedIn(tierList.zoomValue))
     }
 
     /**
      * Increments [TierList.zoomValue].
+     *
+     * Logs [ZoomedOut] analytic event.
      *
      * Updates [tierListEvent] with [ImageSizeUpdated].
      */
@@ -196,6 +212,7 @@ class TierListViewModel @Inject constructor(
         tierList.zoomValue++
         _tierListEvent.value = ImageSizeUpdated(imageSize)
         Timber.i("Zoom value increased to ${tierList.zoomValue}")
+        analyticsService.logEvent(ZoomedOut(tierList.zoomValue))
     }
 
     /**
@@ -301,6 +318,7 @@ class TierListViewModel @Inject constructor(
         _tierListEvent.value = TierInserted(tierList.tiers.lastIndex)
         updateTierStyles()
         Timber.i("Added new tier. Updated tier list: $tierList")
+        analyticsService.logEvent(TierAdded(tierList.tiers.lastIndex, tierList.title))
     }
 
     /**
@@ -316,12 +334,13 @@ class TierListViewModel @Inject constructor(
     /**
      * Runs initial configurations of the tier list.
      *
-     * Initializes [tierList] in [tierListProcessor] and updates tier styles. This function must
-     * be called from the view model's initialization block.
+     * Initializes [tierList] in [tierListProcessor], updates tier styles and logs [TierListOpened]
+     * event. This function must be called from the view model's initialization block.
      */
     private fun initTierList() {
         tierListProcessor.setTierList(tierList)
         updateTierStyles()
+        analyticsService.logEvent(TierListOpened(tierList.title))
     }
 
     /**
@@ -381,7 +400,8 @@ class TierListViewModel @Inject constructor(
      * Handles share tier list action.
      *
      * Attempts to save tier list to a file. On success updates [tierListEvent] with
-     * [TierListReadyToShare], on failure - with [TierListExportError].
+     * [TierListReadyToShare], on failure - with [TierListExportError]. Logs [TierListShared]
+     * analytic event.
      */
     fun shareTierList() {
         viewModelScope.launch {
@@ -391,6 +411,7 @@ class TierListViewModel @Inject constructor(
             } else {
                 TierListExportError(R.string.snackbar_msg_share_file_error)
             }
+            analyticsService.logEvent(TierListShared(tierList.title))
         }
     }
 
@@ -398,7 +419,8 @@ class TierListViewModel @Inject constructor(
      * Handles view tier list action.
      *
      * Attempts to save tier list to a file. On success updates [tierListEvent] with
-     * [TierListReadyToView], on failure - with [TierListExportError].
+     * [TierListReadyToView], on failure - with [TierListExportError]. Logs [TierListViewed]
+     * analytic event.
      */
     fun viewTierList() {
         viewModelScope.launch {
@@ -408,6 +430,7 @@ class TierListViewModel @Inject constructor(
             } else {
                 TierListExportError(R.string.snackbar_msg_view_file_error)
             }
+            analyticsService.logEvent(TierListViewed(tierList.title))
         }
     }
 
@@ -432,7 +455,7 @@ class TierListViewModel @Inject constructor(
      * Inserts images at the start of the backlog.
      *
      * If the list of images is empty, completes without any action. Updates [tierListEvent] with
-     * [BacklogImagesAdded].
+     * [BacklogImagesAdded] and logs [ImagesAdded] analytic event.
      *
      * @param images Images to insert.
      */
@@ -441,5 +464,19 @@ class TierListViewModel @Inject constructor(
         Timber.i("Inserting images to backlog: $images")
         tierList.backlogImages.addAll(0, images)
         _tierListEvent.value = BacklogImagesAdded
+        analyticsService.logEvent(ImagesAdded(images.size, tierList.title))
+    }
+
+    /**
+     * Updates tier list title.
+     *
+     * Logs [TierListRenamed] analytic event.
+     *
+     * @param updatedTitle New title to set.
+     */
+    fun updateTierListTitle(updatedTitle: String) {
+        val initialTitle = tierList.title
+        tierList.title = updatedTitle
+        analyticsService.logEvent(TierListRenamed(initialTitle, updatedTitle))
     }
 }

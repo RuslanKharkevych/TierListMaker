@@ -24,6 +24,7 @@ Can be launched from the home task. Hosts fragments from the tier list navigatio
 
 | Name | Summary |
 |---|---|
+| [analyticsService](analytics-service.md) | @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) <br>lateinit var [analyticsService](analytics-service.md): [AnalyticsService](../../me.khruslan.tierlistmaker.util.analytics/-analytics-service/index.md)<br>Service for logging analytic events. |
 | [navGraphBundle](nav-graph-bundle.md) | private val [navGraphBundle](nav-graph-bundle.md): [Bundle](https://developer.android.com/reference/kotlin/android/os/Bundle.html)<br>Bundle to set in navigation graph. |
 | [viewModel](view-model.md) | private val [viewModel](view-model.md): [TierListActivityViewModel](../../me.khruslan.tierlistmaker.presentation.viewmodels/-tier-list-activity-view-model/index.md)<br>View model of the activity. |
 

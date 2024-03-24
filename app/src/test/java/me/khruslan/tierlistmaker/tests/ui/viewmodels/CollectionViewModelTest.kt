@@ -16,6 +16,7 @@ import me.khruslan.tierlistmaker.data.models.tierlist.image.StorageImage
 import me.khruslan.tierlistmaker.fakes.data.providers.database.FakeDatabaseHelper
 import me.khruslan.tierlistmaker.fakes.data.providers.dispatchers.FakeDispatcherProvider
 import me.khruslan.tierlistmaker.fakes.data.providers.tierlist.FakeTierListCreator
+import me.khruslan.tierlistmaker.fakes.utils.analytics.NoOpAnalyticsService
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
 import me.khruslan.tierlistmaker.presentation.models.ListState
 import me.khruslan.tierlistmaker.presentation.utils.navigation.TierListResultException
@@ -58,7 +59,8 @@ class CollectionViewModelTest {
             application = mockApplication,
             databaseHelper = fakeDatabaseHelper,
             dispatcherProvider = FakeDispatcherProvider(),
-            tierListCreator = fakeTierListCreator
+            tierListCreator = fakeTierListCreator,
+            analyticsService = NoOpAnalyticsService()
         )
 
         advanceUntilIdle()

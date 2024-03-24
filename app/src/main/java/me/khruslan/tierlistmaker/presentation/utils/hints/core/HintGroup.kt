@@ -21,7 +21,7 @@ import timber.log.Timber
  * @constructor Creates a new hint group.
  */
 abstract class HintGroup<T: HintStep>(
-    private val name: String,
+    val name: String,
     private val activity: Activity,
     private val steps: List<T>
 ) {

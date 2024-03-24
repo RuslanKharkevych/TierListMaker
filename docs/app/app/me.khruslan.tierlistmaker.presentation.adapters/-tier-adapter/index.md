@@ -2,7 +2,7 @@
 
 # TierAdapter
 
-class [TierAdapter](index.md)(val tiers: [MutableList](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html)&lt;[Tier](../../me.khruslan.tierlistmaker.data.models.tierlist/-tier/index.md)&gt;, val dragListener: [View.OnDragListener](https://developer.android.com/reference/kotlin/android/view/View.OnDragListener.html), var imageSize: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), val onTierRemoved: (tier: [Tier](../../me.khruslan.tierlistmaker.data.models.tierlist/-tier/index.md)) -&gt; [Unit](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html)) : [RecyclerView.Adapter](https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.Adapter.html)&lt;[TierHolder](../../me.khruslan.tierlistmaker.presentation.holders/-tier-holder/index.md)&gt; , [Reorderable](../../me.khruslan.tierlistmaker.presentation.utils.recyclerview.reorderable/-reorderable/index.md)
+class [TierAdapter](index.md)(val tiers: [MutableList](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html)&lt;[Tier](../../me.khruslan.tierlistmaker.data.models.tierlist/-tier/index.md)&gt;, val dragListener: [View.OnDragListener](https://developer.android.com/reference/kotlin/android/view/View.OnDragListener.html), var imageSize: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), val onTierRemoved: (index: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), tier: [Tier](../../me.khruslan.tierlistmaker.data.models.tierlist/-tier/index.md)) -&gt; [Unit](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html)) : [RecyclerView.Adapter](https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.Adapter.html)&lt;[TierHolder](../../me.khruslan.tierlistmaker.presentation.holders/-tier-holder/index.md)&gt; , [Reorderable](../../me.khruslan.tierlistmaker.presentation.utils.recyclerview.reorderable/-reorderable/index.md)
 
 Adapter that manages tiers in the tier list.
 
@@ -12,7 +12,7 @@ Allows to reorder and remove tiers.
 
 | | |
 |---|---|
-| [TierAdapter](-tier-adapter.md) | constructor(tiers: [MutableList](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html)&lt;[Tier](../../me.khruslan.tierlistmaker.data.models.tierlist/-tier/index.md)&gt;, dragListener: [View.OnDragListener](https://developer.android.com/reference/kotlin/android/view/View.OnDragListener.html), imageSize: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), onTierRemoved: (tier: [Tier](../../me.khruslan.tierlistmaker.data.models.tierlist/-tier/index.md)) -&gt; [Unit](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html))<br>Creates a new adapter instance. |
+| [TierAdapter](-tier-adapter.md) | constructor(tiers: [MutableList](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html)&lt;[Tier](../../me.khruslan.tierlistmaker.data.models.tierlist/-tier/index.md)&gt;, dragListener: [View.OnDragListener](https://developer.android.com/reference/kotlin/android/view/View.OnDragListener.html), imageSize: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), onTierRemoved: (index: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), tier: [Tier](../../me.khruslan.tierlistmaker.data.models.tierlist/-tier/index.md)) -&gt; [Unit](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html))<br>Creates a new adapter instance. |
 
 ## Properties
 
@@ -20,7 +20,7 @@ Allows to reorder and remove tiers.
 |---|---|
 | [dragListener](drag-listener.md) | private val [dragListener](drag-listener.md): [View.OnDragListener](https://developer.android.com/reference/kotlin/android/view/View.OnDragListener.html)<br>Listener of tier list drag events. |
 | [imageSize](image-size.md) | private var [imageSize](image-size.md): [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)<br>Initial image size. |
-| [onTierRemoved](on-tier-removed.md) | private val [onTierRemoved](on-tier-removed.md): (tier: [Tier](../../me.khruslan.tierlistmaker.data.models.tierlist/-tier/index.md)) -&gt; [Unit](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html)<br>Called when tier has been swiped by user. |
+| [onTierRemoved](on-tier-removed.md) | private val [onTierRemoved](on-tier-removed.md): (index: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), tier: [Tier](../../me.khruslan.tierlistmaker.data.models.tierlist/-tier/index.md)) -&gt; [Unit](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html)<br>Called when tier has been swiped by user. |
 | [tiers](tiers.md) | private val [tiers](tiers.md): [MutableList](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html)&lt;[Tier](../../me.khruslan.tierlistmaker.data.models.tierlist/-tier/index.md)&gt;<br>List of tiers. |
 
 ## Functions

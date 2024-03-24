@@ -4,6 +4,6 @@
 
 @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) 
 
-constructor(preferencesHelper: [PreferencesHelper](../../me.khruslan.tierlistmaker.data.providers.database/-preferences-helper/index.md), dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md))
+constructor(preferencesHelper: [PreferencesHelper](../../me.khruslan.tierlistmaker.data.providers.database/-preferences-helper/index.md), dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), analyticsService: [AnalyticsService](../../me.khruslan.tierlistmaker.util.analytics/-analytics-service/index.md))
 
 Creates theme manager with injected dependencies.

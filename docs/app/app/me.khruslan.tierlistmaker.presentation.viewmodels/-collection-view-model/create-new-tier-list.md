@@ -6,7 +6,7 @@ fun [createNewTierList](create-new-tier-list.md)(title: [String](https://kotlinl
 
 Asynchronously creates an empty tier list.
 
-Triggers [tierListCreatedEvent](tier-list-created-event.md).
+Triggers [tierListCreatedEvent](tier-list-created-event.md) and logs [TierListCreated](../../me.khruslan.tierlistmaker.util.analytics/-tier-list-created/index.md) analytic event.
 
 #### Parameters
 

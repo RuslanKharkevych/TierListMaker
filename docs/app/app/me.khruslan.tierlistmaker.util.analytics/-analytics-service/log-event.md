@@ -2,7 +2,7 @@
 
 # logEvent
 
-abstract fun [logEvent](log-event.md)(name: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), params: [Map](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html)&lt;[String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)&gt;? = null)
+abstract fun [logEvent](log-event.md)(event: [Event](../-event/index.md))
 
 Logs analytics event.
 
@@ -10,5 +10,4 @@ Logs analytics event.
 
 | | |
 |---|---|
-| name | The name of the event. |
-| params | Optional params that supply information that contextualize the event. |
+| event | Event to log. |

@@ -17,13 +17,12 @@ class AnalyticsServiceImpl @Inject constructor(): AnalyticsService {
     /**
      * Logs analytics event.
      *
-     * @param name The name of the event.
-     * @param params Optional params that supply information that contextualize the event.
+     * @param event Event to log.
      */
-    override fun logEvent(name: String, params: Map<String, String>?) {
-        Firebase.analytics.logEvent(name) {
-            params?.forEach { entry ->
-                param(entry.key, entry.value)
+    override fun logEvent(event: Event) {
+        Firebase.analytics.logEvent(event.name) {
+            event.params?.forEach { entry ->
+                param(entry.key, entry.value.toString())
             }
         }
     }

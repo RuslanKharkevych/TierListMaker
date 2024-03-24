@@ -228,8 +228,12 @@ class TierListProcessorTest {
 
     @Test
     fun `When effect is ThrowToTrashBin removes image`() {
-        val effect = ThrowToTrashBin
-        val expectedEvent = ImageRemoved
+        val image = StorageImage(
+            id = "9f23f150-a091-4d66-98ba-0d2b775bcf4c",
+            filePath = "/storage/emulated/0/Android/data/me.khruslan.tierlistmaker/files/Pictures/4766531011764.jpeg"
+        )
+        val effect = ThrowToTrashBin(image)
+        val expectedEvent = ImageRemoved(image)
         val actualEvent = tierListProcessor.processDragEffect(effect)
 
         assertEquals(expectedEvent, actualEvent)

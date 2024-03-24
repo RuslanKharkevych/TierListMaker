@@ -11,7 +11,11 @@ import me.khruslan.tierlistmaker.BuildConfig
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.presentation.utils.FeedbackUtils
 import me.khruslan.tierlistmaker.presentation.utils.setOnPreferenceClickListener
+import me.khruslan.tierlistmaker.util.analytics.AnalyticsService
+import me.khruslan.tierlistmaker.util.analytics.AppRated
+import me.khruslan.tierlistmaker.util.analytics.FeedbackSent
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * Fragment that represents "Feedback" section in the navigation drawer.
@@ -47,6 +51,12 @@ class FeedbackFragment : PreferenceFragmentCompat() {
     }
 
     /**
+     * Service for logging analytic events.
+     */
+    @Inject
+    lateinit var analyticsService: AnalyticsService
+
+    /**
      * Inflates preferences XML and initializes click listeners.
      *
      * Called during [PreferenceFragmentCompat.onCreate] to supply the preferences for this
@@ -73,16 +83,22 @@ class FeedbackFragment : PreferenceFragmentCompat() {
 
     /**
      * Opens an email application with prefilled recipient and subject for sending a feedback.
+     *
+     * Logs [FeedbackSent] analytic event.
      */
     private fun sendFeedback() {
         FeedbackUtils.sendFeedback(requireActivity())
+        analyticsService.logEvent(FeedbackSent(isBugReport = false))
     }
 
     /**
      * Opens an email application with prefilled recipient, subject and message for reporting a bug.
+     *
+     * Logs [FeedbackSent] analytic event.
      */
     private fun reportBug() {
         FeedbackUtils.reportIssue(requireActivity())
+        analyticsService.logEvent(FeedbackSent(isBugReport = true))
     }
 
     /**
@@ -90,16 +106,18 @@ class FeedbackFragment : PreferenceFragmentCompat() {
      *
      * In case Play Market is not installed on the device, opens application details webpage in
      * browser. If no browsers are installed either, presents snackbar to inform user that rating
-     * the app is not possible.
+     * the app is not possible. Logs [AppRated] analytic event if URL was opened sucessfully.
      */
     private fun rateApp() {
         try {
             Timber.i("Opening the application in Play Market")
             openUrl(APP_DETAILS_PLAY_MARKET_URL)
+            analyticsService.logEvent(AppRated(APP_DETAILS_PLAY_MARKET_URL))
         } catch (pme: ActivityNotFoundException) {
             try {
                 Timber.w(pme, "Activity not found. Opening the application in browser")
                 openUrl(APP_DETAILS_BROWSER_URL)
+                analyticsService.logEvent(AppRated(APP_DETAILS_BROWSER_URL))
             } catch (be: ActivityNotFoundException) {
                 Timber.e(be, "Activity not found. Presenting no apps found snackbar")
                 presentNoAppsFoundSnackbar()

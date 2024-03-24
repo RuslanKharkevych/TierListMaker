@@ -18,7 +18,9 @@ import me.khruslan.tierlistmaker.util.log.navigation.DrawerStateLogger
 import me.khruslan.tierlistmaker.util.log.navigation.FragmentNavigationLogger
 import me.khruslan.tierlistmaker.presentation.utils.AnimatorUtils
 import me.khruslan.tierlistmaker.presentation.utils.AnimatorUtils.addOnEndAction
+import me.khruslan.tierlistmaker.util.analytics.AnalyticsService
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * Activity that represents home task.
@@ -44,6 +46,14 @@ class HomeActivity : AppCompatActivity() {
      * Used for changing application theme and communication between fragments.
      */
     private val viewModel: HomeActivityViewModel by viewModels()
+
+    /**
+     * Service for logging analytic events.
+     *
+     * Used for capturring navigation destionation changes.
+     */
+    @Inject
+    lateinit var analyticsService: AnalyticsService
 
     /**
      * Keys for saving and restoring view state and other constants.
@@ -129,7 +139,7 @@ class HomeActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(navController.graph, binding.root)
         binding.navView.setupWithNavController(navController)
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
-        navController.addOnDestinationChangedListener(FragmentNavigationLogger())
+        navController.addOnDestinationChangedListener(FragmentNavigationLogger(analyticsService))
         binding.root.addDrawerListener(DrawerStateLogger())
     }
 

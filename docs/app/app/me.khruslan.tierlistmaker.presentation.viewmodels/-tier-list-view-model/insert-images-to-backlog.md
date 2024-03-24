@@ -6,7 +6,7 @@ fun [insertImagesToBacklog](insert-images-to-backlog.md)(images: [List](https://
 
 Inserts images at the start of the backlog.
 
-If the list of images is empty, completes without any action. Updates [tierListEvent](tier-list-event.md) with [BacklogImagesAdded](../../me.khruslan.tierlistmaker.data.models.tierlist/-backlog-images-added/index.md).
+If the list of images is empty, completes without any action. Updates [tierListEvent](tier-list-event.md) with [BacklogImagesAdded](../../me.khruslan.tierlistmaker.data.models.tierlist/-backlog-images-added/index.md) and logs [ImagesAdded](../../me.khruslan.tierlistmaker.util.analytics/-images-added/index.md) analytic event.
 
 #### Parameters
 

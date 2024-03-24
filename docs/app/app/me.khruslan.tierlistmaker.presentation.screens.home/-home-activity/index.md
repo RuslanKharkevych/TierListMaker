@@ -24,6 +24,7 @@ It is a launch activity. Displays a splash screen when it's created. Hosts fragm
 
 | Name | Summary |
 |---|---|
+| [analyticsService](analytics-service.md) | @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) <br>lateinit var [analyticsService](analytics-service.md): [AnalyticsService](../../me.khruslan.tierlistmaker.util.analytics/-analytics-service/index.md)<br>Service for logging analytic events. |
 | [binding](binding.md) | private lateinit var [binding](binding.md): ActivityHomeBinding<br>View binding of the activity. |
 | [viewModel](view-model.md) | private val [viewModel](view-model.md): [HomeActivityViewModel](../../me.khruslan.tierlistmaker.presentation.viewmodels/-home-activity-view-model/index.md)<br>View model of the activity. |
 

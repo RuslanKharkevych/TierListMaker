@@ -46,6 +46,7 @@ import me.khruslan.tierlistmaker.fakes.presentation.utils.tierlist.FakeTierListB
 import me.khruslan.tierlistmaker.fakes.data.providers.tierlist.FakeTierListProcessor
 import me.khruslan.tierlistmaker.fakes.data.providers.tierlist.tier.FakeTierStyleProvider
 import me.khruslan.tierlistmaker.fakes.data.providers.drag.FakeDragPocket
+import me.khruslan.tierlistmaker.fakes.utils.analytics.NoOpAnalyticsService
 import me.khruslan.tierlistmaker.fakes.utils.performance.NoOpPerformanceService
 import me.khruslan.tierlistmaker.rules.CoroutineTestRule
 import me.khruslan.tierlistmaker.presentation.models.LoadingProgress
@@ -111,7 +112,8 @@ class TierListViewModelTest {
             tierListProcessor = fakeTierListProcessor,
             tierStyleProvider = fakeTierStyleProvider,
             tierListBitmapGenerator = fakeTierListBitmapGenerator,
-            performanceService = NoOpPerformanceService()
+            performanceService = NoOpPerformanceService(),
+            analyticsService = NoOpAnalyticsService()
         )
     }
 

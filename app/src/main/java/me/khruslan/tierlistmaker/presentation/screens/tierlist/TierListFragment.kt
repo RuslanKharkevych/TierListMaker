@@ -16,7 +16,6 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
@@ -58,7 +57,12 @@ import me.khruslan.tierlistmaker.presentation.utils.setOnThrottledClickListener
 import me.khruslan.tierlistmaker.presentation.utils.tierlist.TierListBottomBarBinder
 import me.khruslan.tierlistmaker.presentation.viewmodels.TierListViewModel
 import me.khruslan.tierlistmaker.util.BACKLOG_TIER_POSITION
+import me.khruslan.tierlistmaker.util.analytics.AnalyticsService
+import me.khruslan.tierlistmaker.util.analytics.HintShown
+import me.khruslan.tierlistmaker.util.analytics.ImageDeleted
+import me.khruslan.tierlistmaker.util.analytics.TierRemoved
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * Fragment that represents a tier list.
@@ -86,18 +90,17 @@ class TierListFragment : Fragment() {
     private val binding get() = _binding!!
 
     /**
-     * Navigation arguments of the fragment.
-     *
-     * Contains a single tier list argument.
-     */
-    private val args: TierListFragmentArgs by navArgs()
-
-    /**
      * View model of the fragment.
      *
      * Provides UI state and handles user actions.
      */
     private val viewModel: TierListViewModel by viewModels()
+
+    /**
+     * Service for logging analytic events.
+     */
+    @Inject
+    lateinit var analyticsService: AnalyticsService
 
     /**
      * Recycler view adapter for the tiers.
@@ -133,6 +136,11 @@ class TierListFragment : Fragment() {
      * Must be dismissed once new drag is started to avoid restoring wrong image.
      */
     private var imageRemovedSnackbar: Snackbar? = null
+
+    /**
+     * Getter of the tier list model.
+     */
+    private val tierList get() = viewModel.tierList
 
     /**
      * Listener of the tier list drag events.
@@ -287,8 +295,8 @@ class TierListFragment : Fragment() {
      */
     private fun initTierList() {
         val imageSize = viewModel.imageSize
-        initTiersAdapter(tiers = args.tierList.tiers, imageSize = imageSize)
-        initBacklogAdapter(images = args.tierList.backlogImages, imageSize = imageSize)
+        initTiersAdapter(tiers = tierList.tiers, imageSize = imageSize)
+        initBacklogAdapter(images = tierList.backlogImages, imageSize = imageSize)
     }
 
     /**
@@ -330,6 +338,7 @@ class TierListFragment : Fragment() {
             is ImageRemoved -> {
                 setRemoveImageHintVisible(false)
                 presentImageRemovedSnackbar()
+                analyticsService.logEvent(ImageDeleted(event.image.payload, tierList.title))
             }
             is TierListReadyToShare -> shareTierList(event.uri)
             is TierListReadyToView -> viewTierList(event.uri)
@@ -340,10 +349,12 @@ class TierListFragment : Fragment() {
     /**
      * Observer of the hint events.
      *
-     * Shows a hint from [TierListHintGroup].
+     * Shows a hint from [TierListHintGroup] and logs [HintShown] analytic event.
      */
     private val hintObserver = Observer<TierListHintStep> { step ->
-        TierListHintGroup(requireActivity(), binding).show(step)
+        val hintGroup = TierListHintGroup(requireActivity(), binding)
+        hintGroup.show(step)
+        analyticsService.logEvent(HintShown(hintGroup.name, step.name))
     }
 
     /**
@@ -369,9 +380,10 @@ class TierListFragment : Fragment() {
             tiers = tiers,
             dragListener = dragListener,
             imageSize = imageSize,
-            onTierRemoved = { tier ->
+            onTierRemoved = { index, tier ->
                 viewModel.insertImagesToBacklog(tier.images)
                 viewModel.updateTierStyles()
+                analyticsService.logEvent(TierRemoved(index, tierList.title))
             }
         )
         tiersAdapter.registerAdapterDataObserver(tiersDataObserver)
@@ -419,7 +431,7 @@ class TierListFragment : Fragment() {
      */
     private fun initToolbar() {
         with(binding.toolbar) {
-            title = args.tierList.title
+            title = tierList.title
             tag = TrashBinDragData
             setOnDragListener(dragListener)
 
@@ -447,7 +459,7 @@ class TierListFragment : Fragment() {
      */
     private fun initBottomBar() {
         with(binding.groupBottomBar) {
-            bottomBarBinder = TierListBottomBarBinder(this, viewModel.tierList)
+            bottomBarBinder = TierListBottomBarBinder(this, tierList)
             btnZoomIn.setOnClickListener {
                 Timber.i("Zoom in button clicked")
                 viewModel.zoomIn()
@@ -505,7 +517,7 @@ class TierListFragment : Fragment() {
      * Sets tier list as activity result and finishes it.
      */
     private fun setTierListResultAndFinishActivity() {
-        val data = TierListResultContract.newData(viewModel.tierList)
+        val data = TierListResultContract.newData(tierList)
         requireActivity().run {
             setResult(Activity.RESULT_OK, data)
             finish()
@@ -667,10 +679,10 @@ class TierListFragment : Fragment() {
     private fun showEnterTierListTitleDialog() {
         EnterTierListTitleDialog.Builder()
             .setDialogTitle(R.string.dialog_title_rename_tier_list)
-            .setTierListTitle(viewModel.tierList.title)
+            .setTierListTitle(tierList.title)
             .setOnConfirmListener { title ->
                 binding.toolbar.title = title
-                viewModel.tierList.title = title
+                viewModel.updateTierListTitle(title)
             }
             .build()
             .show(requireActivity())

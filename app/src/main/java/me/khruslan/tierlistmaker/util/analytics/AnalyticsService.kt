@@ -10,8 +10,7 @@ interface AnalyticsService {
     /**
      * Logs analytics event.
      *
-     * @param name The name of the event.
-     * @param params Optional params that supply information that contextualize the event.
+     * @param event Event to log.
      */
-    fun logEvent(name: String, params: Map<String, String>? = null)
+    fun logEvent(event: Event)
 }

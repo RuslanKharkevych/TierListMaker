@@ -5,3 +5,5 @@
 private fun [reportBug](report-bug.md)()
 
 Opens an email application with prefilled recipient, subject and message for reporting a bug.
+
+Logs [FeedbackSent](../../me.khruslan.tierlistmaker.util.analytics/-feedback-sent/index.md) analytic event.

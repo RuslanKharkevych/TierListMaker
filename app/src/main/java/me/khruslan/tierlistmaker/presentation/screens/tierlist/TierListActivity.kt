@@ -12,10 +12,12 @@ import me.khruslan.tierlistmaker.data.models.tierlist.TierList
 import me.khruslan.tierlistmaker.databinding.ActivityTierListBinding
 import me.khruslan.tierlistmaker.presentation.utils.hints.tierlist.TierListHintStep
 import me.khruslan.tierlistmaker.presentation.viewmodels.TierListActivityViewModel
+import me.khruslan.tierlistmaker.util.analytics.AnalyticsService
 import me.khruslan.tierlistmaker.util.findNavHostFragmentById
 import me.khruslan.tierlistmaker.util.getParcelableExtraCompat
 import me.khruslan.tierlistmaker.util.getSerializableExtraCompat
 import me.khruslan.tierlistmaker.util.log.navigation.FragmentNavigationLogger
+import javax.inject.Inject
 
 /**
  * Activity that represents tier list task.
@@ -95,6 +97,14 @@ class TierListActivity : AppCompatActivity() {
     private val viewModel: TierListActivityViewModel by viewModels()
 
     /**
+     * Service for logging analytic events.
+     *
+     * Used for capturing navigation destination changes.
+     */
+    @Inject
+    lateinit var analyticsService: AnalyticsService
+
+    /**
      * Bundle to set in navigation graph.
      *
      * Created from intent extras. The arguments from this bundle can be accessed in the fragment,
@@ -151,6 +161,6 @@ class TierListActivity : AppCompatActivity() {
     private fun setNavigationGraph() {
         val navController = findNavHostFragmentById(R.id.tier_list_content).navController
         navController.setGraph(R.navigation.tier_list_graph, navGraphBundle)
-        navController.addOnDestinationChangedListener(FragmentNavigationLogger())
+        navController.addOnDestinationChangedListener(FragmentNavigationLogger(analyticsService))
     }
 }

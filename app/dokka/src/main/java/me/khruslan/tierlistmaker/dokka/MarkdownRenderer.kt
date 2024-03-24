@@ -202,11 +202,9 @@ class MarkdownRenderer(context: DokkaContext) : CommonmarkRenderer(context) {
         sourceSetRestriction: Set<DisplaySourceSet>?
     ) {
         val location = locationProvider.resolve(node.address, node.sourceSets, pageContext)
-        val fromGeneratedLocation = location?.contains("generated") == true
-        val isSafeArgsClass = node.address.classNames?.endsWith("FragmentArgs") == true
 
         when {
-            fromGeneratedLocation || isSafeArgsClass -> {
+            location?.contains("generated") == true -> {
                 buildText(node.children, pageContext, sourceSetRestriction)
             }
 

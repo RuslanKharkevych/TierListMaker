@@ -2,7 +2,7 @@
 
 # ThemeManagerImpl
 
-class [ThemeManagerImpl](index.md) @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) constructor(val preferencesHelper: [PreferencesHelper](../../me.khruslan.tierlistmaker.data.providers.database/-preferences-helper/index.md), val dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md)) : [ThemeManager](../-theme-manager/index.md)
+class [ThemeManagerImpl](index.md) @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) constructor(val preferencesHelper: [PreferencesHelper](../../me.khruslan.tierlistmaker.data.providers.database/-preferences-helper/index.md), val dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), val analyticsService: [AnalyticsService](../../me.khruslan.tierlistmaker.util.analytics/-analytics-service/index.md)) : [ThemeManager](../-theme-manager/index.md)
 
 [ThemeManager](../-theme-manager/index.md) implementation.
 
@@ -10,12 +10,13 @@ class [ThemeManagerImpl](index.md) @[Inject](https://javax-inject.github.io/java
 
 | | |
 |---|---|
-| [ThemeManagerImpl](-theme-manager-impl.md) | @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) <br>constructor(preferencesHelper: [PreferencesHelper](../../me.khruslan.tierlistmaker.data.providers.database/-preferences-helper/index.md), dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md))<br>Creates theme manager with injected dependencies. |
+| [ThemeManagerImpl](-theme-manager-impl.md) | @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) <br>constructor(preferencesHelper: [PreferencesHelper](../../me.khruslan.tierlistmaker.data.providers.database/-preferences-helper/index.md), dispatcherProvider: [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md), analyticsService: [AnalyticsService](../../me.khruslan.tierlistmaker.util.analytics/-analytics-service/index.md))<br>Creates theme manager with injected dependencies. |
 
 ## Properties
 
 | Name | Summary |
 |---|---|
+| [analyticsService](analytics-service.md) | private val [analyticsService](analytics-service.md): [AnalyticsService](../../me.khruslan.tierlistmaker.util.analytics/-analytics-service/index.md)<br>Logs analytic events. |
 | [dispatcherProvider](dispatcher-provider.md) | private val [dispatcherProvider](dispatcher-provider.md): [DispatcherProvider](../../me.khruslan.tierlistmaker.data.providers.dispatchers/-dispatcher-provider/index.md)<br>Provides coroutine dispatchers. |
 | [preferencesHelper](preferences-helper.md) | private val [preferencesHelper](preferences-helper.md): [PreferencesHelper](../../me.khruslan.tierlistmaker.data.providers.database/-preferences-helper/index.md)<br>Saves user theme preference. |
 

@@ -43,7 +43,7 @@ sealed class UpdateEffect : DragEffect() {
                         tierPosition = target.tierPosition
                     )
                 }
-                is TrashBinDragData -> ThrowToTrashBin
+                is TrashBinDragData -> ThrowToTrashBin(shadow.image)
             }
         }
     }
@@ -96,5 +96,8 @@ data class UpdateLastInTier(val image: Image, val tierPosition: Int) : UpdateEff
  * Update effect of the trash bin.
  *
  * This effect is produced when user drops an image into the trash bin.
+ *
+ * @property image Image thrown to the trash bin.
+ * @constructor Creates the effect from image.
  */
-data object ThrowToTrashBin : UpdateEffect()
+data class ThrowToTrashBin(val image: Image) : UpdateEffect()

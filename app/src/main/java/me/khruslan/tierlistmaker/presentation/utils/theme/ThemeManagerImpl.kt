@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import kotlinx.coroutines.withContext
 import me.khruslan.tierlistmaker.data.providers.database.PreferencesHelper
 import me.khruslan.tierlistmaker.data.providers.dispatchers.DispatcherProvider
+import me.khruslan.tierlistmaker.util.analytics.AnalyticsService
+import me.khruslan.tierlistmaker.util.analytics.ThemeChanged
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -12,11 +14,13 @@ import javax.inject.Inject
  *
  * @property preferencesHelper Saves user theme preference.
  * @property dispatcherProvider Provides coroutine dispatchers.
+ * @property analyticsService Logs analytic events.
  * @constructor Creates theme manager with injected dependencies.
  */
 class ThemeManagerImpl @Inject constructor(
     private val preferencesHelper: PreferencesHelper,
-    private val dispatcherProvider: DispatcherProvider
+    private val dispatcherProvider: DispatcherProvider,
+    private val analyticsService: AnalyticsService
 ) : ThemeManager {
 
     /**
@@ -49,7 +53,7 @@ class ThemeManagerImpl @Inject constructor(
     /**
      * Asynchronously toggles light/dark theme.
      *
-     * Applies changes and saves user preference.
+     * Applies changes and saves user preference. Logs [ThemeChanged] analytic event.
      */
     override suspend fun toggleTheme() {
         Timber.i("Changing theme")
@@ -59,6 +63,7 @@ class ThemeManagerImpl @Inject constructor(
                 applyTheme(!nightModeEnabled)
             }
             preferencesHelper.nightModeEnabled = !nightModeEnabled
+            analyticsService.logEvent(ThemeChanged(!nightModeEnabled))
         }
     }
 }

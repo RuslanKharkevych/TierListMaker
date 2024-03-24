@@ -6,6 +6,8 @@ import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import me.khruslan.tierlistmaker.R
+import me.khruslan.tierlistmaker.util.analytics.AnalyticsService
+import me.khruslan.tierlistmaker.util.analytics.PreferenceChanged
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -16,10 +18,12 @@ import javax.inject.Inject
  * singleton.
  *
  * @property context Application context.
+ * @property analyticsService Logs analytic events.
  * @constructor Creates a new preferences helper instance.
  */
 class PreferencesHelperImpl @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val analyticsService: AnalyticsService
 ) : PreferencesHelper {
 
     /**
@@ -52,11 +56,12 @@ class PreferencesHelperImpl @Inject constructor(
     /**
      * Shared preference change listener that logs all updates.
      *
-     * It must be a class field (see the documentation of
-     * [SharedPreferences.registerOnSharedPreferenceChangeListener]).
+     * Also logs [PreferenceChanged] analytic event. It must be a class field (see the documentation
+     * of [SharedPreferences.registerOnSharedPreferenceChangeListener]).
      */
     private val listener = SharedPreferences.OnSharedPreferenceChangeListener { preferences, key ->
         Timber.i("$key preference has changed. Updated preferences: ${preferences.all}")
+        analyticsService.logEvent(PreferenceChanged(key, preferences.all[key]))
     }
 
     init {

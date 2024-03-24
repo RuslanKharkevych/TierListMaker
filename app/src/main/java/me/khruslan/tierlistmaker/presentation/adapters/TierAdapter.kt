@@ -27,7 +27,7 @@ class TierAdapter(
     private val tiers: MutableList<Tier>,
     private val dragListener: View.OnDragListener,
     private var imageSize: Int,
-    private val onTierRemoved: (tier: Tier) -> Unit
+    private val onTierRemoved: (index: Int, tier: Tier) -> Unit
 ) : RecyclerView.Adapter<TierHolder>(), Reorderable {
 
     /**
@@ -101,7 +101,7 @@ class TierAdapter(
         notifyItemRemoved(position)
         notifyItemRangeChanged(0, tiers.size, Unit)
         Timber.i("Updated tiers: $tiers")
-        onTierRemoved(tier)
+        onTierRemoved(position, tier)
     }
 
     /**

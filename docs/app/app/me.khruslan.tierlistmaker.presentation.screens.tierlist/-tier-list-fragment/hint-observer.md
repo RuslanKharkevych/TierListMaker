@@ -6,4 +6,4 @@ private val [hintObserver](hint-observer.md): [Observer](https://developer.andro
 
 Observer of the hint events.
 
-Shows a hint from [TierListHintGroup](../../me.khruslan.tierlistmaker.presentation.utils.hints.tierlist/-tier-list-hint-group/index.md).
+Shows a hint from [TierListHintGroup](../../me.khruslan.tierlistmaker.presentation.utils.hints.tierlist/-tier-list-hint-group/index.md) and logs [HintShown](../../me.khruslan.tierlistmaker.util.analytics/-hint-shown/index.md) analytic event.

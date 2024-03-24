@@ -20,6 +20,12 @@ Consists of &quot;Contact us&quot;, &quot;Report bug&quot; and &quot;Rate app&qu
 |---|---|
 | [Constants](-constants/index.md) | private object [Constants](-constants/index.md)<br>Constants for internal use. |
 
+## Properties
+
+| Name | Summary |
+|---|---|
+| [analyticsService](analytics-service.md) | @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) <br>lateinit var [analyticsService](analytics-service.md): [AnalyticsService](../../me.khruslan.tierlistmaker.util.analytics/-analytics-service/index.md)<br>Service for logging analytic events. |
+
 ## Functions
 
 | Name | Summary |

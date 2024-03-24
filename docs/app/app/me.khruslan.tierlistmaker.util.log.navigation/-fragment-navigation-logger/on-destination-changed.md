@@ -6,7 +6,7 @@ open override fun [onDestinationChanged](on-destination-changed.md)(controller: 
 
 Logs a new navigation destination with arguments.
 
-Invoked when the current destination or its arguments changes.
+Invoked when the current destination or its arguments changes. Logs info message by [Timber](https://jakewharton.github.io/timber/docs/5.x/timber/timber.log/-timber/index.html) and [ScreenShown](../../me.khruslan.tierlistmaker.util.analytics/-screen-shown/index.md) event by [analyticsService](analytics-service.md).
 
 #### Parameters
 

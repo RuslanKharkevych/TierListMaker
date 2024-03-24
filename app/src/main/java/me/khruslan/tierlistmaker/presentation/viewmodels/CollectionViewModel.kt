@@ -18,6 +18,9 @@ import me.khruslan.tierlistmaker.presentation.models.ListState
 import me.khruslan.tierlistmaker.presentation.screens.home.CollectionFragment
 import me.khruslan.tierlistmaker.presentation.screens.home.HomeActivity
 import me.khruslan.tierlistmaker.presentation.utils.navigation.TierListResultException
+import me.khruslan.tierlistmaker.util.analytics.AnalyticsService
+import me.khruslan.tierlistmaker.util.analytics.TierListCreated
+import me.khruslan.tierlistmaker.util.analytics.TierListDeleted
 import me.khruslan.tierlistmaker.util.swap
 import timber.log.Timber
 import javax.inject.Inject
@@ -37,7 +40,8 @@ class CollectionViewModel @Inject constructor(
     application: Application,
     private val databaseHelper: DatabaseHelper,
     private val dispatcherProvider: DispatcherProvider,
-    private val tierListCreator: TierListCreator
+    private val tierListCreator: TierListCreator,
+    private val analyticsService: AnalyticsService
 ) : AndroidViewModel(application) {
 
     /**
@@ -130,7 +134,7 @@ class CollectionViewModel @Inject constructor(
     /**
      * Asynchronously creates an empty tier list.
      *
-     * Triggers [tierListCreatedEvent].
+     * Triggers [tierListCreatedEvent] and logs [TierListCreated] analytic event.
      *
      * @param title Name of the tier list.
      */
@@ -140,6 +144,7 @@ class CollectionViewModel @Inject constructor(
             val tierList = tierListCreator.newTierList(title)
             _tierListCreatedEvent.value = tierList
             Timber.i("Created new tier list: $tierList")
+            analyticsService.logEvent(TierListCreated(title))
         }
     }
 
@@ -305,7 +310,8 @@ class CollectionViewModel @Inject constructor(
      *
      * If the last tier list is being removed, updates [listStateLiveData] with [ListState.Empty].
      * If database transaction fails, triggers [errorEvent]. Note that the tier list will always be
-     * removed from [tierLists], regardless of the transaction result.
+     * removed from [tierLists], regardless of the transaction result. Also logs [TierListDeleted]
+     * analytic event.
      *
      * @param index Position of the tier list to remove.
      */
@@ -319,6 +325,7 @@ class CollectionViewModel @Inject constructor(
 
             val result = databaseHelper.removeTierListById(tierList.id)
             if (!result) _errorEvent.value = R.string.remove_tier_list_error_message
+            analyticsService.logEvent(TierListDeleted(tierList.title))
         }
     }
 }

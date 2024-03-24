@@ -95,8 +95,11 @@ data class TrashBinHighlightUpdated(val highlighted: Boolean) : TierListEvent()
  * Tier list event that indicates that [Image] was removed.
  *
  * This event is sent when an image was dropped into the trash bin as a result of a drag effect.
+ *
+ * @property image Image that was removed.
+ * @constructor Creates the event from the removed image.
  */
-data object ImageRemoved : TierListEvent()
+data class ImageRemoved(val image: Image) : TierListEvent()
 
 /**
  * Tier list event that indicates that tier list image file is ready to be shared.

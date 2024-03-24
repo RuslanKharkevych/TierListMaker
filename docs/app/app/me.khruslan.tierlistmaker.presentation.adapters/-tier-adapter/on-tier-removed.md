@@ -2,4 +2,4 @@
 
 # onTierRemoved
 
-private val [onTierRemoved](on-tier-removed.md): (tier: [Tier](../../me.khruslan.tierlistmaker.data.models.tierlist/-tier/index.md)) -&gt; [Unit](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html)
+private val [onTierRemoved](on-tier-removed.md): (index: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), tier: [Tier](../../me.khruslan.tierlistmaker.data.models.tierlist/-tier/index.md)) -&gt; [Unit](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html)

@@ -81,7 +81,7 @@ class UpdateEffectTest {
     @Test
     fun `When target is trash bin creates TrowToTrashBin effect`() {
         val target = TrashBinDragData
-        val expectedEffect = ThrowToTrashBin
+        val expectedEffect = ThrowToTrashBin(shadow.image)
 
         assertEquals(expectedEffect, UpdateEffect.create(shadow, target))
     }

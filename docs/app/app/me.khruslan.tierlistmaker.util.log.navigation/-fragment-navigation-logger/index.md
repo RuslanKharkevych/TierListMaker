@@ -2,7 +2,7 @@
 
 # FragmentNavigationLogger
 
-class [FragmentNavigationLogger](index.md) : [NavController.OnDestinationChangedListener](https://developer.android.com/reference/kotlin/androidx/navigation/NavController.OnDestinationChangedListener.html)
+class [FragmentNavigationLogger](index.md)(val analyticsService: [AnalyticsService](../../me.khruslan.tierlistmaker.util.analytics/-analytics-service/index.md)) : [NavController.OnDestinationChangedListener](https://developer.android.com/reference/kotlin/androidx/navigation/NavController.OnDestinationChangedListener.html)
 
 Logs fragment destination changes.
 
@@ -12,12 +12,13 @@ To register the logger, use [NavController.addOnDestinationChangedListener](http
 
 | | |
 |---|---|
-| [FragmentNavigationLogger](-fragment-navigation-logger.md) | constructor()<br>Creates a new fragment navigation logger. |
+| [FragmentNavigationLogger](-fragment-navigation-logger.md) | constructor(analyticsService: [AnalyticsService](../../me.khruslan.tierlistmaker.util.analytics/-analytics-service/index.md))<br>Creates a new fragment navigation logger. |
 
 ## Properties
 
 | Name | Summary |
 |---|---|
+| [analyticsService](analytics-service.md) | private val [analyticsService](analytics-service.md): [AnalyticsService](../../me.khruslan.tierlistmaker.util.analytics/-analytics-service/index.md)<br>Logs analytic events. |
 | [simpleClassName](simple-class-name.md) | private val [NavDestination](https://developer.android.com/reference/kotlin/androidx/navigation/NavDestination.html).[simpleClassName](simple-class-name.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)?<br>Returns the class name of the destination without package name. |
 
 ## Functions

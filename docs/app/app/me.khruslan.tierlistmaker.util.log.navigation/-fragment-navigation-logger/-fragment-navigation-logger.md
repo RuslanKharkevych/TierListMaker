@@ -2,6 +2,6 @@
 
 # FragmentNavigationLogger
 
-constructor()
+constructor(analyticsService: [AnalyticsService](../../me.khruslan.tierlistmaker.util.analytics/-analytics-service/index.md))
 
 Creates a new fragment navigation logger.

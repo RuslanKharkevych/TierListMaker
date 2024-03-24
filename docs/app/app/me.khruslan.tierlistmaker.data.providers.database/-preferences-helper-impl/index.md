@@ -2,7 +2,7 @@
 
 # PreferencesHelperImpl
 
-class [PreferencesHelperImpl](index.md) @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) constructor(val context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html)) : [PreferencesHelper](../-preferences-helper/index.md)
+class [PreferencesHelperImpl](index.md) @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) constructor(val context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html), val analyticsService: [AnalyticsService](../../me.khruslan.tierlistmaker.util.analytics/-analytics-service/index.md)) : [PreferencesHelper](../-preferences-helper/index.md)
 
 [PreferencesHelper](../-preferences-helper/index.md) implementation.
 
@@ -12,7 +12,7 @@ Implemented with [SharedPreferences](https://developer.android.com/reference/kot
 
 | | |
 |---|---|
-| [PreferencesHelperImpl](-preferences-helper-impl.md) | @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) <br>constructor(context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html))<br>Creates a new preferences helper instance. |
+| [PreferencesHelperImpl](-preferences-helper-impl.md) | @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) <br>constructor(context: [Context](https://developer.android.com/reference/kotlin/android/content/Context.html), analyticsService: [AnalyticsService](../../me.khruslan.tierlistmaker.util.analytics/-analytics-service/index.md))<br>Creates a new preferences helper instance. |
 
 ## Types
 
@@ -24,6 +24,7 @@ Implemented with [SharedPreferences](https://developer.android.com/reference/kot
 
 | Name | Summary |
 |---|---|
+| [analyticsService](analytics-service.md) | private val [analyticsService](analytics-service.md): [AnalyticsService](../../me.khruslan.tierlistmaker.util.analytics/-analytics-service/index.md)<br>Logs analytic events. |
 | [context](context.md) | private val [context](context.md): [Context](https://developer.android.com/reference/kotlin/android/content/Context.html)<br>Application context. |
 | [defaultTierListCollectionProvided](default-tier-list-collection-provided.md) | open override val [defaultTierListCollectionProvided](default-tier-list-collection-provided.md): [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html)<br>Whether the default tier list collection has already been provided. |
 | [imageQuality](image-quality.md) | open override val [imageQuality](image-quality.md): [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)<br>The quality in percents of the new tier list images. |
