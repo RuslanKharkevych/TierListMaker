@@ -2,6 +2,6 @@
 
 # APP_DETAILS_PLAY_MARKET_URL
 
-private const val [APP_DETAILS_PLAY_MARKET_URL](-a-p-p_-d-e-t-a-i-l-s_-p-l-a-y_-m-a-r-k-e-t_-u-r-l.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)
+internal const val [APP_DETAILS_PLAY_MARKET_URL](-a-p-p_-d-e-t-a-i-l-s_-p-l-a-y_-m-a-r-k-e-t_-u-r-l.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)
 
 A link to the app at Google Play Store.

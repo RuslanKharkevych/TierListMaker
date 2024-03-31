@@ -2,7 +2,7 @@
 
 # Constants
 
-private object [Constants](index.md)
+internal object [Constants](index.md)
 
 Constants for internal use.
 
@@ -11,5 +11,5 @@ Constants for internal use.
 | Name | Summary |
 |---|---|
 | [APP_DETAILS_BROWSER_URL](-a-p-p_-d-e-t-a-i-l-s_-b-r-o-w-s-e-r_-u-r-l.md) | private const val [APP_DETAILS_BROWSER_URL](-a-p-p_-d-e-t-a-i-l-s_-b-r-o-w-s-e-r_-u-r-l.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>A fallback browser link to the app. |
-| [APP_DETAILS_PLAY_MARKET_URL](-a-p-p_-d-e-t-a-i-l-s_-p-l-a-y_-m-a-r-k-e-t_-u-r-l.md) | private const val [APP_DETAILS_PLAY_MARKET_URL](-a-p-p_-d-e-t-a-i-l-s_-p-l-a-y_-m-a-r-k-e-t_-u-r-l.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>A link to the app at Google Play Store. |
+| [APP_DETAILS_PLAY_MARKET_URL](-a-p-p_-d-e-t-a-i-l-s_-p-l-a-y_-m-a-r-k-e-t_-u-r-l.md) | internal const val [APP_DETAILS_PLAY_MARKET_URL](-a-p-p_-d-e-t-a-i-l-s_-p-l-a-y_-m-a-r-k-e-t_-u-r-l.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>A link to the app at Google Play Store. |
 | [APPLICATION_ID](-a-p-p-l-i-c-a-t-i-o-n_-i-d.md) | private const val [APPLICATION_ID](-a-p-p-l-i-c-a-t-i-o-n_-i-d.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>Application ID read from the build configuration. |

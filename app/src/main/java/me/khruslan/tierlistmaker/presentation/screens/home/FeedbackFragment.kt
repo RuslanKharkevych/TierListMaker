@@ -3,10 +3,12 @@ package me.khruslan.tierlistmaker.presentation.screens.home
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
+import androidx.annotation.VisibleForTesting
 import androidx.core.net.toUri
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceScreen
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import me.khruslan.tierlistmaker.BuildConfig
 import me.khruslan.tierlistmaker.R
 import me.khruslan.tierlistmaker.presentation.utils.FeedbackUtils
@@ -24,12 +26,14 @@ import javax.inject.Inject
  *
  * @constructor Default no-arg constructor.
  */
+@AndroidEntryPoint
 class FeedbackFragment : PreferenceFragmentCompat() {
 
     /**
      * Constants for internal use.
      */
-    private companion object Constants {
+    @VisibleForTesting
+    internal companion object Constants {
 
         /**
          * Application ID read from the build configuration.
@@ -41,7 +45,8 @@ class FeedbackFragment : PreferenceFragmentCompat() {
         /**
          * A link to the app at Google Play Store.
          */
-        private const val APP_DETAILS_PLAY_MARKET_URL = "market://details?id=$APPLICATION_ID"
+        @VisibleForTesting
+        internal const val APP_DETAILS_PLAY_MARKET_URL = "market://details?id=$APPLICATION_ID"
 
         /**
          * A fallback browser link to the app.

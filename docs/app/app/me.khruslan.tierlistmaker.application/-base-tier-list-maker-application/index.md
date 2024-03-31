@@ -1,24 +1,24 @@
-//[app](../../../index.md)/[me.khruslan.tierlistmaker](../index.md)/[TierListMakerApplication](index.md)
+//[app](../../../index.md)/[me.khruslan.tierlistmaker.application](../index.md)/[BaseTierListMakerApplication](index.md)
 
-# TierListMakerApplication
+# BaseTierListMakerApplication
 
-class [TierListMakerApplication](index.md) : [Application](https://developer.android.com/reference/kotlin/android/app/Application.html)
+abstract class [BaseTierListMakerApplication](index.md) : [Application](https://developer.android.com/reference/kotlin/android/app/Application.html)
 
 Customized application implementation for startup configurations.
 
-Custom application class is also required by [Hilt](https://dagger.dev/hilt) for generating [Dagger](https://dagger.dev) components.
+This class can be used both in main module and as in instrumented tests.
+
+#### Inheritors
+
+| |
+|---|
+| [TierListMakerApplication](../-tier-list-maker-application/index.md) |
 
 ## Constructors
 
 | | |
 |---|---|
-| [TierListMakerApplication](-tier-list-maker-application.md) | constructor()<br>Default constructor called by Android system. |
-
-## Properties
-
-| Name | Summary |
-|---|---|
-| [themeManager](theme-manager.md) | @[Inject](https://javax-inject.github.io/javax-inject/api/javax/inject/Inject.html) <br>lateinit var [themeManager](theme-manager.md): [ThemeManager](../../me.khruslan.tierlistmaker.presentation.utils.theme/-theme-manager/index.md)<br>Manager used to set the application theme. |
+| [BaseTierListMakerApplication](-base-tier-list-maker-application.md) | constructor()<br>Default no-arg constructor. |
 
 ## Functions
 
@@ -32,6 +32,6 @@ Custom application class is also required by [Hilt](https://dagger.dev/hilt) for
 | [onCreate](on-create.md) | open override fun [onCreate](on-create.md)()<br>Performs global initialization tasks. |
 | [onLowMemory](on-low-memory.md) | open override fun [onLowMemory](on-low-memory.md)()<br>Logs low memory events. |
 | [onTrimMemory](on-trim-memory.md) | open override fun [onTrimMemory](on-trim-memory.md)(level: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html))<br>Logs trim memory events. |
-| [performInitializationTasks](perform-initialization-tasks.md) | private fun [performInitializationTasks](perform-initialization-tasks.md)()<br>Initializes global components and applies the application theme. |
+| [performInitializationTasks](perform-initialization-tasks.md) | private fun [performInitializationTasks](perform-initialization-tasks.md)()<br>Initializes global components. |
 | [plantTimberTree](plant-timber-tree.md) | private fun [plantTimberTree](plant-timber-tree.md)()<br>Plants [Timber.Tree](https://jakewharton.github.io/timber/docs/5.x/timber/timber.log/-timber/-tree/index.html) for logging in debug build and reporting crashes in release builds. |
 | [setupLogging](setup-logging.md) | private fun [setupLogging](setup-logging.md)()<br>Initializes logging services. |

@@ -2,9 +2,9 @@
 
 Tier List Maker application module. This is the only Android module in the project.
 
-# Package me.khruslan.tierlistmaker
+# Package me.khruslan.tierlistmaker.application
 
-Root package. Contains only application class.
+Custom application classes.
 
 # Package me.khruslan.tierlistmaker.data.models.drag
 
@@ -109,6 +109,10 @@ UI utilities for customizing hint shapes.
 # Package me.khruslan.tierlistmaker.presentation.utils.hints.core
 
 UI utilities for core hint functionality.
+
+# Package me.khruslan.tierlistmaker.presentation.utils.hints.tierlist
+
+UI utilities for showing tier list hints.
 
 # Package me.khruslan.tierlistmaker.presentation.utils.navigation
 

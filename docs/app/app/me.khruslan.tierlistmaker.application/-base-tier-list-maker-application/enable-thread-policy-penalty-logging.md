@@ -1,4 +1,4 @@
-//[app](../../../index.md)/[me.khruslan.tierlistmaker](../index.md)/[TierListMakerApplication](index.md)/[enableThreadPolicyPenaltyLogging](enable-thread-policy-penalty-logging.md)
+//[app](../../../index.md)/[me.khruslan.tierlistmaker.application](../index.md)/[BaseTierListMakerApplication](index.md)/[enableThreadPolicyPenaltyLogging](enable-thread-policy-penalty-logging.md)
 
 # enableThreadPolicyPenaltyLogging
 

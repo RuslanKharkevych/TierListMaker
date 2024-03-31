@@ -2,6 +2,8 @@
 
 # Package-level declarations
 
+UI utilities for showing tier list hints.
+
 ## Types
 
 | Name | Summary |

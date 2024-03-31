@@ -1,4 +1,4 @@
-//[app](../../../index.md)/[me.khruslan.tierlistmaker](../index.md)/[TierListMakerApplication](index.md)/[onConfigurationChanged](on-configuration-changed.md)
+//[app](../../../index.md)/[me.khruslan.tierlistmaker.application](../index.md)/[BaseTierListMakerApplication](index.md)/[onConfigurationChanged](on-configuration-changed.md)
 
 # onConfigurationChanged
 

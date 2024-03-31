@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.widget.Toast
+import androidx.annotation.VisibleForTesting
 import androidx.core.net.toUri
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import me.khruslan.tierlistmaker.BuildConfig
@@ -28,14 +29,16 @@ object FeedbackUtils {
      *
      * Set as a data of the "Compose an email" intents.
      */
-    private const val MAILTO_URI_SCHEME = "mailto:"
+    @VisibleForTesting
+    internal const val MAILTO_URI_SCHEME = "mailto:"
 
     /**
      * The person that is intended to receive feedback emails.
      *
      * This email is prefilled in the “to” field in the email client.
      */
-    private const val RECIPIENT_EMAIL = "ruslan.kharkevych@gmail.com"
+    @VisibleForTesting
+    internal const val RECIPIENT_EMAIL = "ruslan.kharkevych@gmail.com"
 
     /**
      * The log tag of the alert, shown by [showSendUsEmailAlert] method.
@@ -100,7 +103,7 @@ object FeedbackUtils {
             data = MAILTO_URI_SCHEME.toUri()
             putExtra(Intent.EXTRA_EMAIL, arrayOf(RECIPIENT_EMAIL))
             putExtra(Intent.EXTRA_SUBJECT, subject)
-            putExtra(Intent.EXTRA_TEXT, message)
+            if (message != null) putExtra(Intent.EXTRA_TEXT, message)
         }
 
         context.startActivity(intent)

@@ -12,8 +12,8 @@ Allows to open an email application with prefilled information for reporting an 
 
 | Name | Summary |
 |---|---|
-| [MAILTO_URI_SCHEME](-m-a-i-l-t-o_-u-r-i_-s-c-h-e-m-e.md) | private const val [MAILTO_URI_SCHEME](-m-a-i-l-t-o_-u-r-i_-s-c-h-e-m-e.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>A URI scheme for email addresses. |
-| [RECIPIENT_EMAIL](-r-e-c-i-p-i-e-n-t_-e-m-a-i-l.md) | private const val [RECIPIENT_EMAIL](-r-e-c-i-p-i-e-n-t_-e-m-a-i-l.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>The person that is intended to receive feedback emails. |
+| [MAILTO_URI_SCHEME](-m-a-i-l-t-o_-u-r-i_-s-c-h-e-m-e.md) | internal const val [MAILTO_URI_SCHEME](-m-a-i-l-t-o_-u-r-i_-s-c-h-e-m-e.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>A URI scheme for email addresses. |
+| [RECIPIENT_EMAIL](-r-e-c-i-p-i-e-n-t_-e-m-a-i-l.md) | internal const val [RECIPIENT_EMAIL](-r-e-c-i-p-i-e-n-t_-e-m-a-i-l.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>The person that is intended to receive feedback emails. |
 | [SEND_US_EMAIL_ALERT_LOG_TAG](-s-e-n-d_-u-s_-e-m-a-i-l_-a-l-e-r-t_-l-o-g_-t-a-g.md) | private const val [SEND_US_EMAIL_ALERT_LOG_TAG](-s-e-n-d_-u-s_-e-m-a-i-l_-a-l-e-r-t_-l-o-g_-t-a-g.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>The log tag of the alert, shown by [showSendUsEmailAlert](show-send-us-email-alert.md) method. |
 
 ## Functions

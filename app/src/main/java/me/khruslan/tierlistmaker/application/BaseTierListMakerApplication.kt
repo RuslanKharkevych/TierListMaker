@@ -1,36 +1,23 @@
-package me.khruslan.tierlistmaker
+package me.khruslan.tierlistmaker.application
 
 import android.app.Application
 import android.content.res.Configuration
 import android.os.StrictMode
-import dagger.hilt.android.HiltAndroidApp
 import io.paperdb.Paper
+import me.khruslan.tierlistmaker.BuildConfig
 import me.khruslan.tierlistmaker.util.log.navigation.ActivityLifecycleLogger
 import me.khruslan.tierlistmaker.util.log.timber.DebugTimberTree
 import me.khruslan.tierlistmaker.util.log.timber.ReleaseTimberTree
-import me.khruslan.tierlistmaker.presentation.utils.theme.ThemeManager
 import timber.log.Timber
-import javax.inject.Inject
 
 /**
  * Customized application implementation for startup configurations.
  *
- * Custom application class is also required by [Hilt](https://dagger.dev/hilt) for generating
- * [Dagger](https://dagger.dev) components.
+ * This class can be used both in main module and as in instrumented tests.
  *
- * @constructor Default constructor called by Android system.
+ * @constructor Default no-arg constructor.
  */
-@HiltAndroidApp
-class TierListMakerApplication : Application() {
-
-    /**
-     * Manager used to set the application theme.
-     *
-     * Needs to be injected inside the application because updating the theme leads to configuration
-     * change. Therefore, it must be done before any activity is created to avoid UI glitches.
-     */
-    @Inject
-    lateinit var themeManager: ThemeManager
+abstract class BaseTierListMakerApplication : Application() {
 
     /**
      * Performs global initialization tasks.
@@ -83,7 +70,7 @@ class TierListMakerApplication : Application() {
     }
 
     /**
-     * Initializes global components and applies the application theme.
+     * Initializes global components.
      *
      * Global components include logging services and [Paper](https://github.com/pilgr/Paper)
      * database.
@@ -91,7 +78,6 @@ class TierListMakerApplication : Application() {
     private fun performInitializationTasks() {
         setupLogging()
         Paper.init(this)
-        themeManager.setDefaultTheme()
     }
 
     /**

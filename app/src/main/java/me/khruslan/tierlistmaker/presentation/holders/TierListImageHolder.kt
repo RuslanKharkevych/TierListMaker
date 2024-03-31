@@ -125,7 +125,7 @@ class TierListImageHolder(
      * @param data Data of the image that will be dragged.
      * @return Whether the drag was started successfully.
      */
-    private fun startDragCompat(view: View ,data: ImageDragData): Boolean {
+    private fun startDragCompat(view: View, data: ImageDragData): Boolean {
         val shadowBuilder = View.DragShadowBuilder(view)
 
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

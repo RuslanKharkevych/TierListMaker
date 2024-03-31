@@ -1,5 +1,23 @@
 $dokka.format:gfm-v1
 $dokka.linkExtension:md
+$dokka.location:me.khruslan.tierlistmaker.application////PointingToDeclaration/app/app/me.khruslan.tierlistmaker.application/index.md
+$dokka.location:me.khruslan.tierlistmaker.application/BaseTierListMakerApplication///PointingToDeclaration/app/app/me.khruslan.tierlistmaker.application/-base-tier-list-maker-application/index.md
+$dokka.location:me.khruslan.tierlistmaker.application/BaseTierListMakerApplication/BaseTierListMakerApplication/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker.application/-base-tier-list-maker-application/-base-tier-list-maker-application.md
+$dokka.location:me.khruslan.tierlistmaker.application/BaseTierListMakerApplication/configureStrictModePenaltyLogging/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker.application/-base-tier-list-maker-application/configure-strict-mode-penalty-logging.md
+$dokka.location:me.khruslan.tierlistmaker.application/BaseTierListMakerApplication/enableThreadPolicyPenaltyLogging/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker.application/-base-tier-list-maker-application/enable-thread-policy-penalty-logging.md
+$dokka.location:me.khruslan.tierlistmaker.application/BaseTierListMakerApplication/enableVmPolicyPenaltyLogging/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker.application/-base-tier-list-maker-application/enable-vm-policy-penalty-logging.md
+$dokka.location:me.khruslan.tierlistmaker.application/BaseTierListMakerApplication/getTrimMemoryLevelName/#kotlin.Int/PointingToDeclaration/app/app/me.khruslan.tierlistmaker.application/-base-tier-list-maker-application/get-trim-memory-level-name.md
+$dokka.location:me.khruslan.tierlistmaker.application/BaseTierListMakerApplication/onConfigurationChanged/#android.content.res.Configuration/PointingToDeclaration/app/app/me.khruslan.tierlistmaker.application/-base-tier-list-maker-application/on-configuration-changed.md
+$dokka.location:me.khruslan.tierlistmaker.application/BaseTierListMakerApplication/onCreate/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker.application/-base-tier-list-maker-application/on-create.md
+$dokka.location:me.khruslan.tierlistmaker.application/BaseTierListMakerApplication/onLowMemory/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker.application/-base-tier-list-maker-application/on-low-memory.md
+$dokka.location:me.khruslan.tierlistmaker.application/BaseTierListMakerApplication/onTrimMemory/#kotlin.Int/PointingToDeclaration/app/app/me.khruslan.tierlistmaker.application/-base-tier-list-maker-application/on-trim-memory.md
+$dokka.location:me.khruslan.tierlistmaker.application/BaseTierListMakerApplication/performInitializationTasks/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker.application/-base-tier-list-maker-application/perform-initialization-tasks.md
+$dokka.location:me.khruslan.tierlistmaker.application/BaseTierListMakerApplication/plantTimberTree/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker.application/-base-tier-list-maker-application/plant-timber-tree.md
+$dokka.location:me.khruslan.tierlistmaker.application/BaseTierListMakerApplication/setupLogging/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker.application/-base-tier-list-maker-application/setup-logging.md
+$dokka.location:me.khruslan.tierlistmaker.application/TierListMakerApplication///PointingToDeclaration/app/app/me.khruslan.tierlistmaker.application/-tier-list-maker-application/index.md
+$dokka.location:me.khruslan.tierlistmaker.application/TierListMakerApplication/TierListMakerApplication/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker.application/-tier-list-maker-application/-tier-list-maker-application.md
+$dokka.location:me.khruslan.tierlistmaker.application/TierListMakerApplication/onCreate/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker.application/-tier-list-maker-application/on-create.md
+$dokka.location:me.khruslan.tierlistmaker.application/TierListMakerApplication/themeManager/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker.application/-tier-list-maker-application/theme-manager.md
 $dokka.location:me.khruslan.tierlistmaker.data.models.drag.effects////PointingToDeclaration/app/app/me.khruslan.tierlistmaker.data.models.drag.effects/index.md
 $dokka.location:me.khruslan.tierlistmaker.data.models.drag.effects/DragEffect///PointingToDeclaration/app/app/me.khruslan.tierlistmaker.data.models.drag.effects/-drag-effect/index.md
 $dokka.location:me.khruslan.tierlistmaker.data.models.drag.effects/DragEffect/DragEffect/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker.data.models.drag.effects/-drag-effect/-drag-effect.md
@@ -1343,23 +1361,8 @@ $dokka.location:me.khruslan.tierlistmaker.util/ConfigUtils/getDeviceLanguage/#/P
 $dokka.location:me.khruslan.tierlistmaker.util/ConfigUtils/getDisplayDensity/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker.util/-config-utils/get-display-density.md
 $dokka.location:me.khruslan.tierlistmaker.util/ConfigUtils/getDisplayResolution/#android.content.Context/PointingToDeclaration/app/app/me.khruslan.tierlistmaker.util/-config-utils/get-display-resolution.md
 $dokka.location:me.khruslan.tierlistmaker.util/ConfigUtils/getFontScale/#android.content.Context/PointingToDeclaration/app/app/me.khruslan.tierlistmaker.util/-config-utils/get-font-scale.md
-$dokka.location:me.khruslan.tierlistmaker////PointingToDeclaration/app/app/me.khruslan.tierlistmaker/index.md
-$dokka.location:me.khruslan.tierlistmaker/TierListMakerApplication///PointingToDeclaration/app/app/me.khruslan.tierlistmaker/-tier-list-maker-application/index.md
-$dokka.location:me.khruslan.tierlistmaker/TierListMakerApplication/TierListMakerApplication/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker/-tier-list-maker-application/-tier-list-maker-application.md
-$dokka.location:me.khruslan.tierlistmaker/TierListMakerApplication/configureStrictModePenaltyLogging/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker/-tier-list-maker-application/configure-strict-mode-penalty-logging.md
-$dokka.location:me.khruslan.tierlistmaker/TierListMakerApplication/enableThreadPolicyPenaltyLogging/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker/-tier-list-maker-application/enable-thread-policy-penalty-logging.md
-$dokka.location:me.khruslan.tierlistmaker/TierListMakerApplication/enableVmPolicyPenaltyLogging/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker/-tier-list-maker-application/enable-vm-policy-penalty-logging.md
-$dokka.location:me.khruslan.tierlistmaker/TierListMakerApplication/getTrimMemoryLevelName/#kotlin.Int/PointingToDeclaration/app/app/me.khruslan.tierlistmaker/-tier-list-maker-application/get-trim-memory-level-name.md
-$dokka.location:me.khruslan.tierlistmaker/TierListMakerApplication/onConfigurationChanged/#android.content.res.Configuration/PointingToDeclaration/app/app/me.khruslan.tierlistmaker/-tier-list-maker-application/on-configuration-changed.md
-$dokka.location:me.khruslan.tierlistmaker/TierListMakerApplication/onCreate/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker/-tier-list-maker-application/on-create.md
-$dokka.location:me.khruslan.tierlistmaker/TierListMakerApplication/onLowMemory/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker/-tier-list-maker-application/on-low-memory.md
-$dokka.location:me.khruslan.tierlistmaker/TierListMakerApplication/onTrimMemory/#kotlin.Int/PointingToDeclaration/app/app/me.khruslan.tierlistmaker/-tier-list-maker-application/on-trim-memory.md
-$dokka.location:me.khruslan.tierlistmaker/TierListMakerApplication/performInitializationTasks/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker/-tier-list-maker-application/perform-initialization-tasks.md
-$dokka.location:me.khruslan.tierlistmaker/TierListMakerApplication/plantTimberTree/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker/-tier-list-maker-application/plant-timber-tree.md
-$dokka.location:me.khruslan.tierlistmaker/TierListMakerApplication/setupLogging/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker/-tier-list-maker-application/setup-logging.md
-$dokka.location:me.khruslan.tierlistmaker/TierListMakerApplication/themeManager/#/PointingToDeclaration/app/app/me.khruslan.tierlistmaker/-tier-list-maker-application/theme-manager.md
 module:app
-me.khruslan.tierlistmaker
+me.khruslan.tierlistmaker.application
 me.khruslan.tierlistmaker.data.models.drag
 me.khruslan.tierlistmaker.data.models.drag.effects
 me.khruslan.tierlistmaker.data.models.tierlist

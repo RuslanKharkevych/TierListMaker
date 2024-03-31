@@ -18,7 +18,7 @@ Consists of &quot;Contact us&quot;, &quot;Report bug&quot; and &quot;Rate app&qu
 
 | Name | Summary |
 |---|---|
-| [Constants](-constants/index.md) | private object [Constants](-constants/index.md)<br>Constants for internal use. |
+| [Constants](-constants/index.md) | internal object [Constants](-constants/index.md)<br>Constants for internal use. |
 
 ## Properties
 
