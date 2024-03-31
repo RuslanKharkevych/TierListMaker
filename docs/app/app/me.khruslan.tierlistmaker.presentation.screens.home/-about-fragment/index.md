@@ -6,7 +6,7 @@ class [AboutFragment](index.md) : [PreferenceFragmentCompat](https://developer.a
 
 Fragment that represents &quot;About&quot; section in the navigation drawer.
 
-Consists of &quot;Privacy policy&quot; and &quot;App version&quot; sections.
+Consists of only &quot;App version&quot; section for now.
 
 ## Constructors
 

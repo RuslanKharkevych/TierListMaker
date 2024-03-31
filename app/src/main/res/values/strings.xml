@@ -98,9 +98,6 @@
 
     <!-- region AboutFragment -->
     <string name="about_appbar_title">About</string>
-    <string name="pref_privacy_policy_key" translatable="false">privacy_policy</string>
-    <string name="pref_privacy_policy_title">Privacy policy</string>
-    <string name="pref_privacy_policy_summary">Our privacy policy details the information we collect from users and clarifies the choices you have regarding the usage of your data</string>
     <string name="pref_app_version_key" translatable="false">app_version</string>
     <string name="pref_app_version_title">App version</string>
     <!-- endregion AboutFragment -->

@@ -3,12 +3,6 @@
 
     <Preference
         app:iconSpaceReserved="false"
-        app:key="@string/pref_privacy_policy_key"
-        app:summary="@string/pref_privacy_policy_summary"
-        app:title="@string/pref_privacy_policy_title" />
-
-    <Preference
-        app:iconSpaceReserved="false"
         app:key="@string/pref_app_version_key"
         app:title="@string/pref_app_version_title" />
 

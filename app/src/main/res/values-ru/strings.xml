@@ -65,8 +65,6 @@
     <string name="pref_image_quality_title">Качество изображений</string>
     <string name="pref_image_quality_summary">Выше процент — лучше качество, меньше процент — занимает меньше памяти в хранилище</string>
     <string name="about_appbar_title">О программе</string>
-    <string name="pref_privacy_policy_title">Политика конфиденциальности</string>
-    <string name="pref_privacy_policy_summary">В нашей политике конфиденциальности подробно описывается информация, которую мы собираем от пользователей, и разъясняется ваш выбор в отношении использования ваших личных данных</string>
     <string name="pref_app_version_title">Версия приложения</string>
     <string name="tier_list_musical_instruments">Музыкальные инструменты</string>
     <string name="tier_list_sports">Виды спорта</string>
