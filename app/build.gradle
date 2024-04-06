@@ -1,3 +1,5 @@
+import com.slack.keeper.KeeperVariantMarker
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
@@ -7,11 +9,13 @@ plugins {
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
     id 'com.google.firebase.firebase-perf'
+    id 'com.slack.keeper'
 }
 
 android {
     compileSdk 34
     namespace 'me.khruslan.tierlistmaker'
+    testBuildType 'staging'
 
     defaultConfig {
         applicationId 'me.khruslan.tierlistmaker'
@@ -31,9 +35,24 @@ android {
             resValue('bool', 'firebase_performance_logcat_enabled', 'true')
             resValue('bool', 'firebase_performance_collection_deactivated', 'true')
         }
+
+        staging {
+            versionNameSuffix '-STAGING'
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'staging-proguard-rules.pro'
+            testProguardFiles 'test-proguard-rules.pro'
+            signingConfig signingConfigs.debug
+            resValue('bool', 'firebase_analytics_collection_deactivated', 'true')
+            resValue('bool', 'firebase_crashlytics_collection_enabled', 'false')
+            resValue('bool', 'firebase_performance_logcat_enabled', 'false')
+            resValue('bool', 'firebase_performance_collection_deactivated', 'true')
+        }
+
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'release-proguard-rules.pro'
             resValue('bool', 'firebase_analytics_collection_deactivated', 'false')
             resValue('bool', 'firebase_crashlytics_collection_enabled', 'true')
             resValue('bool', 'firebase_performance_logcat_enabled', 'false')
@@ -131,6 +150,12 @@ dependencies {
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.3.0'
     androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+}
+
+androidComponents {
+    beforeVariants(selector().withBuildType('staging')) { builder ->
+        builder.registerExtension(KeeperVariantMarker.class, KeeperVariantMarker.INSTANCE)
+    }
 }
 
 tasks.withType(Test).configureEach {

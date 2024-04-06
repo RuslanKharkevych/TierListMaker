@@ -6,8 +6,6 @@ inline fun &lt;[T](get-parcelable-extra-compat.md) : [Parcelable](https://develo
 
 A helper to get parcelable extra from intent that supports all versions.
 
-Starting from Android 13 uses type-safe overload of the [Intent.getParcelableExtra](https://developer.android.com/reference/kotlin/android/content/Intent.html#getparcelableextra) function.
-
 #### Return
 
 The value of the resolved item.

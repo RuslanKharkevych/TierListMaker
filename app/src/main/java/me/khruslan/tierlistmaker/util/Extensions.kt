@@ -7,6 +7,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.util.TypedValue
 import androidx.annotation.IdRes
+import androidx.core.content.IntentCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.NavHostFragment
 import java.io.Serializable
@@ -45,19 +46,12 @@ fun FragmentActivity.findNavHostFragmentById(@IdRes id: Int) =
 /**
  * A helper to get parcelable extra from intent that supports all versions.
  *
- * Starting from Android 13 uses type-safe overload of the [Intent.getParcelableExtra] function.
- *
  * @param T Type of the parcelable.
  * @param name Name of the extra.
  * @return The value of the resolved item.
  */
 inline fun <reified T : Parcelable> Intent.getParcelableExtraCompat(name: String): T? {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        getParcelableExtra(name, T::class.java)
-    } else {
-        @Suppress("DEPRECATION")
-        getParcelableExtra(name)
-    }
+    return IntentCompat.getParcelableExtra(this, name, T::class.java)
 }
 
 /**

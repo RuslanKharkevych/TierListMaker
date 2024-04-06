@@ -1,0 +1,3 @@
+-dontwarn com.google.auto.value.AutoValue
+-dontwarn com.google.protobuf.GeneratedMessageLite$MergeFromVisitor
+-dontwarn com.google.protobuf.GeneratedMessageLite$Visitor

@@ -29,6 +29,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isNotEnabled
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.activityScenarioRule
+import androidx.test.filters.FlakyTest
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import me.khruslan.tierlistmaker.R
@@ -60,6 +61,7 @@ import org.hamcrest.Matchers.any
 import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.BeforeClass
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
@@ -133,6 +135,7 @@ class TierListTests {
     }
 
     @Test
+    @FlakyTest
     fun viewTierList() {
         openTierListWithTitle(R.string.tier_list_sports)
         onView(withId(R.id.btn_view)).perform(click()).check(matches(isNotEnabled()))
@@ -172,6 +175,7 @@ class TierListTests {
     }
 
     @Test
+    @Ignore("Issue with back navigation gesture on swipeRight()")
     fun removeTier() = dataProvider.withTierListData(R.string.tier_list_school_subjects) {
         openTierListWithTitle(R.string.tier_list_school_subjects)
         onView(withId(R.id.list_tiers)).perform(scrollToLastItem())

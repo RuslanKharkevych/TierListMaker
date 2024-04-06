@@ -1,0 +1,2 @@
+-include release-proguard-rules.pro
+-keep class dagger.hilt.android.internal.managers.HiltWrapper_ActivityRetainedComponentManager_ActivityRetainedComponentBuilderEntryPoint { *; }
