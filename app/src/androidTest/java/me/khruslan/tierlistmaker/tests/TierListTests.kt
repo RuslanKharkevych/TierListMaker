@@ -13,7 +13,6 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.doubleClick
 import androidx.test.espresso.action.ViewActions.replaceText
-import androidx.test.espresso.action.ViewActions.swipeRight
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents.intended
@@ -29,7 +28,6 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isNotEnabled
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.activityScenarioRule
-import androidx.test.filters.FlakyTest
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import me.khruslan.tierlistmaker.R
@@ -41,8 +39,6 @@ import me.khruslan.tierlistmaker.utils.dragTo
 import me.khruslan.tierlistmaker.utils.dragToBottomOf
 import me.khruslan.tierlistmaker.utils.fetchTierListImage
 import me.khruslan.tierlistmaker.utils.fetchTierListImages
-import me.khruslan.tierlistmaker.utils.hasEmptyToolbarSubtitle
-import me.khruslan.tierlistmaker.utils.hasToolbarSubtitle
 import me.khruslan.tierlistmaker.utils.hasToolbarTitle
 import me.khruslan.tierlistmaker.utils.isEmpty
 import me.khruslan.tierlistmaker.utils.isFirstTierListImage
@@ -53,6 +49,7 @@ import me.khruslan.tierlistmaker.utils.isTierHeaderAtPosition
 import me.khruslan.tierlistmaker.utils.isTierListImageAtPosition
 import me.khruslan.tierlistmaker.utils.scaledWithZoomValue
 import me.khruslan.tierlistmaker.utils.scrollToLastItem
+import me.khruslan.tierlistmaker.utils.swipeRightFromCenter
 import me.khruslan.tierlistmaker.utils.waitUntil
 import me.khruslan.tierlistmaker.utils.withTierListImage
 import me.khruslan.tierlistmaker.utils.withTierListImages
@@ -61,7 +58,6 @@ import org.hamcrest.Matchers.any
 import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.BeforeClass
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
@@ -135,11 +131,10 @@ class TierListTests {
     }
 
     @Test
-    @FlakyTest
     fun viewTierList() {
         openTierListWithTitle(R.string.tier_list_sports)
         onView(withId(R.id.btn_view)).perform(click()).check(matches(isNotEnabled()))
-        waitUntilLoadingIsCompleted()
+        onView(withId(R.id.progress_loading)).perform(waitUntil(not(isDisplayed())))
         intended(
             allOf(
                 hasAction(ACTION_VIEW),
@@ -154,7 +149,7 @@ class TierListTests {
     fun shareTierList() {
         openTierListWithTitle(R.string.tier_list_fruits)
         onView(withId(R.id.btn_share)).perform(click()).check(matches(isNotEnabled()))
-        waitUntilLoadingIsCompleted()
+        onView(withId(R.id.progress_loading)).perform(waitUntil(not(isDisplayed())))
         intended(
             allOf(
                 hasAction(ACTION_SEND),
@@ -175,11 +170,12 @@ class TierListTests {
     }
 
     @Test
-    @Ignore("Issue with back navigation gesture on swipeRight()")
     fun removeTier() = dataProvider.withTierListData(R.string.tier_list_school_subjects) {
         openTierListWithTitle(R.string.tier_list_school_subjects)
         onView(withId(R.id.list_tiers)).perform(scrollToLastItem())
-        onView(isTierHeaderAtPosition(lastTierPosition)).perform(swipeRight()).check(doesNotExist())
+        onView(isTierHeaderAtPosition(lastTierPosition))
+            .perform(swipeRightFromCenter())
+            .check(doesNotExist())
         onView(withId(R.id.list_backlog_images)).check(matches(not(isEmpty())))
     }
 
@@ -210,14 +206,5 @@ class TierListTests {
             waitUntil(not(isEmpty())),
             clickOnTierListWithTitle(title)
         )
-    }
-
-    private fun waitUntilLoadingIsCompleted() {
-        onView(withId(R.id.toolbar))
-            .check(matches(hasToolbarSubtitle(R.string.toolbar_subtitle_indeterminate_loading)))
-        onView(withId(R.id.progress_loading))
-            .check(matches(isDisplayed()))
-            .perform(waitUntil(not(isDisplayed())))
-        onView(withId(R.id.toolbar)).check(matches(hasEmptyToolbarSubtitle()))
     }
 }

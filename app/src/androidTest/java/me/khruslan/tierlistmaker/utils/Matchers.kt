@@ -34,14 +34,6 @@ fun hasBackgroundColor(@ColorRes colorResId: Int): Matcher<View> {
     return HasBackgroundColorMatcher(colorResId)
 }
 
-fun hasEmptyToolbarSubtitle(): Matcher<View> {
-    return HasToolbarSubtitleMatcher("")
-}
-
-fun hasToolbarSubtitle(@StringRes subtitleResId: Int): Matcher<View> {
-    return HasToolbarSubtitleMatcher(targetContext.getString(subtitleResId))
-}
-
 fun hasToolbarTitle(title: String): Matcher<View> {
     return HasToolbarTitleMatcher(title)
 }
@@ -266,26 +258,6 @@ private class HasBackgroundColorMatcher(@ColorRes private val colorResId: Int) :
             0xFF and Color.alpha(color),
             0xFFFFFF and color
         )
-    }
-}
-
-private class HasToolbarSubtitleMatcher(private val expectedSubtitle: String) :
-    BoundedDiagnosingMatcher<View, Toolbar>(Toolbar::class.java) {
-
-    override fun describeMoreTo(description: Description) {
-        description
-            .appendText("toolbar.subtitle is ")
-            .appendValue(expectedSubtitle)
-    }
-
-    override fun matchesSafely(item: Toolbar, mismatchDescription: Description): Boolean {
-        val actualTitle = item.subtitle
-
-        mismatchDescription
-            .appendText("toolbar.subtitle was ")
-            .appendValue(actualTitle)
-
-        return expectedSubtitle == actualTitle
     }
 }
 

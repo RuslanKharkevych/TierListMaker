@@ -11,7 +11,10 @@ import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.CoordinatesProvider
 import androidx.test.espresso.action.GeneralClickAction
+import androidx.test.espresso.action.GeneralLocation
+import androidx.test.espresso.action.GeneralSwipeAction
 import androidx.test.espresso.action.Press
+import androidx.test.espresso.action.Swipe
 import androidx.test.espresso.action.Tap
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.swipeRight
@@ -52,6 +55,15 @@ fun setProgress(progress: Int): ViewAction {
         Press.FINGER,
         InputDevice.SOURCE_TOUCHSCREEN,
         MotionEvent.BUTTON_PRIMARY
+    )
+}
+
+fun swipeRightFromCenter(): ViewAction {
+    return GeneralSwipeAction(
+        Swipe.FAST,
+        GeneralLocation.CENTER,
+        GeneralLocation.CENTER_RIGHT,
+        Press.FINGER
     )
 }
 
