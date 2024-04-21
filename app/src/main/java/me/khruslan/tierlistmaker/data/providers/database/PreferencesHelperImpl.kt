@@ -2,6 +2,7 @@ package me.khruslan.tierlistmaker.data.providers.database
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.annotation.VisibleForTesting
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -32,12 +33,14 @@ class PreferencesHelperImpl @Inject constructor(
      * Not that some keys are not listed here and instead are declared as string resources. That is
      * needed if they are also accessed from XML.
      */
-    private companion object Keys {
+    @VisibleForTesting
+    internal companion object Keys {
 
         /**
          * Key for [nightModeEnabled].
          */
-        private const val KEY_NIGHT_MODE_ENABLED = "dark_mode_enabled"
+        @VisibleForTesting
+        internal const val KEY_NIGHT_MODE_ENABLED = "night_mode_enabled"
 
         /**
          * Key for [defaultTierListCollectionProvided].

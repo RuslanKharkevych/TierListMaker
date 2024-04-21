@@ -10,6 +10,7 @@ import androidx.test.espresso.contrib.NavigationViewActions.navigateTo
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.activityScenarioRule
+import androidx.test.filters.FlakyTest
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import me.khruslan.tierlistmaker.R
@@ -41,6 +42,7 @@ class HintsTests {
     }
 
     @Test
+    @FlakyTest
     fun viewTierListHints() {
         launchHintPreferenceWithTitle(R.string.pref_remove_tier_hint_title)
         onView(withId(R.id.text_hint)).check(matches(withText(R.string.hint_remove_tier)))

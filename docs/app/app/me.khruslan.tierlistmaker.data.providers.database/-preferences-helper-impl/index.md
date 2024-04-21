@@ -18,7 +18,7 @@ Implemented with [SharedPreferences](https://developer.android.com/reference/kot
 
 | Name | Summary |
 |---|---|
-| [Keys](-keys/index.md) | private object [Keys](-keys/index.md)<br>Preference keys. |
+| [Keys](-keys/index.md) | internal object [Keys](-keys/index.md)<br>Preference keys. |
 
 ## Properties
 

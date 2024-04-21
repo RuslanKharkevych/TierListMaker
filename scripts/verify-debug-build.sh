@@ -1,15 +1,6 @@
-function echo_task {
-  COLOR_CYAN='\033[0;36m'
-  RESET_ATTR='\033[0m'
-  echo -e "\n${COLOR_CYAN}$1${RESET_ATTR}"
-}
-
-function echo_step {
-  echo -e "\n$1"
-}
-
 set -e
 cd "$(realpath "$(dirname "$0")")"
+source logging-utils.sh
 cd "../"
 
 echo_task 'BUILDING THE PROJECT'
@@ -38,19 +29,4 @@ echo_task 'GENERATING CODE DOCUMENTATION'
 echo_step '(1/2) Publishing Dokka plugin to Maven Local'
 ./gradlew :app:dokka:publishToMavenLocal
 echo_step '(2/2) Generating documentation'
-DOCS_PATH='docs'
-BACKUP_PATH="build/tmp/$DOCS_PATH"
-backup_created=false
-if [ -d "$DOCS_PATH" ]; then
-  mkdir -p "$BACKUP_PATH"
-  mv "$DOCS_PATH" "$BACKUP_PATH"
-  backup_created=true
-fi
-if ./gradlew :dokkaGfmMultiModule; then
-  git add "$DOCS_PATH"
-  if [ "$backup_created" = true ]; then
-    rm -r "$BACKUP_PATH"
-  fi
-elif [ "$backup_created" = true ]; then
-  mv "$BACKUP_PATH" "$DOCS_PATH"
-fi
+source scripts/generate-docs.sh

@@ -12,6 +12,10 @@ plugins {
     id 'com.slack.keeper'
 }
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     compileSdk 34
     namespace 'me.khruslan.tierlistmaker'
@@ -25,6 +29,15 @@ android {
         versionName '1.0.0'
         resourceConfigurations += ['en', 'ru', 'uk']
         testInstrumentationRunner 'me.khruslan.tierlistmaker.TestRunner'
+    }
+
+    signingConfigs {
+        release {
+            storeFile file(keystoreProperties.getProperty('storeFile'))
+            storePassword keystoreProperties.getProperty('storePassword')
+            keyAlias keystoreProperties.getProperty('keyAlias')
+            keyPassword keystoreProperties.getProperty('keyPassword')
+        }
     }
 
     buildTypes {
@@ -42,7 +55,7 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'staging-proguard-rules.pro'
             testProguardFiles 'test-proguard-rules.pro'
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             resValue('bool', 'firebase_analytics_collection_deactivated', 'true')
             resValue('bool', 'firebase_crashlytics_collection_enabled', 'false')
             resValue('bool', 'firebase_performance_logcat_enabled', 'false')
@@ -53,6 +66,7 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'release-proguard-rules.pro'
+            signingConfig signingConfigs.release
             resValue('bool', 'firebase_analytics_collection_deactivated', 'false')
             resValue('bool', 'firebase_crashlytics_collection_enabled', 'true')
             resValue('bool', 'firebase_performance_logcat_enabled', 'false')
@@ -97,7 +111,7 @@ dependencies {
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
     // Firebase
-    implementation platform('com.google.firebase:firebase-bom:32.8.0')
+    implementation platform('com.google.firebase:firebase-bom:32.8.1')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-perf'

@@ -10,6 +10,7 @@ import androidx.test.espresso.contrib.DrawerActions.open
 import androidx.test.espresso.contrib.NavigationViewActions.navigateTo
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.activityScenarioRule
+import androidx.test.filters.FlakyTest
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import me.khruslan.tierlistmaker.R
@@ -41,6 +42,7 @@ class SettingsTests {
     val activityRule = activityScenarioRule<HomeActivity>()
 
     @Test
+    @FlakyTest
     fun changeInitialNumberOfTiers() {
         updateSeekbarPreference(R.string.pref_tiers_count_title, 0)
         launchNewTierList(TIER_LIST_HIP_HOP_ARTISTS)
