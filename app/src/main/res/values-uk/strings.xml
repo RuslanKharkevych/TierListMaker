@@ -64,6 +64,7 @@
     <string name="pref_scale_summary">Скільки зображень поміститься в рядку всередині рангу (впливає лише на нові списки)</string>
     <string name="pref_image_quality_title">Якість зображень</string>
     <string name="pref_image_quality_summary">Більший відсоток – краща якість, менший відсоток – займає менше пам’яті</string>
+    <string name="pref_app_info_title">Про програму</string>
     <string name="about_appbar_title">Про програму</string>
     <string name="pref_app_version_title">Версія додатку</string>
     <string name="tier_list_musical_instruments">Музичні інструменти</string>
@@ -95,4 +96,5 @@
     <string name="hint_remove_image">Перетягніть зображення на значок кошика у верхньому правому куті екрану, щоб видалити його</string>
     <string name="hint_remove_tier">Проведіть пальцем зліва направо, щоб видалити рівень</string>
     <string name="hint_reorder_tiers">Натисніть і утримуйте заголовок рівня, потім перемістіть його вверх або вниз, щоб змінити порядок</string>
+    <string name="pref_app_info_summary">Tier List Maker – це застосунок для Android, який дозволяє створювати, редагувати та ділитися списками.\n\nФункції:\n• Створення та редагування списків\n• Завантаження зображень зі сховища пристрою\n• Вибір між світлою та темною темою\n• Можливість ділитися зображенням списку</string>
 </resources>

@@ -98,6 +98,9 @@
 
     <!-- region AboutFragment -->
     <string name="about_appbar_title">About</string>
+    <string name="pref_app_info_key" translatable="false">app_info</string>
+    <string name="pref_app_info_title">About app</string>
+    <string name="pref_app_info_summary">Tier List Maker is an Android application that allows to create, edit and share tier lists.\n\nFeatures:\n• Сreate and edit tier lists\n• Upload images from device storage\n• Choose between light and dark theme\n• Share tier list as image file</string>
     <string name="pref_app_version_key" translatable="false">app_version</string>
     <string name="pref_app_version_title">App version</string>
     <!-- endregion AboutFragment -->

@@ -1,5 +1,6 @@
 package me.khruslan.tierlistmaker.tests
 
+import androidx.annotation.StringRes
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.DrawerActions.open
@@ -28,12 +29,22 @@ class AboutTests {
     val activityRule = activityScenarioRule<HomeActivity>()
 
     @Test
+    fun viewAppInfo() {
+        launchAboutUsPreferenceWithTitle(R.string.pref_app_info_title)
+        onView(withPreferenceTitle(R.string.pref_app_info_title))
+            .check(matches(hasPreferenceSummary(R.string.pref_app_info_summary)))
+    }
+
+    @Test
     fun viewAppVersion() {
-        onView(withId(R.id.drawer_layout)).perform(open())
-        onView(withId(R.id.nav_view)).perform(navigateTo(R.id.fragment_about))
-        onView(isPreferencesRecyclerView())
-            .perform(scrollToPreferenceWithTitle(R.string.pref_app_version_title))
+        launchAboutUsPreferenceWithTitle(R.string.pref_app_version_title)
         onView(withPreferenceTitle(R.string.pref_app_version_title))
             .check(matches(hasPreferenceSummary(BuildConfig.VERSION_NAME)))
+    }
+
+    private fun launchAboutUsPreferenceWithTitle(@StringRes titleResId: Int) {
+        onView(withId(R.id.drawer_layout)).perform(open())
+        onView(withId(R.id.nav_view)).perform(navigateTo(R.id.fragment_about))
+        onView(isPreferencesRecyclerView()).perform(scrollToPreferenceWithTitle(titleResId))
     }
 }

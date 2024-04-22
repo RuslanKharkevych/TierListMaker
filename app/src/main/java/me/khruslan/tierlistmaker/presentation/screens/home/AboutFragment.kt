@@ -10,7 +10,7 @@ import me.khruslan.tierlistmaker.presentation.utils.setPreferenceSummary
 /**
  * Fragment that represents "About" section in the navigation drawer.
  *
- * Consists of only "App version" section for now.
+ * Consists of "About app" and "App version" sections.
  *
  * @constructor Default no-arg constructor.
  */

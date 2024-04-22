@@ -3,6 +3,12 @@
 
     <Preference
         app:iconSpaceReserved="false"
+        app:key="@string/pref_app_info_key"
+        app:title="@string/pref_app_info_title"
+        app:summary="@string/pref_app_info_summary" />
+
+    <Preference
+        app:iconSpaceReserved="false"
         app:key="@string/pref_app_version_key"
         app:title="@string/pref_app_version_title" />
 

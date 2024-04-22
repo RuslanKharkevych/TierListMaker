@@ -46,6 +46,10 @@ fun hasPreferenceSummary(summary: String): Matcher<View> {
     return hasDescendant(allOf(withId(android.R.id.summary), withText(summary)))
 }
 
+fun hasPreferenceSummary(@StringRes summaryResId: Int): Matcher<View> {
+    return hasPreferenceSummary(targetContext.getString(summaryResId))
+}
+
 fun isFirstTierListImage(): Matcher<View> {
     return isTierListImageAtPosition(0, 0)
 }
