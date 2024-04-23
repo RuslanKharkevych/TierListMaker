@@ -38,7 +38,7 @@ object FeedbackUtils {
      * This email is prefilled in the “to” field in the email client.
      */
     @VisibleForTesting
-    internal const val RECIPIENT_EMAIL = "ruslan.kharkevych@gmail.com"
+    internal const val RECIPIENT_EMAIL = "kharkevychruslan@gmail.com"
 
     /**
      * The log tag of the alert, shown by [showSendUsEmailAlert] method.
